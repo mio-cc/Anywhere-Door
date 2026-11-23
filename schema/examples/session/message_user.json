@@ -1,0 +1,41 @@
+{
+  "id": "01JDMSG0000000000000000001",
+  "session_id": "01JDSESS10N000000000000001",
+  "role": "user",
+  "content": "这两个节点为什么这么慢？",
+  "selection": {
+    "graph_id": "01JDGRAPH00000000000000001",
+    "version": 7,
+    "scope": "01JDNQDE0000000000000000C1",
+    "node_ids": [
+      "01JDNQDE0000000000000000E1",
+      "01JDNQDE0000000000000000E2"
+    ],
+    "edge_ids": [
+      "01JDEDGE000000000000000001"
+    ],
+    "run_id": "01JDRVN0000000000000000001"
+  },
+  "refs": [
+    {
+      "kind": "node",
+      "graph_id": "01JDGRAPH00000000000000001",
+      "scope": "root",
+      "node_id": "01JDNQDE0000000000000000E1"
+    },
+    {
+      "kind": "file",
+      "ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+    },
+    {
+      "kind": "session",
+      "session_id": "01JDSESS10N000000000000002"
+    },
+    {
+      "kind": "skill",
+      "package_id": "01JDPACKAGE000000000000001"
+    }
+  ],
+  "status": "done",
+  "created_at": "2026-11-23T12:00:00.000Z"
+}

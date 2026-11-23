@@ -1,0 +1,27 @@
+{
+  "id": "01JDSESS10N000000000000001",
+  "title": "竞品价格调研",
+  "pinned": true,
+  "graph_ids": [
+    "01JDGRAPH00000000000000001",
+    "01JDGRAPH00000000000000002"
+  ],
+  "active_graph_id": "01JDGRAPH00000000000000001",
+  "mandates": [
+    {
+      "anchor": "session",
+      "mandate_id": "01JDMANDATE000000000000001"
+    }
+  ],
+  "orchestrator_model": "large-model",
+  "orchestrator_effort": {
+    "large-model": "high",
+    "small-model": "off"
+  },
+  "last_location": {
+    "graph_id": "01JDGRAPH00000000000000001",
+    "scope": "01JDNQDE0000000000000000C1"
+  },
+  "created_at": "2026-11-23T11:00:00.000Z",
+  "updated_at": "2026-11-23T12:05:00.000Z"
+}

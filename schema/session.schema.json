@@ -1,0 +1,757 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/session.schema.json",
+  "x-version": "1.0",
+  "title": "会话、消息、选中附带（C.10）",
+  "$defs": {
+    "Session": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "created_at",
+        "updated_at"
+      ],
+      "additionalProperties": false,
+      "description": "会话（C.10 §2）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "缺省由第一条消息生成"
+        },
+        "pinned": {
+          "type": "boolean",
+          "default": false
+        },
+        "graph_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "uniqueItems": true,
+          "default": []
+        },
+        "active_graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "画布当前显示的图"
+        },
+        "mandates": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/MandateMount",
+            "properties": {
+              "anchor": {
+                "const": "session"
+              }
+            }
+          },
+          "default": [],
+          "description": "anchor 只能是 session（C.10 §2）"
+        },
+        "orchestrator_model": {
+          "type": "string",
+          "description": "对话 Agent 用的模型；缺省用设置里的默认（P.09 Q17）"
+        },
+        "orchestrator_effort": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "enum": [
+              "off",
+              "minimal",
+              "low",
+              "medium",
+              "high",
+              "xhigh",
+              "max"
+            ]
+          },
+          "description": "按模型记住的思考强度：模型引用 → 强度（U.09.06-R7）；没有记录的模型用设置里的默认强度"
+        },
+        "last_location": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "用户上次在这个会话里所在的图和层，切回时恢复（U.09.04）",
+          "properties": {
+            "graph_id": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "scope": {
+              "type": "string",
+              "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+              "description": "当前层：root = 根图，否则为所在容器节点的 ID（与 Selection.scope、前端路由 ?scope= 同一写法）"
+            }
+          }
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "deleted_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "required": [
+        "id",
+        "session_id",
+        "role",
+        "status",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "description": "消息（C.10 §3）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "session_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "role": {
+          "enum": [
+            "user",
+            "assistant",
+            "system"
+          ]
+        },
+        "actor": {
+          "$ref": "common.schema.json#/$defs/Actor",
+          "description": "assistant 消息为对话 Agent 的模型实例"
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 20000,
+          "description": "Markdown"
+        },
+        "content_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef",
+          "description": "超长时内容放工作区"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MessageBlock"
+          },
+          "default": []
+        },
+        "selection": {
+          "$ref": "#/$defs/Selection",
+          "description": "只有 user 消息有：发送时附带的画布选中"
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MessageRef"
+          },
+          "maxItems": 20,
+          "default": [],
+          "description": "只有 user 消息有：对话框里 @ 引用和 + 附件（C.10-R7）"
+        },
+        "status": {
+          "enum": [
+            "streaming",
+            "done",
+            "failed"
+          ]
+        },
+        "error": {
+          "type": "object",
+          "required": [
+            "code",
+            "message"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        },
+        "usage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "in": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "out": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "cost_micros": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "MessageBlock": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": true,
+      "description": "消息里的卡片块（C.10 §4）；按 kind 判别，写法同 op.schema.json 的 Op（C.10-R8）",
+      "properties": {
+        "kind": {
+          "enum": [
+            "graph",
+            "proposal",
+            "applied",
+            "approval",
+            "run",
+            "focus",
+            "error"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "graph"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/BlockGraph"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "proposal"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/BlockProposal"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "applied"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/BlockApplied"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "approval"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/BlockApproval"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "run"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/BlockRun"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "focus"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/BlockFocus"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "error"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/BlockError"
+          }
+        }
+      ]
+    },
+    "BlockGraph": {
+      "type": "object",
+      "required": [
+        "kind",
+        "graph_id",
+        "version"
+      ],
+      "additionalProperties": false,
+      "description": "已创建 / 已打开图",
+      "properties": {
+        "kind": {
+          "const": "graph"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "BlockProposal": {
+      "type": "object",
+      "required": [
+        "kind",
+        "proposal_id",
+        "summary",
+        "counts"
+      ],
+      "additionalProperties": false,
+      "description": "提议卡片",
+      "properties": {
+        "kind": {
+          "const": "proposal"
+        },
+        "proposal_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "counts": {
+          "type": "object",
+          "required": [
+            "add",
+            "modify",
+            "remove"
+          ],
+          "additionalProperties": false,
+          "description": "新增、修改、删除各几处",
+          "properties": {
+            "add": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "modify": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "remove": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "BlockApplied": {
+      "type": "object",
+      "required": [
+        "kind",
+        "graph_id",
+        "version",
+        "op_ids",
+        "summary"
+      ],
+      "additionalProperties": false,
+      "description": "已修改卡片",
+      "properties": {
+        "kind": {
+          "const": "applied"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "op_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 200
+        }
+      }
+    },
+    "BlockApproval": {
+      "type": "object",
+      "required": [
+        "kind",
+        "approval_id",
+        "summary",
+        "approval_kind"
+      ],
+      "additionalProperties": false,
+      "description": "审批卡片；审批类型字段叫 approval_kind（P.09 K229）",
+      "properties": {
+        "kind": {
+          "const": "approval"
+        },
+        "approval_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "approval_kind": {
+          "enum": [
+            "tool",
+            "run",
+            "elevation",
+            "taint",
+            "budget",
+            "human_node"
+          ],
+          "description": "同 approval.requested 的 kind"
+        }
+      }
+    },
+    "BlockRun": {
+      "type": "object",
+      "required": [
+        "kind",
+        "run_id",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "运行卡片",
+      "properties": {
+        "kind": {
+          "const": "run"
+        },
+        "run_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/RunStatus"
+        }
+      }
+    },
+    "BlockFocus": {
+      "type": "object",
+      "required": [
+        "kind",
+        "graph_id",
+        "scope",
+        "node_ids"
+      ],
+      "additionalProperties": false,
+      "description": "看这里：画布进入对应层并高亮节点",
+      "properties": {
+        "kind": {
+          "const": "focus"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$"
+        },
+        "node_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "maxItems": 50
+        }
+      }
+    },
+    "BlockError": {
+      "type": "object",
+      "required": [
+        "kind",
+        "code",
+        "message"
+      ],
+      "additionalProperties": false,
+      "description": "错误提示",
+      "properties": {
+        "kind": {
+          "const": "error"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Selection": {
+      "type": "object",
+      "required": [
+        "graph_id",
+        "version",
+        "scope"
+      ],
+      "additionalProperties": false,
+      "description": "发送消息时附带的画布选中（C.10 §5）",
+      "properties": {
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "version": {
+          "type": "integer"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+          "description": "用户当前所在的层"
+        },
+        "node_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "maxItems": 50
+        },
+        "edge_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "maxItems": 50
+        },
+        "run_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "用户在看某次运行时附带"
+        }
+      }
+    },
+    "MessageRef": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": true,
+      "description": "对话框里的 @ 引用和 + 附件（C.10 §5.1）；按 kind 判别",
+      "properties": {
+        "kind": {
+          "enum": [
+            "node",
+            "file",
+            "session",
+            "skill"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "node"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/RefNode"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "file"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/RefFile"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "session"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/RefSession"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "skill"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/RefSkill"
+          }
+        }
+      ]
+    },
+    "RefNode": {
+      "type": "object",
+      "required": [
+        "kind",
+        "graph_id",
+        "scope",
+        "node_id"
+      ],
+      "additionalProperties": false,
+      "description": "引用一个节点",
+      "properties": {
+        "kind": {
+          "const": "node"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$"
+        },
+        "node_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      }
+    },
+    "RefFile": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "description": "引用一个文件：ref（上传到会话工作区）和 path（允许目录里的文件，S.06）恰好一个",
+      "properties": {
+        "kind": {
+          "const": "file"
+        },
+        "ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "ref"
+          ]
+        },
+        {
+          "required": [
+            "path"
+          ]
+        }
+      ]
+    },
+    "RefSession": {
+      "type": "object",
+      "required": [
+        "kind",
+        "session_id"
+      ],
+      "additionalProperties": false,
+      "description": "引用另一个会话",
+      "properties": {
+        "kind": {
+          "const": "session"
+        },
+        "session_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      }
+    },
+    "RefSkill": {
+      "type": "object",
+      "required": [
+        "kind",
+        "package_id"
+      ],
+      "additionalProperties": false,
+      "description": "引用一个技能包；package_id 按 C.01-R6 是 ULID",
+      "properties": {
+        "kind": {
+          "const": "skill"
+        },
+        "package_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      }
+    }
+  }
+}

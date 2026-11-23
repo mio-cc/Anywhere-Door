@@ -1,0 +1,68 @@
+{
+  "id": "01JDPR0P0SA0000000000000C1",
+  "graph_id": "01JDGRAPH00000000000000001",
+  "branch": "main",
+  "base_version": 7,
+  "patch": {
+    "base_version": 7,
+    "branch": "main",
+    "scope": "root",
+    "ops": [
+      {
+        "kind": "add_node",
+        "payload": {
+          "scope": "root",
+          "node": {
+            "id": "tmp:1",
+            "type": "人工",
+            "label": "人工复核",
+            "pos": {
+              "x": 400,
+              "y": 200
+            }
+          }
+        },
+        "reason": "执行前加一道人工复核",
+        "id": "01JDPATCH0P00000000000001A"
+      },
+      {
+        "kind": "connect",
+        "payload": {
+          "edge": {
+            "id": "tmp:2",
+            "from": {
+              "node": "tmp:1",
+              "port": "out"
+            },
+            "to": {
+              "node": "01JDNQDE0000000000000000E1",
+              "port": "in"
+            }
+          }
+        },
+        "reason": "复核通过的任务再交给执行者",
+        "id": "01JDPATCH0P00000000000002B"
+      }
+    ],
+    "rationale": "执行者会调用对外工具，先让人看一眼任务卡",
+    "expected_effect": {
+      "quality": "不变",
+      "latency": "每轮多等一次人工",
+      "risk": "降低"
+    },
+    "origin": "design",
+    "id": "01JDPATCH00000000000000001",
+    "fingerprint": "sha256:abababababababababababababababababababababababababababababababab"
+  },
+  "actor": {
+    "kind": "model",
+    "id": "large-model",
+    "instance_id": "chat:01JDSESS10N000000000000001"
+  },
+  "session_id": "01JDSESS10N000000000000001",
+  "status": "partially_applied",
+  "decisions": {
+    "01JDPATCH0P00000000000001A": "accepted"
+  },
+  "created_at": "2026-11-23T12:00:00.000Z"
+}

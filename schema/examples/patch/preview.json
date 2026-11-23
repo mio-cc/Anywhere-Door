@@ -1,0 +1,74 @@
+{
+  "ghost_graph": {
+    "id": "01JDGRAPH00000000000000001",
+    "schema_version": "1.0",
+    "version": 7,
+    "branch": "main",
+    "root": {
+      "nodes": [
+        {
+          "id": "01JDNQDE0000000000000000E1",
+          "type": "Agent",
+          "label": "执行者",
+          "pos": {
+            "x": 640,
+            "y": 200
+          }
+        },
+        {
+          "id": "01JDPREV1EW000000000000001",
+          "type": "人工",
+          "label": "人工复核",
+          "pos": {
+            "x": 400,
+            "y": 200
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "01JDPREV1EW000000000000002",
+          "from": {
+            "node": "01JDPREV1EW000000000000001",
+            "port": "out"
+          },
+          "to": {
+            "node": "01JDNQDE0000000000000000E1",
+            "port": "in"
+          }
+        }
+      ]
+    }
+  },
+  "id_map": {
+    "tmp:1": "01JDPREV1EW000000000000001",
+    "tmp:2": "01JDPREV1EW000000000000002"
+  },
+  "marks": [
+    {
+      "target": {
+        "node": "01JDPREV1EW000000000000001"
+      },
+      "ghost": "add",
+      "op_id": "01JDPATCH0P00000000000001A",
+      "reason": "执行前加一道人工复核"
+    },
+    {
+      "target": {
+        "node": "01JDNQDE0000000000000000E1",
+        "param": "concurrency"
+      },
+      "ghost": "modify",
+      "old": 3,
+      "new": 5,
+      "op_id": "01JDPATCH0P00000000000002B"
+    },
+    {
+      "target": {
+        "edge": "01JDPREV1EW000000000000002"
+      },
+      "ghost": "add",
+      "op_id": "01JDPATCH0P00000000000002B"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "01JDMANDATE000000000000001",
+  "name": "谨慎协作",
+  "level": 2,
+  "grantee": "tag:编排者",
+  "overrides": {
+    "scope": [
+      "root"
+    ],
+    "ops": {
+      "op.add_node": "allow",
+      "op.connect": "allow",
+      "op.set_param": "propose",
+      "op.group": "deny"
+    },
+    "tools_max_risk": 1,
+    "tools_allow": [
+      "web_search"
+    ],
+    "models": [
+      "large-model"
+    ],
+    "budget": {
+      "tokens": 200000,
+      "cost_micros": 5000000,
+      "time_ms": 600000,
+      "calls": 50
+    },
+    "max_nodes": 10,
+    "max_depth": 3,
+    "allow_spawn": false
+  },
+  "except": [
+    "res.switch_model"
+  ],
+  "deny": [
+    "op.delete_branch",
+    "tool.L3"
+  ],
+  "expires": {
+    "kind": "until",
+    "until_at": "2026-12-31T16:00:00.000Z"
+  },
+  "taint": "ask",
+  "delegable": "narrower",
+  "l3_skip_human": false,
+  "branch": "draft",
+  "created_by": {
+    "kind": "user",
+    "id": "local"
+  },
+  "created_at": "2026-11-23T12:00:00.000Z"
+}

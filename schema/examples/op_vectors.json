@@ -1,0 +1,1225 @@
+[
+  {
+    "name": "加节点",
+    "kind": "add_node",
+    "payload": {
+      "scope": "root",
+      "node": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "type": "Agent",
+        "pos": {
+          "x": 400,
+          "y": 200
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "在容器里加带子图的节点",
+    "kind": "add_node",
+    "payload": {
+      "scope": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "node": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "type": "子图引用",
+        "pos": {
+          "x": 0,
+          "y": 0
+        },
+        "children": {
+          "nodes": [],
+          "edges": []
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "节点缺 pos",
+    "kind": "add_node",
+    "payload": {
+      "scope": "root",
+      "node": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "type": "Agent"
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/node"
+  },
+  {
+    "name": "scope 写成名称",
+    "kind": "add_node",
+    "payload": {
+      "scope": "主图",
+      "node": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "type": "Agent",
+        "pos": {
+          "x": 400,
+          "y": 200
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/scope"
+  },
+  {
+    "name": "删节点",
+    "kind": "remove_nodes",
+    "payload": {
+      "ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D2F"
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "ids 为空",
+    "kind": "remove_nodes",
+    "payload": {
+      "ids": []
+    },
+    "valid": false,
+    "error_at": "/payload/ids"
+  },
+  {
+    "name": "ids 重复",
+    "kind": "remove_nodes",
+    "payload": {
+      "ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/ids"
+  },
+  {
+    "name": "恢复节点和连线",
+    "kind": "restore_nodes",
+    "payload": {
+      "removed": {
+        "nodes": [
+          {
+            "scope": "root",
+            "node": {
+              "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+              "type": "Agent",
+              "pos": {
+                "x": 400,
+                "y": 200
+              }
+            }
+          }
+        ],
+        "edges": [
+          {
+            "scope": "root",
+            "edge": {
+              "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+              "from": {
+                "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+                "port": "out"
+              },
+              "to": {
+                "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+                "port": "in"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "removed 缺 edges",
+    "kind": "restore_nodes",
+    "payload": {
+      "removed": {
+        "nodes": []
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/removed"
+  },
+  {
+    "name": "连线",
+    "kind": "connect",
+    "payload": {
+      "edge": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "from": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+          "port": "out"
+        },
+        "to": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "port": "in"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "连到动态插口",
+    "kind": "connect",
+    "payload": {
+      "edge": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "from": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+          "port": "out"
+        },
+        "to": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "port": "in[2]"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "端口名大写",
+    "kind": "connect",
+    "payload": {
+      "edge": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "from": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+          "port": "Out"
+        },
+        "to": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "port": "in"
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/edge/from/port"
+  },
+  {
+    "name": "客户端写 replaced",
+    "kind": "connect",
+    "payload": {
+      "edge": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "from": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+          "port": "out"
+        },
+        "to": {
+          "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "port": "in"
+        }
+      },
+      "replaced": [
+        {
+          "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+          "from": {
+            "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+            "port": "out"
+          },
+          "to": {
+            "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+            "port": "in"
+          }
+        }
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload"
+  },
+  {
+    "name": "断开",
+    "kind": "disconnect",
+    "payload": {
+      "ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D3G"
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "ids 不是 ULID",
+    "kind": "disconnect",
+    "payload": {
+      "ids": [
+        "e1"
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/ids/0"
+  },
+  {
+    "name": "改参数",
+    "kind": "set_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "temperature",
+      "to": 0.7
+    },
+    "valid": true
+  },
+  {
+    "name": "改参数带 from",
+    "kind": "set_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "concurrency",
+      "to": 5,
+      "from": 3
+    },
+    "valid": true
+  },
+  {
+    "name": "改 schema_from 的子参数",
+    "kind": "set_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "args",
+      "path": [
+        "maxResults"
+      ],
+      "to": 10
+    },
+    "valid": true
+  },
+  {
+    "name": "改回 null",
+    "kind": "set_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "note",
+      "to": null
+    },
+    "valid": true
+  },
+  {
+    "name": "改参数缺 to",
+    "kind": "set_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "temperature"
+    },
+    "valid": false,
+    "error_at": "/payload"
+  },
+  {
+    "name": "path 两项",
+    "kind": "set_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "args",
+      "path": [
+        "a",
+        "b"
+      ],
+      "to": 1
+    },
+    "valid": false,
+    "error_at": "/payload/path"
+  },
+  {
+    "name": "key 不是参数名",
+    "kind": "set_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "Temp",
+      "to": 1
+    },
+    "valid": false,
+    "error_at": "/payload/key"
+  },
+  {
+    "name": "提升参数",
+    "kind": "promote_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "temperature"
+    },
+    "valid": true
+  },
+  {
+    "name": "提升缺 key",
+    "kind": "promote_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+    },
+    "valid": false,
+    "error_at": "/payload"
+  },
+  {
+    "name": "取消提升",
+    "kind": "demote_param",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "key": "temperature"
+    },
+    "valid": true
+  },
+  {
+    "name": "取消提升 node 不是 ULID",
+    "kind": "demote_param",
+    "payload": {
+      "node": "n1",
+      "key": "temperature"
+    },
+    "valid": false,
+    "error_at": "/payload/node"
+  },
+  {
+    "name": "改显示名",
+    "kind": "set_label",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": "执行者"
+    },
+    "valid": true
+  },
+  {
+    "name": "显示名为空",
+    "kind": "set_label",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": ""
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "显示名 81 字",
+    "kind": "set_label",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": "长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长"
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "改标签",
+    "kind": "set_tags",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": [
+        "编排者",
+        "主脑"
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "清空标签",
+    "kind": "set_tags",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": []
+    },
+    "valid": true
+  },
+  {
+    "name": "标签 17 个",
+    "kind": "set_tags",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": [
+        "t0",
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "t7",
+        "t8",
+        "t9",
+        "t10",
+        "t11",
+        "t12",
+        "t13",
+        "t14",
+        "t15",
+        "t16"
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "加锁",
+    "kind": "set_lock",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": "user"
+    },
+    "valid": true
+  },
+  {
+    "name": "锁的值不在枚举",
+    "kind": "set_lock",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": "admin"
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "打组",
+    "kind": "group",
+    "payload": {
+      "scope": "root",
+      "node_ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D2F"
+      ],
+      "new_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "label": "检索"
+    },
+    "valid": true
+  },
+  {
+    "name": "打组（日志里带 rewire）",
+    "kind": "group",
+    "payload": {
+      "scope": "root",
+      "node_ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D2F"
+      ],
+      "new_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "label": "检索",
+      "rewire": [
+        {
+          "removed": {
+            "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+            "from": {
+              "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+              "port": "out"
+            },
+            "to": {
+              "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+              "port": "in"
+            }
+          },
+          "added": [
+            {
+              "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+              "from": {
+                "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+                "port": "out"
+              },
+              "to": {
+                "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+                "port": "in"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "只选 1 个节点",
+    "kind": "group",
+    "payload": {
+      "scope": "root",
+      "node_ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+      ],
+      "new_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "label": "检索"
+    },
+    "valid": false,
+    "error_at": "/payload/node_ids"
+  },
+  {
+    "name": "缺 label",
+    "kind": "group",
+    "payload": {
+      "scope": "root",
+      "node_ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D2F"
+      ],
+      "new_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J"
+    },
+    "valid": false,
+    "error_at": "/payload"
+  },
+  {
+    "name": "解组",
+    "kind": "ungroup",
+    "payload": {
+      "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J"
+    },
+    "valid": true
+  },
+  {
+    "name": "解组多出 scope",
+    "kind": "ungroup",
+    "payload": {
+      "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "scope": "root"
+    },
+    "valid": false,
+    "error_at": "/payload"
+  },
+  {
+    "name": "切换为引用",
+    "kind": "set_subgraph_ref",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "to": {
+        "name": "资料采集",
+        "version": "1.2.0",
+        "pin": "snapshot"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "展开成内联",
+    "kind": "set_subgraph_ref",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "to": null,
+      "children": {
+        "nodes": [
+          {
+            "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+            "type": "Agent",
+            "pos": {
+              "x": 400,
+              "y": 200
+            }
+          }
+        ],
+        "edges": []
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "引用版本写两段",
+    "kind": "set_subgraph_ref",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "to": {
+        "name": "资料采集",
+        "version": "1.2",
+        "pin": "snapshot"
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "切换引用缺 to",
+    "kind": "set_subgraph_ref",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J"
+    },
+    "valid": false,
+    "error_at": "/payload"
+  },
+  {
+    "name": "移动",
+    "kind": "move_nodes",
+    "payload": {
+      "moves": [
+        {
+          "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+          "to": {
+            "x": 420,
+            "y": 200
+          }
+        },
+        {
+          "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "to": {
+            "x": 640,
+            "y": 200
+          }
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "坐标是小数",
+    "kind": "move_nodes",
+    "payload": {
+      "moves": [
+        {
+          "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+          "to": {
+            "x": 420.5,
+            "y": 200
+          }
+        }
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/moves/0/to/x"
+  },
+  {
+    "name": "moves 为空",
+    "kind": "move_nodes",
+    "payload": {
+      "moves": []
+    },
+    "valid": false,
+    "error_at": "/payload/moves"
+  },
+  {
+    "name": "改 ui",
+    "kind": "set_node_ui",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": {
+        "collapsed": true,
+        "color": "c2"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "改 ui 保留未知字段",
+    "kind": "set_node_ui",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": {
+        "width": 320,
+        "x_extra": 1
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "宽度太小",
+    "kind": "set_node_ui",
+    "payload": {
+      "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": {
+        "width": 100
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/to/width"
+  },
+  {
+    "name": "加便签",
+    "kind": "add_note",
+    "payload": {
+      "scope": "root",
+      "note": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "pos": {
+          "x": 40,
+          "y": 40
+        },
+        "text": "这一层只做检索"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "便签缺 text",
+    "kind": "add_note",
+    "payload": {
+      "scope": "root",
+      "note": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "pos": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/note"
+  },
+  {
+    "name": "改便签文字",
+    "kind": "update_note",
+    "payload": {
+      "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+      "to": {
+        "text": "改过的说明"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "改便签位置和颜色",
+    "kind": "update_note",
+    "payload": {
+      "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+      "to": {
+        "pos": {
+          "x": 80,
+          "y": 40
+        },
+        "size": {
+          "w": 200,
+          "h": 120
+        },
+        "color": "c1"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "什么都不改",
+    "kind": "update_note",
+    "payload": {
+      "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+      "to": {}
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "改不能改的字段",
+    "kind": "update_note",
+    "payload": {
+      "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+      "to": {
+        "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "删便签",
+    "kind": "remove_notes",
+    "payload": {
+      "ids": [
+        "01JD8X3Q5V7W9Y2Z4A6B8C0D4H"
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "删便签 ids 为空",
+    "kind": "remove_notes",
+    "payload": {
+      "ids": []
+    },
+    "valid": false,
+    "error_at": "/payload/ids"
+  },
+  {
+    "name": "改标题",
+    "kind": "set_graph_title",
+    "payload": {
+      "to": "竞品价格调研"
+    },
+    "valid": true
+  },
+  {
+    "name": "标题 121 字",
+    "kind": "set_graph_title",
+    "payload": {
+      "to": "题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题题"
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "改说明",
+    "kind": "set_graph_meta",
+    "payload": {
+      "to": {
+        "description": "每周一跑一次"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "清空元信息",
+    "kind": "set_graph_meta",
+    "payload": {
+      "to": {}
+    },
+    "valid": true
+  },
+  {
+    "name": "元信息只能改 description",
+    "kind": "set_graph_meta",
+    "payload": {
+      "to": {
+        "template": "闭环迭代@1.0.0"
+      }
+    },
+    "valid": false,
+    "error_at": "/payload/to"
+  },
+  {
+    "name": "挂授权书",
+    "kind": "set_mandate",
+    "payload": {
+      "anchor": "node:01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+      "to": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J"
+    },
+    "valid": true
+  },
+  {
+    "name": "摘掉授权书",
+    "kind": "set_mandate",
+    "payload": {
+      "anchor": "graph",
+      "to": null
+    },
+    "valid": true
+  },
+  {
+    "name": "挂载点写错",
+    "kind": "set_mandate",
+    "payload": {
+      "anchor": "node:abc",
+      "to": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J"
+    },
+    "valid": false,
+    "error_at": "/payload/anchor"
+  },
+  {
+    "name": "挂载缺 to",
+    "kind": "set_mandate",
+    "payload": {
+      "anchor": "graph"
+    },
+    "valid": false,
+    "error_at": "/payload"
+  },
+  {
+    "name": "应用补丁",
+    "kind": "apply_patch",
+    "payload": {
+      "patch_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "ops": [
+        {
+          "kind": "add_node",
+          "payload": {
+            "scope": "root",
+            "node": {
+              "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+              "type": "Agent",
+              "pos": {
+                "x": 400,
+                "y": 200
+              }
+            }
+          }
+        },
+        {
+          "kind": "connect",
+          "payload": {
+            "edge": {
+              "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+              "from": {
+                "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+                "port": "out"
+              },
+              "to": {
+                "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+                "port": "in"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "补丁 ops 为空",
+    "kind": "apply_patch",
+    "payload": {
+      "patch_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "ops": []
+    },
+    "valid": false,
+    "error_at": "/payload/ops"
+  },
+  {
+    "name": "子 Op 的 payload 不合法",
+    "kind": "apply_patch",
+    "payload": {
+      "patch_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D5J",
+      "ops": [
+        {
+          "kind": "connect",
+          "payload": {
+            "ids": [
+              "01JD8X3Q5V7W9Y2Z4A6B8C0D3G"
+            ]
+          }
+        }
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/ops/0/payload"
+  },
+  {
+    "name": "导入",
+    "kind": "import_apply",
+    "payload": {
+      "source": "yaml",
+      "ops": [
+        {
+          "kind": "set_graph_title",
+          "payload": {
+            "to": "导入的图"
+          }
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "来源写 toml",
+    "kind": "import_apply",
+    "payload": {
+      "source": "toml",
+      "ops": [
+        {
+          "kind": "set_graph_title",
+          "payload": {
+            "to": "导入的图"
+          }
+        }
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/source"
+  },
+  {
+    "name": "撤回一条 Op",
+    "kind": "revert_op",
+    "payload": {
+      "op_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+    },
+    "valid": true
+  },
+  {
+    "name": "op_id 不是 ULID",
+    "kind": "revert_op",
+    "payload": {
+      "op_id": "op-1"
+    },
+    "valid": false,
+    "error_at": "/payload/op_id"
+  },
+  {
+    "name": "回到版本",
+    "kind": "revert_to",
+    "payload": {
+      "version": 12
+    },
+    "valid": true
+  },
+  {
+    "name": "回到版本（日志里带 ops）",
+    "kind": "revert_to",
+    "payload": {
+      "version": 0,
+      "ops": [
+        {
+          "kind": "remove_nodes",
+          "payload": {
+            "ids": [
+              "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+            ]
+          }
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "版本为 -1",
+    "kind": "revert_to",
+    "payload": {
+      "version": -1
+    },
+    "valid": false,
+    "error_at": "/payload/version"
+  },
+  {
+    "name": "格式升级",
+    "kind": "migrate",
+    "payload": {
+      "from_schema": "1.0",
+      "to_schema": "1.1"
+    },
+    "valid": true
+  },
+  {
+    "name": "版本只写主版本",
+    "kind": "migrate",
+    "payload": {
+      "from_schema": "1",
+      "to_schema": "1.1"
+    },
+    "valid": false,
+    "error_at": "/payload/from_schema"
+  },
+  {
+    "name": "建草稿分支",
+    "kind": "create_branch",
+    "payload": {
+      "name": "draft/try-1",
+      "from": "main"
+    },
+    "valid": true
+  },
+  {
+    "name": "从某个版本建",
+    "kind": "create_branch",
+    "payload": {
+      "name": "draft/try-2",
+      "from": "draft/try-1",
+      "at_version": 7
+    },
+    "valid": true
+  },
+  {
+    "name": "新分支叫 main",
+    "kind": "create_branch",
+    "payload": {
+      "name": "main",
+      "from": "main"
+    },
+    "valid": false,
+    "error_at": "/payload/name"
+  },
+  {
+    "name": "新分支叫 feature",
+    "kind": "create_branch",
+    "payload": {
+      "name": "feature/x",
+      "from": "main"
+    },
+    "valid": false,
+    "error_at": "/payload/name"
+  },
+  {
+    "name": "删分支",
+    "kind": "delete_branch",
+    "payload": {
+      "name": "draft/try-1"
+    },
+    "valid": true
+  },
+  {
+    "name": "分支名不合法",
+    "kind": "delete_branch",
+    "payload": {
+      "name": "draft/"
+    },
+    "valid": false,
+    "error_at": "/payload/name"
+  },
+  {
+    "name": "合并分支",
+    "kind": "merge_branch",
+    "payload": {
+      "from": "draft/try-1",
+      "into": "main",
+      "base": 7,
+      "ours": 9,
+      "theirs": 8,
+      "resolutions": [
+        {
+          "object": {
+            "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+            "param": "temperature"
+          },
+          "pick": "manual",
+          "value": 0.5
+        },
+        {
+          "object": {
+            "edge": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G"
+          },
+          "pick": "theirs"
+        }
+      ]
+    },
+    "valid": true
+  },
+  {
+    "name": "合并分支没有冲突",
+    "kind": "merge_branch",
+    "payload": {
+      "from": "draft/try-1",
+      "into": "main",
+      "base": 7,
+      "ours": 9,
+      "theirs": 8,
+      "resolutions": []
+    },
+    "valid": true
+  },
+  {
+    "name": "pick 写 mine",
+    "kind": "merge_branch",
+    "payload": {
+      "from": "draft/try-1",
+      "into": "main",
+      "base": 7,
+      "ours": 9,
+      "theirs": 8,
+      "resolutions": [
+        {
+          "object": {
+            "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+          },
+          "pick": "mine"
+        }
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/resolutions/0/pick"
+  },
+  {
+    "name": "冲突对象为空",
+    "kind": "merge_branch",
+    "payload": {
+      "from": "draft/try-1",
+      "into": "main",
+      "base": 7,
+      "ours": 9,
+      "theirs": 8,
+      "resolutions": [
+        {
+          "object": {},
+          "pick": "ours"
+        }
+      ]
+    },
+    "valid": false,
+    "error_at": "/payload/resolutions/0/object"
+  },
+  {
+    "name": "缺 base",
+    "kind": "merge_branch",
+    "payload": {
+      "from": "draft/try-1",
+      "into": "main",
+      "ours": 9,
+      "theirs": 8,
+      "resolutions": []
+    },
+    "valid": false,
+    "error_at": "/payload"
+  }
+]

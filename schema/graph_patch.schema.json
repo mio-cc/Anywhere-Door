@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/graph_patch.schema.json",
+  "x-version": "1.0",
+  "title": "GraphPatch（C.08）",
+  "type": "object",
+  "required": [
+    "base_version",
+    "scope",
+    "ops",
+    "rationale",
+    "origin"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Ulid",
+      "description": "服务器收到后填写"
+    },
+    "base_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "branch": {
+      "$ref": "op.schema.json#/$defs/Branch",
+      "default": "main"
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+      "description": "主要作用的子图"
+    },
+    "ops": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "$ref": "#/$defs/PatchOp"
+      }
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "整体理由，给用户看"
+    },
+    "expected_effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "quality": {
+          "type": "string"
+        },
+        "latency": {
+          "type": "string"
+        },
+        "cost": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        }
+      }
+    },
+    "origin": {
+      "enum": [
+        "design",
+        "runtime",
+        "post_run"
+      ]
+    },
+    "parent_patch": {
+      "$ref": "common.schema.json#/$defs/Ulid"
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "规范化 ops 的哈希；服务器计算，用于发现重复提议"
+    }
+  },
+  "$defs": {
+    "PatchOp": {
+      "type": "object",
+      "required": [
+        "kind",
+        "payload",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "description": "模型提交的一条 Op；payload 里可以用临时 ID，服务器换成 ULID 后再按 op.schema.json#/$defs/Op 校验（C.08-R3）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "服务器收到后填写；提议的 decisions 按它记"
+        },
+        "kind": {
+          "$ref": "op.schema.json#/$defs/OpKind"
+        },
+        "payload": {
+          "type": "object",
+          "x-open": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400,
+          "description": "这一条的理由（模型的 Op 必须写，C.05.01 §3）"
+        }
+      }
+    },
+    "Proposal": {
+      "type": "object",
+      "required": [
+        "id",
+        "graph_id",
+        "branch",
+        "base_version",
+        "patch",
+        "actor",
+        "status",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "description": "提议（C.08 §4）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "base_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "patch": {
+          "$ref": "#"
+        },
+        "actor": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "session_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "来自对话 Agent 时填"
+        },
+        "run_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "来自运行时编排时填"
+        },
+        "status": {
+          "enum": [
+            "open",
+            "partially_applied",
+            "applied",
+            "rejected",
+            "stale"
+          ]
+        },
+        "decisions": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "additionalProperties": {
+            "enum": [
+              "accepted",
+              "rejected"
+            ]
+          },
+          "description": "PatchOp 的 id → 处理结果"
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "decided_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "ProposalPreview": {
+      "type": "object",
+      "required": [
+        "ghost_graph",
+        "id_map",
+        "marks"
+      ],
+      "additionalProperties": false,
+      "description": "幽灵预览（C.08 §4.3）：在当前图上叠加提议后的视图；临时 ID 换成预览用的 ULID",
+      "properties": {
+        "ghost_graph": {
+          "$ref": "graph.schema.json"
+        },
+        "id_map": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "op.schema.json#/$defs/TmpId"
+          },
+          "additionalProperties": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "marks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GhostMark"
+          }
+        }
+      }
+    },
+    "GhostMark": {
+      "type": "object",
+      "required": [
+        "target",
+        "ghost",
+        "op_id"
+      ],
+      "additionalProperties": false,
+      "description": "预览里一个受影响的元素",
+      "properties": {
+        "target": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "node": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "edge": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "note": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "param": {
+              "type": "string",
+              "pattern": "^[a-z_][a-z0-9_]*$"
+            }
+          }
+        },
+        "ghost": {
+          "enum": [
+            "add",
+            "modify",
+            "remove"
+          ]
+        },
+        "op_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "old": {
+          "description": "modify 时的旧值"
+        },
+        "new": {
+          "description": "modify 时的新值"
+        }
+      }
+    }
+  }
+}

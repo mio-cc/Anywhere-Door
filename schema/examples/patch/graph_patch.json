@@ -1,0 +1,47 @@
+{
+  "base_version": 7,
+  "branch": "main",
+  "scope": "root",
+  "ops": [
+    {
+      "kind": "add_node",
+      "payload": {
+        "scope": "root",
+        "node": {
+          "id": "tmp:1",
+          "type": "人工",
+          "label": "人工复核",
+          "pos": {
+            "x": 400,
+            "y": 200
+          }
+        }
+      },
+      "reason": "执行前加一道人工复核"
+    },
+    {
+      "kind": "connect",
+      "payload": {
+        "edge": {
+          "id": "tmp:2",
+          "from": {
+            "node": "tmp:1",
+            "port": "out"
+          },
+          "to": {
+            "node": "01JDNQDE0000000000000000E1",
+            "port": "in"
+          }
+        }
+      },
+      "reason": "复核通过的任务再交给执行者"
+    }
+  ],
+  "rationale": "执行者会调用对外工具，先让人看一眼任务卡",
+  "expected_effect": {
+    "quality": "不变",
+    "latency": "每轮多等一次人工",
+    "risk": "降低"
+  },
+  "origin": "design"
+}

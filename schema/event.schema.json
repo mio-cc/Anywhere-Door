@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/event.schema.json",
+  "x-version": "1.0",
+  "title": "事件信封（C.06.01）",
+  "$defs": {
+    "Event": {
+      "type": "object",
+      "required": [
+        "seq",
+        "ts",
+        "kind",
+        "actor",
+        "data"
+      ],
+      "additionalProperties": false,
+      "description": "所有事件共用的外层结构（C.06.01 §2）；三条流各自的 schema 按 kind 约束 data 和 seq（R6–R8）",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "流内单调递增；SSE 帧的 id。P、S 级从 1 开始；E 级事件不占序号，值为 0（R8）"
+        },
+        "ts": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "kind": {
+          "type": "string",
+          "description": "事件名，按流各自的枚举约束"
+        },
+        "actor": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "run_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "运行流必填"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "图协同流必填"
+        },
+        "session_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "会话流必填"
+        },
+        "loc": {
+          "$ref": "common.schema.json#/$defs/Loc",
+          "description": "节点级事件必填，见 C.06.05"
+        },
+        "cause_seq": {
+          "type": "integer",
+          "description": "引起这条事件的上一条事件的 seq（同一流内），用于因果追踪"
+        },
+        "data": {
+          "type": "object",
+          "x-open": true,
+          "description": "按 kind 判别（R6）"
+        }
+      }
+    }
+  }
+}

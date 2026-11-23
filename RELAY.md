@@ -1,14 +1,4 @@
-# 接力## 2026-11-23 20:15 · 冻结叶子复查（第 4 片复查 K227、示例图修复 K228 之后） · Quick（AWS Quick） · 设计方结论
-- 依据：设计仓库（本条提交时的 HEAD，见各领取记录）；`relay stale` 列出 11 个叶子，改过的文档都是设计方这一棒改的，改了什么设计方清楚，逐个对照代码。
-- 结论：11 个叶子的代码都不用改，`relay stale --accept`。
-  - `C.01`（引用 `C.05`、`C.06.02`–`.04`、`C.08`、`C.09`、`C.10`、`C.12`）：K227 给第 4 片写了 Op、事件、GraphPatch、授权书、会话的结构，都放在新的 schema 文件里（`op`、`event`、`*-event`、`graph_patch`、`mandate`、`session`），不改 `common.schema.json`；`C.12` 改成规范、去掉 0.9 格式，`C.01-R20`（高版本拒绝）不变。`C.01` 的写法、命名、封闭对象、示例清单规则没有变化。
-  - `C.02.02`（`C.09`）、`C.02.05`（`C.05.02`、`C.05.04`、`C.09`）：只是补了动作名、`authz_matrix.yaml`、payload 写法和写集合；`Node`、`NodeUi`、`Pos`、`Note` 的定义没有变化，`C.05.02` §6.1 是引用它们。
-  - `C.02.03`（`C.02.01`）：`C.02.01` §7 只加了资源节点 `value` 的写法。两个连线反例里的资源节点还是旧写法，但它们只测端口名，结果不变；留到下次改到 `C.02.03` 时一起改（`P.09` K228）。
-  - `C.03.01`、`C.03.02`、`C.03.05`、`C.04.01`、`C.13.03`（`E.03.01`、`C.05.02`、`C.05.03`）：`E.03.01` 只加了测试用例 `E0301-T9`；`C.05.02` 的 `set_param` 加了 `path`（改 `schema_from` 的子参数），`C.05.03` 改成规范。NodeDef、参数、类型、端口的定义都没有变化。
-  - `C.07`（`C.06.02`）：`engine.illegal_transition` 从"只广播"移到运行级（P 级），`resync` 去掉（是控制帧）；`state_machine.yaml` 和两个状态枚举没有变化，代码里也没有用到这两个事件名。
-- 提交 / 推送：验证者提交推送
-
-日志（代码）
+# 接力日志（代码）
 
 > 每一棒在**最上面**加一条（新的在上）。开工先读最上面一条；收工前必须写完自己这一条（设计文档 `G.02.06-R20`）。
 > 只写"人才知道的事"：停在哪、为什么、下一步。进度数字以 `go run ./tools/relay status` 为准，不手抄。
@@ -27,6 +17,255 @@
 ```
 
 ---
+
+## 2026-11-23 22:40 · m0-contract-3 · Quick（AWS Quick） · 整片评审返工
+- 依据：整片评审 `docs/relay/m0-contract-3.review.md`（评审者 Codex，提交 89cf65c）：9 行中 8 行符合，第 5 行（`C.10`）不符合。
+- 完成：`Session.mandates` 的数组项按 `C.10` §2 约束 `anchor` 为 `session`；`C10-T3` 加两条反例。实施者处理写在评审文件里。
+- 进行中：无
+- 下一步：评审者复核第 5 行和这次提交的 diff，标"已处理"；验证者整片重跑 `relay slice m0-contract-3`；都通过后按 `G.08-R3` squash 合并（合并提交里 9 个叶子的 `docs/relay/<叶子>.json` 的 `state` 改为 `merged`，K225）、推送、删除分支。
+- 桩：无
+- 上报单 / 阻塞：无
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 21:45 · C.08 · Quick（AWS Quick） · 依据更新（G.02.06-R13）
+- 原因：整片验证 ⑥ 不通过：`C.08` 领取（设计仓库 a69ebf2）之后，依据文档 `C.06.02` 在 5d21b55（`P.09` K231）改过。
+- 读了什么：`C.06.02` 只改了两处：§10 验收 2 的示例位置从 `schema/examples/events/run/` 改为 `run_event_vectors.json`（与实施卡一致），和变更记录一行。事件名、级别、`data` 字段都没变。
+- 结论：`C.08` 的代码（`graph_patch.schema.json`、三个示例、`patch_test.go`）不引用 `C.06.02` 的任何定义，不用改；`relay start C.08 --resume --accept-docs` 更新依据。
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 21:40 · C.06.04 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.06.04.json）
+- 完成：实施卡全部。`schema/session-event.schema.json`（9 个 kind，顶层要求 `session_id`；`message`、`block` 引用 `session.schema.json`，`message.failed.error` 引用 `Message.error`）；`schema/examples/session_event_vectors.json`（18 条）；`tools/schemacheck/session_event_test.go`：`C0604-T1 事件名单`、`C0604-T3 事件向量`。
+- 片内最后一个叶子：下一步验证者跑 `relay slice m0-contract-3`，再整片评审。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：整片 `relay slice m0-contract-3`（验证者）
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 21:33 · C.06.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5d21b55（docs/relay/C.06.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.06.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 21:40 · C.06.03 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.06.03.json）
+- 完成：实施卡全部。`schema/graph-event.schema.json`（10 个 kind，顶层要求 `graph_id`；只有 `op.applied`、`op.coalesced` 的 `seq` ≥ 1，其余为 0，C.06.03-R1；`op.applied.op` 引用 `op.schema.json#/$defs/Op`）；`schema/examples/graph_event_vectors.json`（20 条）；`tools/schemacheck/graph_event_test.go`：`C0603-T1 事件名单`、`C0603-T3 事件向量`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.06.04` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 21:32 · C.06.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5d21b55（docs/relay/C.06.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.06.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 21:40 · C.06.02 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.06.02.json）
+- 完成：实施卡全部。
+  - `schema/run-event.schema.json`：根是 `allOf: [Event, 39 条 if/then]`，顶层 `required` 加 `run_id`；每条分支约束 `seq`（P、S 级 `minimum: 1`，E 级 `const: 0`）和 `data`，节点级 7 个要求 `loc`；39 个 `Data…` 定义和 `NodeError`。`DataNodeState` 里按 `to` 约束 `cause` 的枚举（`queued`、`cancelled`、`skipped`）。
+  - `schema/examples/run_event_vectors.json`：66 条（39 个 kind 各一个合法事件，另 7 条合法、20 条不合法）。
+  - `tools/schemacheck/run_event_test.go`：`C0602-T1 事件名单`、`C0602-T2 事件向量`；三条流共用的辅助函数 `eventSpec`、`eventBranches`、`checkEventNames`、`checkEventVectors` 也在这里（`C.06.03`、`C.06.04` 调用）。
+- 自主决定的细节：类型规则没列到的字段按 R7 写 `{}`（如 `branch`、`cause`、`risk`、`scope_path`）；`budget.warn.ratio` 写 `type: number`、0–1 再加枚举，满足 `C.01-R11` 的命名检查。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.06.03` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 21:30 · C.06.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5d21b55（docs/relay/C.06.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.06.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 21:40 · C.06.01 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.06.01.json）
+- 完成：实施卡全部。`schema/event.schema.json`：`Event`，照 §2 原样写；`tools/schemacheck/event_test.go`：`C0601-T3 事件信封`。
+- 文档改动（领取前已改，`P.09` K231）：R6 补各流必填字段，R7 补类型规则，R8 写明 schema 里级别只体现为 `seq` 的约束。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.06.02` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 21:29 · C.06.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5d21b55（docs/relay/C.06.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.06.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 21:10 · C.10 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.10.json）
+- 完成：实施卡全部。
+  - `schema/session.schema.json`：`Session`、`Message`、`MessageBlock` 与 7 个 `Block…`、`Selection`、`MessageRef` 与 4 个 `Ref…`；判别写法同 `Op`。
+  - `schema/examples/session/session.json`、`message_assistant.json`（7 种卡片块各一个）、`message_user.json`（带 `selection` 和 4 种引用），登记进 `manifest.yaml`。
+  - `tools/schemacheck/session_test.go`：`C10-T1 示例`、`C10-T3 反例`。
+- 文档改动：审批卡片块的审批类型字段原来也叫 `kind`，和判别字段重名，改名 `approval_kind`（`P.09` K229，领取前已改）。
+- 自主决定的细节：`RefSkill.package_id` 按 `C.01-R6`（`_id` 字段是 ULID）写成 `Ulid`；`RefFile.path` 加了 `minLength: 1`；`Session.mandates` 的"anchor 只能是 session"照文档只写在说明里。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：第一批最后一个；整片的 `relay slice` 等第二批做完
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 20:57 · C.10 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 a69ebf2（docs/relay/C.10.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.10.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 21:10 · C.08 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.08.json）
+- 完成：实施卡全部。
+  - `schema/graph_patch.schema.json`：顶层 GraphPatch，`$defs` 里 `PatchOp`、`Proposal`（`patch` 用 `{"$ref": "#"}`）、`ProposalPreview`、`GhostMark`，照 §2、§4、§4.3 原样写。
+  - `schema/examples/patch/graph_patch.json`（两条 PatchOp，第二条用 `tmp:1` 连到第一条加的节点）、`proposal.json`（部分采纳）、`preview.json`，登记进 `manifest.yaml`。
+  - `tools/schemacheck/patch_test.go`：`C08-T5 GraphPatch`、`C08-T6 提议与预览`；改示例做反例的辅助函数 `exampleWith`、`elem`、`mustInvalidCases`（`C.10` 的测试也用）。
+- 自主决定的细节：`Proposal.branch` 照文档写 `type: string`，没有收紧成 `Branch`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.10` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 20:54 · C.08 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 a69ebf2（docs/relay/C.08.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.08.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 21:10 · C.09 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.09.json）
+- 完成：实施卡全部。
+  - `schema/mandate.schema.json`：`Mandate`、`Overrides`、`Budget`、`Expiry`、`Action`（43 个）；R4 的几条写进 schema（`Expiry` 用 `if/then` + `not`，`created_by.kind` 用 `const`，`overrides.scope` 用 `pattern`）。
+  - `schema/builtin/authz_matrix.yaml`：§5.1 原文。
+  - `schema/examples/mandate/mandate.json`（档位 2，带 `overrides`、`except`、`deny`、`expires: until`），登记进 `manifest.yaml`。
+  - `tools/schemacheck/mandate_test.go`：`C09-T4 授权书 schema`、`C09-T5 判定表数据`。
+- 文档改动：`Expiry.until` 改名 `until_at`（原名违反 `C.01-R7`，命名检查会报错）；R4 写明每种有效期只写自己的字段（`P.09` K230，领取前已改）。`Expiry` 里不用 `properties: {until_at: false}`：命名检查会把它当成没引用 Timestamp 的时间字段，改用 `not: {required: […]}`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.08` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 20:53 · C.09 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 a69ebf2（docs/relay/C.09.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.09.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 21:10 · C.05.02 · Quick（AWS Quick） · 交付（片内，§7.4 一次写好）
+- 依据：设计仓库提交（见 docs/relay/C.05.02.json）
+- 完成：实施卡全部。
+  - `schema/op.schema.json`：30 个 `Payload…` 定义（按 §2–§6 的表和 §6.1 的字段类型）、`Removed`、`Rewire`、`Resolution`；`Op.allOf` 每种 kind 一条 `if/then`（写法同 `nodedef.schema.json` 的 `Impl`）。`Op.payload` 本身仍是开放对象（`C.05.01` §2），封闭在 `Payload…` 里。
+  - `schema/examples/op_vectors.json`：90 条，每种 kind 至少一个合法、一个不合法。
+  - `tools/schemacheck/payload_test.go`：`C0502-T1 payload 向量`、`C0502-T4 判别`。
+- 自主决定的细节：
+  - `set_tags.to` 的元素按 `Node.tags` 写（每个 ≤ 40 字、不重复）；`update_note.to`、`set_graph_meta.to` 的字段直接引用 `graph.schema.json` 里 `Note`、`Meta` 的对应属性，`set_mandate.anchor` 引用 `MandateMount.anchor`，不重复写。
+  - `set_param.path` 的元素只要求非空字符串（"原样"的属性名）；`to`、`from`、`Resolution.value` 不限类型。
+  - 只能查图的前置条件（`set_subgraph_ref` 的 `to=null` 要带 `children`、`delete_branch` 不能删 `main`、`set_lock`/`migrate` 的 actor）不写进 schema，留给 `E0501-T1`（§8 验收 1）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.09` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 20:52 · C.05.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 a69ebf2（docs/relay/C.05.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.05.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 20:32 · C.05.01 · Quick（AWS Quick） · 交付
+- 依据：设计仓库提交 7141e4e（docs/relay/C.05.01.json）
+- 完成：实施卡全部。
+  - `schema/op.schema.json`：`Op`、`OpTarget`、`OpKind`（30 种）、`Branch`、`TmpId`、`OpsRequest`、`OpsApplied`、`OpsProposed`，照 §2、§4 原样写；`payload` 先是开放对象（`x-open`），各 kind 的结构和 `allOf` 由 `C.05.02` 加。
+  - `tools/schemacheck/op_test.go`：`C0501-T4 信封`、`C0501-T5 请求和响应`。
+- 自主决定的细节：`OpKind` 加了 description；T4 另测了 `target.scope` 写成名称、`set_param` 带 `slide:` 合并键，T5 另测了正好 500 条、空 `id_map`（只多不少）。交付前用 Python 的 jsonschema 独立跑过全部反例。
+- 返工（实施者的错）：`C0501-T5` 的 `id_map` 键名反例把位置写成 `/id_map`；Go 校验器把 `propertyNames` 的错误记在根位置（Python 的 jsonschema 记在 `/id_map`，所以预检没发现），改为 `""`，同 `nodedef_test.go` 的已有写法。第 4 片的 `C08-T6`（`decisions` 的键）、`C09-T4`（`overrides.ops` 的键）也会碰到，照这个写。
+- 顺手修：本文件标题行被上一条（20:15 冻结叶子复查）插坏了（变成"# 接力## …"，"日志（代码）"落到那条后面）。已还原标题，把那一条原样移到分隔线后、按时间排在 20:29 领取之后。只动了位置，没改内容。
+- 补改（领取 `C.05.02` 前）：`op_test.go` 的最小 Op 从 `add_node` + 空 payload 改为 `remove_nodes` + 合法 payload；`C.05.02` 按 kind 判别 payload 后空 payload 不再合法。只改了测试数据，断言不变。
+- 进行中：无
+- 下一步：验证者按交接说明 §7.2 跑 gofmt、vet、lint、`go test ./tools/schemacheck -count=1 -v`、`go run ./tools/schemacheck`、`relay check C.05.01`，通过后提交；然后领取 `C.05.02`。
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：整片做完后写 `docs/relay/m0-contract-3.review.md`
+- 提交 / 推送：待验证者提交 / 不推送
+
+## 2026-11-23 20:29 · C.05.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 7141e4e（docs/relay/C.05.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.05.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 20:15 · 冻结叶子复查（第 4 片复查 K227、示例图修复 K228 之后） · Quick（AWS Quick） · 设计方结论
+- 依据：设计仓库（本条提交时的 HEAD，见各领取记录）；`relay stale` 列出 11 个叶子，改过的文档都是设计方这一棒改的，改了什么设计方清楚，逐个对照代码。
+- 结论：11 个叶子的代码都不用改，`relay stale --accept`。
+  - `C.01`（引用 `C.05`、`C.06.02`–`.04`、`C.08`、`C.09`、`C.10`、`C.12`）：K227 给第 4 片写了 Op、事件、GraphPatch、授权书、会话的结构，都放在新的 schema 文件里（`op`、`event`、`*-event`、`graph_patch`、`mandate`、`session`），不改 `common.schema.json`；`C.12` 改成规范、去掉 0.9 格式，`C.01-R20`（高版本拒绝）不变。`C.01` 的写法、命名、封闭对象、示例清单规则没有变化。
+  - `C.02.02`（`C.09`）、`C.02.05`（`C.05.02`、`C.05.04`、`C.09`）：只是补了动作名、`authz_matrix.yaml`、payload 写法和写集合；`Node`、`NodeUi`、`Pos`、`Note` 的定义没有变化，`C.05.02` §6.1 是引用它们。
+  - `C.02.03`（`C.02.01`）：`C.02.01` §7 只加了资源节点 `value` 的写法。两个连线反例里的资源节点还是旧写法，但它们只测端口名，结果不变；留到下次改到 `C.02.03` 时一起改（`P.09` K228）。
+  - `C.03.01`、`C.03.02`、`C.03.05`、`C.04.01`、`C.13.03`（`E.03.01`、`C.05.02`、`C.05.03`）：`E.03.01` 只加了测试用例 `E0301-T9`；`C.05.02` 的 `set_param` 加了 `path`（改 `schema_from` 的子参数），`C.05.03` 改成规范。NodeDef、参数、类型、端口的定义都没有变化。
+  - `C.07`（`C.06.02`）：`engine.illegal_transition` 从"只广播"移到运行级（P 级），`resync` 去掉（是控制帧）；`state_machine.yaml` 和两个状态枚举没有变化，代码里也没有用到这两个事件名。
+- 提交 / 推送：验证者提交推送
+
 ## 2026-11-23 20:10 · C.02.01 · Quick（AWS Quick） · 冻结后修复
 - 依据：设计仓库 858c124；`C.02.01` 冻结后改回"已审"（`G.02.06-R21`）。
 - 原因：整体检查时发现 `graph_loop.json` 里 5 个资源节点的 `value` 照 demo 写成了说明文字（`"large-model"`、`"3 家厂商大模型"`），不是 `E.14.01` 的模型引用和数组。schema 里 `Node.params` 开放，查不出来；资源节点执行器和前端读这张图时会出错。

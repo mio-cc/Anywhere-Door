@@ -1,0 +1,1888 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/run-event.schema.json",
+  "x-version": "1.0",
+  "title": "运行事件（C.06.02）",
+  "required": [
+    "kind",
+    "run_id"
+  ],
+  "properties": {
+    "kind": {
+      "enum": [
+        "run.created",
+        "run.status",
+        "run.cancel_requested",
+        "run.graph_swapped",
+        "engine.illegal_transition",
+        "node.state",
+        "node.progress",
+        "node.chunk",
+        "node.input",
+        "node.output",
+        "node.throttled",
+        "node.log",
+        "loop.round",
+        "checkpoint.saved",
+        "ledger.changed",
+        "llm.call",
+        "llm.fallback",
+        "tool.intent",
+        "tool.call",
+        "ctx.assembled",
+        "prompt.rendered",
+        "orch.started",
+        "orch.tool_call",
+        "orch.expanded",
+        "orch.finished",
+        "approval.requested",
+        "approval.resolved",
+        "escalation.raised",
+        "escalation.merged",
+        "escalation.routed",
+        "escalation.resolved",
+        "budget.charged",
+        "budget.warn",
+        "budget.exceeded",
+        "estop.triggered",
+        "estop.released",
+        "brief.updated",
+        "edge.flow",
+        "pool.usage"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "event.schema.json#/$defs/Event"
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "run.created"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataRunCreated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "run.status"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataRunStatus"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "run.cancel_requested"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataRunCancelRequested"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "run.graph_swapped"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataRunGraphSwapped"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "engine.illegal_transition"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataEngineIllegalTransition"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "node.state"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataNodeState"
+          }
+        },
+        "required": [
+          "loc"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "node.progress"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataNodeProgress"
+          }
+        },
+        "required": [
+          "loc"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "node.chunk"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataNodeChunk"
+          }
+        },
+        "required": [
+          "loc"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "node.input"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataNodeInput"
+          }
+        },
+        "required": [
+          "loc"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "node.output"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataNodeOutput"
+          }
+        },
+        "required": [
+          "loc"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "node.throttled"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataNodeThrottled"
+          }
+        },
+        "required": [
+          "loc"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "node.log"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataNodeLog"
+          }
+        },
+        "required": [
+          "loc"
+        ]
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "loop.round"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataLoopRound"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "checkpoint.saved"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataCheckpointSaved"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "ledger.changed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataLedgerChanged"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "llm.call"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataLlmCall"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "llm.fallback"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataLlmFallback"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "tool.intent"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataToolIntent"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "tool.call"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataToolCall"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "ctx.assembled"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataCtxAssembled"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "prompt.rendered"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataPromptRendered"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "orch.started"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataOrchStarted"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "orch.tool_call"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataOrchToolCall"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "orch.expanded"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataOrchExpanded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "orch.finished"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataOrchFinished"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "approval.requested"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataApprovalRequested"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "approval.resolved"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataApprovalResolved"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "escalation.raised"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataEscalationRaised"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "escalation.merged"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataEscalationMerged"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "escalation.routed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataEscalationRouted"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "escalation.resolved"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataEscalationResolved"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "budget.charged"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataBudgetCharged"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "budget.warn"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataBudgetWarn"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "budget.exceeded"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataBudgetExceeded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "estop.triggered"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataEstopTriggered"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "estop.released"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataEstopReleased"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "brief.updated"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataBriefUpdated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "edge.flow"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataEdgeFlow"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "pool.usage"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataPoolUsage"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "DataRunCreated": {
+      "type": "object",
+      "required": [
+        "snapshot_ref",
+        "graph_id",
+        "branch",
+        "graph_version",
+        "registry_hash",
+        "inputs_ref",
+        "budget"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §2（P 级）",
+      "properties": {
+        "snapshot_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "branch": {},
+        "graph_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "registry_hash": {},
+        "inputs_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "budget": {}
+      }
+    },
+    "DataRunStatus": {
+      "type": "object",
+      "required": [
+        "from",
+        "to",
+        "cause"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §2；to 取值见 C.07 §2（P 级）",
+      "properties": {
+        "from": {
+          "$ref": "common.schema.json#/$defs/RunStatus"
+        },
+        "to": {
+          "$ref": "common.schema.json#/$defs/RunStatus"
+        },
+        "cause": {},
+        "at_safepoint": {
+          "type": "boolean",
+          "default": false
+        },
+        "cost": {}
+      }
+    },
+    "DataRunCancelRequested": {
+      "type": "object",
+      "required": [
+        "by",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §2（P 级）",
+      "properties": {
+        "by": {},
+        "reason": {
+          "enum": [
+            "user",
+            "estop",
+            "budget",
+            "timeout"
+          ]
+        }
+      }
+    },
+    "DataRunGraphSwapped": {
+      "type": "object",
+      "required": [
+        "from_version",
+        "to_version",
+        "op_ids",
+        "scope_path",
+        "source"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §2；安全点改图（P 级）",
+      "properties": {
+        "from_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "to_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "op_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "scope_path": {},
+        "at_round": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "enum": [
+            "user",
+            "model"
+          ]
+        }
+      }
+    },
+    "DataEngineIllegalTransition": {
+      "type": "object",
+      "required": [
+        "from",
+        "to",
+        "cause"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §2；状态机拒绝了一次转换（P 级）",
+      "properties": {
+        "from": {},
+        "to": {},
+        "cause": {},
+        "loc": {
+          "$ref": "common.schema.json#/$defs/Loc"
+        }
+      }
+    },
+    "DataNodeState": {
+      "type": "object",
+      "required": [
+        "from",
+        "to",
+        "attempt",
+        "cause"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §3；唯一的节点状态事件，按 to 附加的字段都可选（C.06.01-R7）（P 级）",
+      "properties": {
+        "from": {
+          "$ref": "common.schema.json#/$defs/NodeState"
+        },
+        "to": {
+          "$ref": "common.schema.json#/$defs/NodeState"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cause": {},
+        "error": {
+          "$ref": "#/$defs/NodeError"
+        },
+        "idem_key": {},
+        "backoff_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inputs_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "approval_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "reason": {},
+        "outputs_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "active_outs": {},
+        "cost": {},
+        "partial": {
+          "type": "boolean",
+          "default": false
+        },
+        "cache_key": {}
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "to"
+            ],
+            "properties": {
+              "to": {
+                "const": "queued"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "cause": {
+                "enum": [
+                  "ready",
+                  "retry",
+                  "resume",
+                  "manual_retry"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "to"
+            ],
+            "properties": {
+              "to": {
+                "const": "cancelled"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "cause": {
+                "enum": [
+                  "user",
+                  "estop",
+                  "k_of_n_satisfied",
+                  "first_satisfied",
+                  "timeout",
+                  "budget"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "to"
+            ],
+            "properties": {
+              "to": {
+                "const": "skipped"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "cause": {
+                "enum": [
+                  "inactive_edge",
+                  "upstream_skipped"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DataNodeProgress": {
+      "type": "object",
+      "required": [],
+      "additionalProperties": false,
+      "description": "C.06.02 §3（S 级）",
+      "properties": {
+        "pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "note": {},
+        "sub": {}
+      }
+    },
+    "DataNodeChunk": {
+      "type": "object",
+      "required": [
+        "port",
+        "delta"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §3；流式输出片段（E 级）",
+      "properties": {
+        "port": {},
+        "delta": {}
+      }
+    },
+    "DataNodeInput": {
+      "type": "object",
+      "required": [
+        "port",
+        "value_ref"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §3（P 级）",
+      "properties": {
+        "port": {},
+        "value_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        }
+      }
+    },
+    "DataNodeOutput": {
+      "type": "object",
+      "required": [
+        "port",
+        "value_ref",
+        "partial"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §3（P 级）",
+      "properties": {
+        "port": {},
+        "value_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "partial": {
+          "type": "boolean"
+        }
+      }
+    },
+    "DataNodeThrottled": {
+      "type": "object",
+      "required": [
+        "pool",
+        "waiting"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §3；在资源池排队（S 级）",
+      "properties": {
+        "pool": {},
+        "waiting": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "DataNodeLog": {
+      "type": "object",
+      "required": [
+        "level",
+        "msg",
+        "kv"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §3；info 及以上落库（P 级）",
+      "properties": {
+        "level": {},
+        "msg": {},
+        "kv": {}
+      }
+    },
+    "DataLoopRound": {
+      "type": "object",
+      "required": [
+        "round",
+        "max",
+        "carry_ref"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §4（P 级）",
+      "properties": {
+        "round": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exit": {
+          "type": "boolean",
+          "default": false
+        },
+        "carry_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        }
+      }
+    },
+    "DataCheckpointSaved": {
+      "type": "object",
+      "required": [
+        "scope_path",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §4（P 级）",
+      "properties": {
+        "scope_path": {},
+        "round": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        }
+      }
+    },
+    "DataLedgerChanged": {
+      "type": "object",
+      "required": [
+        "store",
+        "path",
+        "version",
+        "by"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §4（P 级）",
+      "properties": {
+        "store": {},
+        "path": {},
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by": {}
+      }
+    },
+    "DataLlmCall": {
+      "type": "object",
+      "required": [
+        "pool",
+        "provider",
+        "model",
+        "usage",
+        "cost_micros",
+        "latency_ms",
+        "req_ref",
+        "resp_ref",
+        "strategy"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §5（P 级）",
+      "properties": {
+        "pool": {},
+        "provider": {},
+        "model": {},
+        "usage": {},
+        "cost_micros": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "latency_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "req_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "resp_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "strategy": {
+          "enum": [
+            "native_schema",
+            "tool_call",
+            "text_repair"
+          ]
+        }
+      }
+    },
+    "DataLlmFallback": {
+      "type": "object",
+      "required": [
+        "from_strategy",
+        "to_strategy",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §5（P 级）",
+      "properties": {
+        "from_strategy": {},
+        "to_strategy": {},
+        "reason": {}
+      }
+    },
+    "DataToolIntent": {
+      "type": "object",
+      "required": [
+        "tool",
+        "risk",
+        "idem_key",
+        "req_ref"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §5；调用前落库（INV-14）（P 级）",
+      "properties": {
+        "tool": {},
+        "risk": {},
+        "idem_key": {},
+        "req_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        }
+      }
+    },
+    "DataToolCall": {
+      "type": "object",
+      "required": [
+        "tool",
+        "risk",
+        "idem_key",
+        "queued_ms",
+        "latency_ms",
+        "req_ref",
+        "result_ref",
+        "taint",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §5（P 级）",
+      "properties": {
+        "tool": {},
+        "risk": {},
+        "idem_key": {},
+        "queued_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "latency_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "req_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "result_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "taint": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "error",
+            "denied",
+            "deduplicated"
+          ]
+        }
+      }
+    },
+    "DataCtxAssembled": {
+      "type": "object",
+      "required": [
+        "sections",
+        "dropped",
+        "budget_tokens"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §5（P 级）",
+      "properties": {
+        "sections": {},
+        "dropped": {},
+        "budget_tokens": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "DataPromptRendered": {
+      "type": "object",
+      "required": [
+        "segments",
+        "ref"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §5（P 级）",
+      "properties": {
+        "segments": {},
+        "ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        }
+      }
+    },
+    "DataOrchStarted": {
+      "type": "object",
+      "required": [
+        "orch_path",
+        "mode"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §6（P 级）",
+      "properties": {
+        "orch_path": {},
+        "mode": {
+          "enum": [
+            "design",
+            "runtime",
+            "post_run"
+          ]
+        }
+      }
+    },
+    "DataOrchToolCall": {
+      "type": "object",
+      "required": [
+        "tool",
+        "ok"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §6；驱动画布上的 AI 光标（E 级）",
+      "properties": {
+        "tool": {},
+        "target_node": {},
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "DataOrchExpanded": {
+      "type": "object",
+      "required": [
+        "patch_id",
+        "patch_ref",
+        "subgraph_ref",
+        "graph_version_before",
+        "graph_version_after"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §6；回放时据此复现（INV-13）（P 级）",
+      "properties": {
+        "patch_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "patch_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "subgraph_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "graph_version_before": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "graph_version_after": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "DataOrchFinished": {
+      "type": "object",
+      "required": [
+        "result",
+        "stats"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §6（P 级）",
+      "properties": {
+        "result": {
+          "enum": [
+            "patch",
+            "proposal",
+            "none"
+          ]
+        },
+        "stats": {}
+      }
+    },
+    "DataApprovalRequested": {
+      "type": "object",
+      "required": [
+        "approval_id",
+        "kind",
+        "summary",
+        "detail_ref",
+        "options"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "approval_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "kind": {
+          "enum": [
+            "tool",
+            "run",
+            "elevation",
+            "taint",
+            "budget",
+            "human_node"
+          ]
+        },
+        "summary": {},
+        "detail_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "options": {}
+      }
+    },
+    "DataApprovalResolved": {
+      "type": "object",
+      "required": [
+        "approval_id",
+        "outcome",
+        "scope"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7；outcome 含人工节点自定义出口，不写枚举（P 级）",
+      "properties": {
+        "approval_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "outcome": {},
+        "scope": {
+          "enum": [
+            "once",
+            "always"
+          ]
+        },
+        "note": {},
+        "value_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        }
+      }
+    },
+    "DataEscalationRaised": {
+      "type": "object",
+      "required": [
+        "escalation_id",
+        "kind",
+        "severity",
+        "question",
+        "options",
+        "merge_key"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "escalation_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "kind": {},
+        "severity": {},
+        "question": {},
+        "options": {},
+        "merge_key": {}
+      }
+    },
+    "DataEscalationMerged": {
+      "type": "object",
+      "required": [
+        "escalation_id",
+        "into",
+        "count"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "escalation_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "into": {},
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "DataEscalationRouted": {
+      "type": "object",
+      "required": [
+        "escalation_id",
+        "to_path"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "escalation_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to_path": {}
+      }
+    },
+    "DataEscalationResolved": {
+      "type": "object",
+      "required": [
+        "escalation_id",
+        "outcome"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "escalation_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "outcome": {}
+      }
+    },
+    "DataBudgetCharged": {
+      "type": "object",
+      "required": [
+        "scope_path",
+        "tokens",
+        "cost_micros"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "scope_path": {},
+        "tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_micros": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "DataBudgetWarn": {
+      "type": "object",
+      "required": [
+        "scope_path",
+        "ratio"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "scope_path": {},
+        "ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "enum": [
+            0.5,
+            0.8,
+            1.0
+          ]
+        }
+      }
+    },
+    "DataBudgetExceeded": {
+      "type": "object",
+      "required": [
+        "scope_path"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "scope_path": {}
+      }
+    },
+    "DataEstopTriggered": {
+      "type": "object",
+      "required": [
+        "scope"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "scope": {
+          "enum": [
+            "global",
+            "run"
+          ]
+        }
+      }
+    },
+    "DataEstopReleased": {
+      "type": "object",
+      "required": [
+        "scope"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7；actor 必须是 user（INV-10，E 层检查）（P 级）",
+      "properties": {
+        "scope": {
+          "enum": [
+            "global",
+            "run"
+          ]
+        }
+      }
+    },
+    "DataBriefUpdated": {
+      "type": "object",
+      "required": [
+        "goal_id",
+        "status",
+        "conclusion",
+        "criteria_check",
+        "cost",
+        "superseded"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §7（P 级）",
+      "properties": {
+        "goal_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "status": {},
+        "conclusion": {},
+        "criteria_check": {},
+        "cost": {},
+        "superseded": {
+          "type": "boolean"
+        }
+      }
+    },
+    "DataEdgeFlow": {
+      "type": "object",
+      "required": [
+        "edge_id"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §8；画布上的光点动画（E 级）",
+      "properties": {
+        "edge_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      }
+    },
+    "DataPoolUsage": {
+      "type": "object",
+      "required": [
+        "pools"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.02 §8（E 级）",
+      "properties": {
+        "pools": {}
+      }
+    },
+    "NodeError": {
+      "type": "object",
+      "required": [
+        "class",
+        "code",
+        "message",
+        "retryable"
+      ],
+      "additionalProperties": false,
+      "description": "节点失败（C.06.02 §3、C.11 §4）",
+      "properties": {
+        "class": {
+          "$ref": "errors.schema.json#/$defs/FailureClass"
+        },
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

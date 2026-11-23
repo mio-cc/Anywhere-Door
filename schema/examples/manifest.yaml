@@ -143,3 +143,30 @@
 - file: template_minimal.json
   schema: template.schema.json
   valid: true
+
+# C.09 授权书
+- file: mandate/mandate.json
+  schema: mandate.schema.json#/$defs/Mandate
+  valid: true
+
+# C.08 GraphPatch 与提议
+- file: patch/graph_patch.json
+  schema: graph_patch.schema.json
+  valid: true
+- file: patch/proposal.json
+  schema: graph_patch.schema.json#/$defs/Proposal
+  valid: true
+- file: patch/preview.json
+  schema: graph_patch.schema.json#/$defs/ProposalPreview
+  valid: true
+
+# C.10 会话与消息
+- file: session/session.json
+  schema: session.schema.json#/$defs/Session
+  valid: true
+- file: session/message_assistant.json
+  schema: session.schema.json#/$defs/Message
+  valid: true
+- file: session/message_user.json
+  schema: session.schema.json#/$defs/Message
+  valid: true

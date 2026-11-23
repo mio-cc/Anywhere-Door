@@ -1,0 +1,28 @@
+{
+  "leaf": "C.08",
+  "branch": "slice/m0-contract-3",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-23T12:54:52Z",
+  "docs_commit": "5d21b553f308b90f792874a36063fa527d35565c",
+  "docs": {
+    "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
+    "C_契约层/C.05_Op_操作/C.05.01_Op_信封.md": "sha256:e4cd95b4c9e4b6196fee1623f496dfcd9ecacf3e01f8ef741f2a64b4bb54b71e",
+    "C_契约层/C.05_Op_操作/C.05.04_并发与冲突.md": "sha256:671e33b349015eaa71882c030c546d6a2638aa5e669dcb3eaba5363345964e96",
+    "C_契约层/C.06_事件/C.06.02_运行事件目录.md": "sha256:e886c059fa22c8c0fbaa5a75e33b011238a92ac37ad961f6e2ff9ca4ae615ce1",
+    "C_契约层/C.08_GraphPatch.md": "sha256:073f8363f84fd2d867380e0915080c01114e10696b0ed1bc514d2869cca11659",
+    "C_契约层/C.09_授权书_Mandate.md": "sha256:3553d700f0b7358c7efe075e40c322a35e0bfe1c0e11d0e177e838bcd600259b",
+    "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
+    "E_内核_engine/E.17_orch_模型编排/E.17.01_GraphPatch_应用.md": "sha256:8d3109ea19dcdbbca197b5f15e3f01bde21ed01558ec23e87132acf24072f888",
+    "E_内核_engine/E.17_orch_模型编排/E.17.03_提议与幽灵节点.md": "sha256:5e91abe77a1bc1389f9f6afa57b9e696fd258055267f52af9de02abee8702d44",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:853a1c68eb1dee1c6710e3c67f8d52919eab2d1c7615e187447aabe87e2bcd0e",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.10_依赖管理.md": "sha256:86172402cf3842afdca1ec83517864b03a938dbffe488b7558d893c754c9e2ff",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m0-contract-3",
+  "base": "484d13c9c9d0cc03f687e562f1dd1f2a22dc00b1",
+  "head": "bbf007faf5d883bca18ac2b9e635acec86acae56"
+}

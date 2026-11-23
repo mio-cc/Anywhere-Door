@@ -1,0 +1,401 @@
+[
+  {
+    "name": "session.updated",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "session.updated",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "title": "竞品价格调研",
+        "pinned": true,
+        "updated_at": "2026-11-23T12:01:03.120Z"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "session.graph_attached",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "session.graph_attached",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "graph_id": "01JDGRAPH00000000000000001",
+        "title": "竞品价格调研"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "session.graph_detached",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "session.graph_detached",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "graph_id": "01JDGRAPH00000000000000001"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "message.created",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.created",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message": {
+          "id": "01JDMSG0000000000000000002",
+          "session_id": "01JDSESS10N000000000000001",
+          "role": "assistant",
+          "actor": {
+            "kind": "model",
+            "id": "large-model",
+            "instance_id": "chat:01JDSESS10N000000000000001"
+          },
+          "content": "",
+          "status": "streaming",
+          "created_at": "2026-11-23T12:01:03.120Z"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "message.delta",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.delta",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "delta": "我先看看"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "message.block_added",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.block_added",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "block": {
+          "kind": "run",
+          "run_id": "01JDRVN0000000000000000001",
+          "status": "running"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "message.completed",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.completed",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "content_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "usage": {
+          "in": 1200,
+          "out": 300
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "message.failed",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.failed",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "error": {
+          "code": "budget_exceeded",
+          "message": "本轮预算用完了"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "chat.status",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "chat.status",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "state": "thinking",
+        "note": "读图中"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "message.created 用户消息",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.created",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message": {
+          "id": "01JDMSG0000000000000000002",
+          "session_id": "01JDSESS10N000000000000001",
+          "role": "user",
+          "content": "再查一家",
+          "status": "done",
+          "created_at": "2026-11-23T12:01:03.120Z"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "message.created.message 不是合法 Message",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.created",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message": {
+          "id": "01JDMSG0000000000000000002",
+          "session_id": "01JDSESS10N000000000000001",
+          "role": "bot",
+          "actor": {
+            "kind": "model",
+            "id": "large-model",
+            "instance_id": "chat:01JDSESS10N000000000000001"
+          },
+          "content": "",
+          "status": "streaming",
+          "created_at": "2026-11-23T12:01:03.120Z"
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/data/message/role"
+  },
+  {
+    "name": "message.delta 的 seq 不为 0",
+    "event": {
+      "seq": 12,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.delta",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "delta": "我先看看"
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  },
+  {
+    "name": "chat.status.state 不在枚举",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "chat.status",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "state": "busy",
+        "note": "读图中"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/state"
+  },
+  {
+    "name": "data 多出字段",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "session.graph_detached",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "graph_id": "01JDGRAPH00000000000000001",
+        "title": "x"
+      }
+    },
+    "valid": false,
+    "error_at": "/data"
+  },
+  {
+    "name": "message.block_added.block 不是合法卡片块",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.block_added",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "block": {
+          "kind": "run",
+          "run_id": "01JDRVN0000000000000000001"
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/data/block"
+  },
+  {
+    "name": "message.failed.error 多出字段",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.failed",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "error": {
+          "code": "budget_exceeded",
+          "message": "本轮预算用完了",
+          "stack": "…"
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/data/error"
+  },
+  {
+    "name": "缺 session_id",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "chat.status",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "data": {
+        "state": "thinking",
+        "note": "读图中"
+      }
+    },
+    "valid": false,
+    "error_at": ""
+  },
+  {
+    "name": "P 级 seq 为 0",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "message.completed",
+      "actor": {
+        "kind": "model",
+        "id": "large-model",
+        "instance_id": "chat:01JDSESS10N000000000000001"
+      },
+      "session_id": "01JDSESS10N000000000000001",
+      "data": {
+        "message_id": "01JDMSG0000000000000000002",
+        "content_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "usage": {
+          "in": 1200,
+          "out": 300
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  }
+]

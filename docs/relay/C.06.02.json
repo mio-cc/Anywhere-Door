@@ -1,0 +1,30 @@
+{
+  "leaf": "C.06.02",
+  "branch": "slice/m0-contract-3",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-23T13:30:59Z",
+  "docs_commit": "5d21b553f308b90f792874a36063fa527d35565c",
+  "docs": {
+    "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
+    "C_契约层/C.06_事件/C.06.01_事件信封.md": "sha256:2feb20c08eafd18d3d66a4721fb12d53c58f39ea3189eb0a632109099b0aea4b",
+    "C_契约层/C.06_事件/C.06.02_运行事件目录.md": "sha256:e886c059fa22c8c0fbaa5a75e33b011238a92ac37ad961f6e2ff9ca4ae615ce1",
+    "C_契约层/C.06_事件/C.06_事件.md": "sha256:8c02ead3750d62b6c1e10464951b3f41ee66a96a49722aee09a523bb0106891a",
+    "C_契约层/C.07_运行状态机.md": "sha256:5b5115763696dacdecd5b6e4d2178920deba357a0ca63d04ce3a132ff3762610",
+    "C_契约层/C.08_GraphPatch.md": "sha256:073f8363f84fd2d867380e0915080c01114e10696b0ed1bc514d2869cca11659",
+    "C_契约层/C.11_错误码表.md": "sha256:bffafd4a1cad6e745dfc19583eb553f81856f12fbe1e56abb3b17694b387cf26",
+    "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:853a1c68eb1dee1c6710e3c67f8d52919eab2d1c7615e187447aabe87e2bcd0e",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.10_依赖管理.md": "sha256:86172402cf3842afdca1ec83517864b03a938dbffe488b7558d893c754c9e2ff",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7",
+    "U_UI_UX_规范/U.09_应用布局/U.09.07_会话监控.md": "sha256:403cf0d310601b1f9d446455d77c84379b984da52e181c208327c0ef9c273d78",
+    "W_前端实现_web/W.04_协议层/W.04.02_SSE_订阅与续传.md": "sha256:112ad86d9273dae90137ccf62239ac7b30223c8b92a3875c95acd7147c454963",
+    "W_前端实现_web/W.06_画布引擎/W.06.15_运行状态渲染.md": "sha256:695e08e28e18f625a906a4c75e335a223b6d54ad2b5f9d7c55465319b90d19ef"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m0-contract-3",
+  "base": "6850297217a1bef61954f57c86deef50031adf3c",
+  "head": "a548c3a42e8fcf9e6ba7f61e32c9d62450ae4e49"
+}

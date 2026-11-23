@@ -1,0 +1,1600 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/op.schema.json",
+  "x-version": "1.0",
+  "title": "Op 信封与 Op 载荷（C.05.01、C.05.02）",
+  "$defs": {
+    "Op": {
+      "type": "object",
+      "required": [
+        "kind",
+        "payload"
+      ],
+      "additionalProperties": false,
+      "description": "所有 Op 共用的外层结构（C.05.01 §2）。payload 按 kind 判别：每种 kind 一条 if/then 指向封闭的 Payload… 定义（C.05.02 §6.1），写法同 nodedef.schema.json 的 Impl，kind 写错时只在 /kind 报一处错",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "客户端可以先生成；缺省由服务器生成"
+        },
+        "kind": {
+          "$ref": "#/$defs/OpKind"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "由请求路径决定，客户端可以不填"
+        },
+        "branch": {
+          "$ref": "#/$defs/Branch",
+          "description": "由请求体决定"
+        },
+        "base_version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "由请求体决定；同一批 Op 相同"
+        },
+        "actor": {
+          "$ref": "common.schema.json#/$defs/Actor",
+          "description": "服务器根据鉴权结果填写，客户端填写的值被忽略"
+        },
+        "approver": {
+          "$ref": "common.schema.json#/$defs/Actor",
+          "description": "采纳提议时由服务器填写：actor 是模型，approver 是用户"
+        },
+        "mandate_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "actor 为 model 时必填"
+        },
+        "taint": {
+          "type": "boolean",
+          "default": false,
+          "description": "由外部内容引出（INV-16）"
+        },
+        "target": {
+          "$ref": "#/$defs/OpTarget"
+        },
+        "payload": {
+          "type": "object",
+          "x-open": true,
+          "description": "按 kind 判别（C.05.02 §6.1）"
+        },
+        "inverse": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Op"
+          },
+          "description": "逆操作（C.05.03），服务器应用时计算并写入；客户端填的值被忽略"
+        },
+        "group_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "coalesce_key": {
+          "type": "string",
+          "pattern": "^(drag|step|slide):[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "ts": {
+          "$ref": "common.schema.json#/$defs/Timestamp",
+          "description": "服务器写入"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "add_node"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadAddNode"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "remove_nodes"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadRemoveNodes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "restore_nodes"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadRestoreNodes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "connect"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadConnect"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "disconnect"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadDisconnect"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_param"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetParam"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "promote_param"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadPromoteParam"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "demote_param"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadDemoteParam"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_label"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetLabel"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_tags"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetTags"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_lock"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetLock"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "group"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadGroup"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "ungroup"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadUngroup"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_subgraph_ref"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetSubgraphRef"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "move_nodes"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadMoveNodes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_node_ui"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetNodeUi"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "add_note"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadAddNote"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "update_note"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadUpdateNote"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "remove_notes"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadRemoveNotes"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_graph_title"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetGraphTitle"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_graph_meta"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetGraphMeta"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "set_mandate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadSetMandate"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "apply_patch"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadApplyPatch"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "import_apply"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadImportApply"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "revert_op"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadRevertOp"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "revert_to"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadRevertTo"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "migrate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadMigrate"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "create_branch"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadCreateBranch"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "delete_branch"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadDeleteBranch"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "merge_branch"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PayloadMergeBranch"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OpTarget": {
+      "type": "object",
+      "required": [
+        "scope"
+      ],
+      "additionalProperties": false,
+      "description": "这个 Op 主要作用于哪里；用于授权和冲突检测。服务器会按 payload 重新计算并校验",
+      "properties": {
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+          "description": "root，或容器节点 ID"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        }
+      }
+    },
+    "OpKind": {
+      "enum": [
+        "add_node",
+        "remove_nodes",
+        "restore_nodes",
+        "connect",
+        "disconnect",
+        "set_param",
+        "promote_param",
+        "demote_param",
+        "set_label",
+        "set_tags",
+        "set_lock",
+        "group",
+        "ungroup",
+        "set_subgraph_ref",
+        "move_nodes",
+        "set_node_ui",
+        "add_note",
+        "update_note",
+        "remove_notes",
+        "set_graph_title",
+        "set_graph_meta",
+        "set_mandate",
+        "apply_patch",
+        "import_apply",
+        "revert_op",
+        "revert_to",
+        "migrate",
+        "create_branch",
+        "delete_branch",
+        "merge_branch"
+      ],
+      "description": "C.05.02 §2–§6 表里的 30 种"
+    },
+    "Branch": {
+      "type": "string",
+      "pattern": "^(main|draft/[A-Za-z0-9][A-Za-z0-9_.-]{0,79})$"
+    },
+    "TmpId": {
+      "type": "string",
+      "pattern": "^tmp:[0-9]{1,4}$",
+      "description": "GraphPatch 里的临时 ID（C.08-R1、R3）"
+    },
+    "OpsRequest": {
+      "type": "object",
+      "required": [
+        "branch",
+        "base_version",
+        "ops"
+      ],
+      "additionalProperties": false,
+      "description": "POST /api/v1/graphs/{id}/ops 的请求体（C.05.01 §4）",
+      "properties": {
+        "branch": {
+          "$ref": "#/$defs/Branch"
+        },
+        "base_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "group_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "ops": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 500,
+          "items": {
+            "$ref": "#/$defs/Op"
+          }
+        }
+      }
+    },
+    "OpsApplied": {
+      "type": "object",
+      "required": [
+        "version",
+        "applied",
+        "rebased",
+        "id_map",
+        "diags"
+      ],
+      "additionalProperties": false,
+      "description": "200 已应用（C.05.01 §4）",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "applied": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "rebased": {
+          "type": "boolean"
+        },
+        "id_map": {
+          "type": "object",
+          "propertyNames": {
+            "$ref": "#/$defs/TmpId"
+          },
+          "additionalProperties": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "description": "只在应用 GraphPatch 时非空（C.08-R3）"
+        },
+        "diags": {
+          "type": "array",
+          "items": {
+            "$ref": "errors.schema.json#/$defs/Diag"
+          }
+        }
+      }
+    },
+    "OpsProposed": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "202 已转为提议（C.05.01 §4、C.08）",
+      "properties": {
+        "proposal_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "status": {
+          "const": "open"
+        }
+      }
+    },
+    "PayloadAddNode": {
+      "type": "object",
+      "required": [
+        "scope",
+        "node"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2",
+      "properties": {
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+          "description": "root，或容器节点 ID"
+        },
+        "node": {
+          "$ref": "graph.schema.json#/$defs/Node"
+        }
+      }
+    },
+    "PayloadRemoveNodes": {
+      "type": "object",
+      "required": [
+        "ids"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "PayloadRestoreNodes": {
+      "type": "object",
+      "required": [
+        "removed"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2；只能作为逆操作出现",
+      "properties": {
+        "removed": {
+          "$ref": "#/$defs/Removed"
+        }
+      }
+    },
+    "PayloadConnect": {
+      "type": "object",
+      "required": [
+        "edge"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2；被替换的旧连线由服务器记进 inverse",
+      "properties": {
+        "edge": {
+          "$ref": "graph.schema.json#/$defs/Edge"
+        }
+      }
+    },
+    "PayloadDisconnect": {
+      "type": "object",
+      "required": [
+        "ids"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "PayloadSetParam": {
+      "type": "object",
+      "required": [
+        "node",
+        "key",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2、§6.1",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z_][a-z0-9_]*$",
+          "description": "参数名"
+        },
+        "path": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "改 schema_from 对象参数的子参数时写：[属性名]（原样，C.03.02-R7）"
+        },
+        "to": {
+          "description": "新值，任意 JSON"
+        },
+        "from": {
+          "description": "旧值，任意 JSON；只用于冲突检测，不被信任（C.05-R1）"
+        }
+      }
+    },
+    "PayloadPromoteParam": {
+      "type": "object",
+      "required": [
+        "node",
+        "key"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z_][a-z0-9_]*$",
+          "description": "参数名"
+        }
+      }
+    },
+    "PayloadDemoteParam": {
+      "type": "object",
+      "required": [
+        "node",
+        "key"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z_][a-z0-9_]*$",
+          "description": "参数名"
+        }
+      }
+    },
+    "PayloadSetLabel": {
+      "type": "object",
+      "required": [
+        "node",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      }
+    },
+    "PayloadSetTags": {
+      "type": "object",
+      "required": [
+        "node",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2；to 的写法同 Node.tags",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to": {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "maxLength": 40
+          }
+        }
+      }
+    },
+    "PayloadSetLock": {
+      "type": "object",
+      "required": [
+        "node",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2；actor 必须是 user（E 层检查）",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to": {
+          "enum": [
+            "none",
+            "user",
+            "frozen"
+          ]
+        }
+      }
+    },
+    "PayloadGroup": {
+      "type": "object",
+      "required": [
+        "scope",
+        "node_ids",
+        "new_id",
+        "label"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2；rewire 只由服务器填写",
+      "properties": {
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+          "description": "root，或容器节点 ID"
+        },
+        "node_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "minItems": 2,
+          "uniqueItems": true
+        },
+        "new_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "rewire": {
+          "$ref": "#/$defs/Rewire"
+        }
+      }
+    },
+    "PayloadUngroup": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2；rewire 只由服务器填写",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "rewire": {
+          "$ref": "#/$defs/Rewire"
+        }
+      }
+    },
+    "PayloadSetSubgraphRef": {
+      "type": "object",
+      "required": [
+        "node",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §2；to 为 null 时要给 children（E 层检查）",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to": {
+          "anyOf": [
+            {
+              "$ref": "graph.schema.json#/$defs/SubgraphRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "children": {
+          "$ref": "graph.schema.json#/$defs/Subgraph"
+        }
+      }
+    },
+    "PayloadMoveNodes": {
+      "type": "object",
+      "required": [
+        "moves"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §3；可合并（C.05.04 §4）",
+      "properties": {
+        "moves": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "to"
+            ],
+            "additionalProperties": false,
+            "description": "一个节点的新坐标",
+            "properties": {
+              "id": {
+                "$ref": "common.schema.json#/$defs/Ulid"
+              },
+              "to": {
+                "$ref": "graph.schema.json#/$defs/Pos"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PayloadSetNodeUi": {
+      "type": "object",
+      "required": [
+        "node",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §3；整体替换 ui",
+      "properties": {
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to": {
+          "$ref": "graph.schema.json#/$defs/NodeUi"
+        }
+      }
+    },
+    "PayloadAddNote": {
+      "type": "object",
+      "required": [
+        "scope",
+        "note"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §3",
+      "properties": {
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+          "description": "root，或容器节点 ID"
+        },
+        "note": {
+          "$ref": "graph.schema.json#/$defs/Note"
+        }
+      }
+    },
+    "PayloadUpdateNote": {
+      "type": "object",
+      "required": [
+        "id",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §3",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "pos": {
+              "$ref": "graph.schema.json#/$defs/Pos"
+            },
+            "size": {
+              "$ref": "graph.schema.json#/$defs/Note/properties/size"
+            },
+            "text": {
+              "$ref": "graph.schema.json#/$defs/Note/properties/text"
+            },
+            "color": {
+              "$ref": "graph.schema.json#/$defs/Note/properties/color"
+            }
+          }
+        }
+      }
+    },
+    "PayloadRemoveNotes": {
+      "type": "object",
+      "required": [
+        "ids"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §3",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "PayloadSetGraphTitle": {
+      "type": "object",
+      "required": [
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §4",
+      "properties": {
+        "to": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      }
+    },
+    "PayloadSetGraphMeta": {
+      "type": "object",
+      "required": [
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §4",
+      "properties": {
+        "to": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "$ref": "graph.schema.json#/$defs/Meta/properties/description"
+            }
+          }
+        }
+      }
+    },
+    "PayloadSetMandate": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §4；授权规则见 C.09 §5",
+      "properties": {
+        "anchor": {
+          "$ref": "common.schema.json#/$defs/MandateMount/properties/anchor"
+        },
+        "to": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "PayloadApplyPatch": {
+      "type": "object",
+      "required": [
+        "patch_id",
+        "ops"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §5；子 Op 单独授权、单独校验（C.08）",
+      "properties": {
+        "patch_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "ops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Op"
+          },
+          "minItems": 1,
+          "maxItems": 200
+        }
+      }
+    },
+    "PayloadImportApply": {
+      "type": "object",
+      "required": [
+        "source",
+        "ops"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §5",
+      "properties": {
+        "source": {
+          "enum": [
+            "yaml",
+            "json"
+          ]
+        },
+        "ops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Op"
+          },
+          "minItems": 1,
+          "maxItems": 200
+        }
+      }
+    },
+    "PayloadRevertOp": {
+      "type": "object",
+      "required": [
+        "op_id"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §5",
+      "properties": {
+        "op_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      }
+    },
+    "PayloadRevertTo": {
+      "type": "object",
+      "required": [
+        "version"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §5；ops 只由服务器填写",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Op"
+          }
+        }
+      }
+    },
+    "PayloadMigrate": {
+      "type": "object",
+      "required": [
+        "from_schema",
+        "to_schema"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §5；actor 必须是 runtime（E 层检查）",
+      "properties": {
+        "from_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$"
+        },
+        "to_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$"
+        }
+      }
+    },
+    "PayloadCreateBranch": {
+      "type": "object",
+      "required": [
+        "name",
+        "from"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §6",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/Branch",
+          "pattern": "^draft/",
+          "description": "只能是 draft/…"
+        },
+        "from": {
+          "$ref": "#/$defs/Branch"
+        },
+        "at_version": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "PayloadDeleteBranch": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §6；不能是 main（E 层检查）",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/Branch"
+        }
+      }
+    },
+    "PayloadMergeBranch": {
+      "type": "object",
+      "required": [
+        "from",
+        "into",
+        "base",
+        "ours",
+        "theirs",
+        "resolutions"
+      ],
+      "additionalProperties": false,
+      "description": "C.05.02 §6；三方合并（C.05.04 §3）",
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/Branch"
+        },
+        "into": {
+          "$ref": "#/$defs/Branch"
+        },
+        "base": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ours": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "theirs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "resolutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Resolution"
+          }
+        }
+      }
+    },
+    "Removed": {
+      "type": "object",
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "additionalProperties": false,
+      "description": "被删除的内容（C.05.02 §6.1）；被删节点的子图在 node.children 里",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "scope",
+              "node"
+            ],
+            "additionalProperties": false,
+            "description": "被删除的节点和它所在的层",
+            "properties": {
+              "scope": {
+                "type": "string",
+                "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+                "description": "root，或容器节点 ID"
+              },
+              "node": {
+                "$ref": "graph.schema.json#/$defs/Node"
+              }
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "scope",
+              "edge"
+            ],
+            "additionalProperties": false,
+            "description": "被删除的连线和它所在的层",
+            "properties": {
+              "scope": {
+                "type": "string",
+                "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+                "description": "root，或容器节点 ID"
+              },
+              "edge": {
+                "$ref": "graph.schema.json#/$defs/Edge"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Rewire": {
+      "type": "array",
+      "description": "改接记录（C.05.02 §6.1）",
+      "items": {
+        "type": "object",
+        "required": [
+          "removed",
+          "added"
+        ],
+        "additionalProperties": false,
+        "description": "一条被删的连线和替代它的连线",
+        "properties": {
+          "removed": {
+            "$ref": "graph.schema.json#/$defs/Edge"
+          },
+          "added": {
+            "type": "array",
+            "items": {
+              "$ref": "graph.schema.json#/$defs/Edge"
+            }
+          }
+        }
+      }
+    },
+    "Resolution": {
+      "type": "object",
+      "required": [
+        "object",
+        "pick"
+      ],
+      "additionalProperties": false,
+      "description": "三方合并的一处冲突怎么解决（C.05.02 §6）",
+      "properties": {
+        "object": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "description": "{node} / {node, param} / {edge} / {node, field} / {note}",
+          "properties": {
+            "node": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "param": {
+              "type": "string",
+              "pattern": "^[a-z_][a-z0-9_]*$"
+            },
+            "edge": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "note": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "field": {
+              "enum": [
+                "label",
+                "pos"
+              ]
+            }
+          }
+        },
+        "pick": {
+          "enum": [
+            "ours",
+            "theirs",
+            "manual"
+          ]
+        },
+        "value": {
+          "description": "pick=manual 时的值"
+        }
+      }
+    }
+  }
+}

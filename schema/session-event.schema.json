@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/session-event.schema.json",
+  "x-version": "1.0",
+  "title": "会话事件（C.06.04）",
+  "required": [
+    "kind",
+    "session_id"
+  ],
+  "properties": {
+    "kind": {
+      "enum": [
+        "session.updated",
+        "session.graph_attached",
+        "session.graph_detached",
+        "message.created",
+        "message.delta",
+        "message.block_added",
+        "message.completed",
+        "message.failed",
+        "chat.status"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "event.schema.json#/$defs/Event"
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "session.updated"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataSessionUpdated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "session.graph_attached"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataSessionGraphAttached"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "session.graph_detached"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataSessionGraphDetached"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "message.created"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataMessageCreated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "message.delta"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataMessageDelta"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "message.block_added"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataMessageBlockAdded"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "message.completed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataMessageCompleted"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "message.failed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataMessageFailed"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "chat.status"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataChatStatus"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "DataSessionUpdated": {
+      "type": "object",
+      "required": [
+        "updated_at"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2（P 级）",
+      "properties": {
+        "title": {},
+        "pinned": {
+          "type": "boolean",
+          "default": false
+        },
+        "active_graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "updated_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "DataSessionGraphAttached": {
+      "type": "object",
+      "required": [
+        "graph_id",
+        "title"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2（P 级）",
+      "properties": {
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "title": {}
+      }
+    },
+    "DataSessionGraphDetached": {
+      "type": "object",
+      "required": [
+        "graph_id"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2（P 级）",
+      "properties": {
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      }
+    },
+    "DataMessageCreated": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2；助手消息此时 status=streaming（P 级）",
+      "properties": {
+        "message": {
+          "$ref": "session.schema.json#/$defs/Message"
+        }
+      }
+    },
+    "DataMessageDelta": {
+      "type": "object",
+      "required": [
+        "message_id",
+        "delta"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2；不落库（R2）（E 级）",
+      "properties": {
+        "message_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "delta": {}
+      }
+    },
+    "DataMessageBlockAdded": {
+      "type": "object",
+      "required": [
+        "message_id",
+        "block"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2（P 级）",
+      "properties": {
+        "message_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "block": {
+          "$ref": "session.schema.json#/$defs/MessageBlock"
+        }
+      }
+    },
+    "DataMessageCompleted": {
+      "type": "object",
+      "required": [
+        "message_id"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2（P 级）",
+      "properties": {
+        "message_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "content_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "usage": {}
+      }
+    },
+    "DataMessageFailed": {
+      "type": "object",
+      "required": [
+        "message_id",
+        "error"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2（P 级）",
+      "properties": {
+        "message_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "error": {
+          "$ref": "session.schema.json#/$defs/Message/properties/error"
+        }
+      }
+    },
+    "DataChatStatus": {
+      "type": "object",
+      "required": [
+        "state"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.04 §2（E 级）",
+      "properties": {
+        "state": {
+          "enum": [
+            "idle",
+            "thinking",
+            "tool",
+            "editing",
+            "waiting",
+            "stopped"
+          ]
+        },
+        "note": {}
+      }
+    }
+  }
+}

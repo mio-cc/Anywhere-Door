@@ -1,0 +1,487 @@
+[
+  {
+    "name": "op.applied",
+    "event": {
+      "seq": 8,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "op.applied",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "version": 8,
+        "op": {
+          "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "kind": "remove_nodes",
+          "payload": {
+            "ids": [
+              "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+            ]
+          },
+          "actor": {
+            "kind": "user",
+            "id": "local"
+          },
+          "group_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+          "ts": "2026-11-23T12:01:03.120Z"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "op.coalesced",
+    "event": {
+      "seq": 8,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "op.coalesced",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "version": 8,
+        "op_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+        "to": {
+          "moves": [
+            {
+              "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+              "to": {
+                "x": 420,
+                "y": 200
+              }
+            }
+          ]
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "branch.updated",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "branch.updated",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "name": "draft/try-1",
+        "head": 9,
+        "behind": 1,
+        "ahead": 2
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "proposal.created",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "proposal.created",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "proposal_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "patch_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "summary": "加一道人工复核",
+        "by": {
+          "kind": "model",
+          "id": "large-model",
+          "instance_id": "chat:01JDSESS10N000000000000001"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "proposal.updated",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "proposal.updated",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "proposal_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "status": "partially_applied",
+        "base_version": 9
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "proposal.decided",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "proposal.decided",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "proposal_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "accepted_op_ids": [
+          "01JD8X3Q5V7W9Y2Z4A6B8C0D2F"
+        ],
+        "rejected_op_ids": [
+          "01JD8X3Q5V7W9Y2Z4A6B8C0D3G"
+        ],
+        "status": "applied"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "mandate.changed",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "mandate.changed",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "anchor": "graph",
+        "mandate_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+        "level": 2,
+        "cause": "user"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "validate",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "validate",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "version": 8,
+        "diags": []
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "presence",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "presence",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "actor": {
+          "kind": "user",
+          "id": "local"
+        },
+        "editing": [
+          "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+        ],
+        "cursor": {
+          "x": 120,
+          "y": 80
+        },
+        "scope": "root"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "model.activity",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "model.activity",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "actor": {
+          "kind": "model",
+          "id": "large-model",
+          "instance_id": "chat:01JDSESS10N000000000000001"
+        },
+        "state": "editing",
+        "target": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "op.coalesced 的 seq 是图版本号",
+    "event": {
+      "seq": 9,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "op.coalesced",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "version": 8,
+        "op_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+        "to": {
+          "moves": [
+            {
+              "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+              "to": {
+                "x": 420,
+                "y": 200
+              }
+            }
+          ]
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "presence 不带可选字段",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "presence",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "actor": {
+          "kind": "user",
+          "id": "local"
+        },
+        "editing": [
+          "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+        ]
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "op.applied 的 seq 为 0",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "op.applied",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "version": 8,
+        "op": {
+          "id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "kind": "remove_nodes",
+          "payload": {
+            "ids": [
+              "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+            ]
+          },
+          "actor": {
+            "kind": "user",
+            "id": "local"
+          },
+          "group_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+          "ts": "2026-11-23T12:01:03.120Z"
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  },
+  {
+    "name": "proposal.created 的 seq 不为 0",
+    "event": {
+      "seq": 3,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "proposal.created",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "proposal_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "patch_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "summary": "加一道人工复核",
+        "by": {
+          "kind": "model",
+          "id": "large-model",
+          "instance_id": "chat:01JDSESS10N000000000000001"
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  },
+  {
+    "name": "op.applied.op 不是合法 Op",
+    "event": {
+      "seq": 8,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "op.applied",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "version": 8,
+        "op": {
+          "kind": "remove_nodes",
+          "payload": {
+            "node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+          }
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/data/op"
+  },
+  {
+    "name": "model.activity.state 不在枚举",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "model.activity",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "actor": {
+          "kind": "model",
+          "id": "large-model",
+          "instance_id": "chat:01JDSESS10N000000000000001"
+        },
+        "state": "typing",
+        "target": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/state"
+  },
+  {
+    "name": "data 多出字段",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "branch.updated",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "name": "draft/try-1",
+        "head": 9,
+        "behind": 1,
+        "ahead": 2,
+        "base": 1
+      }
+    },
+    "valid": false,
+    "error_at": "/data"
+  },
+  {
+    "name": "缺 graph_id",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "validate",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "data": {
+        "version": 8,
+        "diags": []
+      }
+    },
+    "valid": false,
+    "error_at": ""
+  },
+  {
+    "name": "presence.scope 写成名称",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "presence",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "actor": {
+          "kind": "user",
+          "id": "local"
+        },
+        "editing": [
+          "01JD8X3Q5V7W9Y2Z4A6B8C0D1E"
+        ],
+        "cursor": {
+          "x": 120,
+          "y": 80
+        },
+        "scope": "主图/检索"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/scope"
+  },
+  {
+    "name": "mandate.changed 的 cause 不在枚举",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "mandate.changed",
+      "actor": {
+        "kind": "user",
+        "id": "local"
+      },
+      "graph_id": "01JDGRAPH00000000000000001",
+      "data": {
+        "anchor": "graph",
+        "mandate_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+        "level": 2,
+        "cause": "model"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/cause"
+  }
+]

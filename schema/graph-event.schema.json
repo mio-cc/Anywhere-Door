@@ -1,0 +1,475 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/graph-event.schema.json",
+  "x-version": "1.0",
+  "title": "图协同事件（C.06.03）",
+  "required": [
+    "kind",
+    "graph_id"
+  ],
+  "properties": {
+    "kind": {
+      "enum": [
+        "op.applied",
+        "op.coalesced",
+        "branch.updated",
+        "proposal.created",
+        "proposal.updated",
+        "proposal.decided",
+        "mandate.changed",
+        "validate",
+        "presence",
+        "model.activity"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "event.schema.json#/$defs/Event"
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "op.applied"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataOpApplied"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "op.coalesced"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataOpCoalesced"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "branch.updated"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataBranchUpdated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "proposal.created"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataProposalCreated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "proposal.updated"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataProposalUpdated"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "proposal.decided"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataProposalDecided"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "mandate.changed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataMandateChanged"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "validate"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataValidate"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "presence"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataPresence"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "model.activity"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataModelActivity"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "DataOpApplied": {
+      "type": "object",
+      "required": [
+        "version",
+        "op"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2（P 级）",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "op": {
+          "$ref": "op.schema.json#/$defs/Op"
+        }
+      }
+    },
+    "DataOpCoalesced": {
+      "type": "object",
+      "required": [
+        "version",
+        "op_id",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2、R4：to 是合并后的完整新 payload（P 级）",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "op_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "to": {}
+      }
+    },
+    "DataBranchUpdated": {
+      "type": "object",
+      "required": [
+        "name",
+        "head",
+        "behind",
+        "ahead"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2（P 级）",
+      "properties": {
+        "name": {},
+        "head": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "behind": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ahead": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "DataProposalCreated": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "patch_ref",
+        "summary",
+        "by"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2（P 级）",
+      "properties": {
+        "proposal_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "patch_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "summary": {},
+        "by": {}
+      }
+    },
+    "DataProposalUpdated": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "status",
+        "base_version"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2（P 级）",
+      "properties": {
+        "proposal_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "status": {},
+        "base_version": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "DataProposalDecided": {
+      "type": "object",
+      "required": [
+        "proposal_id",
+        "accepted_op_ids",
+        "rejected_op_ids",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2（P 级）",
+      "properties": {
+        "proposal_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "accepted_op_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "rejected_op_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Ulid"
+          }
+        },
+        "status": {}
+      }
+    },
+    "DataMandateChanged": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "mandate_id",
+        "level",
+        "cause"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2（P 级）",
+      "properties": {
+        "anchor": {},
+        "mandate_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "level": {},
+        "superseded_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "cause": {
+          "enum": [
+            "user",
+            "rule"
+          ]
+        }
+      }
+    },
+    "DataValidate": {
+      "type": "object",
+      "required": [
+        "version",
+        "diags"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2（E 级）",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "diags": {}
+      }
+    },
+    "DataPresence": {
+      "type": "object",
+      "required": [
+        "actor",
+        "editing"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2、R3（E 级）",
+      "properties": {
+        "actor": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "editing": {},
+        "cursor": {},
+        "scope": {
+          "type": "string",
+          "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+          "description": "用户当前所在的层"
+        }
+      }
+    },
+    "DataModelActivity": {
+      "type": "object",
+      "required": [
+        "actor",
+        "state"
+      ],
+      "additionalProperties": false,
+      "description": "C.06.03 §2；驱动“模型正在编辑…”提示和 AI 光标（E 级）",
+      "properties": {
+        "actor": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "state": {
+          "enum": [
+            "idle",
+            "thinking",
+            "editing",
+            "waiting",
+            "stopped"
+          ]
+        },
+        "target": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,345 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/mandate.schema.json",
+  "x-version": "1.0",
+  "title": "授权书 Mandate（C.09）",
+  "$defs": {
+    "Mandate": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "level",
+        "grantee",
+        "expires",
+        "created_by",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "description": "授权书（C.09 §3）；挂载点 MandateMount 在 common.schema.json",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "如 谨慎协作"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4,
+          "description": "档位：0 只读 · 1 建议 · 2 部分 · 3 高度 · 4 完全"
+        },
+        "grantee": {
+          "type": "string",
+          "pattern": "^(model:\\*|model:[^\\s]+|tag:[^\\s]+|external:\\*|external:[^\\s]+)$",
+          "description": "授予对象：model:* 所有模型实例；tag:编排者 带这个标签的实例；external:* 外部调用"
+        },
+        "overrides": {
+          "$ref": "#/$defs/Overrides",
+          "description": "只在档位 2 生效"
+        },
+        "except": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "description": "档位 3、4：这些动作改为需要审核"
+        },
+        "deny": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Action"
+          },
+          "description": "任何档位：这些动作直接拒绝"
+        },
+        "expires": {
+          "$ref": "#/$defs/Expiry"
+        },
+        "taint": {
+          "enum": [
+            "ask",
+            "allow"
+          ],
+          "default": "ask",
+          "description": "被污染的动作怎么处理（INV-16）"
+        },
+        "delegable": {
+          "enum": [
+            "none",
+            "narrower",
+            "same"
+          ],
+          "default": "narrower",
+          "description": "编排者生成子编排者时能否下放（E.06.02）"
+        },
+        "l3_skip_human": {
+          "type": "boolean",
+          "default": false,
+          "description": "只有用户能设为 true：L3 工具上游可以不接人工节点"
+        },
+        "branch": {
+          "enum": [
+            "draft",
+            "main"
+          ],
+          "default": "draft",
+          "description": "模型的修改写到哪：草稿分支或直接写 main（只有档位 4 能选 main）"
+        },
+        "created_by": {
+          "$ref": "common.schema.json#/$defs/Actor",
+          "properties": {
+            "kind": {
+              "const": "user"
+            }
+          },
+          "description": "必须是 user（C.09-R4）"
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "revoked_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "Overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "档位 2 的细化（C.09 §3）",
+      "properties": {
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$"
+          },
+          "description": "允许修改的范围：容器节点 ID 或 root；空 = 挂载点以下全部（C.09-R4）"
+        },
+        "ops": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": [
+              "allow",
+              "propose",
+              "deny"
+            ]
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/Action"
+          }
+        },
+        "tools_max_risk": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "default": 0
+        },
+        "tools_allow": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "允许使用的模型；空 = 不限"
+        },
+        "budget": {
+          "$ref": "#/$defs/Budget"
+        },
+        "max_nodes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "单个 GraphPatch 最多新增几个节点"
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "allow_spawn": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "Budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "预算（C.09 §3）",
+      "properties": {
+        "tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_micros": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "time_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calls": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "Expiry": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "description": "有效期（C.09 §3、R4）：until 要写 until_at、run 要写 run_id，每种只写自己的那个字段，session、forever 两个都不写",
+      "properties": {
+        "kind": {
+          "enum": [
+            "run",
+            "session",
+            "forever",
+            "until"
+          ]
+        },
+        "until_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "run_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "until"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "until_at"
+            ],
+            "not": {
+              "required": [
+                "run_id"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "run"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "run_id"
+            ],
+            "not": {
+              "required": [
+                "until_at"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "session",
+                  "forever"
+                ]
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "until_at"
+                  ]
+                },
+                {
+                  "required": [
+                    "run_id"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "Action": {
+      "enum": [
+        "graph.read",
+        "run.read",
+        "trace.read",
+        "op.add_node",
+        "op.remove_nodes",
+        "op.restore_nodes",
+        "op.connect",
+        "op.disconnect",
+        "op.set_param",
+        "op.promote_param",
+        "op.demote_param",
+        "op.set_label",
+        "op.set_tags",
+        "op.group",
+        "op.ungroup",
+        "op.set_subgraph_ref",
+        "op.set_graph_title",
+        "op.set_graph_meta",
+        "op.create_branch",
+        "op.delete_branch",
+        "op.merge_branch",
+        "op.revert_op",
+        "op.revert_to",
+        "op.view",
+        "op.set_lock",
+        "op.migrate",
+        "res.edit_rolecard",
+        "res.edit_recipe",
+        "res.switch_model",
+        "res.define_type",
+        "authz.set_mandate",
+        "authz.request_elevation",
+        "run.start",
+        "run.pause",
+        "run.cancel",
+        "orch.spawn",
+        "orch.self_modify",
+        "tool.L0",
+        "tool.L1",
+        "tool.L2",
+        "tool.L3",
+        "estop.trigger",
+        "estop.release"
+      ],
+      "description": "授权动作名（C.09 §4.2），43 个"
+    }
+  }
+}

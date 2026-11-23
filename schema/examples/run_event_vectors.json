@@ -1,0 +1,1591 @@
+[
+  {
+    "name": "run.created",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.created",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "snapshot_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "graph_id": "01JDGRAPH00000000000000001",
+        "branch": "main",
+        "graph_version": 7,
+        "registry_hash": "sha256:abababababababababababababababababababababababababababababababab",
+        "inputs_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "budget": {
+          "tokens": 200000
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "run.status",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.status",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "from": "pending",
+        "to": "running",
+        "cause": "user",
+        "at_safepoint": false
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "run.cancel_requested",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.cancel_requested",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "by": "local",
+        "reason": "user"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "run.graph_swapped",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.graph_swapped",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "from_version": 7,
+        "to_version": 9,
+        "op_ids": [
+          "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+          "01JD8X3Q5V7W9Y2Z4A6B8C0D3G"
+        ],
+        "scope_path": "根图/闭环迭代",
+        "at_round": 3,
+        "source": "model"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "engine.illegal_transition",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "engine.illegal_transition",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "from": "done",
+        "to": "running",
+        "cause": "retry",
+        "loc": {
+          "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+          "path": "根图/闭环迭代#r2/执行者#3",
+          "iter": {
+            "round": 2,
+            "fan": 3
+          }
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.state",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "queued",
+        "to": "running",
+        "attempt": 1,
+        "cause": "ready",
+        "inputs_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.progress",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.progress",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "pct": 62,
+        "note": "第 2 / 5 轮"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.chunk",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.chunk",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "port": "out",
+        "delta": "价格"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.input",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.input",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "port": "in",
+        "value_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.output",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.output",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "port": "out",
+        "value_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "partial": false
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.throttled",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.throttled",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "pool": "large",
+        "waiting": 3
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.log",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.log",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "level": "info",
+        "msg": "开始检索",
+        "kv": {
+          "q": "竞品"
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "loop.round",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "loop.round",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "round": 2,
+        "max": 5,
+        "exit": false,
+        "carry_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "checkpoint.saved",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "checkpoint.saved",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "scope_path": "根图/闭环迭代",
+        "round": 2,
+        "ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "ledger.changed",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "ledger.changed",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "store": "目标树",
+        "path": "goals/0",
+        "version": 4,
+        "by": "主脑"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "llm.call",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "llm.call",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "pool": "large",
+        "provider": "fake",
+        "model": "large-model",
+        "usage": {
+          "in": 1200,
+          "out": 300,
+          "cached": 0
+        },
+        "cost_micros": 4500,
+        "latency_ms": 820,
+        "req_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "resp_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "strategy": "native_schema"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "llm.fallback",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "llm.fallback",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "from_strategy": "native_schema",
+        "to_strategy": "tool_call",
+        "reason": "厂商不支持结构化输出"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "tool.intent",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "tool.intent",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "tool": "send_mail",
+        "risk": 3,
+        "idem_key": "run1/n1/1",
+        "req_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "tool.call",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "tool.call",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "tool": "web_search",
+        "risk": 0,
+        "idem_key": "run1/n2/1",
+        "queued_ms": 0,
+        "latency_ms": 340,
+        "req_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "result_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "taint": true,
+        "status": "ok"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "ctx.assembled",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "ctx.assembled",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "sections": [
+          {
+            "name": "任务",
+            "tokens": 120,
+            "source": "in"
+          }
+        ],
+        "dropped": [],
+        "budget_tokens": 8000
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "prompt.rendered",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "prompt.rendered",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "segments": [
+          {
+            "name": "system",
+            "tokens": 400,
+            "cache_break": true
+          }
+        ],
+        "ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "orch.started",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "orch.started",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "orch_path": "根图/主脑",
+        "mode": "runtime"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "orch.tool_call",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "orch.tool_call",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "tool": "add_node",
+        "target_node": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "ok": true
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "orch.expanded",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "orch.expanded",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "patch_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+        "patch_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "subgraph_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "graph_version_before": 7,
+        "graph_version_after": 8
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "orch.finished",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "orch.finished",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "result": "patch",
+        "stats": {
+          "ops": 4
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "approval.requested",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "approval.requested",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "approval_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "kind": "tool",
+        "summary": "调用 send_mail",
+        "detail_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "options": [
+          "approved",
+          "rejected"
+        ]
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "approval.resolved",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "approval.resolved",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "approval_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "outcome": "approved",
+        "scope": "once",
+        "note": "可以发"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "escalation.raised",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "escalation.raised",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "escalation_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "kind": "question",
+        "severity": "high",
+        "question": "预算不够，要不要继续？",
+        "options": [
+          "继续",
+          "停止"
+        ],
+        "merge_key": "budget"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "escalation.merged",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "escalation.merged",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "escalation_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "into": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+        "count": 2
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "escalation.routed",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "escalation.routed",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "escalation_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "to_path": "根图/主脑"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "escalation.resolved",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "escalation.resolved",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "escalation_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D4H",
+        "outcome": "继续"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "budget.charged",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "budget.charged",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "scope_path": "根图",
+        "tokens": 1500,
+        "cost_micros": 4500
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "budget.warn",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "budget.warn",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "scope_path": "根图",
+        "ratio": 0.8
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "budget.exceeded",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "budget.exceeded",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "scope_path": "根图"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "estop.triggered",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "estop.triggered",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "scope": "global"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "estop.released",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "estop.released",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "scope": "global"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "brief.updated",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "brief.updated",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "goal_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D2F",
+        "status": "done",
+        "conclusion": "价格偏高 12%",
+        "criteria_check": [
+          {
+            "name": "覆盖 3 家",
+            "ok": true
+          }
+        ],
+        "cost": {
+          "cost_micros": 90000
+        },
+        "superseded": false
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "edge.flow",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "edge.flow",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "edge_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "pool.usage",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "pool.usage",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "pools": [
+          {
+            "name": "large",
+            "used": 2,
+            "cap": 4,
+            "queued": 1
+          }
+        ]
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.state 重试排队",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "running",
+        "to": "queued",
+        "attempt": 2,
+        "cause": "retry",
+        "error": {
+          "class": "transient",
+          "code": "timeout",
+          "message": "上游超时",
+          "retryable": true
+        },
+        "idem_key": "run1/n1/2",
+        "backoff_ms": 2000
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.state 完成",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "running",
+        "to": "done",
+        "attempt": 1,
+        "cause": "ok",
+        "outputs_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "active_outs": [
+          "yes"
+        ],
+        "cost": {
+          "tokens": 1500,
+          "cost_micros": 4500
+        },
+        "partial": false
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.state 失败",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "running",
+        "to": "failed",
+        "attempt": 3,
+        "cause": "error",
+        "error": {
+          "class": "rate_limited",
+          "code": "429",
+          "message": "限流",
+          "retryable": false
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "node.state 等待审批",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "running",
+        "to": "waiting",
+        "attempt": 1,
+        "cause": "approval",
+        "approval_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "reason": "L3 工具"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "approval.resolved 人工节点自定义出口",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "approval.resolved",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "approval_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "outcome": "退回重做",
+        "scope": "once",
+        "note": "可以发",
+        "value_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "run.status 带 cost",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.status",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "from": "running",
+        "to": "done",
+        "cause": "user",
+        "at_safepoint": false,
+        "cost": {
+          "cost_micros": 90000
+        }
+      }
+    },
+    "valid": true
+  },
+  {
+    "name": "带 cause_seq",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "approval.resolved",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "approval_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "outcome": "approved",
+        "scope": "once",
+        "note": "可以发"
+      },
+      "cause_seq": 117
+    },
+    "valid": true
+  },
+  {
+    "name": "缺必填字段：llm.call 缺 strategy",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "llm.call",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "pool": "large",
+        "provider": "fake",
+        "model": "large-model",
+        "usage": {
+          "in": 1200,
+          "out": 300,
+          "cached": 0
+        },
+        "cost_micros": 4500,
+        "latency_ms": 820,
+        "req_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "resp_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1"
+      }
+    },
+    "valid": false,
+    "error_at": "/data"
+  },
+  {
+    "name": "缺必填字段：节点级事件缺 loc",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.output",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "port": "out",
+        "value_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "partial": false
+      }
+    },
+    "valid": false,
+    "error_at": ""
+  },
+  {
+    "name": "缺必填字段：缺 run_id",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.created",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "data": {
+        "snapshot_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "graph_id": "01JDGRAPH00000000000000001",
+        "branch": "main",
+        "graph_version": 7,
+        "registry_hash": "sha256:abababababababababababababababababababababababababababababababab",
+        "inputs_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "budget": {
+          "tokens": 200000
+        }
+      }
+    },
+    "valid": false,
+    "error_at": ""
+  },
+  {
+    "name": "data 多出字段",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "tool.call",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "tool": "web_search",
+        "risk": 0,
+        "idem_key": "run1/n2/1",
+        "queued_ms": 0,
+        "latency_ms": 340,
+        "req_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "result_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "taint": true,
+        "status": "ok",
+        "extra": 1
+      }
+    },
+    "valid": false,
+    "error_at": "/data"
+  },
+  {
+    "name": "E 级 seq 不为 0：node.chunk",
+    "event": {
+      "seq": 5,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.chunk",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "port": "out",
+        "delta": "价格"
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  },
+  {
+    "name": "E 级 seq 不为 0：pool.usage",
+    "event": {
+      "seq": 1,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "pool.usage",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "pools": [
+          {
+            "name": "large",
+            "used": 2,
+            "cap": 4,
+            "queued": 1
+          }
+        ]
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  },
+  {
+    "name": "P 级 seq 为 0：run.status",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.status",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "from": "pending",
+        "to": "running",
+        "cause": "user",
+        "at_safepoint": false
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  },
+  {
+    "name": "S 级 seq 为 0：node.progress",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.progress",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "pct": 62,
+        "note": "第 2 / 5 轮"
+      }
+    },
+    "valid": false,
+    "error_at": "/seq"
+  },
+  {
+    "name": "node.state 的 to 不在 NodeState",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "queued",
+        "to": "finished",
+        "attempt": 1,
+        "cause": "ready",
+        "inputs_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/to"
+  },
+  {
+    "name": "run.status 的 to 不在 RunStatus",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "run.status",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "from": "pending",
+        "to": "stopped",
+        "cause": "user",
+        "at_safepoint": false
+      }
+    },
+    "valid": false,
+    "error_at": "/data/to"
+  },
+  {
+    "name": "*_ref 不是 ws:// 引用",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.input",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "port": "in",
+        "value_ref": "file:///tmp/a.json"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/value_ref"
+  },
+  {
+    "name": "node.state 排队的 cause 不在表里",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "idle",
+        "to": "queued",
+        "attempt": 1,
+        "cause": "wakeup"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/cause"
+  },
+  {
+    "name": "node.state 的 error 缺 retryable",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "running",
+        "to": "failed",
+        "attempt": 1,
+        "cause": "error",
+        "error": {
+          "class": "transient",
+          "code": "x",
+          "message": "y"
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/data/error"
+  },
+  {
+    "name": "node.state 的 error.class 不在 FailureClass",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.state",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "from": "running",
+        "to": "failed",
+        "attempt": 1,
+        "cause": "error",
+        "error": {
+          "class": "network",
+          "code": "x",
+          "message": "y",
+          "retryable": true
+        }
+      }
+    },
+    "valid": false,
+    "error_at": "/data/error/class"
+  },
+  {
+    "name": "budget.warn 的 ratio 不在枚举",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "budget.warn",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "scope_path": "根图",
+        "ratio": 0.9
+      }
+    },
+    "valid": false,
+    "error_at": "/data/ratio"
+  },
+  {
+    "name": "approval.requested 的 kind 是旧的 approval",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "approval.requested",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "approval_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "kind": "approval",
+        "summary": "调用 send_mail",
+        "detail_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "options": [
+          "approved",
+          "rejected"
+        ]
+      }
+    },
+    "valid": false,
+    "error_at": "/data/kind"
+  },
+  {
+    "name": "approval.resolved 的 scope 是旧的 forever",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "approval.resolved",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "approval_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D3G",
+        "outcome": "approved",
+        "scope": "forever",
+        "note": "可以发"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/scope"
+  },
+  {
+    "name": "resync 不是事件",
+    "event": {
+      "seq": 0,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "resync",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "port": "out",
+        "delta": "价格"
+      }
+    },
+    "valid": false,
+    "error_at": "/kind"
+  },
+  {
+    "name": "node.progress 的 pct 超过 100",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "node.progress",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "loc": {
+        "node_id": "01JD8X3Q5V7W9Y2Z4A6B8C0D1E",
+        "path": "根图/闭环迭代#r2/执行者#3",
+        "iter": {
+          "round": 2,
+          "fan": 3
+        }
+      },
+      "data": {
+        "pct": 120,
+        "note": "第 2 / 5 轮"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/pct"
+  },
+  {
+    "name": "tool.call 的 status 不在枚举",
+    "event": {
+      "seq": 118,
+      "ts": "2026-11-23T12:01:03.120Z",
+      "kind": "tool.call",
+      "actor": {
+        "kind": "runtime",
+        "id": "sched"
+      },
+      "run_id": "01JDRVN0000000000000000001",
+      "data": {
+        "tool": "web_search",
+        "risk": 0,
+        "idem_key": "run1/n2/1",
+        "queued_ms": 0,
+        "latency_ms": 340,
+        "req_ref": "ws://sha256:0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+        "result_ref": "ws://sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "taint": true,
+        "status": "timeout"
+      }
+    },
+    "valid": false,
+    "error_at": "/data/status"
+  }
+]
