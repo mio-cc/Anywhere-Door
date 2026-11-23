@@ -3,7 +3,7 @@
   "branch": "feat/O.01-build",
   "claimed_by": "Quick（AWS Quick，按 G.02.06 §5 例外人工领取）",
   "claimed_at": "2026-11-23T03:20:00Z",
-  "docs_commit": "19ecf7543da74b7304dc15d3f5e1ac5c0784e9ce",
+  "docs_commit": "7552a9918c93632b4bcd2e31ad33e05d630939f2",
   "docs": {
     "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:730401d2be5cd79617c7b0828fedf2143dc0165864d1037b632f70749068dbb8",
     "B_后端服务/B.08_anydoorctl_命令行.md": "sha256:c27f6d4cf6eb1b2acd3522c65f18b7a3c4b1c59c9031cbc3467665b4f1809556",
@@ -19,7 +19,7 @@
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:7ee9338e57c8a243064b1a7c780bc7f620a224290c56da48f28b0571a10c5692",
     "G_工程规范/G.09_版本与变更日志.md": "sha256:4bcdfe9336e861f9a3149b850fc1154ddb6c52ecfea3d659bf3b1f127d6bc84a",
     "G_工程规范/G.10_依赖管理.md": "sha256:86172402cf3842afdca1ec83517864b03a938dbffe488b7558d893c754c9e2ff",
-    "G_工程规范/G.11_配置与环境变量.md": "sha256:b1425ddc7d190178138b6732a7af952ac13bdd099192bb6a8e426c12195c79a3",
+    "G_工程规范/G.11_配置与环境变量.md": "sha256:321d5b03056d36e952ce538ee2970cc8ecab3cf2c375e518bad7b2776f91d247",
     "G_工程规范/G.14_完成定义_DoD.md": "sha256:4d4316b28bc7d901a8732b7aafc09c5248313952ef53e6617d7dec78833ec1d5",
     "G_工程规范/G.15_开发环境搭建.md": "sha256:a1dd9b53044b11f95860d2ea9ed96ffd759ceeb793713cc842ca3bdb39158efd",
     "G_工程规范/G.16_代码生成规范.md": "sha256:e6a6fe14615c03054a2db501e52c64d67fcab440b533dd0d364ac2b4f7bed646",

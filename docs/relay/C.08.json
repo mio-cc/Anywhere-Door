@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract-3",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T12:54:52Z",
-  "docs_commit": "19ecf7543da74b7304dc15d3f5e1ac5c0784e9ce",
+  "docs_commit": "7552a9918c93632b4bcd2e31ad33e05d630939f2",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.05_Op_操作/C.05.01_Op_信封.md": "sha256:e4cd95b4c9e4b6196fee1623f496dfcd9ecacf3e01f8ef741f2a64b4bb54b71e",
@@ -11,7 +11,7 @@
     "C_契约层/C.06_事件/C.06.02_运行事件目录.md": "sha256:e886c059fa22c8c0fbaa5a75e33b011238a92ac37ad961f6e2ff9ca4ae615ce1",
     "C_契约层/C.08_GraphPatch.md": "sha256:073f8363f84fd2d867380e0915080c01114e10696b0ed1bc514d2869cca11659",
     "C_契约层/C.09_授权书_Mandate.md": "sha256:3553d700f0b7358c7efe075e40c322a35e0bfe1c0e11d0e177e838bcd600259b",
-    "C_契约层/C.10_会话与消息.md": "sha256:0de9a05227bdc31a2babf7765ed522366b82427267b126964a95d42358b4ac7e",
+    "C_契约层/C.10_会话与消息.md": "sha256:a93da1a74ebf39f951a6817d4f6e88685d8d49c257a142e56d5c9d6057784ae4",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
     "E_内核_engine/E.17_orch_模型编排/E.17.01_GraphPatch_应用.md": "sha256:8d3109ea19dcdbbca197b5f15e3f01bde21ed01558ec23e87132acf24072f888",
     "E_内核_engine/E.17_orch_模型编排/E.17.03_提议与幽灵节点.md": "sha256:5e91abe77a1bc1389f9f6afa57b9e696fd258055267f52af9de02abee8702d44",

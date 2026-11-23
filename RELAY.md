@@ -18,6 +18,18 @@
 
 ---
 
+## 2026-11-23 23:20 · 冻结叶子复查（修复片 `m0-fix-entry` / K233 之后） · Quick（AWS Quick） · 设计方结论
+- 依据：设计仓库 7552a99；`relay stale` 列出 18 个叶子，改过的依据都是 K233 这一组（`C.03.01`、`C.03.05`、`C.10`、`C.13.03`、`E.14.01`、`P.06`、`G.11`），改了什么设计方清楚，逐个对照代码。
+- 结论：18 个叶子的代码都不用改，`relay stale --accept`。
+  - `C.01`（`C.03.01`、`C.10`、`C.13.03`、`P.06`）：只新增端口、枚举值、可选字段 `entry_graph_id`（按 `C.01-R6` 是 ULID）和术语；`C.01` 的写法、命名、封闭对象、示例清单规则都没变，修复片的 schema 已通过 `schemacheck`。
+  - `C.02.01`（`C.03.01` §6、§6.1，`E.14.01`）：资源节点多了 `kind=角色卡`（写 `rolecard`，不写 `value`）。`graph_test.go` 的 `resourceValueProblem` 对不认识的 `kind` 返回空串（不报错），示例图里也没有角色卡资源节点，现在的测试结果不变；补"角色卡"一支留到下次改 `C.02.01`（交接说明 §10.1）。
+  - `C.02.03`、`C.03.02`（`C.03.01`、`C.03.05`、`P.06`）：连线端口名写法、`ParamDef` 和控件映射都没变；`role` 端口名合法，`rolecard_ref` 本来就映射到 `rolecard` 控件。
+  - `C.02.04`、`C.13.04`（`P.06`）：只多了术语"对话入口图"和两条定义的措辞。
+  - `C.04.01`、`C.04.03`、`C.13.01`（`C.13.03`）：`资源引用@1` 只加枚举值"角色卡"，字段、类别、`producer` 不变；类型推断、配方来源都不涉及 `kind` 的取值。
+  - `C.05.01`、`C.05.02`、`C.06.01`–`C.06.04`、`C.08`、`C.09`（`C.10`、`C.03.05`）：只有 `Session` 加了 `entry_graph_id`、`orchestrator_model` 改说明、R9；这些 schema 不引用 `Session`（`C.06.04` 引用的是 `Message` 和 `MessageBlock`，没变）；`C.03.05` 只改 R2 的例外。
+  - `O.01`（`G.11`）：只多了配置项 `chat.entry_graph`，构建和接力工具不读配置。
+- 提交 / 推送：验证者提交推送
+
 ## 2026-11-23 23:30 · C.10 · Quick（AWS Quick） · 冻结后修复（片 `m0-fix-entry`，`P.09` K233）
 - 依据：设计仓库提交（见 docs/relay/C.10.json）
 - 完成：`session.schema.json` 的 `Session` 加 `entry_graph_id`（`Ulid`），`orchestrator_model` 的说明改为"对话框上的临时覆盖"（R9）；示例 `session.json` 带上 `entry_graph_id`；`session_test.go`：`C10-T1` 检查示例有 `entry_graph_id`，`C10-T3` 加反例"`entry_graph_id` 不是 ULID"。
