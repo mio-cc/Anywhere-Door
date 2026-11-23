@@ -3,7 +3,7 @@
   "branch": "feat/O.01-build",
   "claimed_by": "Quick（AWS Quick，按 G.02.06 §5 例外人工领取）",
   "claimed_at": "2026-11-23T03:20:00Z",
-  "docs_commit": "62a438d4c6e86dcdf79733b48e0942c0c81e7f87",
+  "docs_commit": "19ecf7543da74b7304dc15d3f5e1ac5c0784e9ce",
   "docs": {
     "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:730401d2be5cd79617c7b0828fedf2143dc0165864d1037b632f70749068dbb8",
     "B_后端服务/B.08_anydoorctl_命令行.md": "sha256:c27f6d4cf6eb1b2acd3522c65f18b7a3c4b1c59c9031cbc3467665b4f1809556",
@@ -11,7 +11,7 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.01_实施任务包格式.md": "sha256:0c703857f67d97d9a3710822a858942a20b63dd69baa9b2a6498617d198a0164",
     "G_工程规范/G.02_AI_实施者守则/G.02.02_上下文最小集规则.md": "sha256:59795219122a3e0752b9a43abfd493b5ce71f24555878baf84b3d225fd3f9ff4",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
-    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:853a1c68eb1dee1c6710e3c67f8d52919eab2d1c7615e187447aabe87e2bcd0e",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:ced9fb623bfa0fd1b424bcf05c0964c45f90e659f4609d71d87860750934a04a",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
     "G_工程规范/G.03_仓库与目录规范.md": "sha256:512326f4e5b195ca4bb433ebd0d40c8408eb2cded233d6163687f0a8a5e4d954",
     "G_工程规范/G.05_Go_编码规范/G.05.05_Go_lint_配置.md": "sha256:31d5d209dcc26822aa2ffd12960e3383b4692460b704d1d1cbda08ddc051c75b",
