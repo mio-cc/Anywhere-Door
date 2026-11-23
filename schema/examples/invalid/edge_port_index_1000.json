@@ -1,0 +1,45 @@
+{
+  "id": "01JDGRAPHED000000000000002",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [
+      {
+        "id": "01JDNED0000000000000000001",
+        "type": "资源",
+        "label": "大模型",
+        "pos": {
+          "x": 40,
+          "y": 40
+        },
+        "params": {
+          "kind": "模型",
+          "value": "large-model"
+        }
+      },
+      {
+        "id": "01JDNED0000000000000000002",
+        "type": "上下文装配",
+        "label": "配方",
+        "pos": {
+          "x": 320,
+          "y": 40
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "01JDEED0000000000000000001",
+        "from": {
+          "node": "01JDNED0000000000000000001",
+          "port": "ref"
+        },
+        "to": {
+          "node": "01JDNED0000000000000000002",
+          "port": "in[1000]"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,126 @@
+# 示例清单（C.01-R22）：schema/examples/ 下的每个示例文档都登记在这里，写明按哪个 schema 校验、应当通过还是失败。
+# 测试向量（文件名以 _vectors.json 结尾）不登记。每个 C 叶子把自己的示例追加在后面。
+#
+# file:     相对 schema/examples/ 的路径
+# schema:   按哪个 schema 校验，可以带 #/$defs/…
+# valid:    true 应当通过，false 应当失败
+# error_at: valid 为 false 时必填：期望的报错位置（JSON Pointer，整个文档写 ""）；实际报错位置都必须是它或它下面
+# diag:     只用于 semantic/ 下的文件（C.01-R23）：schema 通过，但图检查应当报这个诊断码
+
+# C.01 公共定义
+- file: invalid/actor_system_kind.json
+  schema: common.schema.json#/$defs/Actor
+  valid: false
+  error_at: /kind
+- file: invalid/mandate_anchor_path.json
+  schema: common.schema.json#/$defs/MandateMount
+  valid: false
+  error_at: /anchor
+
+# C.06.05 位置 Loc
+- file: loc_loop_executor.json
+  schema: common.schema.json#/$defs/Loc
+  valid: true
+- file: invalid/loc_round_zero.json
+  schema: common.schema.json#/$defs/Loc
+  valid: false
+  error_at: /iter/round
+
+# C.11 错误响应与诊断
+- file: errors/graph_conflict.json
+  schema: errors.schema.json#/$defs/ErrorResponse
+  valid: true
+- file: errors/diag_v12_warn.json
+  schema: errors.schema.json#/$defs/Diag
+  valid: true
+- file: invalid/error_unknown_code.json
+  schema: errors.schema.json#/$defs/ErrorResponse
+  valid: false
+  error_at: /error/code
+- file: invalid/diag_code_v99.json
+  schema: errors.schema.json#/$defs/Diag
+  valid: false
+  error_at: /code
+
+# C.02.01 图文档顶层
+- file: graph_minimal.json
+  schema: graph.schema.json
+  valid: true
+- file: graph_loop.json
+  schema: graph.schema.json
+  valid: true
+- file: invalid/graph_missing_root.json
+  schema: graph.schema.json
+  valid: false
+  error_at: ""
+- file: invalid/graph_version_negative.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /version
+- file: invalid/graph_branch_feature.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /branch
+
+# C.02.02 节点
+- file: invalid/node_children_and_ref.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/nodes/0
+- file: invalid/node_type_unknown.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/nodes/0/type
+- file: invalid/node_type_no_major.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/nodes/0/type
+
+# C.02.03 连线
+- file: invalid/edge_port_uppercase.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/edges/0/from/port
+- file: invalid/edge_port_index_1000.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/edges/0/to/port
+- file: semantic/edge_cross_scope.json  # 根图的入口直接连到循环子图里的汇合（C.02-R2）
+  schema: graph.schema.json
+  valid: true
+  diag: V05
+
+# C.02.04 子图与嵌套
+- file: invalid/subgraph_ref_bad_version.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/nodes/0/ref/version
+- file: semantic/loop_without_children.json  # 循环必须带子图（C.02.04 §9 验收 1）
+  schema: graph.schema.json
+  valid: true
+  diag: V11
+- file: semantic/subgraph_without_exit.json  # 子图只有入口没有出口（§9 验收 2）
+  schema: graph.schema.json
+  valid: true
+  diag: V11
+- file: semantic/nesting_depth_9.json  # 嵌套到第 9 层，超过上限 8 层：error（§9 验收 3）
+  schema: graph.schema.json
+  valid: true
+  diag: V12
+- file: semantic/nesting_depth_5.json  # 嵌套到第 5 层，超过 4 层：warn（§9 验收 3）
+  schema: graph.schema.json
+  valid: true
+  diag: V12
+
+# C.02.05 视图元数据
+- file: graph_ui_unknown.json  # 节点 ui 里有未知键 x_extra，要原样保留
+  schema: graph.schema.json
+  valid: true
+- file: invalid/node_pos_float.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/nodes/0/pos/x
+- file: invalid/note_size_extra.json
+  schema: graph.schema.json
+  valid: false
+  error_at: /root/notes/0/size

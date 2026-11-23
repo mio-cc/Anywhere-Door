@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/common.schema.json",
+  "x-version": "1.0",
+  "title": "公共定义（C.01 §4）",
+  "$defs": {
+    "Ulid": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "WsRef": {
+      "type": "string",
+      "pattern": "^ws://sha256:[0-9a-f]{64}$"
+    },
+    "ActorKind": {
+      "enum": [
+        "user",
+        "model",
+        "runtime",
+        "external"
+      ]
+    },
+    "Actor": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ActorKind"
+        },
+        "id": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "instance_id": {
+          "type": "string",
+          "description": "model 专用：模型实例，如 run:<run_id>/<node_id> 或 chat:<session_id>"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "MandateMount": {
+      "type": "object",
+      "required": [
+        "anchor",
+        "mandate_id"
+      ],
+      "additionalProperties": false,
+      "description": "授权书挂载点；图文档和会话都用（C.09 §3、P.09 K203）",
+      "properties": {
+        "anchor": {
+          "type": "string",
+          "pattern": "^(session|graph|node:[0-9A-HJKMNP-TV-Z]{26})$",
+          "description": "session 只出现在会话文档里"
+        },
+        "mandate_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "priority": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "RunStatus": {
+      "enum": [
+        "pending",
+        "running",
+        "paused",
+        "done",
+        "failed",
+        "cancelled"
+      ],
+      "description": "运行状态（C.07 §2）"
+    },
+    "NodeState": {
+      "enum": [
+        "idle",
+        "queued",
+        "running",
+        "waiting",
+        "done",
+        "failed",
+        "cancelled",
+        "skipped",
+        "cached"
+      ],
+      "description": "节点状态（C.07 §3）"
+    },
+    "Iter": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "一层的迭代号（C.06.05 §3）",
+      "properties": {
+        "round": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "循环第几轮"
+        },
+        "event": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "事件模式循环第几次唤醒"
+        },
+        "fan": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "扇出第几份，或 C7 展开第几项"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1,
+          "description": "第几次尝试"
+        }
+      }
+    },
+    "Loc": {
+      "type": "object",
+      "required": [
+        "node_id",
+        "path"
+      ],
+      "additionalProperties": false,
+      "description": "一次节点执行的位置（C.06.05 §3）",
+      "properties": {
+        "node_id": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "scopes": {
+          "type": "array",
+          "description": "从外到内每一层容器节点及其迭代号，用来唯一确定一次执行",
+          "items": {
+            "type": "object",
+            "required": [
+              "node_id"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "node_id": {
+                "$ref": "#/$defs/Ulid"
+              },
+              "iter": {
+                "$ref": "#/$defs/Iter"
+              }
+            }
+          }
+        },
+        "iter": {
+          "$ref": "#/$defs/Iter",
+          "description": "本节点自身的迭代（C7 展开的份号、重试次数）"
+        }
+      }
+    },
+    "PortRef": {
+      "type": "object",
+      "required": [
+        "node",
+        "port"
+      ],
+      "additionalProperties": false,
+      "description": "端口引用（C.02.03 §4）；连线和事件都用",
+      "properties": {
+        "node": {
+          "$ref": "#/$defs/Ulid"
+        },
+        "port": {
+          "type": "string",
+          "pattern": "^[a-z_][a-z0-9_]*(\\[\\d{1,3}\\])?$",
+          "description": "动态插口写作 in[0]、in[1]"
+        }
+      }
+    }
+  }
+}

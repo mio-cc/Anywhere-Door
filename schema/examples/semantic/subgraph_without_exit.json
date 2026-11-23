@@ -1,0 +1,37 @@
+{
+  "id": "01JDGRAPHSX000000000000001",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [
+      {
+        "id": "01JDNSX0000000000000000001",
+        "type": "子图引用",
+        "label": "只有入口",
+        "pos": {
+          "x": 40,
+          "y": 40
+        },
+        "children": {
+          "nodes": [
+            {
+              "id": "01JDNSX0000000000000000002",
+              "type": "子图端口",
+              "label": "入口",
+              "pos": {
+                "x": 40,
+                "y": 40
+              },
+              "params": {
+                "role": "entry"
+              }
+            }
+          ],
+          "edges": []
+        }
+      }
+    ],
+    "edges": []
+  }
+}

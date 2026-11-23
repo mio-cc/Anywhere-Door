@@ -1,0 +1,20 @@
+# API 错误码的文案（C.11 §6、G.13）：每个 ApiErrorCode 一条，恰好覆盖 C.11 §3。{名字} 是变量，取自错误响应的 details。
+bad_request: 请求的格式不对：{errors}
+unauthorized: 本机访问令牌无效。请重新打开 Anywhere Door 的页面。
+forbidden: 这个操作没有被授权：{reasons}
+node_locked: 「{label}」已锁定，只有你能修改。要让 AI 修改，请先解锁。
+origin_rejected: 请求不是从本机的 Anywhere Door 页面发出的，已拒绝。
+not_found: 找不到这个{resource}，可能已经被删除。
+graph_conflict: 图已被修改，你的版本落后 {behind} 个。{resolution}
+idempotency_mismatch: 同一个请求编号对应了不同的内容，已拒绝。请刷新后重试。
+proposal_stale: 这个提议已经过期：提出之后图又被修改过。
+approval_closed: 这个审批已经处理过，或者已经过期。
+run_state: 运行现在是「{status}」，不能进行这个操作。
+too_large: 内容太大，超过了上限 {limit}。
+invalid_graph: 图里还有问题，修好后才能继续。
+extension_invalid: 扩展包或节点定义不合法：{errors}
+estopped: 急停中，AI 的操作和新的运行都已暂停。解除急停后才能继续。
+rate_limited: 请求太频繁，请 {retry_after_ms} 毫秒后再试。
+internal: 程序出了问题，已记录。可以复制错误详情反馈给开发者。
+provider_error: 模型厂商返回了错误（{provider}，{status}）。
+provider_unavailable: 还没有可用的模型。在「连接 › 模型」里添加一个。

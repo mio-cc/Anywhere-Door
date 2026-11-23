@@ -1,0 +1,20 @@
+{
+  "id": "01JDGRAPHVW000000000000002",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [
+      {
+        "id": "01JDNVW0000000000000000002",
+        "type": "Agent",
+        "label": "主脑",
+        "pos": {
+          "x": 40.5,
+          "y": 40
+        }
+      }
+    ],
+    "edges": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "01JDGRAPHVW000000000000003",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [],
+    "edges": [],
+    "notes": [
+      {
+        "id": "01JDNTVW000000000000000002",
+        "pos": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "w": 240,
+          "h": 120,
+          "d": 1
+        },
+        "text": "便签"
+      }
+    ]
+  }
+}

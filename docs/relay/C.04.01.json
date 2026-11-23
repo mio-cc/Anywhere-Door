@@ -1,0 +1,30 @@
+{
+  "leaf": "C.04.01",
+  "branch": "slice/m0-contract",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-23T05:27:21Z",
+  "docs_commit": "aa95c2c3d9280382d82d6f73e7db51f3269cefc0",
+  "docs": {
+    "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
+    "C_契约层/C.04_端口类型系统/C.04.01_8_类基础类型.md": "sha256:74aa978ff3d9aac54b7656a4e1129a29ad8af6ee372915927c88aa07455dfa9d",
+    "C_契约层/C.04_端口类型系统/C.04.02_兼容规则.md": "sha256:2e0b6695ef4e117fa82e1fa98e0fa2a0d893ba081e33962c5e57c72cef751036",
+    "C_契约层/C.04_端口类型系统/C.04.03_泛型_T_推断.md": "sha256:4e7f662db519debc0abb75fc2705652c5dcc80d5d601ab1b9ed29c81f37297a7",
+    "C_契约层/C.04_端口类型系统/C.04_端口类型系统.md": "sha256:e560f1c9fd65ec29001b7337a61abbc344ff31cf4baf7d396d72e5785bc8f7fb",
+    "C_契约层/C.13_内置资产格式/C.13.03_类型声明_types.md": "sha256:79ae9ed4520986767ef4894560497569b3b2236ac5f3f1887c8f7287cc0d80db",
+    "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:b192890829cf7fc54cd91a083bc50dd023f9ac4ec0bdd58c85814badd8a5b537",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.02_类型检查与_T_推断.md": "sha256:d3e492cd4d76c21f6fd02e2e311c7d01ce2077edbe8d45e1303586f2a897756e",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:853a1c68eb1dee1c6710e3c67f8d52919eab2d1c7615e187447aabe87e2bcd0e",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.10_依赖管理.md": "sha256:86172402cf3842afdca1ec83517864b03a938dbffe488b7558d893c754c9e2ff",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7",
+    "U_UI_UX_规范/U.15_文案与术语.md": "sha256:11244a54fc2006289314ce50291b69754082140bdcfe4fe73da8ff474dacf2ef",
+    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:671652e9b53119d2c9d28a85fdb056944b8d2c9e1da448f7e60821179016766c"
+  },
+  "stubs": [],
+  "state": "delivered",
+  "slice": "m0-contract",
+  "base": "c4b839971d71d4593197c0bc332ac69595470de6",
+  "head": "9b1eb0a95f93fc0654f02b4d54aec5859e5f72aa"
+}

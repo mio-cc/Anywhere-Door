@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/types.schema.json",
+  "x-version": "1.0",
+  "title": "端口类型（C.04.01）",
+  "$defs": {
+    "TypeRef": {
+      "type": "string",
+      "pattern": "^(任意|\\$[A-Z]|列表\\[.+\\]|[^@\\[\\]/\\s]{1,30}@\\d+(\\.\\d+)?)$",
+      "description": "数据类型写法（C.04.01 §2）：任意、$T、列表[…]、名称@主版本[.次版本]。只检查外形，列表里面的写法和类型变量出现的位置由解析器检查（E.03.02）"
+    },
+    "Category": {
+      "enum": [
+        "any",
+        "ctx",
+        "ref",
+        "list",
+        "tool",
+        "gen",
+        "ctrl",
+        "state"
+      ],
+      "description": "8 个显示类别（C.04.01 §3），决定端口和连线的颜色"
+    }
+  }
+}

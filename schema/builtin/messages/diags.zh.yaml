@@ -1,0 +1,38 @@
+# 诊断码的文案（C.11 §6）：每个诊断码一项，键是它允许的级别（C.11 §5 表），值是文案模板，由 E.03.04 渲染。
+V01:
+  error: 图文档的结构不对：{detail}
+V02:
+  error: 节点类型「{type}」没有注册，或者它所在的扩展包没有安装
+V03:
+  error: 参数「{param}」不对：{reason}
+V04:
+  error: 参数「{param}」已锁定，不能修改
+V05:
+  error: 连线的端口不对：{reason}
+V06:
+  error: 「{src}」不能接到「{dst}」：{reason}
+V07:
+  error: 输入端口「{port}」只能接一条线，或者有两条完全相同的连线
+V08:
+  error: 必填的输入「{port}」还没有连线，也没有设置值
+V09:
+  error: 这里形成了环。环只能放在循环节点里面
+V10:
+  error: 循环「{label}」没有有限的出口：设置最大轮数或退出条件
+V11:
+  error: 「{label}」的子图不完整：{reason}
+V12:
+  warn: 嵌套已经 {depth} 层，超过 4 层。建议打包成子图库引用
+  error: 嵌套 {depth} 层，超过上限 8 层；或者子图引用成环：{chain}
+V13:
+  error: 高风险工具「{tool}」的上游要有人工节点确认
+V14:
+  error: Agent 的 context 只能接上下文装配节点
+V15:
+  warn: 子图「{label}」继承到的权限是空的，里面的节点什么也做不了
+V16:
+  error: 无法推断 {var}，请设置 {param}
+V17:
+  warn: 「{label}」没有连接任何节点
+V18:
+  warn: 循环「{label}」最多 {max_rounds} 轮，但没有设置预算

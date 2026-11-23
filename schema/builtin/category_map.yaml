@@ -1,0 +1,10 @@
+# 数据类型 → 显示类别（C.04.01 §3 的机器可读版）。端口写了 PortDef.category 时不查这张表（C.04.01-R4）。
+categories: [any, ctx, ref, list, tool, gen, ctrl, state] # 与 types.schema.json 的 Category 同序
+rules: # 按顺序匹配，第一条命中的生效；type 只写名称，不看版本
+  - { type: 任意, category: any }
+  - { list: true, category: list }
+  - { type: 上下文包, category: ctx }
+  - { type: 资源引用, category: ref }
+  - { type: 工具端点, category: tool }
+  - { type: 状态, category: state }
+  - { default: true, category: gen } # 类型变量和其他所有命名类型；ctrl 只能由 PortDef.category 显式指定

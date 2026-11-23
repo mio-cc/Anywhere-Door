@@ -1,0 +1,19 @@
+# 运行状态机与节点状态机（C.07 §2、§3.1 的机器可读版，C.07 §6）。
+# C.14 由它生成 Go 和 TS 的转换检查函数；前端、后端都不手写这张表（C.07-R9）。
+# states 与 common.schema.json 的 RunStatus、NodeState 同序；transitions：从 → 允许进入的状态，没写的状态没有出边。
+run:
+  states: [pending, running, paused, done, failed, cancelled]
+  terminal: [done, failed, cancelled]
+  transitions:
+    pending: [running, cancelled]
+    running: [paused, done, failed, cancelled]
+    paused: [running, cancelled]
+node:
+  states: [idle, queued, running, waiting, done, failed, cancelled, skipped, cached]
+  terminal: [done, failed, cancelled, skipped, cached]
+  transitions:
+    idle: [queued, cancelled, skipped, cached]
+    queued: [running, cancelled]
+    running: [queued, waiting, done, failed, cancelled]
+    waiting: [running, failed, cancelled]
+    failed: [queued] # 用户手动重试

@@ -1,0 +1,20 @@
+{
+  "id": "01JDGRAPH00000000000000002",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [
+      {
+        "id": "01JDN0000000000000000000X1",
+        "type": "调度器",
+        "label": "调度器",
+        "pos": {
+          "x": 40,
+          "y": 40
+        }
+      }
+    ],
+    "edges": []
+  }
+}

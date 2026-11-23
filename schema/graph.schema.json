@@ -1,0 +1,390 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/graph.schema.json",
+  "x-version": "1.0",
+  "title": "Graph",
+  "description": "图文档（C.02）：纯数据，不含运行状态、密钥和视口位置",
+  "type": "object",
+  "required": [
+    "id",
+    "schema_version",
+    "version",
+    "branch",
+    "root"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Ulid"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "branch": {
+      "type": "string",
+      "pattern": "^(main|draft/[a-z0-9][a-z0-9_\\-]{0,62})$",
+      "default": "main"
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "default": ""
+    },
+    "root": {
+      "$ref": "#/$defs/Subgraph"
+    },
+    "mandates": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/MandateMount"
+      },
+      "default": []
+    },
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9_\\-.]*@\\d+\\.\\d+\\.\\d+$"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "meta": {
+      "$ref": "#/$defs/Meta"
+    }
+  },
+  "$defs": {
+    "Meta": {
+      "type": "object",
+      "x-open": true,
+      "description": "开放对象，未知字段原样保留（C.01-R19）",
+      "properties": {
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "created_by": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "template": {
+          "type": "string",
+          "description": "从哪个模板实例化，如 闭环迭代@1.0.0"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "Node": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "pos"
+      ],
+      "additionalProperties": false,
+      "description": "节点实例（C.02.02）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "type": {
+          "$ref": "#/$defs/NodeTypeRef"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "pos": {
+          "$ref": "#/$defs/Pos"
+        },
+        "params": {
+          "type": "object",
+          "x-open": true,
+          "default": {},
+          "description": "开放对象；按 NodeDef.params 校验；只存和默认值不同的键；未知键原样保留"
+        },
+        "promoted": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z_][a-z0-9_]*$"
+          },
+          "uniqueItems": true,
+          "default": []
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 40
+          },
+          "uniqueItems": true,
+          "maxItems": 16,
+          "default": []
+        },
+        "lock": {
+          "enum": [
+            "none",
+            "user",
+            "frozen"
+          ],
+          "default": "none",
+          "description": "实例锁（C.03.03）"
+        },
+        "ui": {
+          "$ref": "#/$defs/NodeUi"
+        },
+        "children": {
+          "$ref": "#/$defs/Subgraph"
+        },
+        "ref": {
+          "$ref": "#/$defs/SubgraphRef"
+        },
+        "origin": {
+          "$ref": "#/$defs/Origin"
+        }
+      },
+      "not": {
+        "required": [
+          "children",
+          "ref"
+        ]
+      }
+    },
+    "NodeTypeRef": {
+      "type": "string",
+      "description": "原子节点：中文名；扩展节点：包名/节点名@主版本",
+      "pattern": "^(资源|Agent|上下文装配|工具|扇出|汇合|聚合|分支|循环|账本|人工|子图端口|子图引用|[a-z0-9][a-z0-9_\\-.]*/[^/@]{1,60}@\\d+)$",
+      "examples": [
+        "Agent",
+        "扇出",
+        "pricing-pack/价格标准化@1"
+      ]
+    },
+    "Origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "最后一次修改这个元素的 Op；前端据此显示 AI 角标",
+      "properties": {
+        "actor": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "op_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 500
+        }
+      }
+    },
+    "Edge": {
+      "type": "object",
+      "required": [
+        "id",
+        "from",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "连线（C.02.03）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "from": {
+          "$ref": "common.schema.json#/$defs/PortRef",
+          "description": "输出端口"
+        },
+        "to": {
+          "$ref": "common.schema.json#/$defs/PortRef",
+          "description": "输入端口"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "origin": {
+          "$ref": "#/$defs/Origin"
+        }
+      }
+    },
+    "Subgraph": {
+      "type": "object",
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "additionalProperties": false,
+      "description": "子图（C.02.04）；根图也是一个 Subgraph",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Node"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Edge"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Note"
+          },
+          "default": []
+        }
+      }
+    },
+    "SubgraphRef": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "pin"
+      ],
+      "additionalProperties": false,
+      "description": "引用子图库里的一个版本（C.02.04）",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[^@/]{1,60}$",
+          "description": "子图库里的名字，如 资料采集"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "pin": {
+          "enum": [
+            "snapshot",
+            "link"
+          ]
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "内部节点 ID 或 参数路径 → 替换值（资源、配方、策略引用），不打开子图也能替换"
+        }
+      }
+    },
+    "Pos": {
+      "type": "object",
+      "required": [
+        "x",
+        "y"
+      ],
+      "additionalProperties": false,
+      "description": "世界坐标，单位 px，节点左上角；前端负责吸附到 20px 网格，后端不强制",
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      }
+    },
+    "NodeUi": {
+      "type": "object",
+      "x-open": true,
+      "description": "开放对象，未知字段原样保留（C.02.05）",
+      "properties": {
+        "collapsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "折叠后只显示标题行"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 160,
+          "maximum": 640,
+          "description": "用户拖宽后的宽度；缺省用类型默认宽度"
+        },
+        "color": {
+          "enum": [
+            "none",
+            "c1",
+            "c2",
+            "c3",
+            "c4",
+            "c5",
+            "c6"
+          ],
+          "default": "none",
+          "description": "标记色，映射到设计令牌 --hx-mark-c1…c6（U.03）"
+        }
+      }
+    },
+    "Note": {
+      "type": "object",
+      "required": [
+        "id",
+        "pos",
+        "text"
+      ],
+      "additionalProperties": false,
+      "description": "便签：画布上的说明文字，不连线、不参与运行",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "pos": {
+          "$ref": "#/$defs/Pos"
+        },
+        "size": {
+          "type": "object",
+          "required": [
+            "w",
+            "h"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "w": {
+              "type": "integer",
+              "minimum": 80
+            },
+            "h": {
+              "type": "integer",
+              "minimum": 40
+            }
+          }
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4000,
+          "description": "Markdown，只支持粗体、斜体、列表、链接"
+        },
+        "color": {
+          "enum": [
+            "none",
+            "c1",
+            "c2",
+            "c3",
+            "c4",
+            "c5",
+            "c6"
+          ],
+          "default": "none"
+        },
+        "origin": {
+          "$ref": "#/$defs/Origin"
+        }
+      }
+    }
+  }
+}

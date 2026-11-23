@@ -1,0 +1,12 @@
+# 容器规则（C.02.04 §5 的机器可读版）：哪些节点类型必须 / 可以带子图。E.03.03 的校验器读它，不在代码里按类型名写分支（INV-02）。
+# 表里没有的节点类型 children、ref 都不允许；声明式扩展节点由 NodeDef 的 impl 决定（C.03.04），不进这张表。
+# required：必须有；forbidden：不允许；one_of：children 和 ref 二选一，必须有一个
+- type: 循环
+  children: required
+  ref: forbidden
+- type: 扇出
+  children: required
+  ref: forbidden
+- type: 子图引用
+  children: one_of
+  ref: one_of

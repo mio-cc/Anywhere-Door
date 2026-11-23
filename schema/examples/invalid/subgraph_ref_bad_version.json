@@ -1,0 +1,25 @@
+{
+  "id": "01JDGRAPHSR000000000000001",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [
+      {
+        "id": "01JDNSR0000000000000000001",
+        "type": "子图引用",
+        "label": "资料采集",
+        "pos": {
+          "x": 40,
+          "y": 40
+        },
+        "ref": {
+          "name": "资料采集",
+          "version": "1.0",
+          "pin": "snapshot"
+        }
+      }
+    ],
+    "edges": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "error": {
+    "code": "graph_conflict",
+    "message": "图已被修改，你的版本落后 2 个。已经自动合并你的修改。",
+    "details": {
+      "head": 44,
+      "missed_ops": [
+        "01JDP000000000000000000001",
+        "01JDP000000000000000000002"
+      ],
+      "conflicts": []
+    },
+    "request_id": "01JDREQ0000000000000000001"
+  }
+}

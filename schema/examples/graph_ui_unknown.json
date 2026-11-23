@@ -1,0 +1,46 @@
+{
+  "id": "01JDGRAPHVW000000000000001",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [
+      {
+        "id": "01JDNVW0000000000000000001",
+        "type": "Agent",
+        "label": "主脑",
+        "pos": {
+          "x": 40,
+          "y": 40
+        },
+        "params": {
+          "output_schema": "目标@1"
+        },
+        "ui": {
+          "collapsed": true,
+          "width": 320,
+          "color": "c3",
+          "x_extra": {
+            "from": "未来版本"
+          }
+        }
+      }
+    ],
+    "edges": [],
+    "notes": [
+      {
+        "id": "01JDNTVW000000000000000001",
+        "pos": {
+          "x": 40,
+          "y": 240
+        },
+        "size": {
+          "w": 240,
+          "h": 120
+        },
+        "text": "**说明**：节点的 `ui` 里有未知键 `x_extra`，读写都要原样保留（C.01-R19）",
+        "color": "c1"
+      }
+    ]
+  }
+}

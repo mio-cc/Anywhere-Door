@@ -1,0 +1,23 @@
+{
+  "id": "01JDGRAPHSW000000000000001",
+  "schema_version": "1.0",
+  "version": 1,
+  "branch": "main",
+  "root": {
+    "nodes": [
+      {
+        "id": "01JDNSW0000000000000000001",
+        "type": "循环",
+        "label": "闭环迭代",
+        "pos": {
+          "x": 40,
+          "y": 40
+        },
+        "params": {
+          "max_rounds": 3
+        }
+      }
+    ],
+    "edges": []
+  }
+}

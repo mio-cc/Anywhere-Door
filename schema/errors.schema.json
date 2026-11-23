@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/errors.schema.json",
+  "x-version": "1.0",
+  "title": "错误响应、错误码与诊断（C.11）",
+  "$defs": {
+    "ApiErrorCode": {
+      "enum": [
+        "bad_request",
+        "unauthorized",
+        "forbidden",
+        "node_locked",
+        "origin_rejected",
+        "not_found",
+        "graph_conflict",
+        "idempotency_mismatch",
+        "proposal_stale",
+        "approval_closed",
+        "run_state",
+        "too_large",
+        "invalid_graph",
+        "extension_invalid",
+        "estopped",
+        "rate_limited",
+        "internal",
+        "provider_error",
+        "provider_unavailable"
+      ],
+      "description": "API 错误码（C.11 §3）"
+    },
+    "FailureClass": {
+      "enum": [
+        "transient",
+        "rate_limited",
+        "format_invalid",
+        "budget_exceeded",
+        "auth_denied",
+        "user_input",
+        "structural",
+        "timeout",
+        "cancelled",
+        "internal"
+      ],
+      "description": "节点失败类别（C.11 §4）"
+    },
+    "DiagCode": {
+      "enum": [
+        "V01",
+        "V02",
+        "V03",
+        "V04",
+        "V05",
+        "V06",
+        "V07",
+        "V08",
+        "V09",
+        "V10",
+        "V11",
+        "V12",
+        "V13",
+        "V14",
+        "V15",
+        "V16",
+        "V17",
+        "V18"
+      ],
+      "description": "图校验诊断码（C.11 §5）"
+    },
+    "DiagLevel": {
+      "enum": [
+        "error",
+        "warn"
+      ]
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "required": [
+        "error"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "type": "object",
+          "required": [
+            "code",
+            "message",
+            "request_id"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "$ref": "#/$defs/ApiErrorCode"
+            },
+            "message": {
+              "type": "string",
+              "description": "给用户看的中文，一句话说清楚发生了什么、怎么办"
+            },
+            "details": {
+              "type": "object",
+              "x-open": true,
+              "description": "按 code 不同，见 C.11 §3 表"
+            },
+            "request_id": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            }
+          }
+        }
+      }
+    },
+    "Diag": {
+      "type": "object",
+      "required": [
+        "level",
+        "code",
+        "msg"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "$ref": "#/$defs/DiagLevel"
+        },
+        "code": {
+          "$ref": "#/$defs/DiagCode"
+        },
+        "node": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "port": {
+          "type": "string"
+        },
+        "param": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "msg": {
+          "type": "string",
+          "description": "中文，指出问题和改法"
+        }
+      }
+    },
+    "Assign": {
+      "type": "object",
+      "required": [
+        "ok",
+        "rule"
+      ],
+      "additionalProperties": false,
+      "description": "两个端口能不能连的结果（C.04.02 §3）",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        },
+        "expand": {
+          "type": "boolean",
+          "default": false,
+          "description": "C7：对列表的每一项各执行一次下游节点"
+        },
+        "migrate": {
+          "type": "string",
+          "description": "C4：迁移函数名，写作 <名称>@<旧主版本>→<新主版本>"
+        },
+        "rule": {
+          "enum": [
+            "C0",
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5",
+            "C6",
+            "C7",
+            "C8",
+            "C9",
+            "C10"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "description": "中文提示，直接显示；可连时不写"
+        }
+      }
+    }
+  }
+}
