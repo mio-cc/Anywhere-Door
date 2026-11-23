@@ -31,7 +31,7 @@
     "W_前端实现_web/W.12_前端测试.md": "sha256:1a3c351d7d9dc60dc9c172c94f5826bb52df5f0f564e84257b4f158e3095f7aa"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m0-contract",
   "base": "da3de1f246a36258d653316e90b09e6359c5bc44",
   "head": "5c0734d0896cfc7aa36c99e0b0521e1eacfffddb"

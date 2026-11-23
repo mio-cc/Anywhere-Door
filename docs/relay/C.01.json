@@ -46,7 +46,7 @@
     "W_前端实现_web/W.10_国际化与格式化.md": "sha256:4d3a057dd2d35707c6f4ddcbfb53643802d6af3900eeba106ed294799155ec73"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m0-contract",
   "base": "a40de57fdebd4d2ec73cef635fc7bc1ffce22a47",
   "head": "e41e6f537bd841f5bc991f85706b68e2d83ec4e8"

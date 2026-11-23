@@ -21,7 +21,7 @@
     "U_UI_UX_规范/U.14_状态反馈与异常/U.14_状态反馈与异常.md": "sha256:e5f323f6cb55d5717198de3566725dfe98d487e406a1d872d9187da13dfb6c91"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m0-contract",
   "base": "e41e6f537bd841f5bc991f85706b68e2d83ec4e8",
   "head": "6116421af46991c63c2e4c7ca891262e4d1bb129"

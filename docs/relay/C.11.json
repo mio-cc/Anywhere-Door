@@ -26,7 +26,7 @@
     "S_安全与隐私/S.02_本机服务安全.md": "sha256:fd37a814ef917c7175065c7d7b23ef63050dc554104c73f7bc807e2768283a98"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m0-contract",
   "base": "ccd2cc4f74117653eda6a5c05e7581c37c31b63e",
   "head": "c4b839971d71d4593197c0bc332ac69595470de6"

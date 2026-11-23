@@ -25,7 +25,7 @@
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m0-contract",
   "base": "5c0734d0896cfc7aa36c99e0b0521e1eacfffddb",
   "head": "4b152536ca3e4e9349a019c9ac8cab9ae1285053"

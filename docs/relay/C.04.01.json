@@ -24,7 +24,7 @@
     "W_前端实现_web/W.05_前端_Op_层.md": "sha256:671652e9b53119d2c9d28a85fdb056944b8d2c9e1da448f7e60821179016766c"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m0-contract",
   "base": "c4b839971d71d4593197c0bc332ac69595470de6",
   "head": "9b1eb0a95f93fc0654f02b4d54aec5859e5f72aa"

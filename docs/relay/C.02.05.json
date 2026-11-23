@@ -25,7 +25,7 @@
     "W_前端实现_web/W.03_状态层/W.03.02_view_store.md": "sha256:c208fecd1e4e992b736a449772090be7bb50ebb1aecf8ddbfb8e17d89bb3e7ea"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m0-contract",
   "base": "d14d390c1e3c23e3a270260e793da5b86b1724ac",
   "head": "0264dc061280a26e3840d7aa6719ba3b084f7635"
