@@ -131,7 +131,7 @@ func TestNodeDefs(t *testing.T) {
 		type sig = portSig
 		want := map[string][2]map[string]sig{
 			"资源":    {{}, {"ref": {Type: "资源引用@1"}}},
-			"Agent": {{"context": {Type: "上下文包@1", Required: true}, "model": {Type: "资源引用@1", Required: true}, "prompt": {Type: "资源引用@1"}, "tools": {Type: "工具端点@1", Multi: true}}, {"result": {Type: "$T"}}},
+			"Agent": {{"context": {Type: "上下文包@1", Required: true}, "model": {Type: "资源引用@1", Required: true}, "prompt": {Type: "资源引用@1"}, "role": {Type: "资源引用@1"}, "tools": {Type: "工具端点@1", Multi: true}}, {"result": {Type: "$T"}}},
 			"上下文装配": {{"in": {Type: "任意", Multi: true}, "model": {Type: "资源引用@1"}}, {"context": {Type: "上下文包@1"}, "dropped": {Type: "列表[任意]"}}},
 			"工具":    {{"request": {Type: "任意"}}, {"endpoint": {Type: "工具端点@1"}, "result": {Type: "$T"}}},
 			"扇出":    {{"items": {Type: "列表[$T]"}, "shared": {Type: "任意", Multi: true}}, {"results": {Type: "列表[$U]"}}},

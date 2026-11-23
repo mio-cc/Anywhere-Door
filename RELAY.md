@@ -18,6 +18,95 @@
 
 ---
 
+## 2026-11-23 23:30 · C.10 · Quick（AWS Quick） · 冻结后修复（片 `m0-fix-entry`，`P.09` K233）
+- 依据：设计仓库提交（见 docs/relay/C.10.json）
+- 完成：`session.schema.json` 的 `Session` 加 `entry_graph_id`（`Ulid`），`orchestrator_model` 的说明改为"对话框上的临时覆盖"（R9）；示例 `session.json` 带上 `entry_graph_id`；`session_test.go`：`C10-T1` 检查示例有 `entry_graph_id`，`C10-T3` 加反例"`entry_graph_id` 不是 ULID"。
+- 片内最后一个叶子：下一步验证者跑 `relay slice m0-fix-entry`，再整片评审。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：整片 `relay slice m0-fix-entry`（验证者）
+- 评审：整片做完后写 `docs/relay/m0-fix-entry.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 23:02 · C.10 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 3212ee2（docs/relay/C.10.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.10.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 23:30 · C.13.03 · Quick（AWS Quick） · 冻结后修复（片 `m0-fix-entry`，`P.09` K233）
+- 依据：设计仓库提交（见 docs/relay/C.13.03.json）
+- 完成：`资源引用.yaml` 的 `kind` 枚举加"角色卡"、`description` 改；`typedef_test.go` 的 `C1303-T4` 加一项检查：`资源引用.kind` 的枚举与资源节点参数 `kind` 的枚举相同（顺序也相同），防止两处以后再漂移（实施卡已写明，领取前已改文档）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.10` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-fix-entry.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 23:01 · C.13.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 3212ee2（docs/relay/C.13.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.13.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 23:30 · C.03.01 · Quick（AWS Quick） · 冻结后修复（片 `m0-fix-entry`，`P.09` K233）
+- 依据：设计仓库提交（见 docs/relay/C.03.01.json）
+- 完成：
+  - `Agent.yaml`：加输入端口 `role`（`资源引用@1`，标签"角色卡"）；参数 `rolecard` 加 `ui.bind: role`。端口不叫 `rolecard`：参数名和端口名不能重名（R3，`C0301-T3` 会失败），领取前已改文档。
+  - `资源.yaml`：`kind` 加"角色卡"；加参数 `rolecard`（`rolecard_ref`，`show_if: kind == '角色卡'`）；`value` 的 `show_if` 改为 `kind != '提示词' && kind != '角色卡'`。常用参数正好 4 个（R1 上限）。
+  - `nodedef_test.go`：`C0301-T2` 的 Agent 端口表加 `role`。
+- 没改的：`C.02.01` 的示例图和 `resourceValueProblem` 还没有 `kind=角色卡` 的写法，示例图里没有角色卡资源节点，不影响结果，留到下次改 `C.02.01`（交接说明 §10.1）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.13.03` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-fix-entry.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 23:00 · C.03.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 3212ee2（docs/relay/C.03.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.03.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 23:30 · C.03.05 · Quick（AWS Quick） · 冻结后修复（片 `m0-fix-entry`，`P.09` K233）
+- 依据：设计仓库提交（见 docs/relay/C.03.05.json）
+- 完成：R2 的例外加了 `rolecard_ref` 参数绑定 `资源引用@1` 端口。schemacheck 不查 bind 的类型兼容（`E.03.02` 查），所以只在 `paramui_test.go` 的 `C0305-T1` 加一个正例：`rolecard_ref` 参数带 `ui.bind: role` 能通过 `ParamDef`。`nodedef.schema.json` 不用改。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：领取 `C.03.01` 时自动跑 ①–⑥（验证者）
+- 评审：整片做完后写 `docs/relay/m0-fix-entry.review.md`
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 22:59 · C.03.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 3212ee2（docs/relay/C.03.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.03.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-23 23:00 · 冻结叶子复查（`G.02.06-R23` 放宽之后） · Quick（AWS Quick） · 设计方结论
 - 依据：设计仓库中 K232 那次提交；`G.02.06` 附在每个任务包里（守则），所以 `relay stale` 列出全部冻结叶子。验证者先确认每个叶子的 `relay diff` 只有 `G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md`。
 - 读了什么：`G.02.06` 只改了 R23（片内连续领取放宽到 Go 和前端代码；测试先行的叶子不进片；代码叶子提交前验证者跑 vet、lint、测试；合并提交里标 `merged`）、§4 R23 一行和变更记录。

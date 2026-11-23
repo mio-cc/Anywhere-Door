@@ -3,18 +3,19 @@ name: Agent
 version: "1.0"
 kind: atomic
 category: 智能体
-description: 唯一调用模型的节点：拿上下文包、模型、角色卡和工具，产出符合输出类型的结果
+description: 唯一调用模型的节点：拿上下文包、模型、角色卡和工具，产出符合输出类型的结果；角色卡可以写参数，也可以从 role 端口连资源节点
 impl: { type: builtin }
 ports:
   inputs:
     context: { type: 上下文包@1, label: 上下文, required: true, lock: kernel }
     model:   { type: 资源引用@1, label: 模型, required: true }
     prompt:  { type: 资源引用@1, label: 指令 }
+    role:    { type: 资源引用@1, label: 角色卡 }
     tools:   { type: 工具端点@1, label: 工具, multi: true }
   outputs:
     result: { type: "$T", label: 结果 }
 params:
-  rolecard:      { type: rolecard_ref, label: 角色卡, help: "名称@版本 或 名称@latest", ui: { group: 常用 } }
+  rolecard:      { type: rolecard_ref, label: 角色卡, help: "名称@版本 或 名称@latest", ui: { group: 常用, bind: role } }
   instruction:   { type: text, label: 指令, help: 这一次要做什么, default: "", ui: { group: 常用, bind: prompt } }
   output_schema: { type: type_ref, label: 输出类型, default: 方案@1, ui: { group: 常用 } }
   lifecycle:     { type: enum, label: 生命周期, enum: [ephemeral, resident], enum_labels: { ephemeral: 一次性, resident: 长驻 }, default: ephemeral, ui: { group: 常用 } }

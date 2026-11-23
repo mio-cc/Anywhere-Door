@@ -66,6 +66,8 @@ func TestParamUI(t *testing.T) {
 		}
 		// ParamDef.ui 引用它
 		mustValid(t, s, paramDef, `{"type": "text", "label": "指令", "ui": {"group": "常用", "widget": "textarea", "bind": "prompt", "rows": 6}}`)
+		// rolecard_ref 参数也可以绑定端口（C.03.05-R2 的例外，P.09 K233）；端口类型兼容由 E.03.02 检查
+		mustValid(t, s, paramDef, `{"type": "rolecard_ref", "label": "角色卡", "ui": {"group": "常用", "bind": "role"}}`)
 	})
 	t.Run("C0305-T2 ParamUI 反例", func(t *testing.T) {
 		s := repoSet(t)

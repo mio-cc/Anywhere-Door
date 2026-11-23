@@ -1,16 +1,16 @@
 {
   "leaf": "C.13.03",
-  "branch": "slice/m0-contract-2",
+  "branch": "slice/m0-fix-entry",
   "claimed_by": "Quick（AWS Quick）",
-  "claimed_at": "2026-11-23T09:01:05Z",
-  "docs_commit": "19ecf7543da74b7304dc15d3f5e1ac5c0784e9ce",
+  "claimed_at": "2026-11-23T15:01:43Z",
+  "docs_commit": "3212ee237d5af1e8a43b049afd2aa85d225a1f08",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.04_端口类型系统/C.04.01_8_类基础类型.md": "sha256:a1c6a845298ee64f93a708267af5d1874fa0913c7a5a14dcee6e3822a08ef426",
     "C_契约层/C.04_端口类型系统/C.04.02_兼容规则.md": "sha256:2e0b6695ef4e117fa82e1fa98e0fa2a0d893ba081e33962c5e57c72cef751036",
     "C_契约层/C.04_端口类型系统/C.04.03_泛型_T_推断.md": "sha256:4e7f662db519debc0abb75fc2705652c5dcc80d5d601ab1b9ed29c81f37297a7",
     "C_契约层/C.13_内置资产格式/C.13.01_配方_recipe.md": "sha256:55a055294d97a6d6c82d59dbf8d47f88a48d91e73ce0a69906daf74a000d6b90",
-    "C_契约层/C.13_内置资产格式/C.13.03_类型声明_types.md": "sha256:818db1edefa46b9ddf6d6b63341d57a6fc9d69291ad01fd77c2a598cd19caae5",
+    "C_契约层/C.13_内置资产格式/C.13.03_类型声明_types.md": "sha256:5068b4c6c12304f4ffe2ee96e9f1be53d0000311ff3c530ba21b3b71b0cad8c9",
     "C_契约层/C.13_内置资产格式/C.13_内置资产格式.md": "sha256:74753d158c7149079eb762f9a8e9cb7677f2bd4d3e569788676aa3e681d0c68a",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
     "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:94fe334816446caf3f72a8ba02fd4d599f4ad70b3a7e13187900788284334b49",
@@ -25,7 +25,7 @@
   },
   "stubs": [],
   "state": "merged",
-  "slice": "m0-contract-2",
-  "base": "8c7f98c143b4dccfd64db75b6ba27dbcef0800e3",
-  "head": "75ffb6ff9ba14c2bea88f5f0797999a6c3362b33"
+  "slice": "m0-fix-entry",
+  "base": "a60dd25638f74c0db5c025c47c69634725165725",
+  "head": "f055dd4e6c43d3764e94a1e2638aac10f5f762fb"
 }

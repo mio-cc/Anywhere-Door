@@ -52,9 +52,13 @@
           "default": [],
           "description": "anchor 只能是 session（C.10 §2）"
         },
+        "entry_graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "这个会话用的对话入口图；不填用设置 chat.entry_graph（C.10-R9）"
+        },
         "orchestrator_model": {
           "type": "string",
-          "description": "对话 Agent 用的模型；缺省用设置里的默认（P.09 Q17）"
+          "description": "对话框上为这个会话临时选的模型：覆盖对话入口图里 Agent 连的模型；不填用入口图里的（C.10-R9）"
         },
         "orchestrator_effort": {
           "type": "object",

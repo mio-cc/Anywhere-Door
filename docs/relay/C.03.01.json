@@ -1,18 +1,18 @@
 {
   "leaf": "C.03.01",
-  "branch": "slice/m0-contract-2",
+  "branch": "slice/m0-fix-entry",
   "claimed_by": "Quick（AWS Quick）",
-  "claimed_at": "2026-11-23T07:53:16Z",
-  "docs_commit": "19ecf7543da74b7304dc15d3f5e1ac5c0784e9ce",
+  "claimed_at": "2026-11-23T15:00:53Z",
+  "docs_commit": "3212ee237d5af1e8a43b049afd2aa85d225a1f08",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.02_图文档/C.02.03_Edge_连线.md": "sha256:01a47ff5fa817b51689dfd465a6f4f560e83cbb3a845360b0405d234c3a99747",
     "C_契约层/C.02_图文档/C.02.04_子图与嵌套.md": "sha256:775b49f095ad69484318a441c46897e4d9bca5fd2656922052f009f0fca68b5a",
-    "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:8d1f6ed7cbcac363b5c36b18a8881348f3163ce7ef26002e3e74b15737414ee1",
+    "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:f31f1d1cc624e6e8aee492546927179029772fb615bf9c10ec311912e556d849",
     "C_契约层/C.03_节点定义_NodeDef/C.03.02_参数_schema_与控件映射.md": "sha256:fc75fee3cb4101167d0e83726cce4cf708ed4df836d8ebdc95b88096e8ff6f26",
     "C_契约层/C.03_节点定义_NodeDef/C.03.03_锁定字段.md": "sha256:0cfa0e95d44415e9e3bb133c3938a36fa3a87f8fefb5c9cb4968e6185dc8d2f7",
     "C_契约层/C.03_节点定义_NodeDef/C.03.04_声明式节点格式.md": "sha256:1dbbb94ab1327ba48e3a8179cc733a95d0a286d1ba2ca21ca458790acd042cae",
-    "C_契约层/C.03_节点定义_NodeDef/C.03.05_参数界面提示.md": "sha256:ea6e78d9729ecd1c6ddd493edee0f9430bcaa37879438e56a352ef95cc7fe359",
+    "C_契约层/C.03_节点定义_NodeDef/C.03.05_参数界面提示.md": "sha256:c77923a96081275e89b07f5e8e0f6d49627078793b9ece7ae3ddc92f44d29bf2",
     "C_契约层/C.03_节点定义_NodeDef/C.03_节点定义_NodeDef.md": "sha256:068dfe3dd9574f52274f9b667935c3450d8f226533c89aa482aecca235f65521",
     "C_契约层/C.04_端口类型系统/C.04.01_8_类基础类型.md": "sha256:a1c6a845298ee64f93a708267af5d1874fa0913c7a5a14dcee6e3822a08ef426",
     "C_契约层/C.04_端口类型系统/C.04.02_兼容规则.md": "sha256:2e0b6695ef4e117fa82e1fa98e0fa2a0d893ba081e33962c5e57c72cef751036",
@@ -21,7 +21,7 @@
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
     "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:94fe334816446caf3f72a8ba02fd4d599f4ad70b3a7e13187900788284334b49",
     "E_内核_engine/E.04_ext_扩展包加载.md": "sha256:ec7e876e0011e5569017520b3c74bb79cd68a1f3eff4e2f218faea0569aa264a",
-    "E_内核_engine/E.14_exec_执行器/E.14.01_资源.md": "sha256:b60953ffb7120bdcd372c3f5065c0798e9c23f5f34e7da81a581921c8d2faf34",
+    "E_内核_engine/E.14_exec_执行器/E.14.01_资源.md": "sha256:dd7fd1fb66858a02e8201cc25c002fbd90a9cf21a7f39f48768814a0633a5291",
     "E_内核_engine/E.14_exec_执行器/E.14.13_子图引用.md": "sha256:86f09052f4252c32ae46982dbd3284a76d3663c7a2aeb40a57190643b2420c9d",
     "E_内核_engine/E.14_exec_执行器/E.14_exec_执行器.md": "sha256:2678689dcaf97bb59da2fe1655a3bfc017f284dca4bb8556378f6761a1e5ea02",
     "E_内核_engine/E.16_run_运行/E.16_run_运行.md": "sha256:26c4926a442d4bc9f200fef4a2aad910b69acbb211addb78aceec004f22d0472",
@@ -37,7 +37,7 @@
   },
   "stubs": [],
   "state": "merged",
-  "slice": "m0-contract-2",
-  "base": "bb4f19c819f2600e0045271cd43263cf26af9179",
-  "head": "1bb3f0b4f87bc0344440db6046ee795d5261f7c5"
+  "slice": "m0-fix-entry",
+  "base": "3494519eb575145ae655e1107dbd5f1dfe7355a4",
+  "head": "a60dd25638f74c0db5c025c47c69634725165725"
 }

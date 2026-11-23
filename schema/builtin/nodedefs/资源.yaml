@@ -3,15 +3,16 @@ name: 资源
 version: "1.0"
 kind: atomic
 category: 资源
-description: 把模型、提示词、列表或常量作为一个引用输出给下游
+description: 把模型、提示词、角色卡、列表或常量作为一个引用输出给下游
 impl: { type: builtin }
 ports:
   inputs: {}
   outputs:
     ref: { type: 资源引用@1, label: 引用 }
 params:
-  kind:     { type: enum, label: 种类, enum: [模型, 提示词, 列表, 常量], default: 模型, ui: { group: 常用 } }
-  value:    { type: object, label: 内容, help: "按种类：模型引用 {provider, model, sampling?, fallback?}；列表；常量", ui: { group: 常用, widget: code, show_if: "kind != '提示词'" } }
+  kind:     { type: enum, label: 种类, enum: [模型, 提示词, 角色卡, 列表, 常量], default: 模型, ui: { group: 常用 } }
+  value:    { type: object, label: 内容, help: "按种类：模型引用 {provider, model, sampling?, fallback?}；列表；常量", ui: { group: 常用, widget: code, show_if: "kind != '提示词' && kind != '角色卡'" } }
   template: { type: text, label: 模板, help: "提示词模板，{{变量}} 由同名输入端口提供", ui: { group: 常用, show_if: "kind == '提示词'" } }
+  rolecard: { type: rolecard_ref, label: 角色卡, help: "名称@版本 或 名称@latest；接到 Agent 的 role 端口", ui: { group: 常用, show_if: "kind == '角色卡'" } }
   pin:      { type: enum, label: 版本钉住, enum: [snapshot, link], enum_labels: { snapshot: 固定版本, link: 跟随最新 }, default: snapshot }
 dynamic_ports: { from_param: template }

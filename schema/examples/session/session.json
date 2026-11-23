@@ -13,6 +13,7 @@
       "mandate_id": "01JDMANDATE000000000000001"
     }
   ],
+  "entry_graph_id": "01JDGRAPHCHAT0ENTRY0000001",
   "orchestrator_model": "large-model",
   "orchestrator_effort": {
     "large-model": "high",

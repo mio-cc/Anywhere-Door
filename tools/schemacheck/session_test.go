@@ -53,6 +53,7 @@ func TestSession(t *testing.T) {
 		}
 		var sess struct {
 			GraphIDs           []string          `json:"graph_ids"`
+			EntryGraphID       string            `json:"entry_graph_id"`
 			LastLocation       map[string]string `json:"last_location"`
 			OrchestratorEffort map[string]string `json:"orchestrator_effort"`
 			Mandates           []struct {
@@ -66,8 +67,8 @@ func TestSession(t *testing.T) {
 		if err := json.Unmarshal(b, &sess); err != nil {
 			t.Fatal(err)
 		}
-		if len(sess.GraphIDs) != 2 || len(sess.LastLocation) == 0 || len(sess.OrchestratorEffort) == 0 || len(sess.Mandates) != 1 || sess.Mandates[0].Anchor != "session" {
-			t.Errorf("会话示例应当挂 2 张图，带 last_location、orchestrator_effort 和一个 session 挂载点：%+v", sess)
+		if len(sess.GraphIDs) != 2 || sess.EntryGraphID == "" || len(sess.LastLocation) == 0 || len(sess.OrchestratorEffort) == 0 || len(sess.Mandates) != 1 || sess.Mandates[0].Anchor != "session" {
+			t.Errorf("会话示例应当挂 2 张图，带 entry_graph_id、last_location、orchestrator_effort 和一个 session 挂载点：%+v", sess)
 		}
 	})
 	t.Run("C10-T3 反例", func(t *testing.T) {
@@ -105,6 +106,7 @@ func TestSession(t *testing.T) {
 			{"Session 多出字段", func(m map[string]any) { m["owner"] = "local" }, ""},
 			{"orchestrator_effort 的值为 extreme", func(m map[string]any) { obj(m, "orchestrator_effort")["large-model"] = "extreme" }, "/orchestrator_effort/large-model"},
 			{"last_location.scope 写成名称路径", func(m map[string]any) { obj(m, "last_location")["scope"] = "主图/检索" }, "/last_location/scope"},
+			{"entry_graph_id 不是 ULID", func(m map[string]any) { m["entry_graph_id"] = "对话入口" }, "/entry_graph_id"},
 			{"会话挂载点的 anchor 为 graph", func(m map[string]any) { obj(m, "mandates", 0)["anchor"] = "graph" }, "/mandates/0/anchor"},
 			{"会话挂载点的 anchor 为节点", func(m map[string]any) { obj(m, "mandates", 0)["anchor"] = "node:01JD8X3Q5V7W9Y2Z4A6B8C0D1E" }, "/mandates/0/anchor"},
 		})

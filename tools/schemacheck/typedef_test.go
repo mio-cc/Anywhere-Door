@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 	"testing"
@@ -279,6 +280,20 @@ func TestTypeDefs(t *testing.T) {
 					t.Errorf("%s：字段 %s 的类型 %s 没有定义", name, at, f.Type)
 				}
 			})
+		}
+		// 资源引用.kind 与资源节点参数 kind 的取值相同（资源节点是它唯一的产出者，P.09 K233）
+		ref, _ := findField(types["资源引用"].Fields, "kind")
+		_, res := loadNodeDef(t, "资源")
+		var resKinds []string
+		if e, ok := res.Params["kind"]["enum"].([]any); ok {
+			for _, v := range e {
+				if str, ok := v.(string); ok {
+					resKinds = append(resKinds, str)
+				}
+			}
+		}
+		if len(ref.Enum) == 0 || !slices.Equal(ref.Enum, resKinds) {
+			t.Errorf("资源引用.kind 的枚举 %v 应与资源节点参数 kind 的枚举 %v 相同（顺序也相同）", ref.Enum, resKinds)
 		}
 	})
 	t.Run("C1303-T5 schema 反例", func(t *testing.T) {
