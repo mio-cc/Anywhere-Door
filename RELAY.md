@@ -18,6 +18,21 @@
 
 ---
 
+## 2026-11-23 15:40 · C.01、C.02.01–C.02.05、C.04.01–C.04.03、C.11 · Quick（AWS Quick，设计方）· 冻结后复查（`relay stale --accept`）
+- 依据：设计仓库第 3 片开工前复查（`P.09` K210–K223）改了这 10 个冻结叶子引用的文档，`relay stale` 列出它们；逐个看了 `relay diff`，结论是**代码都不用改**，按 `G.02.06-R21` 用 `relay stale --accept` 更新依据。
+- 复查结论：
+  - `C.02.03`、`C.04.01`：本身只改措辞。`C.02.03-R6` 的编号改为 `C.03.01-R3`，并补上动态端口名（K220、K223）；`C.04.01` §4 的上下文包内容补 `vars{}`（字段定义在 `C.13.03`，K222）。`types.schema.json`、`category_map.yaml`、`PortRef` 都不变：动态端口名与普通端口名同一写法（`C.03.05-R4`），`PortRef.port` 的 pattern 已经管住。
+  - `C.01`：引用的 `C.03`、`C.03.01`、`C.13.*` 改了，都是第 3 片 `m0-contract-2` 要新建的文件（`nodedef`、`recipe`、`rolecard`、`typedef`、`template` 五个 schema 与 `builtin/` 下的数据），`common.schema.json` 与 `tools/schemacheck` 现有规则不变；新 schema 由那一片按现有检查规则加进来。
+  - `C.02.01`、`C.02.02`、`C.02.04`、`C.02.05`：引用的 `C.03.01`（加 `dynamic_ports`）、`C.03.03`（改为规范）、`C.03.04`（示例改 `ui`）、`C.05.02`/`C.05.04`（`set_param` 一并删除消失端口上的连线）改了，图文档的结构不变：`params` 是开放对象，`Node.lock` 早已在 `graph.schema.json`；`graph_loop.json` 里没有提示词资源节点和工具参数展开，不受 K211、K213 影响。
+  - `C.04.02`、`C.04.03`、`C.11`：只是引用的 `E.03.01`、`E.03.02` 实施卡补了用例、`C.03.03` 改了类型、`C.13.03` 补了内置类型；兼容规则、`assign_vectors.json`、`aggregate_ops.yaml`、错误码都不变。`aggregate_ops.yaml` 里的输出类型在 `C.13.03` 都有了定义（`C1303-T4` 会检查）。
+- 进行中：无。
+- 下一步：第 3 片 `m0-contract-2` 开工：`go run ./tools/relay start C.03.02 --slice m0-contract-2 --by "Quick（AWS Quick）"`，顺序见设计文档 `P.09` K210。
+- 桩：无变化
+- 上报单 / 阻塞：无
+- relay check：不适用（只更新依据）；`relay stale` 应为"没有需要复查的冻结叶子"（验证者：Codex）
+- 评审：不适用（代码没改）
+- 提交 / 推送：见本条提交
+
 ## 2026-11-23 13:56 · C.02.05 · Quick（AWS Quick） · 领取
 - 依据：设计仓库提交 aa95c2c（docs/relay/C.02.05.json）
 - 完成（13:58，片 `m0-contract` 第 12 个、也是最后一个叶子）：`Pos`、`NodeUi`、`Note` 已在 `C.02.01` 写进 `graph.schema.json`，本叶子补示例和测试：`graph_ui_unknown.json`（节点 `ui` 里有未知键 `x_extra`，另有一张便签）、非法示例 `invalid/node_pos_float.json`、`invalid/note_size_extra.json` 登记进清单；测试 `tools/schemacheck/view_test.go`（`C0205-T1`、`T2`）。
