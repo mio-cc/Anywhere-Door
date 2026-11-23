@@ -112,6 +112,22 @@ type BlockRun struct {
 // Branch 由 schema/op.schema.json 生成。
 type Branch string
 
+// BranchMeta：分支（GET /graphs/{id}/branches，W.04.04 §3.5）
+type BranchMeta struct {
+	// 本分支在 base_version 之后前进了几个版本；存储读出时算，main 为 0
+	Ahead int64 `json:"ahead"`
+	// 从 main 的哪个版本分出；main 为 0
+	BaseVersion int64 `json:"base_version"`
+	// main 在 base_version 之后又前进了几个版本；存储读出时算，main 为 0
+	Behind    int64      `json:"behind"`
+	CreatedAt Timestamp  `json:"created_at"`
+	CreatedBy *Actor     `json:"created_by,omitempty"`
+	DeletedAt *Timestamp `json:"deleted_at,omitempty"`
+	// 本分支的 head 版本
+	Head int64  `json:"head"`
+	Name Branch `json:"name"`
+}
+
 // Budget：预算（C.09 §3）
 type Budget struct {
 	Calls      *int64 `json:"calls,omitempty"`
@@ -789,6 +805,29 @@ type GraphEvent struct {
 // GraphEventKind 由 schema/graph-event.schema.json 生成。
 type GraphEventKind string
 
+// GraphMeta：图的元信息（GET /graphs，W.04.04 §3.5）
+type GraphMeta struct {
+	CreatedAt Timestamp  `json:"created_at"`
+	DeletedAt *Timestamp `json:"deleted_at,omitempty"`
+	ID        Ulid       `json:"id"`
+	// 图的规模，提交时由 engine/op 算好写入
+	Stats GraphMetaStats `json:"stats"`
+	// 图标题；没有标题时为空串
+	Title     string    `json:"title"`
+	UpdatedAt Timestamp `json:"updated_at"`
+	// main 分支的 head 版本
+	Version int64 `json:"version"`
+}
+
+// GraphMetaStats：图的规模，提交时由 engine/op 算好写入
+type GraphMetaStats struct {
+	// 嵌套层数（根图算 1）
+	Layers int64 `json:"layers"`
+	// 全部层的节点总数
+	Nodes     int64 `json:"nodes"`
+	Subgraphs int64 `json:"subgraphs"`
+}
+
 // GraphPatch 由 schema/graph_patch.schema.json 生成。
 type GraphPatch struct {
 	BaseVersion    int64                     `json:"base_version"`
@@ -1143,6 +1182,25 @@ type NodeError struct {
 // NodeState：节点状态（C.07 §3）
 type NodeState string
 
+// NodeStateRow：节点执行状态的投影（GET /runs/{id}/nodes，W.04.04 §3.5）
+type NodeStateRow struct {
+	Attempt    int64      `json:"attempt"`
+	CostMicros *int64     `json:"cost_micros,omitempty"`
+	EndedAt    *Timestamp `json:"ended_at,omitempty"`
+	Error      *NodeError `json:"error,omitempty"`
+	// 一次节点执行的唯一键（C.06.05-R5）
+	ExecKey string `json:"exec_key"`
+	// 更新这一行的最后一条事件的 seq
+	LastSeq   int64      `json:"last_seq"`
+	Loc       Loc        `json:"loc"`
+	NodeID    Ulid       `json:"node_id"`
+	Progress  *float64   `json:"progress,omitempty"`
+	Round     *int64     `json:"round,omitempty"`
+	StartedAt *Timestamp `json:"started_at,omitempty"`
+	State     NodeState  `json:"state"`
+	Tokens    *int64     `json:"tokens,omitempty"`
+}
+
 // NodeTypeRef：原子节点：中文名；扩展节点：包名/节点名@主版本
 type NodeTypeRef string
 
@@ -1215,6 +1273,18 @@ func (v *Op) ApplyDefaults() {
 
 // OpKind：C.05.02 §2–§6 表里的 30 种
 type OpKind string
+
+// OpRecord：Op 日志的一条（GET /graphs/{id}/ops，W.04.04 §3.5）
+type OpRecord struct {
+	Branch  Branch `json:"branch"`
+	GraphID Ulid   `json:"graph_id"`
+	// 完整的 Op，含服务器填写的 id、actor、target、group_id、inverse、ts
+	Op Op `json:"op"`
+	// 所在的组已被撤销（E.05.03）
+	Undone bool `json:"undone"`
+	// 这条 Op 应用后的图版本
+	Version int64 `json:"version"`
+}
 
 // OpTarget：这个 Op 主要作用于哪里；用于授权和冲突检测。服务器会按 payload 重新计算并校验
 type OpTarget struct {
@@ -1816,8 +1886,59 @@ type RunEvent struct {
 // RunEventKind 由 schema/run-event.schema.json 生成。
 type RunEventKind string
 
+// RunMeta：运行的元信息（GET /runs，W.04.04 §3.5）
+type RunMeta struct {
+	Branch     Branch     `json:"branch"`
+	CostMicros int64      `json:"cost_micros"`
+	CreatedAt  Timestamp  `json:"created_at"`
+	EndedAt    *Timestamp `json:"ended_at,omitempty"`
+	ForkOf     *Ulid      `json:"fork_of,omitempty"`
+	ForkSeq    *int64     `json:"fork_seq,omitempty"`
+	GraphID    Ulid       `json:"graph_id"`
+	// 运行冻结的图版本
+	GraphVersion int64 `json:"graph_version"`
+	// 监控页一行摘要（B.04.03 §5）；由 engine/run 写入
+	Headline *RunMetaHeadline `json:"headline,omitempty"`
+	ID       Ulid             `json:"id"`
+	// chat 是对话 Agent 的一条回复（P.09 K36）
+	Kind string `json:"kind"`
+	// 运行流最后一条落库事件的 seq；AppendRun 同一事务更新
+	LastSeq int64 `json:"last_seq"`
+	// 这张图的第几次运行；存储在 Create 时分配
+	No           int64     `json:"no"`
+	RegistryHash *string   `json:"registry_hash,omitempty"`
+	ReplayOf     *Ulid     `json:"replay_of,omitempty"`
+	SessionID    *Ulid     `json:"session_id,omitempty"`
+	SnapshotRef  *WsRef    `json:"snapshot_ref,omitempty"`
+	StartedBy    Actor     `json:"started_by"`
+	Status       RunStatus `json:"status"`
+	Steps        RunSteps  `json:"steps"`
+	// 累计 token 数（C.01-R10）
+	Usage RunMetaUsage `json:"usage"`
+}
+
+// RunMetaHeadline：监控页一行摘要（B.04.03 §5）；由 engine/run 写入
+type RunMetaHeadline struct {
+	Kind      string    `json:"kind"`
+	NodeLabel *string   `json:"node_label,omitempty"`
+	Steps     *RunSteps `json:"steps,omitempty"`
+}
+
+// RunMetaUsage：累计 token 数（C.01-R10）
+type RunMetaUsage struct {
+	Cached int64 `json:"cached"`
+	In     int64 `json:"in"`
+	Out    int64 `json:"out"`
+}
+
 // RunStatus：运行状态（C.07 §2）
 type RunStatus string
+
+// RunSteps：运行的步数：已完成 / 总数
+type RunSteps struct {
+	Done  int64 `json:"done"`
+	Total int64 `json:"total"`
+}
 
 // Section 由 schema/recipe.schema.json 生成。
 type Section struct {

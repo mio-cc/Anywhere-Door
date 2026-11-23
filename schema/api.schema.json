@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/api.schema.json",
+  "x-version": "1.0",
+  "title": "HTTP 接口与存储共用的结构（C.01 文件表；本版只有 E.07.01 的 6 个，P.09 K236）",
+  "$defs": {
+    "GraphMeta": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "version",
+        "stats",
+        "created_at",
+        "updated_at"
+      ],
+      "additionalProperties": false,
+      "description": "图的元信息（GET /graphs，W.04.04 §3.5）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "图标题；没有标题时为空串"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "main 分支的 head 版本"
+        },
+        "stats": {
+          "type": "object",
+          "required": [
+            "layers",
+            "subgraphs",
+            "nodes"
+          ],
+          "additionalProperties": false,
+          "description": "图的规模，提交时由 engine/op 算好写入",
+          "properties": {
+            "layers": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "嵌套层数（根图算 1）"
+            },
+            "subgraphs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "nodes": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "全部层的节点总数"
+            }
+          }
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "updated_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "deleted_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "BranchMeta": {
+      "type": "object",
+      "required": [
+        "name",
+        "base_version",
+        "head",
+        "behind",
+        "ahead",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "description": "分支（GET /graphs/{id}/branches，W.04.04 §3.5）",
+      "properties": {
+        "name": {
+          "$ref": "op.schema.json#/$defs/Branch"
+        },
+        "base_version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "从 main 的哪个版本分出；main 为 0"
+        },
+        "head": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "本分支的 head 版本"
+        },
+        "behind": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "main 在 base_version 之后又前进了几个版本；存储读出时算，main 为 0"
+        },
+        "ahead": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "本分支在 base_version 之后前进了几个版本；存储读出时算，main 为 0"
+        },
+        "created_by": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "deleted_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "OpRecord": {
+      "type": "object",
+      "required": [
+        "graph_id",
+        "branch",
+        "version",
+        "op",
+        "undone"
+      ],
+      "additionalProperties": false,
+      "description": "Op 日志的一条（GET /graphs/{id}/ops，W.04.04 §3.5）",
+      "properties": {
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "branch": {
+          "$ref": "op.schema.json#/$defs/Branch"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "这条 Op 应用后的图版本"
+        },
+        "op": {
+          "$ref": "op.schema.json#/$defs/Op",
+          "description": "完整的 Op，含服务器填写的 id、actor、target、group_id、inverse、ts"
+        },
+        "undone": {
+          "type": "boolean",
+          "description": "所在的组已被撤销（E.05.03）"
+        }
+      }
+    },
+    "RunSteps": {
+      "type": "object",
+      "required": [
+        "done",
+        "total"
+      ],
+      "additionalProperties": false,
+      "description": "运行的步数：已完成 / 总数",
+      "properties": {
+        "done": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "RunMeta": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "graph_id",
+        "branch",
+        "graph_version",
+        "status",
+        "no",
+        "steps",
+        "usage",
+        "cost_micros",
+        "last_seq",
+        "started_by",
+        "created_at"
+      ],
+      "additionalProperties": false,
+      "description": "运行的元信息（GET /runs，W.04.04 §3.5）",
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "kind": {
+          "enum": [
+            "run",
+            "chat",
+            "optimize"
+          ],
+          "description": "chat 是对话 Agent 的一条回复（P.09 K36）"
+        },
+        "session_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "branch": {
+          "$ref": "op.schema.json#/$defs/Branch"
+        },
+        "graph_version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "运行冻结的图版本"
+        },
+        "snapshot_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef"
+        },
+        "registry_hash": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/RunStatus"
+        },
+        "no": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "这张图的第几次运行；存储在 Create 时分配"
+        },
+        "headline": {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false,
+          "description": "监控页一行摘要（B.04.03 §5）；由 engine/run 写入",
+          "properties": {
+            "kind": {
+              "enum": [
+                "failed_at",
+                "waiting_at",
+                "running_at",
+                "steps"
+              ]
+            },
+            "node_label": {
+              "type": "string"
+            },
+            "steps": {
+              "$ref": "#/$defs/RunSteps"
+            }
+          }
+        },
+        "steps": {
+          "$ref": "#/$defs/RunSteps"
+        },
+        "usage": {
+          "type": "object",
+          "required": [
+            "in",
+            "out",
+            "cached"
+          ],
+          "additionalProperties": false,
+          "description": "累计 token 数（C.01-R10）",
+          "properties": {
+            "in": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "out": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "cached": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "cost_micros": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_seq": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "运行流最后一条落库事件的 seq；AppendRun 同一事务更新"
+        },
+        "started_by": {
+          "$ref": "common.schema.json#/$defs/Actor"
+        },
+        "replay_of": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "fork_of": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "fork_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "created_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "ended_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "NodeStateRow": {
+      "type": "object",
+      "required": [
+        "exec_key",
+        "node_id",
+        "loc",
+        "state",
+        "attempt",
+        "last_seq"
+      ],
+      "additionalProperties": false,
+      "description": "节点执行状态的投影（GET /runs/{id}/nodes，W.04.04 §3.5）",
+      "properties": {
+        "exec_key": {
+          "type": "string",
+          "minLength": 1,
+          "description": "一次节点执行的唯一键（C.06.05-R5）"
+        },
+        "node_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "loc": {
+          "$ref": "common.schema.json#/$defs/Loc"
+        },
+        "state": {
+          "$ref": "common.schema.json#/$defs/NodeState"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "progress": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "started_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "ended_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "error": {
+          "$ref": "run-event.schema.json#/$defs/NodeError"
+        },
+        "tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_micros": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_seq": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "更新这一行的最后一条事件的 seq"
+        }
+      }
+    }
+  }
+}

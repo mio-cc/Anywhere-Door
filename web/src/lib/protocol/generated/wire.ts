@@ -36,6 +36,7 @@ export type WireTypeName =
   | "BlockProposal"
   | "BlockProposalCounts"
   | "BlockRun"
+  | "BranchMeta"
   | "Budget"
   | "DataApprovalRequested"
   | "DataApprovalResolved"
@@ -107,6 +108,8 @@ export type WireTypeName =
   | "GhostMarkTarget"
   | "Graph"
   | "GraphEvent"
+  | "GraphMeta"
+  | "GraphMetaStats"
   | "GraphPatch"
   | "GraphPatchExpectedEffect"
   | "Impl"
@@ -132,9 +135,11 @@ export type WireTypeName =
   | "NodeDef"
   | "NodeDefPorts"
   | "NodeError"
+  | "NodeStateRow"
   | "Note"
   | "NoteSize"
   | "Op"
+  | "OpRecord"
   | "OpTarget"
   | "OpsApplied"
   | "OpsProposed"
@@ -196,6 +201,10 @@ export type WireTypeName =
   | "RewireItem"
   | "Rolecard"
   | "RunEvent"
+  | "RunMeta"
+  | "RunMetaHeadline"
+  | "RunMetaUsage"
+  | "RunSteps"
   | "Section"
   | "Selection"
   | "Session"
@@ -286,6 +295,18 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "kind": "raw",
       "run_id": "raw",
       "status": "raw",
+    },
+  },
+  BranchMeta: {
+    fields: {
+      "ahead": "raw",
+      "base_version": "raw",
+      "behind": "raw",
+      "created_at": "raw",
+      "created_by": { t: "Actor" },
+      "deleted_at": "raw",
+      "head": "raw",
+      "name": "raw",
     },
   },
   Budget: {
@@ -865,6 +886,24 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       },
     },
   },
+  GraphMeta: {
+    fields: {
+      "created_at": "raw",
+      "deleted_at": "raw",
+      "id": "raw",
+      "stats": { t: "GraphMetaStats" },
+      "title": "raw",
+      "updated_at": "raw",
+      "version": "raw",
+    },
+  },
+  GraphMetaStats: {
+    fields: {
+      "layers": "raw",
+      "nodes": "raw",
+      "subgraphs": "raw",
+    },
+  },
   GraphPatch: {
     fields: {
       "base_version": "raw",
@@ -1114,6 +1153,23 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "retryable": "raw",
     },
   },
+  NodeStateRow: {
+    fields: {
+      "attempt": "raw",
+      "cost_micros": "raw",
+      "ended_at": "raw",
+      "error": { t: "NodeError" },
+      "exec_key": "raw",
+      "last_seq": "raw",
+      "loc": { t: "Loc" },
+      "node_id": "raw",
+      "progress": "raw",
+      "round": "raw",
+      "started_at": "raw",
+      "state": "raw",
+      "tokens": "raw",
+    },
+  },
   Note: {
     fields: {
       "color": "raw",
@@ -1184,6 +1240,15 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
         "ungroup": "PayloadUngroup",
         "update_note": "PayloadUpdateNote",
       },
+    },
+  },
+  OpRecord: {
+    fields: {
+      "branch": "raw",
+      "graph_id": "raw",
+      "op": { t: "Op" },
+      "undone": "raw",
+      "version": "raw",
     },
   },
   OpTarget: {
@@ -1687,6 +1752,51 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
         "tool.call": "DataToolCall",
         "tool.intent": "DataToolIntent",
       },
+    },
+  },
+  RunMeta: {
+    fields: {
+      "branch": "raw",
+      "cost_micros": "raw",
+      "created_at": "raw",
+      "ended_at": "raw",
+      "fork_of": "raw",
+      "fork_seq": "raw",
+      "graph_id": "raw",
+      "graph_version": "raw",
+      "headline": { t: "RunMetaHeadline" },
+      "id": "raw",
+      "kind": "raw",
+      "last_seq": "raw",
+      "no": "raw",
+      "registry_hash": "raw",
+      "replay_of": "raw",
+      "session_id": "raw",
+      "snapshot_ref": "raw",
+      "started_by": { t: "Actor" },
+      "status": "raw",
+      "steps": { t: "RunSteps" },
+      "usage": { t: "RunMetaUsage" },
+    },
+  },
+  RunMetaHeadline: {
+    fields: {
+      "kind": "raw",
+      "node_label": "raw",
+      "steps": { t: "RunSteps" },
+    },
+  },
+  RunMetaUsage: {
+    fields: {
+      "cached": "raw",
+      "in": "raw",
+      "out": "raw",
+    },
+  },
+  RunSteps: {
+    fields: {
+      "done": "raw",
+      "total": "raw",
     },
   },
   Section: {

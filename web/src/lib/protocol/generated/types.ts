@@ -108,6 +108,22 @@ export interface BlockRun {
 
 export type Branch = string;
 
+/** 分支（GET /graphs/{id}/branches，W.04.04 §3.5） */
+export interface BranchMeta {
+  /** 本分支在 base_version 之后前进了几个版本；存储读出时算，main 为 0 */
+  ahead: number;
+  /** 从 main 的哪个版本分出；main 为 0 */
+  base_version: number;
+  /** main 在 base_version 之后又前进了几个版本；存储读出时算，main 为 0 */
+  behind: number;
+  created_at: Timestamp;
+  created_by?: Actor;
+  deleted_at?: Timestamp;
+  /** 本分支的 head 版本 */
+  head: number;
+  name: Branch;
+}
+
 /** 预算（C.09 §3） */
 export interface Budget {
   calls?: number;
@@ -804,6 +820,29 @@ export type GraphEvent = GraphEventCommon & (
 
 export type GraphEventKind = "op.applied" | "op.coalesced" | "branch.updated" | "proposal.created" | "proposal.updated" | "proposal.decided" | "mandate.changed" | "validate" | "presence" | "model.activity";
 
+/** 图的元信息（GET /graphs，W.04.04 §3.5） */
+export interface GraphMeta {
+  created_at: Timestamp;
+  deleted_at?: Timestamp;
+  id: Ulid;
+  /** 图的规模，提交时由 engine/op 算好写入 */
+  stats: GraphMetaStats;
+  /** 图标题；没有标题时为空串 */
+  title: string;
+  updated_at: Timestamp;
+  /** main 分支的 head 版本 */
+  version: number;
+}
+
+/** 图的规模，提交时由 engine/op 算好写入 */
+export interface GraphMetaStats {
+  /** 嵌套层数（根图算 1） */
+  layers: number;
+  /** 全部层的节点总数 */
+  nodes: number;
+  subgraphs: number;
+}
+
 export interface GraphPatch {
   base_version: number;
   branch?: Branch;
@@ -1141,6 +1180,25 @@ export const NodeState = {
   Cached: "cached",
 } as const;
 
+/** 节点执行状态的投影（GET /runs/{id}/nodes，W.04.04 §3.5） */
+export interface NodeStateRow {
+  attempt: number;
+  cost_micros?: number;
+  ended_at?: Timestamp;
+  error?: NodeError;
+  /** 一次节点执行的唯一键（C.06.05-R5） */
+  exec_key: string;
+  /** 更新这一行的最后一条事件的 seq */
+  last_seq: number;
+  loc: Loc;
+  node_id: Ulid;
+  progress?: number;
+  round?: number;
+  started_at?: Timestamp;
+  state: NodeState;
+  tokens?: number;
+}
+
 /** 原子节点：中文名；扩展节点：包名/节点名@主版本 */
 export type NodeTypeRef = string;
 
@@ -1265,6 +1323,18 @@ export const OpKind = {
   DeleteBranch: "delete_branch",
   MergeBranch: "merge_branch",
 } as const;
+
+/** Op 日志的一条（GET /graphs/{id}/ops，W.04.04 §3.5） */
+export interface OpRecord {
+  branch: Branch;
+  graph_id: Ulid;
+  /** 完整的 Op，含服务器填写的 id、actor、target、group_id、inverse、ts */
+  op: Op;
+  /** 所在的组已被撤销（E.05.03） */
+  undone: boolean;
+  /** 这条 Op 应用后的图版本 */
+  version: number;
+}
 
 /** 这个 Op 主要作用于哪里；用于授权和冲突检测。服务器会按 payload 重新计算并校验 */
 export interface OpTarget {
@@ -1851,6 +1921,51 @@ export type RunEvent = RunEventCommon & (
 
 export type RunEventKind = "run.created" | "run.status" | "run.cancel_requested" | "run.graph_swapped" | "engine.illegal_transition" | "node.state" | "node.progress" | "node.chunk" | "node.input" | "node.output" | "node.throttled" | "node.log" | "loop.round" | "checkpoint.saved" | "ledger.changed" | "llm.call" | "llm.fallback" | "tool.intent" | "tool.call" | "ctx.assembled" | "prompt.rendered" | "orch.started" | "orch.tool_call" | "orch.expanded" | "orch.finished" | "approval.requested" | "approval.resolved" | "escalation.raised" | "escalation.merged" | "escalation.routed" | "escalation.resolved" | "budget.charged" | "budget.warn" | "budget.exceeded" | "estop.triggered" | "estop.released" | "brief.updated" | "edge.flow" | "pool.usage";
 
+/** 运行的元信息（GET /runs，W.04.04 §3.5） */
+export interface RunMeta {
+  branch: Branch;
+  cost_micros: number;
+  created_at: Timestamp;
+  ended_at?: Timestamp;
+  fork_of?: Ulid;
+  fork_seq?: number;
+  graph_id: Ulid;
+  /** 运行冻结的图版本 */
+  graph_version: number;
+  /** 监控页一行摘要（B.04.03 §5）；由 engine/run 写入 */
+  headline?: RunMetaHeadline;
+  id: Ulid;
+  /** chat 是对话 Agent 的一条回复（P.09 K36） */
+  kind: "run" | "chat" | "optimize";
+  /** 运行流最后一条落库事件的 seq；AppendRun 同一事务更新 */
+  last_seq: number;
+  /** 这张图的第几次运行；存储在 Create 时分配 */
+  no: number;
+  registry_hash?: string;
+  replay_of?: Ulid;
+  session_id?: Ulid;
+  snapshot_ref?: WsRef;
+  started_by: Actor;
+  status: RunStatus;
+  steps: RunSteps;
+  /** 累计 token 数（C.01-R10） */
+  usage: RunMetaUsage;
+}
+
+/** 监控页一行摘要（B.04.03 §5）；由 engine/run 写入 */
+export interface RunMetaHeadline {
+  kind: "failed_at" | "waiting_at" | "running_at" | "steps";
+  node_label?: string;
+  steps?: RunSteps;
+}
+
+/** 累计 token 数（C.01-R10） */
+export interface RunMetaUsage {
+  cached: number;
+  in: number;
+  out: number;
+}
+
 /** 运行状态（C.07 §2） */
 export type RunStatus = "pending" | "running" | "paused" | "done" | "failed" | "cancelled";
 
@@ -1863,6 +1978,12 @@ export const RunStatus = {
   Failed: "failed",
   Cancelled: "cancelled",
 } as const;
+
+/** 运行的步数：已完成 / 总数 */
+export interface RunSteps {
+  done: number;
+  total: number;
+}
 
 export interface Section {
   /** 本段占总预算的比例；0 = 不单独限制 */

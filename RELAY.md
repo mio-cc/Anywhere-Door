@@ -18,6 +18,125 @@
 
 ---
 
+
+## 2026-11-24 00:45 · E.07.02 · Quick（AWS Quick） · 交付（第 6 片）
+- 依据：设计仓库提交（见 docs/relay/E.07.02.json）；`P.09` K236（手写 SQL）、K237
+- 完成：实施卡全部。`engine/store/sqlite`：`Open`（备份、迁移、写连接 + 读连接池）、`Tx`、7 个仓库（`graphs.go` 图和 Op、`runs.go` 运行和事件、`misc.go` 检查点、工具调用、设置）；测试 `E0702-T1`（表结构逐项比对）、`T2`（冗余列与全文一致）、`T3`（契约测试）、`T4`（重新打开不迁移不备份）。
+- 自主决定的细节：在 `Tx` 里的写方法包一个保存点，出错时只撤销这个方法的写入（与 memstore 一致）；约束冲突按错误信息里的 `constraint failed` 映射为 `ErrConflict`；K238：并发写测试 3s 只在 ANYDOOR_PERF=1 时判，writer_test.go 的修复算在本叶子范围内（E.07.04 已片内完成），E.07.03、E.07.02 已按 E.07.04 改动更新依据。E.07.01、E.07.04 也按 E.07.02 实施卡的改动更新了依据（只加了 writer_test.go 的归属说明，接口与表结构没变）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 00:54 · E.07.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 64698ed（docs/relay/E.07.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.07.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+
+## 2026-11-24 00:45 · E.07.03 · Quick（AWS Quick） · 交付（第 6 片）
+- 依据：设计仓库提交（见 docs/relay/E.07.03.json）；`P.09` K237（迁移执行器自写、`Open` 负责备份）
+- 完成：实施卡全部。`engine/store/sqlite/migrate.go`：`SchemaVersion`、`Migrate`（序号连续检查、每个文件一个事务、`ErrSchemaTooNew`）、`Backup`（`VACUUM INTO`，只留最近 3 份）；`migrations/0001_init.sql`：`E.07.02` §4.1 的 14 张表；测试 `E0703-T1`–`T4`。
+- 自主决定的细节：Up 段整段一次执行；`timeLayout` 常量放在这里，`E.07.02` 共用。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 00:52 · E.07.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 64698ed（docs/relay/E.07.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.07.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+
+## 2026-11-24 00:45 · E.07.04 · Quick（AWS Quick） · 交付（第 6 片）
+- 依据：设计仓库提交（见 docs/relay/E.07.04.json）；`P.09` K237（去掉存储层合并）
+- 完成：实施卡全部。`engine/store/sqlite/writer.go`：单写者队列（取消、panic、1s 慢事务告警、5s 超时回滚、BUSY 重试 3 次、关闭时清空）；`dsn.go`：连接串；`go.mod` 加 `modernc.org/sqlite`；测试 `E0704-T1`–`T4`、`BenchmarkAppendEvents`。
+- 自主决定的细节：连接串不用 `file:` URI（Windows 盘符），`<路径>?_pragma=…`（`E.07.02` §4 已改）；`ctx` 取消时 `Do` 立刻返回，排队中的请求不再执行（`E.07.04` §5 已改）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 00:48 · E.07.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 64698ed（docs/relay/E.07.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.07.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+
+## 2026-11-24 00:45 · E.07.05 · Quick（AWS Quick） · 交付（第 6 片）
+- 依据：设计仓库提交（见 docs/relay/E.07.05.json）；`P.09` K236、K237
+- 完成：实施卡全部。`engine/store/memstore`：一把锁、每条记录 JSON 编码保存；每个写方法和 `Tx` 都在副本上执行、成功才换上（单个方法也是要么全写要么不写）；测试 `E0705-T1`（契约测试）、`T2`（不共享内存）。
+- 自主决定的细节：副本是浅拷贝每个 map（值都是不可变的字节串），事件列表 `slices.Clip` 防止 append 写进原数组；`PutNodeStates`、`PutView` 对不存在的运行返回 `ErrNotFound`（和 SQLite 的外键一致，`E.07.01` §5 已改）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 00:46 · E.07.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 64698ed（docs/relay/E.07.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.07.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+
+## 2026-11-24 00:45 · E.07.01 · Quick（AWS Quick） · 交付（第 6 片）
+- 依据：设计仓库提交（见 docs/relay/E.07.01.json）；`P.09` K236（只做 7 个仓库、`api.schema.json`、手写 SQL）、K237（事件按流分方法、`Base` 不重放、存储不读时钟）
+- 完成：实施卡全部。
+  - `schema/api.schema.json`：`GraphMeta`、`BranchMeta`、`OpRecord`、`RunSteps`、`RunMeta`、`NodeStateRow`（没有根结构）；测试 `E0701-T4`（`tools/schemacheck/api_test.go`）。
+  - `engine/store/store.go`、`errors.go`：7 个仓库的接口、`Commit` / `Snapshot` / `UndoEntry` / `Usage` / `Checkpoint` / `ToolCall`、`Page`、键集游标 `EncodeCursor` / `DecodeCursor`、`IsDraftBranch`、哨兵错误。
+  - `engine/store/storetest`：契约测试 `Run(t, factory)`，`E0701-T1`（7 组共 25 条）、`T2`（Tx 回滚 3 条）、`T3`（1 万条 seq 连续）；在 `E.07.05`、`E.07.02` 跑。
+  - 生成物（`gen/types.go` 等）由验证者在加了 `api.schema.json` 之后运行 `go run ./tools/gen` 产出。
+- 自主决定的细节：分支结构叫 `BranchMeta`（`op.schema.json` 已有字符串 `Branch`）；`storetest` 用 JSON 比较读出的值；`Factory` 负责关闭 Store。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 00:43 · E.07.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 64698ed（docs/relay/E.07.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.07.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-24 00:15 · 冻结叶子复查（第 5 片 / K234、K235 之后） · Quick（AWS Quick） · 设计方结论
 - 依据：设计仓库中"第 5 片冻结"那次提交；K234、K235 改了 `G.10`（去掉 `go-jsonschema`、`json-schema-to-typescript` 两个生成工具）、`G.16`（写明 `C.14` 现在生成哪些）、`C.14`（重写、冻结）、`W.04.03`（字段映射表按类型）、`W.08.01`（图标生成器的负责叶子），`G.10` 附在每个 C 叶子的任务包里，所以 `relay stale` 会列出一批叶子。
 - 结论：只要某个叶子列出的改过的文档都在上面这 5 份里，代码都不用改，`relay stale --accept`。
