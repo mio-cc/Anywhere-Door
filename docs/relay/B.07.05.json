@@ -1,0 +1,31 @@
+{
+  "leaf": "B.07.05",
+  "branch": "slice/m0-platform",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-23T18:30:42Z",
+  "docs_commit": "5ca37a97f54d6b39df0252b565d658115ad9fbc1",
+  "docs": {
+    "B_后端服务/B.01_后端总则.md": "sha256:72783c5660eba218e9cc36173275f8c83e834077357afc4a93d2be2015414dca",
+    "B_后端服务/B.03_HTTP_API_总则/B.03_HTTP_API_总则.md": "sha256:799e060041f68c8b401837bae29a3a85000003e1e92d32c860d92feb53fd9c29",
+    "B_后端服务/B.07_platform_平台层/B.07.02_密钥存储.md": "sha256:04e7a8bedfe9d91a8e95cafdcc5993dcdd3d90ca2fa2634492a86ccb624229e0",
+    "B_后端服务/B.07_platform_平台层/B.07.03_配置.md": "sha256:3383d2fe7e09ac832651ce6918e2af3f03775f3f5b574d9bd7f47aafd3bf431f",
+    "B_后端服务/B.07_platform_平台层/B.07.05_数据目录布局.md": "sha256:3016e4666e605327b9c8ef692d2480ab86c26abf68339ead4e73cea67740007c",
+    "B_后端服务/B.07_platform_平台层/B.07_platform_平台层.md": "sha256:0217cd2be17420d394b7a59340befb435d63f6cf9355ec44058b5843846151e9",
+    "B_后端服务/B_后端服务.md": "sha256:1efbac8e9348e04866adad7dbafc278d513b74701c912253277bd4debf8d2126",
+    "E_内核_engine/E.07_store_持久化/E.07.03_迁移.md": "sha256:62be85e2517802f2f2dc18dd606995db12be0ebbaa774d134d597b1be891f9f8",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:ced9fb623bfa0fd1b424bcf05c0964c45f90e659f4609d71d87860750934a04a",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G.10_依赖管理.md": "sha256:6db62706bb90741957e62878591b6fb0d3fe5aefe602a1cd22b431d270da01fe",
+    "G_工程规范/G.11_配置与环境变量.md": "sha256:321d5b03056d36e952ce538ee2970cc8ecab3cf2c375e518bad7b2776f91d247",
+    "G_工程规范/G.13_错误码与错误信息.md": "sha256:cd8d60863a68246e8cd6bf4bac801ed31058c466291201ff0f1417b48aaa3f6b",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7",
+    "S_安全与隐私/S.11_本地数据与隐私.md": "sha256:bb6b7911a54be3f80e8d7afb0b4d2bcc087748e7430be8ca942273be05c922e7"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m0-platform",
+  "base": "3f5e6873f28b159758cb9beba3d855925912ff12",
+  "head": "e37f1943c223fcf7f8733de9d81233209ccee8a8"
+}

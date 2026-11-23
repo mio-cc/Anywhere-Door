@@ -18,6 +18,124 @@
 
 ---
 
+## 2026-11-24 02:40 · B.07.03 · Quick（AWS Quick） · 交付（第 ⑦ 片）
+- 依据：设计仓库提交（见 docs/relay/B.07.03.json）；`P.09` K239、K240
+- 完成：实施卡全部。`internal/platform/config`：`ParseArgs`、登记表 `Items`（`G.11` §3 共 37 项）、四层合并与来源、类型/枚举/范围校验、只读项与 `data.dir` 的处理、`packages.*` 原样保留、`Watch`（阻塞到 ctx 结束）、`Write`（goccy 语法树替换 / 合并）；测试 `B0703-T1`–`T6`。
+- 自主决定的细节：`Watch` 改为阻塞（调用方 `go` 它，`B.07.03` §4 已补）；`Write` 写进文件的是原样值，不展开路径。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+---
+
+## 2026-11-24 02:47 · B.07.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5ca37a9（docs/relay/B.07.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.07.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-24 02:40 · B.07.02 · Quick（AWS Quick） · 交付（第 ⑦ 片）
+- 依据：设计仓库提交（见 docs/relay/B.07.02.json）；`P.09` K239、K240
+- 完成：实施卡全部。`internal/platform/secret`：系统密钥库探测与回退、索引文件、加密文件（Argon2id + XChaCha20-Poly1305，文件头带参数和 `check`）、首次解锁即设主密码、5 次错误冷却 30 秒、开发模式环境变量；测试 `B0702-T1`–`T6`；`go.mod` 加 `zalando/go-keyring`、`golang.org/x/crypto`。
+- 自主决定的细节：文件头加 `check` 字段区分"密码不对"和"文件损坏"、加 `ErrCorrupt`；真实系统密钥库测试的名字用 `anydoor_test_` 开头（名字规则不允许下划线开头）（`B.07.02` 已补）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+---
+
+## 2026-11-24 02:44 · B.07.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5ca37a9（docs/relay/B.07.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.07.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-24 02:40 · B.07.01 · Quick（AWS Quick） · 交付（第 ⑦ 片）
+- 依据：设计仓库提交（见 docs/relay/B.07.01.json）；`P.09` K239、K240
+- 完成：实施卡全部。`internal/platform/auth`：token 生成与读取（`Open`、`ReadToken`、`VerifyToken`、`Rotate`），会话（`NewSession`、`VerifySession`，30 天，只存 sha256，存在调用方传入的 `KV` 里）；测试 `B0701-T1`–`T5`。
+- 自主决定的细节：`Open` 时去掉已过期会话并写回 KV；会话数超过上限时挤掉最早过期的。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+---
+
+## 2026-11-24 02:41 · B.07.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5ca37a9（docs/relay/B.07.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.07.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+
+## 2026-11-24 02:40 · B.07.04 · Quick（AWS Quick） · 交付（第 ⑦ 片）
+- 依据：设计仓库提交（见 docs/relay/B.07.04.json）；`P.09` K239、K240
+- 完成：实施卡全部。`internal/platform/lock`：`Acquire`（Unix `flock`、Windows `LockFileEx` 锁远处的字节）、`WritePort`、`Release`、`Probe`；测试 `B0704-T1`–`T3`（崩溃释放用子进程：测试二进制自己带 `ANYDOOR_LOCK_HELPER=1` 运行 `TestLockHelper`）。
+- 自主决定的细节：`TestLockHelper` 在没有环境变量时直接返回（不用 `t.Skip`，避免 relay 第 ④ 项）；`Probe` 不走代理、不跟随跳转。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 02:38 · B.07.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5ca37a9（docs/relay/B.07.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.07.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+
+## 2026-11-24 02:40 · B.07.05 · Quick（AWS Quick） · 交付（第 ⑦ 片）
+- 依据：设计仓库提交（见 docs/relay/B.07.05.json）；`P.09` K239、K240
+- 完成：实施卡全部。`internal/platform/datadir`：`Resolve`（四级优先级）、`DefaultDir`（三平台纯函数）、`ExpandPath`、`Open`（建子目录、收紧权限、清空 tmp）、各路径方法、`Restrict` / `IsPrivate`（Unix 权限位；Windows 用 `x/sys/windows` 设受保护的 DACL）、`WritePrivate`（原子写）；测试 `B0705-T1`–`T4`（Windows、Unix 各有一个权限细节测试）；`go.mod` 加 `golang.org/x/sys`。
+- 自主决定的细节：`IsPrivate`、`ExpandPath` 两个导出函数（`B.07.05` §4 已补），给 auth、secret、config 的测试和路径展开共用；子目录也逐个 `Restrict`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 02:30 · B.07.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 5ca37a9（docs/relay/B.07.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.07.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 
 ## 2026-11-24 00:45 · E.07.02 · Quick（AWS Quick） · 交付（第 6 片）
 - 依据：设计仓库提交（见 docs/relay/E.07.02.json）；`P.09` K236（手写 SQL）、K237
