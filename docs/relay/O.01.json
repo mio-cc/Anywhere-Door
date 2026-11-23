@@ -3,9 +3,9 @@
   "branch": "feat/O.01-build",
   "claimed_by": "Quick（AWS Quick，按 G.02.06 §5 例外人工领取）",
   "claimed_at": "2026-11-23T03:20:00Z",
-  "docs_commit": "cab75ff35122069c6aef68305f89f1edeb594608",
+  "docs_commit": "293f5295b969a18bd1171582ae3a13b442046843",
   "docs": {
-    "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:730401d2be5cd79617c7b0828fedf2143dc0165864d1037b632f70749068dbb8",
+    "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:861a4308f611d7e1ddf379e513760d4d8d44708324656a376c601ff86d80717d",
     "B_后端服务/B.08_anydoorctl_命令行.md": "sha256:c27f6d4cf6eb1b2acd3522c65f18b7a3c4b1c59c9031cbc3467665b4f1809556",
     "C_契约层/C.14_代码生成映射.md": "sha256:cc6340b20830c512cafdd49e6d34e0101daac1b6bae376220b0278f6c7f79bbe",
     "G_工程规范/G.02_AI_实施者守则/G.02.01_实施任务包格式.md": "sha256:0c703857f67d97d9a3710822a858942a20b63dd69baa9b2a6498617d198a0164",
