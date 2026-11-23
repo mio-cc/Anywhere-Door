@@ -34,3 +34,23 @@
 | 13 | 设计方裁决：采纳。`RELAY.md` 本棒记录的依据改为 `--accept-docs` 之后的提交，并写明每次更新依据时读过的改动和处理方式。这次设计文档又改了（K199），验证者执行 `--accept-docs` 后，以 `docs/relay/O.01.json` 里的 `docs_commit` 为准 |
 | 14 | 修了。`tools/relay/status.go` 的 `openReviewRows`：找表头里"结论"那一列，只有结论一格以"不符合"或"有疑问"开头、而且这一行没有"已处理"的才列出；表头、分隔行、表格外的说明文字都不算。`O01-T11` 的样例评审记录改成这种表格，加了断言：表头、"符合"的行、已处理的行、说明文字都不出现在输出里。规则同时写进设计文档 `G.02.06-R18`、`O.01` §4.5 |
 | 另 | 第二轮验证时发现：`P.09` 被几乎每个叶子引用，每加一条裁决都会让依据失效。设计方裁决：任务包不再附 `P.09`（`G.02.02` §4，`P.09` K199）；`tools/relay/pack.go` 的 `neverAttach` 加上它，`O01-T8` 加了断言。复核：同意（Codex） |
+
+## 第 2 轮 · fix/O.01-stale（K200）
+
+- 评审者：Codex · 2026-11-23
+- 依据：设计仓库提交 `260c067`（O.01 §4.5、G.02.06-R21、P.09 K200）
+
+| # | 实施卡 / 小节 | 结论 | 说明 |
+|---|---|---|---|
+| 1 | O.01 §4.5 `stale --accept`：只用于冻结叶子 | 符合 | `tools/relay/status.go` 257-265 先读设计文档状态，非“冻结”时拒绝并指向 `start --resume --accept-docs`；`tools/relay/relay_test.go` 373-374 用 X.02 断言未冻结叶子会被拒绝。 |
+| 2 | O.01 §4.5 `stale --accept`：设计仓库必须已提交 | 符合 | `tools/relay/status.go` 266-270 检查设计文档仓库 `git status --porcelain`，有未提交修改即拒绝；`tools/relay/relay_test.go` 376-378 构造脏设计仓库并断言报错。 |
+| 3 | O.01 §4.5 `stale --accept`：依据没变不动、成功后 state 不变 | 符合 | `tools/relay/status.go` 274-277 对未变化叶子只提示“不用更新”并返回，未写领取记录；283-288 通过 `rebase` 更新 `docs_commit` 和 `docs`。`tools/relay/pack.go` 216-226 只改依据字段；测试 `tools/relay/relay_test.go` 381-388 断言提交号更新且 `state == merged`，393-395 断言再次 `--accept` 不动作。 |
+| 4 | O.01 §4.5：冻结叶子的 `status` 显示 | 符合 | `tools/relay/status.go` 41-47 优先读取设计文档状态，冻结叶子输出“已冻结”，不再列分支、最后提交和测试覆盖；依据变化时提示“运行 relay stale”。`tools/relay/relay_test.go` 367-371 对应断言，并确认不再出现“等设计方冻结”。 |
+| 5 | 实施卡 `O01-T10` 新断言 | 符合 | `tools/relay/relay_test.go` 355-395 覆盖：只冻结不算过期、冻结后正文变化列出、status 显示和提示、未冻结拒绝、设计仓库脏拒接、更新成功、`docs_commit` 更新、`state` 不变、后续 `stale` 清空、重复 `--accept` 提示不用更新；与 O.01 第 140 行实施卡一致。 |
+| 6 | `G.02.06-R21` 冻结后复查流程 | 符合 | `tools/relay/status.go` 221-255 对冻结且依据变化的叶子输出复查前必须先看 `diff`，并区分“代码要改则改回已审开修复分支”和“不用改则 stale --accept”；257-290 的 `stale --accept` 更新依据后提示在 `RELAY.md` 记录复查结论、随领取记录按合并请求流程合并，与 G.02.06-R21 一致。 |
+| 7 | `rebase` 抽取后的 `start --resume --accept-docs` | 符合 | `tools/relay/pack.go` 216-226 把原依据更新逻辑抽成 `rebase`，`Start` 在 `pack.go` 282-287 按同一条件调用，不建分支、不改领取记录；`tools/relay/relay_test.go` 322-346 仍覆盖 `diff` → 第 ⑥ 项失败 → `--accept-docs` 后通过。 |
+| 8 | 命令行用法与退出约定 | 符合 | `tools/relay/main.go` 5-37 的注释和用法文本都标为 `stale [--accept <叶子>]`；79-89 解析 `--accept`，多余位置参数按用法错误返回；运行 `go vet ./...`、`golangci-lint run ./...` 和全量测试均通过。 |
+
+## 第 2 轮总结
+
+`stale --accept` 和冻结叶子状态显示与 K200、O.01 §4.5、G.02.06-R21 一致；`rebase` 抽取未改变 `start --resume --accept-docs` 的既有行为。本轮没有“不符合”或“有疑问”。

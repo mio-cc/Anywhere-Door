@@ -213,6 +213,17 @@ func skipDir(name string) bool {
 	return false
 }
 
+// rebase 把领取记录的依据更新为 docsCommit 时的文档指纹（start --resume --accept-docs、stale --accept）。
+func (e *Env) rebase(c *Claim, docsCommit string, docs []PackDoc) error {
+	c.DocsCommit, c.Docs = docsCommit, map[string]string{}
+	for _, d := range docs {
+		if !d.Missing {
+			c.Docs[d.Path] = d.Hash
+		}
+	}
+	return e.writeClaim(c)
+}
+
 // Start 领取一个叶子（G.02.06-R4–R7）；resume 时只重新生成任务包。
 func (e *Env) Start(leaf, name string, resume bool) error {
 	t, err := e.Tree()
@@ -271,13 +282,7 @@ func (e *Env) Start(leaf, name string, resume bool) error {
 		changed := changedDocs(t, c)
 		switch {
 		case len(changed) > 0 && e.AcceptDocs:
-			c.DocsCommit, c.Docs = docsCommit, map[string]string{}
-			for _, d := range docs {
-				if !d.Missing {
-					c.Docs[d.Path] = d.Hash
-				}
-			}
-			if err := e.writeClaim(c); err != nil {
+			if err := e.rebase(c, docsCommit, docs); err != nil {
 				return err
 			}
 			e.say("已把依据更新为设计仓库 %s（%d 份文档改过：%s）；把读过的改动和处理方式记进 RELAY.md 本棒记录，再提交 %s", short(docsCommit), len(changed), strings.Join(changed, "、"), claimPath(leaf))

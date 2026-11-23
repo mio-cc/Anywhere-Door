@@ -355,14 +355,44 @@ func TestDiffStale(t *testing.T) {
 		write(t, env.Docs, p, strings.Replace(read(t, env.Docs, p), "| 状态 | 已审 |", "| 状态 | 冻结 |", 1))
 		gitRun(t, env.Docs, "commit", "-q", "-am", "冻结")
 		out.Reset()
-		if err := env.Stale(); err != nil || !strings.Contains(out.String(), "没有需要复查") {
+		if err := env.Stale(""); err != nil || !strings.Contains(out.String(), "没有需要复查") {
 			t.Fatalf("只冻结不应该算过期：%v\n%s", err, out)
 		}
 		write(t, env.Docs, p, strings.Replace(read(t, env.Docs, p), "甲要快", "甲要更快", 1))
 		gitRun(t, env.Docs, "commit", "-q", "-am", "冻结后又改")
 		out.Reset()
-		if err := env.Stale(); err != nil || !strings.Contains(out.String(), "X.01") {
+		if err := env.Stale(""); err != nil || !strings.Contains(out.String(), "X.01") {
 			t.Fatalf("冻结后改了正文应当列出：%v\n%s", err, out)
+		}
+		out.Reset()
+		if err := env.Status(); err != nil || !strings.Contains(out.String(), "X.01 甲：已冻结") || !strings.Contains(out.String(), "运行 relay stale") ||
+			strings.Contains(out.String(), "等设计方冻结") {
+			t.Fatalf("status 应当显示已冻结、提示运行 stale：%v\n%s", err, out)
+		}
+		// 复查后代码不用改：--accept 更新依据（G.02.06-R21）
+		if err := env.Stale("X.02"); err == nil || !strings.Contains(err.Error(), "只用于冻结的叶子") {
+			t.Fatalf("没冻结的叶子不能 --accept：%v", err)
+		}
+		write(t, env.Docs, "X/X.02_乙.md", read(t, env.Docs, "X/X.02_乙.md")+"\n")
+		if err := env.Stale("X.01"); err == nil || !strings.Contains(err.Error(), "未提交的修改") {
+			t.Fatalf("设计文档有未提交的修改时不能 --accept：%v", err)
+		}
+		gitRun(t, env.Docs, "commit", "-q", "-am", "乙加一行")
+		out.Reset()
+		if err := env.Stale("X.01"); err != nil || !strings.Contains(out.String(), "已把 X.01 的依据更新") {
+			t.Fatalf("--accept：%v\n%s", err, out)
+		}
+		head, _ := gitOut(env.Docs, "rev-parse", "HEAD")
+		if c, _ := env.readClaim("X.01"); c.DocsCommit != head || c.State != "merged" {
+			t.Fatalf("--accept 之后 docs_commit 应当是 %s、state 不变：%+v", head, c)
+		}
+		out.Reset()
+		if err := env.Stale(""); err != nil || !strings.Contains(out.String(), "没有需要复查") {
+			t.Fatalf("--accept 之后不应该再列出：%v\n%s", err, out)
+		}
+		out.Reset()
+		if err := env.Stale("X.01"); err != nil || !strings.Contains(out.String(), "不用更新") {
+			t.Fatalf("再 --accept 一次应当说不用更新：%v\n%s", err, out)
 		}
 	})
 }

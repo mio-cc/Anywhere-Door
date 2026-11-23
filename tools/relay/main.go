@@ -5,7 +5,7 @@
 //	go run ./tools/relay start <叶子> [--name 简称] [--by 实施者] [--resume [--accept-docs]]
 //	go run ./tools/relay check <叶子> [--no-build]
 //	go run ./tools/relay diff <叶子>
-//	go run ./tools/relay stale
+//	go run ./tools/relay stale [--accept <叶子>]
 //
 // 设计文档的位置：环境变量 ANYDOOR_DOCS；没设时为 ../sj/项目树_v0.5（G.02.06-R1）。
 // 只用 Go 标准库，通过 os/exec 调用 git。退出码：0 通过，1 不通过，2 用法错误。
@@ -31,7 +31,7 @@ const usage = `用法：
   go run ./tools/relay start <叶子> [--name 简称] [--by 实施者] [--resume [--accept-docs]]
   go run ./tools/relay check <叶子> [--no-build]
   go run ./tools/relay diff <叶子>
-  go run ./tools/relay stale`
+  go run ./tools/relay stale [--accept <叶子>]`
 
 // errFailed 表示检查没通过（退出码 1），详细原因已经打印。
 var errFailed = errors.New("没有通过")
@@ -79,7 +79,13 @@ func dispatch(env *Env, args []string) error {
 	case "next":
 		return env.Next()
 	case "stale":
-		return env.Stale()
+		fset := flag.NewFlagSet("stale", flag.ContinueOnError)
+		fset.SetOutput(io.Discard)
+		accept := fset.String("accept", "", "复查后代码不用改：把这个冻结叶子的依据更新为当前的设计文档")
+		if err := fset.Parse(rest); err != nil || fset.NArg() > 0 {
+			return fmt.Errorf("%w：stale 只接受 --accept <叶子>", errUsage)
+		}
+		return env.Stale(*accept)
 	case "start", "check", "diff":
 	default:
 		return fmt.Errorf("%w：不认识的命令 %q", errUsage, cmd)

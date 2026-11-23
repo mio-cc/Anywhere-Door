@@ -18,6 +18,16 @@
 
 ---
 
+## 2026-11-23 12:20 · O.01 · Quick（实施）· 冻结后修复（`fix/O.01-stale`）
+- 依据：以 `docs/relay/O.01.json` 的 `docs_commit` 为准；设计仓库 K200 提交之后由验证者 `start O.01 --resume --accept-docs` 更新。读过的改动：`G.02.06-R21`（`stale` 列出后怎么处理）、`O.01` §4.5 与 `O01-T10`（`stale --accept`、`status` 显示冻结），代码按此修改；`P.09` 不在依据里。
+- 起因：`O.01` 冻结后第一次跑 `relay stale` 就列出了它（同一次提交里改了 `G.02.06-R21` 的措辞）。检查是对的，但冻结的叶子没有办法确认"代码不用改"，`status` 也仍显示"等设计方冻结"（`P.09` K200）。按 `G.02.06-R21`，设计方把 `O.01` 改回"已审"，开修复分支。
+- 完成：`tools/relay`：`stale --accept <叶子>`（只用于冻结的叶子，设计仓库必须已提交，依据没变就不动）；`status` 对冻结的叶子显示"已冻结"，依据改过时提示运行 `stale`；`start --resume --accept-docs` 和 `stale --accept` 共用 `rebase`。`O01-T10` 补了对应断言。
+- 进行中：等验证者验证、评审者评审（在 `docs/relay/O.01.review.md` 追加一张表）。
+- 下一步：验证者：设计仓库提交推送 → 切 `fix/O.01-stale` → `--accept-docs` → `relay check O.01` → 评审 → 提交、推送分支 → 用户批准后 squash 合并 → 设计方重新冻结 `O.01` → `relay stale` 应为"没有需要复查的冻结叶子"。
+- 上报单 / 阻塞：无。
+- relay check：待跑。
+- 评审：待评审。
+
 ## 2026-11-23 11:58 · O.01 · Quick（实施）+ Codex（验证、评审）· 交付
 - 依据：设计仓库 `6a4e791`（`docs/relay/O.01.json`，`state` 改为 `merged`）。
 - 完成：实施卡全部条目；`O01-T1`–`T11` 全部有对应测试。三轮验证；交叉评审 14 条全部符合或已处理（`docs/relay/O.01.review.md`）；`relay status` 没有未处理意见。加了 `CHANGELOG.md`（`G.09-R4`）。

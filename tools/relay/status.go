@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -37,6 +39,13 @@ func (e *Env) Status() error {
 		name := ""
 		if n, ok := t.Nodes[leaf]; ok {
 			name = n.Name
+		}
+		if st, _ := t.State(leaf); st == "冻结" {
+			e.say("- %s %s：已冻结 · %s · 领取于 %s", leaf, name, c.ClaimedBy, c.ClaimedAt)
+			if ch := changedDocs(t, c); len(ch) > 0 {
+				e.say("    冻结后依据文档改过 %d 份：运行 relay stale", len(ch))
+			}
+			continue
 		}
 		e.say("- %s %s：%s · 分支 %s · %s · 领取于 %s", leaf, name, stateName(c.State), c.Branch, c.ClaimedBy, c.ClaimedAt)
 		if last, err := gitOut(e.Repo, "log", "-1", "--format=%h %s（%cr）", c.Branch); err == nil {
@@ -210,10 +219,14 @@ func (e *Env) Next() error {
 }
 
 // Stale 列出状态为"冻结"、依据文档又被改过的叶子（G.02.06-R21）：它们的代码需要复查。
-func (e *Env) Stale() error {
+// accept 不为空时：复查后代码不用改，把这个叶子的依据更新为当前的设计文档（G.02.06-R21）。
+func (e *Env) Stale(accept string) error {
 	t, err := e.Tree()
 	if err != nil {
 		return err
+	}
+	if accept != "" {
+		return e.acceptStale(t, accept)
 	}
 	claims, err := e.allClaims()
 	if err != nil {
@@ -235,6 +248,45 @@ func (e *Env) Stale() error {
 	}
 	if count == 0 {
 		e.say("没有需要复查的冻结叶子")
+	} else {
+		e.say("先 relay diff <叶子> 看改了什么。代码要改的，设计方把叶子改回「已审」，开修复分支；不用改的，relay stale --accept <叶子>（G.02.06-R21）")
 	}
+	return e.pErr
+}
+
+func (e *Env) acceptStale(t *Tree, leaf string) error {
+	st, err := t.State(leaf)
+	if err != nil {
+		return err
+	}
+	if st != "冻结" {
+		return fmt.Errorf("%s 的状态是「%s」：stale --accept 只用于冻结的叶子；没冻结的用 start %s --resume --accept-docs", leaf, st, leaf)
+	}
+	if dirty, err := gitOut(t.Dir, "status", "--porcelain"); err != nil {
+		return fmt.Errorf("设计文档目录不是 git 仓库：%w", err)
+	} else if dirty != "" {
+		return errors.New("设计文档目录有未提交的修改：依据必须是已提交的版本，先在设计仓库提交")
+	}
+	c, err := e.readClaim(leaf)
+	if err != nil {
+		return err
+	}
+	changed := changedDocs(t, c)
+	if len(changed) == 0 {
+		e.say("%s 的依据文档冻结后没有改过，不用更新", leaf)
+		return e.pErr
+	}
+	docsCommit, err := gitOut(t.Dir, "rev-parse", "HEAD")
+	if err != nil {
+		return err
+	}
+	_, docs, err := BuildPack(t, leaf, docsCommit, goPackages(e.Repo))
+	if err != nil {
+		return err
+	}
+	if err := e.rebase(c, docsCommit, docs); err != nil {
+		return err
+	}
+	e.say("已把 %s 的依据更新为设计仓库 %s（复查过的 %d 份：%s）；在 RELAY.md 记一条复查结论（读了什么、为什么代码不用改），和 %s 一起提交，按合并请求流程合并（G.02.06-R21）", leaf, short(docsCommit), len(changed), strings.Join(changed, "、"), claimPath(leaf))
 	return e.pErr
 }
