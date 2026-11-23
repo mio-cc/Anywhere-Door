@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T05:27:21Z",
-  "docs_commit": "809edd00f823c3c35a9d1b800b77bdb761f9260c",
+  "docs_commit": "0164d487c9dce41f984306892af7205e2c68ba2d",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.04_端口类型系统/C.04.01_8_类基础类型.md": "sha256:a1c6a845298ee64f93a708267af5d1874fa0913c7a5a14dcee6e3822a08ef426",
@@ -12,7 +12,7 @@
     "C_契约层/C.04_端口类型系统/C.04_端口类型系统.md": "sha256:e560f1c9fd65ec29001b7337a61abbc344ff31cf4baf7d396d72e5785bc8f7fb",
     "C_契约层/C.13_内置资产格式/C.13.03_类型声明_types.md": "sha256:818db1edefa46b9ddf6d6b63341d57a6fc9d69291ad01fd77c2a598cd19caae5",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
-    "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:1c56973a9aa7ad15c68e817f61dd26769e99ab2620762fde2740669309f9c5d7",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:94fe334816446caf3f72a8ba02fd4d599f4ad70b3a7e13187900788284334b49",
     "E_内核_engine/E.03_schema_注册与校验/E.03.02_类型检查与_T_推断.md": "sha256:3fb6f7ac3b51728e95780d7e22686187ba05071965cc42873c31e68bce185147",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:853a1c68eb1dee1c6710e3c67f8d52919eab2d1c7615e187447aabe87e2bcd0e",
