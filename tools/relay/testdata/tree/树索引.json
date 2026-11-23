@@ -1,0 +1,119 @@
+[
+ {
+  "id": "P",
+  "name": "总纲",
+  "desc": "",
+  "type": "总",
+  "path": "P/P.md",
+  "children": [
+   {
+    "id": "P.09",
+    "name": "裁决",
+    "desc": "",
+    "type": "规",
+    "path": "P/P.09_裁决.md",
+    "children": []
+   }
+  ]
+ },
+ {
+  "id": "G",
+  "name": "工程规范",
+  "desc": "",
+  "type": "总",
+  "path": "G/G.md",
+  "children": [
+   {
+    "id": "G.02",
+    "name": "守则",
+    "desc": "",
+    "type": "规",
+    "path": "G/G.02_守则.md",
+    "children": [
+     {
+      "id": "G.02.05",
+      "name": "禁止事项",
+      "desc": "",
+      "type": "规",
+      "path": "G/G.02.05_禁止.md",
+      "children": []
+     },
+     {
+      "id": "G.02.06",
+      "name": "代码接力",
+      "desc": "",
+      "type": "规",
+      "path": "G/G.02.06_接力.md",
+      "children": []
+     }
+    ]
+   },
+   {
+    "id": "G.10",
+    "name": "依赖",
+    "desc": "",
+    "type": "规",
+    "path": "G/G.10_依赖.md",
+    "children": []
+   }
+  ]
+ },
+ {
+  "id": "C",
+  "name": "契约",
+  "desc": "",
+  "type": "总",
+  "path": "C/C.md",
+  "children": [
+   {
+    "id": "C.01",
+    "name": "契约总则",
+    "desc": "",
+    "type": "规",
+    "path": "C/C.01_总则.md",
+    "children": []
+   }
+  ]
+ },
+ {
+  "id": "X",
+  "name": "示例",
+  "desc": "",
+  "type": "总",
+  "path": "X/X.md",
+  "children": [
+   {
+    "id": "X.01",
+    "name": "甲",
+    "desc": "",
+    "type": "实",
+    "path": "X/X.01_甲.md",
+    "children": []
+   },
+   {
+    "id": "X.02",
+    "name": "乙",
+    "desc": "",
+    "type": "实",
+    "path": "X/X.02_乙.md",
+    "children": []
+   },
+   {
+    "id": "X.03",
+    "name": "丙",
+    "desc": "",
+    "type": "实",
+    "path": "X/X.03_丙.md",
+    "children": []
+   },
+   {
+    "id": "X.04",
+    "name": "丁",
+    "desc": "",
+    "type": "实",
+    "path": "X/X.04_丁.md",
+    "children": []
+   }
+  ]
+ }
+]

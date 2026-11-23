@@ -1,0 +1,28 @@
+# 与 Makefile 相同的八个目标（设计文档 O.01 §4.1）。两者的目标列表必须一致（O01-T2）。
+version: '3'
+
+tasks:
+  gen:
+    cmds:
+      - go run ./tools/gen
+  dev:
+    cmds:
+      - go run ./tools/dev
+  build:
+    cmds:
+      - pnpm -C web build && go run ./tools/build
+  test:
+    cmds:
+      - go test ./... -count=1 && pnpm -C web test
+  lint:
+    cmds:
+      - golangci-lint run ./... && go run ./tools/depcheck && go run ./tools/lint/quirkscheck && go run ./tools/lint/typenamecheck && pnpm -C web lint
+  check:
+    cmds:
+      - go run ./tools/build -check
+  e2e:
+    cmds:
+      - pnpm -C web build && go run ./tools/build && pnpm -C web test:e2e && pnpm -C web test:visual
+  clean:
+    cmds:
+      - go run ./tools/build -clean

@@ -1,0 +1,14 @@
+// STUB(W.01)：最小 TypeScript 配置。W.01 实施时按 G.06-R1 的 strict 选项整体替换（G.02.06-R10）。
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM"],
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}

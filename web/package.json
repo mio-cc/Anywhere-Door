@@ -1,0 +1,23 @@
+{
+  "//": "STUB(W.01, W.02, W.12)：只为让 O.01 的 build / lint / test 能跑通的最小前端（不用 React）；W.01、W.02、W.12 实施时整体替换。依赖由验证者用 pnpm add -D --save-exact vite typescript 加入（G.10 §3.4 已登记）。",
+  "name": "anywhere-door-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "packageManager": "pnpm@11.21.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "tsc --noEmit && vite build",
+    "lint": "tsc --noEmit",
+    "test": "node scripts/stub.mjs test",
+    "test:e2e": "node scripts/stub.mjs test:e2e",
+    "test:visual": "node scripts/stub.mjs test:visual"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  }
+}
