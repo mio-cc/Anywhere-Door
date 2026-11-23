@@ -1,0 +1,14 @@
+name: 主脑配方
+version: 1
+inputs: { goal: 目标@1, escalation: 升级@1, brief: 简报@1, ledger: 状态@1 }
+description: 长驻主脑每次唤醒时的上下文：原始意图、约束、验收标准、账本快照、本次的简报或升级
+sections:
+  - { name: 原始意图, from: in.goal.intent,      required: true, priority: 0 }
+  - { name: 约束,     from: in.goal.constraints, priority: 0 }
+  - { name: 验收标准, from: in.goal.criteria,    required: true, priority: 0, format: bullets }
+  - { name: 升级,     from: in.escalation, transform: "fields(kind,severity,question,options)", priority: 0 }
+  - { name: 简报,     from: in.brief,      transform: "fields(goal_id,status,conclusion,criteria_check)", budget: 0.2, priority: 1, format: bullets }
+  - { name: 账本快照, from: in.ledger.value, transform: pointer, budget: 0.3, priority: 2, format: yaml }
+exclude: ["type:方案", "type:执行结果"]
+budget: { ratio: 0.2, max_ratio: 0.4 }
+on_overflow: summarize

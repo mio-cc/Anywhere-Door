@@ -1,0 +1,17 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.08 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 分支
+version: "1.0"
+kind: atomic
+category: 控制
+description: 按条件把输入的值交给"是"或"否"出口
+impl: { type: builtin }
+ports:
+  inputs:
+    value: { type: "$T", label: 值, required: true }
+  outputs:
+    "yes": { type: "$T", label: 是, category: ctrl }
+    "no":  { type: "$T", label: 否, category: ctrl }
+params:
+  when: { type: expr, label: 条件, default: "achieved == true", ui: { group: 常用 } }
+  pure: { type: boolean, label: 纯函数, default: true, lock: kernel }
+type_vars: { T: "input:value" }

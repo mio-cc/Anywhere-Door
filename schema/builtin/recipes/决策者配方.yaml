@@ -1,0 +1,15 @@
+name: 决策者配方
+version: 1
+inputs: { goal: 目标@1, clusters: 簇标注@1, plans: "列表[方案@1]", gap: 差距报告@1 }
+description: 决策者：看方案簇和方案要点，产出任务卡
+sections:
+  - { name: 目标,     from: in.goal.intent,      required: true, priority: 0 }
+  - { name: 约束,     from: in.goal.constraints, priority: 0 }
+  - { name: 验收标准, from: in.goal.criteria,    priority: 0, format: bullets }
+  - { name: 方案簇,   from: in.clusters.labels,  required: true, budget: 0.2, priority: 0 }
+  - { name: 冲突,     from: in.clusters.conflicts, priority: 1 }
+  - { name: 方案,     from: in.plans, transform: "fields(understanding,core_approach,steps)", budget: 0.3, priority: 1, format: yaml }
+  - { name: 差距报告, from: in.gap.gaps,         budget: 0.1, priority: 2 }
+exclude: ["type:执行结果"]
+budget: { ratio: 0.08, max_ratio: 0.3 }
+on_overflow: pointer

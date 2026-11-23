@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/template.schema.json",
+  "x-version": "1.0",
+  "title": "模板包清单（C.13.04）",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "title",
+    "summary",
+    "graph"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[^@/\\s]{1,40}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "一句话：用来做什么"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "graph": {
+      "type": "string",
+      "const": "graph.json"
+    },
+    "requires": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "packages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subgraphs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "子图库引用 名@版本"
+          }
+        },
+        "models": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "any",
+              "json_schema",
+              "tools",
+              "long_context"
+            ]
+          },
+          "description": "需要的模型能力"
+        }
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "description": "实例化时问用户的问题，答案写进指定参数",
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "target"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string",
+            "description": "如 你想调研什么？"
+          },
+          "type": {
+            "enum": [
+              "string",
+              "text",
+              "integer",
+              "enum"
+            ]
+          },
+          "default": {},
+          "target": {
+            "type": "string",
+            "description": "<占位节点 ID>.params.<参数名>，或 inputs.<根图入口端口名>"
+          }
+        }
+      }
+    },
+    "cost_hint": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "如 一次运行约 5 万 tokens"
+    }
+  }
+}

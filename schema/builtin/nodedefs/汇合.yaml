@@ -1,0 +1,17 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.06 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 汇合
+version: "1.0"
+kind: atomic
+category: 拓扑
+description: 等多路输入到齐（或满足条件）后合成一个列表
+impl: { type: builtin }
+ports:
+  inputs:
+    in: { type: 任意, label: 输入, dynamic: true }
+  outputs:
+    collected: { type: "列表[任意]", label: 汇总 }
+params:
+  wait:       { type: enum, label: 等待, enum: [all, k_of_n, first, timeout], enum_labels: { all: 全部, k_of_n: 前 K 路, first: 第一路, timeout: 超时截止 }, default: all, ui: { group: 常用 } }
+  k:          { type: integer, label: 前 K 路, min: 1, default: 2, ui: { show_if: "wait == 'k_of_n'" } }
+  timeout_ms: { type: integer, label: 超时, unit: ms, min: 1, default: 300000, ui: { show_if: "wait == 'timeout'" } }
+  shape:      { type: enum, label: 结果形状, enum: [list, dict], default: list, help: dict 时以插口名为键 }

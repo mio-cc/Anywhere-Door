@@ -124,3 +124,22 @@
   schema: graph.schema.json
   valid: false
   error_at: /root/notes/0/size
+
+# C.03.04 声明式节点（§3 的四个示例，与 YAML 一一对应）
+- file: nodedefs/翻译.json
+  schema: nodedef.schema.json
+  valid: true
+- file: nodedefs/汇率查询.json
+  schema: nodedef.schema.json
+  valid: true
+- file: nodedefs/查询工单.json
+  schema: nodedef.schema.json
+  valid: true
+- file: nodedefs/生成与评审.json
+  schema: nodedef.schema.json
+  valid: true
+
+# C.13.04 模板包清单
+- file: template_minimal.json
+  schema: template.schema.json
+  valid: true

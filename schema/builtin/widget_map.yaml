@@ -1,0 +1,23 @@
+# 参数 type → 控件（C.03.02 §4 的机器可读版）。ParamDef.ui.widget 不是 auto 时不查这张表。
+# 节点上的控件（W.06.03、W.06.10）和右栏属性页（W.07.03）都读它的生成物 WIDGET_MAP，同一个参数两处推出的控件相同（P.09 K212）。
+# 按顺序匹配，第一条命中的生效；写了 when 的，when 里的条件都满足才算命中：
+#   span_steps：同时有 min、max，且 max - min ≤ span_steps × step（没写 step 按 1）
+#   max_options、max_label_chars：选项不超过 max_options 个，且每个显示名都不超过 max_label_chars 个字
+#     （显示名取 enum_labels 里的，没写时用枚举值本身，C.03.02-R4）
+#   has_schema：写了 schema 或 schema_from
+# subform: true 表示按 schema 生成子表单，每个子字段再查一次这张表（schema_from 先按 C.03.02 §5 展开）。
+# connection（连接选择，C.16）只能由 ui.widget 显式指定，不在这张表里。
+rules:
+  - { types: [integer, number], when: { span_steps: 100 }, widget: slider }
+  - { types: [integer, number], widget: stepper }
+  - { types: [boolean], widget: switch }
+  - { types: [enum], when: { max_options: 4, max_label_chars: 6 }, widget: segmented }
+  - { types: [enum], widget: select }
+  - { types: [string], widget: input }
+  - { types: [text], widget: textarea }
+  - { types: [expr], widget: code }
+  - { types: [model_ref], widget: model }
+  - { types: [rolecard_ref], widget: rolecard }
+  - { types: [type_ref, recipe_ref, tool_ref], widget: picker }
+  - { types: [object], when: { has_schema: true }, subform: true }
+  - { types: [object], widget: code }

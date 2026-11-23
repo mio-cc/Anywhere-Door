@@ -1,0 +1,21 @@
+name: 簇标注
+major: 1
+minor: 0
+description: 聚类员产出；聚合节点按 cluster 计算比例
+fields:
+  - { name: understanding_consistent, type: boolean, label: 理解一致, required: true }
+  - name: labels
+    type: "列表[object]"
+    label: 标注
+    required: true
+    fields:
+      - { name: plan_id, type: string, label: 方案, required: true }
+      - { name: cluster, type: string, label: 簇, required: true }
+      - { name: diff,    type: string, label: 差别 }
+  - name: conflicts
+    type: "列表[object]"
+    label: 冲突
+    fields:
+      - { name: a,      type: string, label: 方案甲 }
+      - { name: b,      type: string, label: 方案乙 }
+      - { name: reason, type: string, label: 原因 }

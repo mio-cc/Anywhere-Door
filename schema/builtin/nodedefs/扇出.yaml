@@ -1,0 +1,25 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.05 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 扇出
+version: "1.0"
+kind: atomic
+category: 拓扑
+description: 把列表的每一项（或共享输入复制 N 份）各执行一次子图
+impl: { type: builtin }
+ports:
+  inputs:
+    items:  { type: "列表[$T]", label: 列表 }
+    shared: { type: 任意, label: 共享输入, multi: true }
+  outputs:
+    results: { type: "列表[$U]", label: 结果 }
+params:
+  n:            { type: integer, label: 份数, help: 列表没有连线时把共享输入复制 N 份, min: 1, max: 32, step: 1, default: 3 }
+  concurrency:  { type: integer, label: 并发, min: 1, max: 64, step: 1, default: 3, ui: { group: 常用 } }
+  collect:      { type: enum, label: 汇合, enum: [all, k_of_n, first, timeout], enum_labels: { all: 全部, k_of_n: 前 K 份, first: 第一份, timeout: 超时截止 }, default: all, ui: { group: 常用 } }
+  k:            { type: integer, label: 前 K 份, min: 1, default: 2, ui: { show_if: "collect == 'k_of_n'" } }
+  timeout_ms:   { type: integer, label: 超时, unit: ms, min: 1, default: 300000, ui: { show_if: "collect == 'timeout'" } }
+  isolation:    { type: boolean, label: 每份独立账本, default: true }
+  on_fail:      { type: enum, label: 某份失败时, enum: [fail, skip], default: fail }
+  budget_split: { type: enum, label: 预算分配, enum: [equal, on_demand], default: equal }
+  max_items:    { type: integer, label: 最多份数, min: 1, default: 1000 }
+type_vars: { T: "input:items.elem", U: "body:exit" }
+container: required

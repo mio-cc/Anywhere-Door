@@ -1,0 +1,34 @@
+{
+  "name": "查询工单",
+  "version": "1.0",
+  "kind": "extension",
+  "category": "工具",
+  "impl": {
+    "type": "mcp",
+    "server": "jira",
+    "tool": "search_issues",
+    "risk": "L0",
+    "args": {
+      "jql": "project = {{project}} AND status = Open"
+    }
+  },
+  "ports": {
+    "inputs": {
+      "trigger": {
+        "type": "任意"
+      }
+    },
+    "outputs": {
+      "result": {
+        "type": "任意"
+      }
+    }
+  },
+  "params": {
+    "project": {
+      "type": "string",
+      "label": "项目",
+      "default": "HX"
+    }
+  }
+}

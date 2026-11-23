@@ -1,0 +1,11 @@
+name: 升级
+major: 1
+minor: 0
+description: 子图升级端口（role=escalation）向上层求助：本层解决不了的问题
+system: true
+producer: 子图端口
+fields:
+  - { name: kind,     type: string, label: 种类, required: true, enum: [格式错误, 单任务失败, 目标歧义, 标准冲突, 结构性无法达成, 预算不足, 需审批, 无进展] }
+  - { name: severity, type: string, label: 严重程度, enum: [低, 中, 高] }
+  - { name: question, type: string, label: 问题, required: true, max_chars: 300 }
+  - { name: options,  type: "列表[string]", label: 选项 }

@@ -1,0 +1,21 @@
+name: 判定
+major: 1
+minor: 0
+description: 验收者产出
+fields:
+  - { name: achieved, type: boolean, label: 达成, required: true }
+  - name: items
+    type: "列表[object]"
+    label: 逐条判定
+    required: true
+    fields:
+      - { name: criterion_id, type: string, label: 标准, required: true }
+      - { name: result,       type: string, label: 结果 }
+      - { name: evidence,     type: string, label: 证据 }
+  - name: spot_checks
+    type: "列表[object]"
+    label: 抽检
+    fields:
+      - { name: result_id,  type: string,  label: 结果 }
+      - { name: consistent, type: boolean, label: 一致 }
+  - { name: gap_type, type: string, label: 差距类型, required: true, enum: [无, 可补救, 结构性] }

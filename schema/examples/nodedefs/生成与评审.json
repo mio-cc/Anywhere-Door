@@ -1,0 +1,43 @@
+{
+  "name": "生成与评审",
+  "version": "1.0",
+  "kind": "extension",
+  "category": "扩展",
+  "impl": {
+    "type": "subgraph",
+    "ref": {
+      "name": "生成-评审",
+      "version": "1.0.0"
+    },
+    "expose": {
+      "rounds": {
+        "node": "01JDN0000000000000000000B4",
+        "param": "max_rounds"
+      }
+    }
+  },
+  "ports": {
+    "inputs": {
+      "in": {
+        "type": "任意"
+      }
+    },
+    "outputs": {
+      "out": {
+        "type": "方案@1"
+      }
+    }
+  },
+  "params": {
+    "rounds": {
+      "type": "integer",
+      "label": "评审轮数",
+      "default": 2,
+      "min": 1,
+      "max": 5,
+      "ui": {
+        "group": "常用"
+      }
+    }
+  }
+}

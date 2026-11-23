@@ -1,0 +1,14 @@
+name: 智囊配方
+version: 1
+inputs: { goal: 目标@1, gap: 差距报告@1, results: "列表[执行结果@1]" }
+description: 独立智囊：只看目标、约束、差距和资料，看不到其他智囊的方案
+sections:
+  - { name: 目标,       from: in.goal.intent,      required: true, priority: 0 }
+  - { name: 约束,       from: in.goal.constraints, priority: 0 }
+  - { name: 验收标准,   from: in.goal.criteria,    priority: 1, format: bullets }
+  - { name: 差距报告,   from: in.gap.gaps,         budget: 0.1, priority: 1 }
+  - { name: 已证伪方向, from: in.gap.tried,        budget: 0.1, priority: 1, format: bullets }
+  - { name: 参考资料,   from: in.results, transform: pointer, budget: 0.2, priority: 3 }
+exclude: ["type:方案", "type:簇标注"]
+budget: { ratio: 0.1, max_ratio: 0.3 }
+on_overflow: pointer

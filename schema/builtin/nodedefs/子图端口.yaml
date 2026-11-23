@@ -1,0 +1,19 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.12 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 子图端口
+version: "1.0"
+kind: atomic
+category: 边界
+description: 子图的入口、出口、简报或升级端口，对应父节点的一个外部端口
+impl: { type: builtin }
+ports:
+  inputs:
+    in: { type: "$T", label: 输入 }
+  outputs:
+    out: { type: "$T", label: 输出 }
+params:
+  role:      { type: enum, label: 角色, enum: [entry, exit, summary, escalation], enum_labels: { entry: 入口, exit: 出口, summary: 简报, escalation: 升级 }, default: entry, ui: { group: 常用 } }
+  port_name: { type: string, label: 端口名, help: 对应父节点的端口名；不填时入口为 in、出口为 out }
+  trigger:   { type: enum, label: 简报时机, enum: [each_round, on_change, on_finish], default: on_finish, ui: { show_if: "role == 'summary'" } }
+  max_chars: { type: integer, label: 简报长度上限, min: 1, default: 800, ui: { show_if: "role == 'summary'" } }
+  routes:    { type: object, label: 升级路由, ui: { show_if: "role == 'escalation'" } }
+type_vars: { T: "input:in" }

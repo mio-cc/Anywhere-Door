@@ -1,0 +1,21 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.11 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 人工
+version: "1.0"
+kind: atomic
+category: 人工
+description: 停下来等人审批、填写或选择，再继续
+impl: { type: builtin }
+ports:
+  inputs:
+    request: { type: "$T", label: 请求, required: true }
+  outputs:
+    approved: { type: "$T", label: 通过, category: ctrl }
+    rejected: { type: "$T", label: 驳回, category: ctrl }
+params:
+  mode:         { type: enum, label: 方式, enum: [approve, input, choose], enum_labels: { approve: 审批, input: 填写, choose: 选择 }, default: approve, ui: { group: 常用 } }
+  title:        { type: string, label: 卡片标题 }
+  options:      { type: object, label: 选项, help: 选择方式下每个选项一个出口, schema: { type: array, items: { type: string } }, ui: { widget: code, show_if: "mode == 'choose'" } }
+  input_schema: { type: type_ref, label: 填写内容的类型, ui: { show_if: "mode == 'input'" } }
+  timeout:      { type: string, label: 超时, default: 24h, ui: { group: 常用 } }
+  on_timeout:   { type: string, label: 超时后, help: rejected、fail 或某个选项, default: rejected }
+type_vars: { T: "input:request" }

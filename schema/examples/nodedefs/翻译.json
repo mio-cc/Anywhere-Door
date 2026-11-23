@@ -1,0 +1,46 @@
+{
+  "name": "翻译",
+  "version": "1.0",
+  "kind": "extension",
+  "category": "扩展",
+  "description": "把输入文本翻译成目标语言",
+  "impl": {
+    "type": "prompt",
+    "rolecard": "翻译员@1",
+    "recipe": "翻译配方@1",
+    "template": "把下面的内容翻译成{{target_lang}}，只输出译文。\n{{inputs.text}}\n",
+    "output_schema": "译文@1"
+  },
+  "ports": {
+    "inputs": {
+      "text": {
+        "type": "任意",
+        "required": true
+      },
+      "model": {
+        "type": "资源引用@1",
+        "required": true
+      }
+    },
+    "outputs": {
+      "result": {
+        "type": "译文@1"
+      }
+    }
+  },
+  "params": {
+    "target_lang": {
+      "type": "enum",
+      "label": "目标语言",
+      "enum": [
+        "英文",
+        "日文",
+        "中文"
+      ],
+      "default": "英文",
+      "ui": {
+        "group": "常用"
+      }
+    }
+  }
+}

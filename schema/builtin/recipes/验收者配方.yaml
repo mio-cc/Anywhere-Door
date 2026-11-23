@@ -1,0 +1,13 @@
+name: 验收者配方
+version: 1
+inputs: { goal: 目标@1, results: "列表[执行结果@1]", gap: 差距报告@1 }
+description: 验收者：对照验收标准看执行结果和证据，看不到方案
+sections:
+  - { name: 验收标准, from: in.goal.criteria,    required: true, priority: 0, format: bullets }
+  - { name: 约束,     from: in.goal.constraints, priority: 0 }
+  - { name: 结果,     from: in.results, transform: "fields(task_id,status,conclusion,confidence)", required: true, budget: 0.3, priority: 0 }
+  - { name: 证据,     from: in.results, transform: "fields(task_id,sources)", budget: 0.3, priority: 2 }
+  - { name: 差距报告, from: in.gap.gaps,         budget: 0.1, priority: 3 }
+exclude: ["type:方案", "type:簇标注"]
+budget: { ratio: 0.1, max_ratio: 0.3 }
+on_overflow: pointer

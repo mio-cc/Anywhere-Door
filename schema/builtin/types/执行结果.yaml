@@ -1,0 +1,18 @@
+name: 执行结果
+major: 1
+minor: 0
+description: 执行者产出；"未找到"是合法结果
+fields:
+  - { name: task_id,    type: string, label: 任务, required: true }
+  - { name: status,     type: string, label: 状态, required: true, enum: [完成, 部分, 未找到, 失败] }
+  - { name: conclusion, type: string, label: 结论, required: true, max_chars: 300 }
+  - { name: data,       type: 任意,   label: 数据 }
+  - name: sources
+    type: "列表[object]"
+    label: 来源                                                      # status 为完成、部分时应有
+    fields:
+      - { name: ptr,     type: string, label: 原文 }                 # 值为 ws:// 引用
+      - { name: url,     type: string, label: 网址 }
+      - { name: excerpt, type: string, label: 摘录 }
+      - { name: time,    type: string, label: 时间 }                 # ISO-8601
+  - { name: confidence, type: number, label: 置信度 }                # 0–1

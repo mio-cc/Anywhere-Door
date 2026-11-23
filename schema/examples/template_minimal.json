@@ -1,0 +1,14 @@
+{
+  "name": "闭环迭代",
+  "version": "1.0.0",
+  "title": "闭环迭代",
+  "summary": "反复生成和评审，直到验收通过",
+  "graph": "graph.json",
+  "inputs": [
+    {
+      "key": "topic",
+      "label": "你想调研什么？",
+      "target": "inputs.topic"
+    }
+  ]
+}

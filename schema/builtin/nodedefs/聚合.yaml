@@ -1,0 +1,20 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.07 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 聚合
+version: "1.0"
+kind: atomic
+category: 聚合
+description: 对列表做确定性的统计、分组、投票、去重、排序
+impl: { type: builtin }
+ports:
+  inputs:
+    items: { type: "列表[$T]", label: 列表, required: true }
+  outputs:
+    result: { type: "$U", label: 结果 }
+params:
+  op:            { type: enum, label: 算子, enum: [count, group, group_ratio, vote, dedupe, sort, top_k, filter, concat, stats, divergence], default: group_ratio, ui: { group: 常用 } }
+  key:           { type: string, label: 分组字段, help: 字段路径, default: cluster, ui: { group: 常用 } }
+  expr:          { type: expr, label: 表达式, help: filter、sort 用 }
+  k:             { type: integer, label: 前 K 个, min: 1, default: 3, ui: { show_if: "op == 'top_k'" } }
+  levels:        { type: object, label: 分级规则, help: "group_ratio 用，如 [{name: 共识, when: \"ratio == 1\"}]", schema: { type: array, items: { type: object, required: [name, when], properties: { name: { type: string }, when: { type: string } } } }, ui: { widget: code } }
+  deterministic: { type: boolean, label: 确定性, default: true, lock: kernel }
+type_vars: { T: "input:items.elem", U: "op:op(T)" }

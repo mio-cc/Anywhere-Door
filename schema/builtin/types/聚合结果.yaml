@@ -1,0 +1,14 @@
+name: 聚合结果
+major: 1
+minor: 0
+description: 聚合算子 group、group_ratio 的输出
+fields:
+  - name: groups
+    type: "列表[object]"
+    label: 分组
+    required: true
+    fields:
+      - { name: label,   type: string, label: 组名, required: true }
+      - { name: ratio,   type: number, label: 比例, required: true }   # 0–1
+      - { name: level,   type: string, label: 分级 }                   # 按 levels 参数，如 共识
+      - { name: members, type: "列表[任意]", label: 成员 }

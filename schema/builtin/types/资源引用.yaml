@@ -1,0 +1,11 @@
+name: 资源引用
+major: 1
+minor: 0
+description: 指向一个模型、提示词（角色卡）、列表或常量；不含密钥
+system: true
+producer: 资源
+category: ref
+fields:
+  - { name: kind,    type: string, label: 种类, required: true, enum: [模型, 提示词, 列表, 常量] }
+  - { name: ref,     type: 任意,   label: 引用, required: true }   # 模型引用对象、角色卡 名称@版本、列表、常量
+  - { name: version, type: string, label: 版本 }                   # 冻结快照时解析出的具体版本

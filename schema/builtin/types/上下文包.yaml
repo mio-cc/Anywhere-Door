@@ -1,0 +1,28 @@
+name: 上下文包
+major: 1
+minor: 0
+description: 上下文装配按配方产出的内容；Agent 的 context 端口只接这个类型
+system: true
+producer: 上下文装配
+category: ctx
+fields:
+  - name: sections
+    type: "列表[object]"
+    label: 段
+    required: true
+    fields:
+      - { name: name,    type: string,  label: 段名, required: true }
+      - { name: content, type: string,  label: 内容, required: true }
+      - { name: tokens,  type: integer, label: tokens, required: true }
+      - { name: source,  type: string,  label: 来源 }               # 如 in.task.instruction、inherit
+  - { name: tokens, type: integer, label: 总 tokens, required: true }
+  - name: dropped
+    type: "列表[object]"
+    label: 被裁内容
+    fields:
+      - { name: section, type: string,  label: 段名, required: true }
+      - { name: ref,     type: string,  label: 原文 }               # 值为 ws:// 引用
+      - { name: mode,    type: string,  label: 方式, enum: [pointer, summarize, truncate] }
+      - { name: saved,   type: integer, label: 省下tokens }
+  - { name: inherit, type: object, label: 透传约束, required: true }   # 沿数据流收集的 inherit 字段（E.13.06）
+  - { name: vars, type: object, label: 模板变量 }                 # 变量名 → 文字，由配方段的 var 提供（C.13.01-R6）

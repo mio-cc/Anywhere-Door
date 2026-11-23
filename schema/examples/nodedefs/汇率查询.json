@@ -1,0 +1,51 @@
+{
+  "name": "汇率查询",
+  "version": "1.0",
+  "kind": "extension",
+  "category": "工具",
+  "impl": {
+    "type": "http",
+    "risk": "L0",
+    "method": "GET",
+    "url": "https://api.example.com/rate?from={{from}}&to={{to}}",
+    "headers": {
+      "Authorization": "Bearer {{secret:example_api}}"
+    },
+    "body": null,
+    "response": {
+      "map": "$.data.rate",
+      "result_type": "数值@1"
+    },
+    "timeout_ms": 10000
+  },
+  "ports": {
+    "inputs": {
+      "trigger": {
+        "type": "任意"
+      }
+    },
+    "outputs": {
+      "result": {
+        "type": "数值@1"
+      }
+    }
+  },
+  "params": {
+    "from": {
+      "type": "string",
+      "label": "源币种",
+      "default": "USD",
+      "ui": {
+        "group": "常用"
+      }
+    },
+    "to": {
+      "type": "string",
+      "label": "目标币种",
+      "default": "CNY",
+      "ui": {
+        "group": "常用"
+      }
+    }
+  }
+}

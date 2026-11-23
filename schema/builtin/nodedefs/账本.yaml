@@ -1,0 +1,18 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.10 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 账本
+version: "1.0"
+kind: atomic
+category: 状态
+description: 读写当前子图、上一层或命名账本里的字段
+impl: { type: builtin }
+ports:
+  inputs:
+    value: { type: 任意, label: 值 }
+  outputs:
+    value: { type: 状态@1, label: 状态 }
+params:
+  op:     { type: enum, label: 操作, enum: [read, write, append, cas, watch], default: read, ui: { group: 常用 } }
+  path:   { type: string, label: 字段路径, default: 目标树, ui: { group: 常用 } }
+  scope:  { type: enum, label: 作用域, enum: [local, parent, named], default: local }
+  name:   { type: string, label: 账本名, ui: { show_if: "scope == 'named'" } }
+  reason: { type: string, label: 写入理由, help: 字段要求写理由时必填 }

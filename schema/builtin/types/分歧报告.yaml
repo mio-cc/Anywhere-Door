@@ -1,0 +1,14 @@
+name: 分歧报告
+major: 1
+minor: 0
+description: 聚合算子 divergence 的输出
+fields:
+  - { name: score, type: number, label: 分歧度, required: true }     # 0–1，0 = 完全一致
+  - name: clusters
+    type: "列表[object]"
+    label: 簇
+    required: true
+    fields:
+      - { name: label,   type: string, label: 簇名, required: true }
+      - { name: ratio,   type: number, label: 比例, required: true }   # 0–1
+      - { name: members, type: "列表[任意]", label: 成员 }

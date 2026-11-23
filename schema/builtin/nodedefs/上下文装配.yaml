@@ -1,0 +1,19 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.03 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 上下文装配
+version: "1.0"
+kind: atomic
+category: 状态
+description: 按配方决定 Agent 能看到什么、按什么顺序、各占多少预算
+impl: { type: builtin }
+ports:
+  inputs:
+    in:    { type: 任意, label: 输入, multi: true }
+    model: { type: 资源引用@1, label: 模型 }
+  outputs:
+    context: { type: 上下文包@1, label: 上下文 }
+    dropped: { type: "列表[任意]", label: 被裁内容 }
+params:
+  recipe:        { type: recipe_ref, label: 配方, default: 执行者配方@1, ui: { group: 常用 } }
+  budget:        { type: number, label: 预算比例, help: 占模型窗口的比例, min: 0.02, max: 0.5, step: 0.01, default: 0.1, ui: { group: 常用 } }
+  on_overflow:   { type: enum, label: 超出预算时, enum: [pointer, summarize, truncate, reject], default: pointer, help: 覆盖配方的设置 }
+  honor_inherit: { type: boolean, label: 遵守透传字段, default: true, lock: kernel }

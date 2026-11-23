@@ -1,0 +1,12 @@
+name: 工具端点
+major: 1
+minor: 0
+description: 工具节点的端点描述；连到 Agent 的 tools，由 Agent 决定是否调用
+system: true
+producer: 工具
+category: tool
+fields:
+  - { name: tool,       type: string,  label: 工具, required: true }
+  - { name: risk,       type: string,  label: 风险, required: true, enum: [L0, L1, L2, L3] }
+  - { name: schema_ref, type: string,  label: 参数定义, required: true }
+  - { name: rate,       type: integer, label: 每分钟上限 }

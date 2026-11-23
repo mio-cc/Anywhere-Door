@@ -1,0 +1,11 @@
+name: 聚类员配方
+version: 1
+inputs: { goal: 目标@1, plans: "列表[方案@1]" }
+description: 聚类员：只看各方案的理解、核心手段和关键假设
+sections:
+  - { name: 目标, from: in.goal.intent, required: true, priority: 0 }
+  - { name: 方案, from: in.plans, transform: "fields(understanding,core_approach,key_assumptions)", budget: 0.6, required: true, priority: 0, format: yaml }
+  - { name: 约束, from: in.goal.constraints, budget: 0.1, priority: 1 }
+exclude: ["type:执行结果", "path:*.steps"]
+budget: { ratio: 0.05, max_ratio: 0.2 }
+on_overflow: summarize

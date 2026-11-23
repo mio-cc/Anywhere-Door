@@ -1,0 +1,17 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.01 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 资源
+version: "1.0"
+kind: atomic
+category: 资源
+description: 把模型、提示词、列表或常量作为一个引用输出给下游
+impl: { type: builtin }
+ports:
+  inputs: {}
+  outputs:
+    ref: { type: 资源引用@1, label: 引用 }
+params:
+  kind:     { type: enum, label: 种类, enum: [模型, 提示词, 列表, 常量], default: 模型, ui: { group: 常用 } }
+  value:    { type: object, label: 内容, help: "按种类：模型引用 {provider, model, sampling?, fallback?}；列表；常量", ui: { group: 常用, widget: code, show_if: "kind != '提示词'" } }
+  template: { type: text, label: 模板, help: "提示词模板，{{变量}} 由同名输入端口提供", ui: { group: 常用, show_if: "kind == '提示词'" } }
+  pin:      { type: enum, label: 版本钉住, enum: [snapshot, link], enum_labels: { snapshot: 固定版本, link: 跟随最新 }, default: snapshot }
+dynamic_ports: { from_param: template }

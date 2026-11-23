@@ -1,0 +1,16 @@
+name: 任务卡
+major: 1
+minor: 0
+description: 决策者分派给执行者的一项原子任务
+fields:
+  - { name: id,           type: string, label: 编号, required: true }
+  - { name: instruction,  type: string, label: 任务, required: true, max_chars: 500 }
+  - { name: purpose,      type: string, label: 目的, required: true }
+  - { name: good_result,  type: string, label: 好结果, required: true }
+  - { name: checklist,    type: "列表[string]", label: 检查项 }
+  - { name: inputs,       type: "列表[任意]", label: 必要输入 }
+  - { name: constraints,  type: "列表[string]", label: 约束, inherit: true }
+  - { name: output_type,  type: string, label: 产出类型, required: true }   # TypeRef，如 执行结果@1
+  - { name: from_cluster, type: string, label: 来自簇 }                     # 值为 ws:// 引用
+  - { name: dedupe_key,   type: string, label: 去重键 }
+  - { name: escalate_if,  type: "列表[string]", label: 何时上报 }

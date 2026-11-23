@@ -1,0 +1,25 @@
+name: 差距报告
+major: 1
+minor: 0
+description: 循环里唯一带到下一轮的内容
+fields:
+  - { name: goal,  type: string,  label: 目标, required: true }       # 值为 ws:// 引用
+  - { name: round, type: integer, label: 轮次 }
+  - name: gaps
+    type: "列表[object]"
+    label: 差距
+    required: true
+    fields:
+      - { name: criterion_id, type: string, label: 标准, required: true }
+      - { name: missing,      type: string, label: 缺什么 }
+      - { name: how_far,      type: string, label: 差多少 }
+  - name: tried
+    type: "列表[object]"
+    label: 已试方向
+    required: true
+    fields:
+      - { name: direction,  type: string, label: 方向 }
+      - { name: where,      type: string, label: 在哪试的 }
+      - { name: why_failed, type: string, label: 失败原因 }
+  - { name: history_digest, type: string, label: 历史摘要, max_chars: 300 }
+  - { name: gap_type,       type: string, label: 差距类型, enum: [可补救, 结构性] }

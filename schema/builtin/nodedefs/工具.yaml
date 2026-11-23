@@ -1,0 +1,23 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.04 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 工具
+version: "1.0"
+kind: atomic
+category: 工具
+description: 作为端点连到 Agent 的工具端口，或直接调用一次工具
+impl: { type: builtin }
+ports:
+  inputs:
+    request: { type: 任意, label: 请求 }
+  outputs:
+    endpoint: { type: 工具端点@1, label: 端点 }
+    result:   { type: "$T", label: 结果 }
+params:
+  tool:         { type: tool_ref, label: 工具, default: "builtin:search", ui: { group: 常用 } }
+  risk:         { type: enum, label: 风险等级, enum: [L0, L1, L2, L3], help: 不填时取工具声明；只能调高, ui: { group: 常用 } }
+  rate:         { type: integer, label: 每分钟上限, min: 1, max: 120, step: 1, default: 10 }
+  args:         { type: object, label: 调用参数, schema_from: "param:tool", default: {}, help: 结构取自所选工具的入参，每项都能接线 }
+  result_type:  { type: type_ref, label: 结果类型, default: 任意 }
+  trim:         { type: enum, label: 结果裁剪, enum: [relevant, head, none], default: relevant }
+  keep_pointer: { type: boolean, label: 保留原文指针, default: true, lock: kernel }
+type_vars: { T: "param:result_type" }
+dynamic_ports: { from_param: args }

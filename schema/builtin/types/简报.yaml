@@ -1,0 +1,23 @@
+name: 简报
+major: 1
+minor: 0
+description: 子图摘要端口（role=summary）向上层报告进度；按 goal_id 只保留最新
+system: true
+producer: 子图端口
+fields:
+  - { name: goal_id,    type: string, label: 目标, required: true }
+  - { name: status,     type: string, label: 状态, required: true, enum: [心跳, 进行中, 完成, 阻塞] }
+  - { name: conclusion, type: string, label: 结论 }
+  - name: criteria_check
+    type: "列表[object]"
+    label: 验收检查
+    fields:
+      - { name: criterion_id, type: string,  label: 标准, required: true }
+      - { name: passed,       type: boolean, label: 通过 }
+  - name: cost
+    type: object
+    label: 花费
+    fields:
+      - { name: tokens, type: integer, label: tokens }
+      - { name: calls,  type: integer, label: 调用次数 }
+      - { name: time,   type: string,  label: 用时 }                # ISO-8601 时长

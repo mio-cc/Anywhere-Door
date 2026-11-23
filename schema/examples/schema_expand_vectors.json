@@ -1,0 +1,817 @@
+[
+  {
+    "name": "GitHub 建 issue：映射表的每一行；常用取必填属性按声明顺序的前 4 个",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "type": "object",
+      "required": [
+        "weight",
+        "priority",
+        "state",
+        "title",
+        "repo"
+      ],
+      "properties": {
+        "repo": {
+          "type": "string",
+          "description": "仓库，写成 owner/name"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题",
+          "maxLength": 120
+        },
+        "body": {
+          "type": "string",
+          "title": "正文",
+          "description": "Markdown",
+          "maxLength": 65536
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "open",
+            "closed"
+          ],
+          "default": "open"
+        },
+        "priority": {
+          "type": "integer",
+          "title": "优先级",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "multipleOf": 0.1
+        },
+        "draft": {
+          "type": "boolean",
+          "default": false
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assignee": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string"
+            }
+          }
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "extra": {}
+      }
+    },
+    "expandable": true,
+    "params": [
+      {
+        "key": "repo",
+        "param": {
+          "type": "string",
+          "label": "repo",
+          "help": "仓库，写成 owner/name"
+        },
+        "group": "常用",
+        "port": "repo"
+      },
+      {
+        "key": "title",
+        "param": {
+          "type": "string",
+          "label": "标题",
+          "max_length": 120
+        },
+        "group": "常用",
+        "port": "title"
+      },
+      {
+        "key": "body",
+        "param": {
+          "type": "text",
+          "label": "正文",
+          "help": "Markdown",
+          "max_length": 65536
+        },
+        "group": "高级",
+        "port": "body"
+      },
+      {
+        "key": "state",
+        "param": {
+          "type": "enum",
+          "label": "state",
+          "enum": [
+            "open",
+            "closed"
+          ],
+          "default": "open"
+        },
+        "group": "常用",
+        "port": "state"
+      },
+      {
+        "key": "priority",
+        "param": {
+          "type": "integer",
+          "label": "优先级",
+          "min": 1,
+          "max": 5,
+          "step": 1
+        },
+        "group": "常用",
+        "port": "priority"
+      },
+      {
+        "key": "weight",
+        "param": {
+          "type": "number",
+          "label": "weight",
+          "min": 0,
+          "max": 1,
+          "step": 0.1
+        },
+        "group": "高级",
+        "port": "weight"
+      },
+      {
+        "key": "draft",
+        "param": {
+          "type": "boolean",
+          "label": "draft",
+          "default": false
+        },
+        "group": "高级",
+        "port": "draft"
+      },
+      {
+        "key": "labels",
+        "param": {
+          "type": "object",
+          "label": "labels"
+        },
+        "group": "高级",
+        "port": "labels"
+      },
+      {
+        "key": "assignee",
+        "param": {
+          "type": "object",
+          "label": "assignee"
+        },
+        "group": "高级",
+        "port": "assignee"
+      },
+      {
+        "key": "meta",
+        "param": {
+          "type": "object",
+          "label": "meta"
+        },
+        "group": "高级",
+        "port": "meta"
+      },
+      {
+        "key": "note",
+        "param": {
+          "type": "string",
+          "label": "note"
+        },
+        "group": "高级",
+        "port": "note"
+      },
+      {
+        "key": "extra",
+        "param": {
+          "type": "object",
+          "label": "extra"
+        },
+        "group": "高级",
+        "port": "extra"
+      }
+    ]
+  },
+  {
+    "name": "可空写法（Pydantic 的 Optional）：去掉 null 后只剩一种类型就按那一种；default: null 不写；anyOf 三项、type 去掉 null 后还剩两种时仍是 object",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "type": "object",
+      "required": [
+        "b"
+      ],
+      "properties": {
+        "a": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "备注"
+        },
+        "b": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "c": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "default": true
+        },
+        "d": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "e": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "f": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "x",
+                "y"
+              ],
+              "title": "里层标题"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "选一个"
+        },
+        "g": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "expandable": true,
+    "params": [
+      {
+        "key": "a",
+        "param": {
+          "type": "text",
+          "label": "备注",
+          "max_length": 300
+        },
+        "group": "高级",
+        "port": "a"
+      },
+      {
+        "key": "b",
+        "param": {
+          "type": "integer",
+          "label": "b",
+          "min": 0,
+          "step": 1
+        },
+        "group": "常用",
+        "port": "b"
+      },
+      {
+        "key": "c",
+        "param": {
+          "type": "boolean",
+          "label": "c",
+          "default": true
+        },
+        "group": "高级",
+        "port": "c"
+      },
+      {
+        "key": "d",
+        "param": {
+          "type": "object",
+          "label": "d"
+        },
+        "group": "高级",
+        "port": "d"
+      },
+      {
+        "key": "e",
+        "param": {
+          "type": "object",
+          "label": "e"
+        },
+        "group": "高级",
+        "port": "e"
+      },
+      {
+        "key": "f",
+        "param": {
+          "type": "enum",
+          "label": "里层标题",
+          "enum": [
+            "x",
+            "y"
+          ],
+          "help": "选一个"
+        },
+        "group": "高级",
+        "port": "f"
+      },
+      {
+        "key": "g",
+        "param": {
+          "type": "object",
+          "label": "g"
+        },
+        "group": "高级",
+        "port": "g"
+      }
+    ]
+  },
+  {
+    "name": "属性名换算成端口名：camelCase、数字开头、非法字符、与工具节点已有的端口和参数重名、彼此重名",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "2fa": {
+          "type": "boolean",
+          "default": true
+        },
+        "request": {
+          "type": "string"
+        },
+        "tool": {
+          "type": "string"
+        },
+        "Content-Type": {
+          "type": "string"
+        },
+        "名称": {
+          "type": "string"
+        },
+        "地址": {
+          "type": "string"
+        },
+        "maxRetries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "x.y": {
+          "type": "string"
+        }
+      }
+    },
+    "expandable": true,
+    "params": [
+      {
+        "key": "userId",
+        "param": {
+          "type": "string",
+          "label": "userId"
+        },
+        "group": "高级",
+        "port": "user_id"
+      },
+      {
+        "key": "user_id",
+        "param": {
+          "type": "string",
+          "label": "user_id"
+        },
+        "group": "高级",
+        "port": "user_id_2"
+      },
+      {
+        "key": "2fa",
+        "param": {
+          "type": "boolean",
+          "label": "2fa",
+          "default": true
+        },
+        "group": "高级",
+        "port": "p_2fa"
+      },
+      {
+        "key": "request",
+        "param": {
+          "type": "string",
+          "label": "request"
+        },
+        "group": "高级",
+        "port": "request_2"
+      },
+      {
+        "key": "tool",
+        "param": {
+          "type": "string",
+          "label": "tool"
+        },
+        "group": "高级",
+        "port": "tool_2"
+      },
+      {
+        "key": "Content-Type",
+        "param": {
+          "type": "string",
+          "label": "Content-Type"
+        },
+        "group": "高级",
+        "port": "_content__type"
+      },
+      {
+        "key": "名称",
+        "param": {
+          "type": "string",
+          "label": "名称"
+        },
+        "group": "高级",
+        "port": "__"
+      },
+      {
+        "key": "地址",
+        "param": {
+          "type": "string",
+          "label": "地址"
+        },
+        "group": "高级",
+        "port": "___2"
+      },
+      {
+        "key": "maxRetries",
+        "param": {
+          "type": "integer",
+          "label": "maxRetries",
+          "min": 0,
+          "step": 1
+        },
+        "group": "高级",
+        "port": "max_retries"
+      },
+      {
+        "key": "x.y",
+        "param": {
+          "type": "string",
+          "label": "x.y"
+        },
+        "group": "高级",
+        "port": "x_y"
+      }
+    ]
+  },
+  {
+    "name": "标题截到 20 个字、说明截到 200 个字；required 里不存在的属性不算",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "type": "object",
+      "required": [
+        "missing",
+        "query"
+      ],
+      "properties": {
+        "query": {
+          "type": "string",
+          "title": "查询查询查询查询查询查询查询查询查询查询查询查询查询",
+          "description": "说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字"
+        }
+      }
+    },
+    "expandable": true,
+    "params": [
+      {
+        "key": "query",
+        "param": {
+          "type": "string",
+          "label": "查询查询查询查询查询查询查询查询查询查询",
+          "help": "说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字说明文字"
+        },
+        "group": "常用",
+        "port": "query"
+      }
+    ]
+  },
+  {
+    "name": "顶层没写 type、有 properties：照常展开",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "required": [
+        "q"
+      ],
+      "properties": {
+        "q": {
+          "type": "string"
+        }
+      }
+    },
+    "expandable": true,
+    "params": [
+      {
+        "key": "q",
+        "param": {
+          "type": "string",
+          "label": "q"
+        },
+        "group": "常用",
+        "port": "q"
+      }
+    ]
+  },
+  {
+    "name": "无法展开：顶层是数组",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": [
+      {
+        "type": "string"
+      }
+    ],
+    "expandable": false,
+    "params": []
+  },
+  {
+    "name": "无法展开：顶层 type 不是 object",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "type": "string"
+    },
+    "expandable": false,
+    "params": []
+  },
+  {
+    "name": "无法展开：顶层没有 properties",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "expandable": false,
+    "params": []
+  },
+  {
+    "name": "无法展开：超过 32 个属性",
+    "reserved": [
+      "request",
+      "endpoint",
+      "result",
+      "tool",
+      "risk",
+      "rate",
+      "args",
+      "result_type",
+      "trim",
+      "keep_pointer"
+    ],
+    "schema": {
+      "type": "object",
+      "properties": {
+        "p01": {
+          "type": "string"
+        },
+        "p02": {
+          "type": "string"
+        },
+        "p03": {
+          "type": "string"
+        },
+        "p04": {
+          "type": "string"
+        },
+        "p05": {
+          "type": "string"
+        },
+        "p06": {
+          "type": "string"
+        },
+        "p07": {
+          "type": "string"
+        },
+        "p08": {
+          "type": "string"
+        },
+        "p09": {
+          "type": "string"
+        },
+        "p10": {
+          "type": "string"
+        },
+        "p11": {
+          "type": "string"
+        },
+        "p12": {
+          "type": "string"
+        },
+        "p13": {
+          "type": "string"
+        },
+        "p14": {
+          "type": "string"
+        },
+        "p15": {
+          "type": "string"
+        },
+        "p16": {
+          "type": "string"
+        },
+        "p17": {
+          "type": "string"
+        },
+        "p18": {
+          "type": "string"
+        },
+        "p19": {
+          "type": "string"
+        },
+        "p20": {
+          "type": "string"
+        },
+        "p21": {
+          "type": "string"
+        },
+        "p22": {
+          "type": "string"
+        },
+        "p23": {
+          "type": "string"
+        },
+        "p24": {
+          "type": "string"
+        },
+        "p25": {
+          "type": "string"
+        },
+        "p26": {
+          "type": "string"
+        },
+        "p27": {
+          "type": "string"
+        },
+        "p28": {
+          "type": "string"
+        },
+        "p29": {
+          "type": "string"
+        },
+        "p30": {
+          "type": "string"
+        },
+        "p31": {
+          "type": "string"
+        },
+        "p32": {
+          "type": "string"
+        },
+        "p33": {
+          "type": "string"
+        }
+      }
+    },
+    "expandable": false,
+    "params": []
+  }
+]

@@ -1,0 +1,12 @@
+name: 状态
+major: 1
+minor: 0
+description: 账本节点读写的一个字段值
+system: true
+producer: 账本
+category: state
+fields:
+  - { name: store,   type: string,  label: 账本, required: true }
+  - { name: path,    type: string,  label: 路径, required: true }
+  - { name: version, type: integer, label: 版本, required: true }
+  - { name: value,   type: 任意,    label: 值 }

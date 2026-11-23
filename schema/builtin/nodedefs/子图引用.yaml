@@ -1,0 +1,17 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.13 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: 子图引用
+version: "1.0"
+kind: atomic
+category: 边界
+description: 内联一段子图，或引用子图库里的一个版本
+impl: { type: builtin }
+ports:
+  inputs: {}
+  outputs: {}
+params:
+  pin:       { type: enum, label: 版本钉住, enum: [snapshot, link], enum_labels: { snapshot: 固定版本, link: 跟随最新 }, default: snapshot }
+  overrides: { type: object, label: 替换, help: 替换内部资源、配方、策略引用, default: {} }
+  budget:    { type: object, label: 额度, help: 从父级划拨的额度 }
+  writeback: { type: object, label: 允许写回的字段, schema: { type: array, items: { type: string } }, default: [], ui: { widget: code } }
+  grant:     { type: object, label: 权限上限, help: 给子图的权限上限 }
+container: one_of

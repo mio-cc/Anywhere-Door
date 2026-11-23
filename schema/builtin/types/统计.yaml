@@ -1,0 +1,10 @@
+name: 统计
+major: 1
+minor: 0
+description: 聚合算子 stats 的输出
+fields:
+  - { name: count, type: integer, label: 个数, required: true }
+  - { name: sum,   type: number,  label: 合计 }
+  - { name: mean,  type: number,  label: 平均 }
+  - { name: min,   type: number,  label: 最小 }
+  - { name: max,   type: number,  label: 最大 }

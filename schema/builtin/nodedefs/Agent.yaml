@@ -1,0 +1,29 @@
+# 原子节点定义（C.03.01；端口按 §6，参数按 E.14.02 的参数表，写法按 §6.1）。执行器叶子要改参数时只改这一份（P.09 K215）。
+name: Agent
+version: "1.0"
+kind: atomic
+category: 智能体
+description: 唯一调用模型的节点：拿上下文包、模型、角色卡和工具，产出符合输出类型的结果
+impl: { type: builtin }
+ports:
+  inputs:
+    context: { type: 上下文包@1, label: 上下文, required: true, lock: kernel }
+    model:   { type: 资源引用@1, label: 模型, required: true }
+    prompt:  { type: 资源引用@1, label: 指令 }
+    tools:   { type: 工具端点@1, label: 工具, multi: true }
+  outputs:
+    result: { type: "$T", label: 结果 }
+params:
+  rolecard:      { type: rolecard_ref, label: 角色卡, help: "名称@版本 或 名称@latest", ui: { group: 常用 } }
+  instruction:   { type: text, label: 指令, help: 这一次要做什么, default: "", ui: { group: 常用, bind: prompt } }
+  output_schema: { type: type_ref, label: 输出类型, default: 方案@1, ui: { group: 常用 } }
+  lifecycle:     { type: enum, label: 生命周期, enum: [ephemeral, resident], enum_labels: { ephemeral: 一次性, resident: 长驻 }, default: ephemeral, ui: { group: 常用 } }
+  temperature:   { type: number, label: 温度, min: 0, max: 1, step: 0.1, default: 0.7 }
+  reasoning:     { type: enum, label: 思考强度, enum: ["", "off", minimal, low, medium, high, xhigh, max], enum_labels: { "": 默认 }, default: "" }
+  max_tool_calls: { type: integer, label: 工具调用上限, min: 1, max: 50, step: 1, default: 10 }
+  max_turns:     { type: integer, label: 模型调用轮数上限, min: 1, max: 50, step: 1, default: 12 }
+  repair_retry:  { type: integer, label: 修复重试次数, min: 0, max: 3, step: 1, default: 2 }
+  max_output_tokens: { type: integer, label: 输出 tokens 上限, min: 1, help: 不填时用模型默认 }
+  context_src:   { type: string, label: 上下文来源, default: 上下文装配, lock: kernel }
+type_vars: { T: "param:output_schema" }
+kernel_rules: [INV-05, INV-07]

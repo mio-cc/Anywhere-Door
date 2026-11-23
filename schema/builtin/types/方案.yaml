@@ -1,0 +1,17 @@
+name: 方案
+major: 1
+minor: 0
+description: 智囊产出的一份方案
+fields:
+  - { name: understanding,   type: string, label: 理解, required: true, max_chars: 200 }
+  - { name: core_approach,   type: string, label: 核心手段, required: true, max_chars: 200 }
+  - { name: key_assumptions, type: "列表[string]", label: 关键假设, required: true }
+  - name: steps
+    type: "列表[object]"
+    label: 步骤
+    fields:
+      - { name: desc,            type: string, label: 做什么 }
+      - { name: expected_output, type: string, label: 预期产出 }
+      - { name: tools,           type: "列表[string]", label: 工具 }
+  - { name: avoids,     type: "列表[string]", label: 避开的方向 }   # 值为 ws:// 引用
+  - { name: confidence, type: number, label: 置信度 }               # 0–1

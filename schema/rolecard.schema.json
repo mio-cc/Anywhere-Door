@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/rolecard.schema.json",
+  "x-version": "1.0",
+  "title": "角色卡（C.13.02）",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "identity",
+    "mission"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "extends": {
+      "type": "string",
+      "pattern": "^[^@]+@\\d+$",
+      "description": "继承的父角色卡"
+    },
+    "identity": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "你是谁"
+    },
+    "mission": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "你要完成什么"
+    },
+    "method": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      },
+      "maxItems": 12
+    },
+    "good_output": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "好结果长什么样"
+    },
+    "boundaries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      },
+      "maxItems": 12,
+      "description": "不能做什么"
+    },
+    "when_stuck": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "卡住时怎么上报"
+    },
+    "vars": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z_][a-z0-9_]*$"
+      },
+      "description": "模板变量，由上下文包提供"
+    },
+    "fit_models": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "适合的模型（只作提示）"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/WsRef"
+      },
+      "maxItems": 2
+    },
+    "author": {
+      "$ref": "common.schema.json#/$defs/Actor"
+    },
+    "reason": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "这一版改了什么"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "active",
+        "archived"
+      ],
+      "default": "active"
+    }
+  }
+}

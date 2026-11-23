@@ -18,6 +18,223 @@
 
 ---
 
+## 2026-11-23 19:30 · m0-contract-2 · Quick（AWS Quick） · 整片评审返工
+- 依据：设计仓库 K226 提交28d8bc6；整片评审 `docs/relay/m0-contract-2.review.md`（`ff87211`）第 2、6、11、12 行。
+- 完成：
+  - `C.03.02-R7` 可空写法：`tools/schemacheck/param_test.go` 新增 `refNullable`，`refParamDef` 先去掉 null 再查表，`default: null` 不写；`schema/examples/schema_expand_vectors.json` 改第 1 条 `note` 的期望、新增第 2 条"可空写法"（7 个属性）。
+  - 资源节点提示词模板拆成 `template`（text，`show_if: kind == '提示词'`），`value` 加 `show_if: kind != '提示词'`，`dynamic_ports.from_param: template`：`schema/builtin/nodedefs/资源.yaml`、`tools/schemacheck/nodedef_test.go`（`C0301-T5` 的期望）。
+  - 评审文件加"实施者处理"一节。
+- 文档改动（设计仓库）：`C.03.02` R7、`C.03.01` §6.1、`C.03.05`、`E.14.01`、`C.13.01` §2、`C.13.02` R4、`P.09` K226。改过的文档会让本片多个叶子的 ⑥ 报"依据改过"：验证者 `relay diff` 确认改动只在这几份里，再逐个 `start --resume --accept-docs`。
+- 下一步：验证者复核返工 diff、跑检查、更新依据、重跑 `relay slice`；都通过就合并（合并提交里把 8 个叶子的 `state` 改为 `merged`，`P.09` K225）。
+- 桩：无
+- 上报单 / 阻塞：无
+- 提交 / 推送：未推送
+
+## 2026-11-23 17:30 · C.13.04 · Quick（AWS Quick） · 交付
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.04.json）；片 `m0-contract-2` 第 8 个（最后一个）叶子。
+- 完成：
+  - `schema/template.schema.json`：照 §3，补 `$schema` 和 `title`。
+  - `schema/examples/template_minimal.json`（必填字段加一个只有必填字段的 `inputs` 项），登记进 `manifest.yaml`。
+  - `tools/schemacheck/template_test.go`：`C1304-T1`、`T2`。
+- 片内收尾：`C.03.02`、`C.03.05` 领取后依据文档改过（设计方为 K223、K224 改了 `C.03.01`、`C.03.05`），`relay diff` 后用 `--resume --accept-docs` 更新依据；这两处改动不影响它们的代码（K223 的动态端口名规则 `refPortName` 的输出本来就满足；K224 只改 `C.03.01` 的定义文件规则）。已更新依据到 b4cf256（验证者）
+- 下一步：`relay slice m0-contract-2`，然后整片评审。
+- relay check：整片验证时跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+
+## 2026-11-23 17:40 · C.13.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.13.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 17:30 · C.13.02 · Quick（AWS Quick） · 交付
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.02.json）；片 `m0-contract-2` 第 7 个叶子。
+- 完成：
+  - `schema/rolecard.schema.json`：照 §2，补 `$schema` 和 `title`。
+  - `schema/builtin/rolecards/` 下 7 张卡，内容就是 §5 各段 YAML。
+  - `tools/schemacheck/rolecard_test.go`：`C1302-T1`–`T3`。`T2` 查的正文是 identity、mission、good_output、when_stuck、method、boundaries。
+- 下一步：领取 `C.13.04`。
+- relay check：领取下一个叶子时跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+
+## 2026-11-23 17:36 · C.13.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.13.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 17:30 · C.13.01 · Quick（AWS Quick） · 交付
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.01.json）；片 `m0-contract-2` 第 6 个叶子。
+- 完成：
+  - `schema/recipe.schema.json`：照 §2。**和文档不同的一处，请评审看**：`budget.ratio` 文档写 `exclusiveMinimum: 0, maximum: 1`，`max_ratio` 只写 `maximum: 1`；名字以 ratio 结尾的字段必须写 `minimum: 0`、`maximum: 1`（`C.01-R11`，schemacheck 会报），所以两者都补了 `minimum: 0`，`ratio` 保留 `exclusiveMinimum: 0`（`ratio: 0` 仍然失败，`C1301-T2`）。设计方之后把 §2 同步成这样。
+  - `schema/builtin/recipes/` 下 6 个配方，内容就是 §5 各段 YAML。
+  - `tools/schemacheck/recipe_test.go`：`C1301-T1`–`T4`。`T3` 沿字段路径逐级查 `schema/builtin/types/`，`fields(…)` 里的名字查最后一级的成员字段；`in`、`in[i]`、`in.exp` 不查字段。
+- 下一步：领取 `C.13.02`。
+- relay check：领取下一个叶子时跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+
+## 2026-11-23 17:30 · C.13.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.13.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 17:30 · C.13.03 · Quick（AWS Quick） · 交付
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.03.json）；片 `m0-contract-2` 第 5 个叶子。本叶子和后面 3 个叶子的文件由实施者一次写好放在 `.relay/staged/`，验证者依次领取、原样放进仓库、提交（用户 2026-11-23 17:03 同意的提速做法：每个叶子只在领取下一个时跑一遍检查）。
+- 完成：
+  - `schema/typedef.schema.json`：照 §2，补 `$schema` 和 `title`。
+  - `schema/builtin/types/` 下 17 个类型，内容就是 §5 各段 YAML。
+  - `tools/schemacheck/typedef_test.go`：`C1303-T1`–`T5`。顺带写了 C.13 后面几个叶子共用的辅助函数 `assetFiles`、`loadAsset`、`loadTypes`、`baseType`、`typeDefined`（同包，后面的测试直接用）。
+  - `T2` 的类别按 `category_map.yaml` 里写了 `type` 的规则推（`任意` 除外），正好是 4 个。
+- 下一步：领取 `C.13.01`。
+- relay check：领取下一个叶子时跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+
+## 2026-11-23 17:01 · C.13.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.13.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 16:50 · C.03.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 b4cf256（docs/relay/C.03.04.json）；片 `m0-contract-2` 第 4 个叶子。领取前先修了第 2 片漏改的领取记录（`main` 上 `fea96c7`，`P.09` K225）。
+- 完成：
+  - `schema/nodedef.schema.json`：`Impl` 按 `type` 判别，五种子结构 `ImplBuiltin`、`ImplPrompt`、`ImplHttp`、`ImplMcp`、`ImplSubgraph`（§3、R5、R6），每种都是封闭对象。
+  - **和实施卡写法不同的一处，请评审看**：卡上写"`oneOf` + `const`"，我用的是 `allOf` 里五条 `if {type: const X} then $ref ImplX`。效果相同（每种只认自己的字段），区别在报错：用 `oneOf` 时 `type` 写错会让五个分支各报一遍（包括 http 的"缺 risk"），报错位置落到 `/impl` 而不只是 `/impl/type`，已冻结的 `C0301-T1` 里 `script` 那条反例（断言 `/impl/type`）就会失败，而 `nodedef_test.go` 不在本叶子白名单里。`Impl` 顶层写 `additionalProperties: true`，因为字段由命中的 `Impl*` 封闭；五种 `type` 都有分支，没有不封闭的情况。
+  - R5 写进 `ImplHttp`：`POST`/`PUT`/`PATCH`/`DELETE` 时 `risk` 只能是 `L2`、`L3`。R4（密钥不能进 prompt 模板）schema 查不了，归 `E04-T6`。
+  - 我定下的：prompt 的 `output_schema` 必填（Agent 必须有输出类型，§3.1 示例也有）；`rolecard` 允许 `@latest`（`C.13.02-R4`），`recipe` 只能 `@数字`；http `url` 必须以 `http://` 或 `https://` 开头；subgraph 的 `ref` 只有 `name`、`version`（`pin` 固定 snapshot，不写）。
+  - `schema/examples/nodedefs/` 下 4 个示例（`翻译`、`汇率查询`、`查询工单`、`生成与评审`），和 §3 的 YAML 一一对应，登记进 `manifest.yaml`。
+  - `tools/schemacheck/impl_test.go`：`C0304-T1`（4 个示例按清单通过、类型对；五种写法各自的正例；串字段、`script`、缺 `type` 的反例）、`C0304-T2`（http 缺 `risk`、四种写方法配 L0/L1 失败配 L2 通过、mcp 缺 `server`、subgraph 缺 `ref`、版本和 ULID 格式）。
+- 片内注意：领取后我改过 `C.03.01`、`C.03.05`（K224 等），`relay status` 显示 `C.03.02`、`C.03.05` 的依据改过、`C.01`、`C.02.01`、`C.02.03` 冻结后依据改过。整片验证前要逐个 `relay diff` 后 `--accept-docs` / `stale --accept`，复查结论写在整片记录里。
+- 进行中：等验证者跑检查和测试。
+- 下一步：通过后提交，领取 `C.13.03`。
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+- 提交 / 推送：领取提交 `6c20895` / 整片做完前不推送
+
+## 2026-11-23 16:34 · C.03.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 b4cf256（docs/relay/C.03.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.03.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 16:10 · C.03.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ec5170e（docs/relay/C.03.01.json）；片 `m0-contract-2` 第 3 个叶子。实施时发现 §6 与 R3、`C.04.04-R4` 冲突，设计方登记 `P.09` K224 并改了 `C.03.01`（R3、§6、新增 §6.1），依据要按新提交更新（`start --resume --accept-docs`）。读过的改动：R3 只禁止参数名和端口名重名（账本的输入、输出都叫 `value`）；汇合 `in` 只写 `dynamic`；聚合补 `T ← input:items.elem`、`U` 写 `op:op(T)`；§6.1 定义文件的写法。代码按改过的文档写。
+- 完成：
+  - `schema/nodedef.schema.json`：补齐根结构（§4）、`PortDef`（加 `not`：`multi` 和 `dynamic` 不能同时为 true，`C.04.04-R4`）、`DynamicPorts`、`Impl`。`Impl` 先只有 `type`、封闭对象；四种声明式写法的子结构由 `C.03.04` 加。`type_vars` 的键限定为单个大写字母。
+  - `schema/builtin/nodedefs/` 下 13 个定义文件：端口按 §6，参数照 `E.14.01`–`E.14.13` 的参数表，写法按 §6.1。13 个执行器文档都有参数表，**没有从 demo 取参数**。表里没写、我补的只有界面上的小东西：`label`（中文名）、`help`（取说明列）、`enum_labels`、`show_if`（只用于"某种方式下才用"的参数，如扇出 `k` 在 `collect == 'k_of_n'` 时）、数字参数的 `step`。Agent 加了 `kernel_rules: [INV-05, INV-07]`。
+  - `tools/schemacheck/nodedef_test.go`：`C0301-T1`（13 个文件恰好齐、都过 schema、文件名等于 `name`、`kind` 为 atomic；根结构反例）、`T2`（端口签名对照表写在测试里，含分支、人工出口的 `ctrl` 类别）、`T3`（参数与端口不重名、端口 ≤ 8、`container` 与 `container_rules.yaml` 一致、`type_vars` 与 §6 一致、常用参数 ≤ 4、`ui.bind` 指向存在的输入端口）、`T4`（`C.03.03` §5 的 5 个内核锁参数及默认值）、`T5`（只有资源、工具声明 `dynamic_ports`）。YAML 用 `goccy/go-yaml` 的 `YAMLToJSON` 转成 JSON 再校验。
+  - 返工 1 次（实施者的错）：`C0301-T1` 两条键名反例断言了错误位置，校验器把 propertyNames 错误记在根位置，改为位置 ""，并补一条大写 `T` 的正例；验证者按 QF1001 把 T2 里一处条件等价改写。
+- 请评审重点看：
+  1. 资源 `value` 用 `object`（任意 JSON），`kind=提示词` 时是字符串，界面上统一是 JSON 编辑框——写提示词模板时不方便，是否要给提示词单独一个 `text` 参数，由评审定（§6.1 现在这样写）。
+  2. `reasoning` 的取值有空串 `""`（"用设置里的默认"），`enum_labels` 里显示为"默认"。
+  3. 账本 `path` 的默认值照表写了字面的"目标树"。
+  4. 带 `show_if` 的参数是我按说明列加的，表里没有这一列。
+- 进行中：等验证者跑检查和测试。
+- 下一步：通过后提交，领取 `C.03.04`。
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+- 提交 / 推送：领取提交 `6244ce6` / 整片做完前不推送
+
+## 2026-11-23 15:53 · C.03.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ec5170e（docs/relay/C.03.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.03.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 15:55 · C.03.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 809edd0（docs/relay/C.03.05.json）；片 `m0-contract-2` 第 2 个叶子。设计方补了实施卡漏写的测试文件，依据要按新提交更新（`start --resume --accept-docs`），见下一步。
+- 完成：
+  - `schema/nodedef.schema.json`：加 `$defs/ParamUI`（C.03.05 §4）和 `ParamDef.ui`（`$ref`）。`dynamic_ports` 的定义归 `C.03.01`，本叶子不写。
+  - `tools/schemacheck/paramui_test.go`：`C0305-T1`（字段与 §4 一致、`additionalProperties: false`、`group` 两个值、`widget` 的取值 = `widget_map.yaml` 推得出的控件加 `auto`、`connection`，并确认 `ParamDef.ui` 能用）、`C0305-T2`（反例：未知字段、旧写法 `help`、`inline`、`area`，`rows` 超出 2–12，`order` 不是整数）。
+- 关于 `C.03.02` 评审重点第 2 处（验证者预读提出）：子参数的 `type: object` 在 R7 里的意思是"不再展开、用 JSON 编辑"，不会把 `true` 或 `["string", "null"]` 当成有结构的对象往下展开，所以不会出错；但可空的标量（`["string", "null"]`，以及 Python 工具常见的 `anyOf: [{type: string}, {type: null}]`）都会退成 JSON 编辑，用起来不方便。设计方的处理：整片评审时列为"有疑问"，在评审里定是否改 R7（去掉 `null` 后只剩一种标量时按那种类型）。
+- 进行中：等验证者跑检查和测试。
+- 下一步：通过后提交，领取 `C.03.01`。
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+- 提交 / 推送：领取提交 `f4ed62f` / 整片做完前不推送
+
+## 2026-11-23 15:46 · C.03.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 809edd0（docs/relay/C.03.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.03.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-23 15:50 · C.03.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 809edd0（docs/relay/C.03.02.json）；片 `m0-contract-2` 第 1 个叶子（顺序见设计文档 `P.09` K210）
+- 完成（实施卡全部 4 个文件）：
+  - `schema/nodedef.schema.json`：新建，只有 `$defs/ParamDef`（C.03.02 §3）。根结构、`PortDef`、`Impl`、`DynamicPorts` 由 `C.03.01`、`C.03.04` 加；`ParamDef.ui` 和 `ParamUI` 由下一个叶子 `C.03.05` 加，本叶子先不写 `ui`（同一文件，按片内顺序逐步补齐）。
+  - R3（`secret` 只能是 string）、R6（`schema_from` 只用于 object）用 `allOf` + `if/then` 写进 `ParamDef`：§3 的片段里没有，但两条规则和 `C0302-T3` 要求 schema 拦住。`schema` 字段是开放对象，标 `"x-open": true`（C.01-R19）。
+  - `schema/builtin/widget_map.yaml`：§4 的机器可读版。`rules` 按顺序匹配；附加条件 `when` 三种（`span_steps`、`max_options` + `max_label_chars`、`has_schema`），含义写在文件头；§4 的"子表单"不是控件名，写成 `subform: true`；`connection` 不在表里。
+  - `schema/examples/schema_expand_vectors.json`：§5 的测试向量 8 条（4 条能展开、4 条不能），`reserved` 是工具节点已有的端口和参数名。不是示例文档，按 `*_vectors.json` 不进清单。
+  - `tools/schemacheck/param_test.go`：`C0302-T1`（表与 §4 逐行一致、控件名、兜底规则、§4 每行和 §7 两个例子的推断结果）、`C0302-T2`（按 §5 写的参考实现逐条比对向量；每个子参数都是合法 `ParamDef`、端口名合法且不重名、常用 ≤ 4、覆盖映射表产出的 7 种类型）、`C0302-T3`（ParamDef 反例）。
+- 请评审重点看——§5 没说死、我按字面定下的几处（都写进了向量或参考实现）：
+  1. 顶层没写 `type` 而有 `properties`：照常展开；顶层 `type` 写了但不是 `"object"`：不能展开。
+  2. 属性的 `type` 是数组（如 `["string", "null"]`）或 JSON Schema 布尔值（`true`）：按"没写 type"处理成 `object`。
+  3. 只有 A–Z 算大写字母（前加 `_`）；`UserID` 会变成 `_user_i_d`，`Content-Type` 变成 `_content__type`、`名称` 变成 `__`——合法但不好看，字面规则就是这样。属性名换算后为空时加 `p_`。
+  4. "常用"取 `required` 里的属性按**属性声明顺序**的前 4 个（不是 `required` 数组的顺序）；`required` 里不存在的属性忽略。
+  5. `step` 缺省 1 只用于 integer；number 没写 `multipleOf` 就不写 `step`。
+  6. T1 对照的控件名是 `C.03.05` §4 的 `ParamUI.widget` 取值（写在测试里），因为 `ParamUI` 下一个叶子才建；`C0305-T1` 会拿 schema 再对一次。
+- 进行中：等验证者跑检查和测试。
+- 下一步：通过后提交，领取 `C.03.05`：`go run ./tools/relay start C.03.05 --slice m0-contract-2 --by "Quick（AWS Quick）"`。
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
+- 提交 / 推送：领取提交 `870ecae` / 整片做完前不推送
+
+## 2026-11-23 15:35 · C.03.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 809edd0（docs/relay/C.03.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.03.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-23 15:40 · C.01、C.02.01–C.02.05、C.04.01–C.04.03、C.11 · Quick（AWS Quick，设计方）· 冻结后复查（`relay stale --accept`）
 - 依据：设计仓库第 3 片开工前复查（`P.09` K210–K223）改了这 10 个冻结叶子引用的文档，`relay stale` 列出它们；逐个看了 `relay diff`，结论是**代码都不用改**，按 `G.02.06-R21` 用 `relay stale --accept` 更新依据。
 - 复查结论：
@@ -210,6 +427,17 @@
 - relay check：第一轮、第二轮七项全部通过（验证者：Codex）；修复后待第三轮。
 - 评审：`docs/relay/O.01.review.md`（评审者：Codex），第 12–14 条待复核。
 - 提交 / 推送：未提交（本叶子因 `tools/relay` 还不存在，没有按 `G.02.06-R8` 逐条提交，属 §5 例外；从下一个叶子起逐条提交）。
+
+## 2026-11-23 17:30 · C.13.03 · Quick（AWS Quick） · 交付
+- 依据：设计仓库提交 b4cf256（docs/relay/C.13.03.json）；片 `m0-contract-2` 第 5 个叶子。本叶子和后面 3 个叶子的文件由实施者一次写好放在 `.relay/staged/`，验证者依次领取、原样放进仓库、提交（用户 2026-11-23 17:03 同意的提速做法：每个叶子只在领取下一个时跑一遍检查）。
+- 完成：
+  - `schema/typedef.schema.json`：照 §2，补 `$schema` 和 `title`。
+  - `schema/builtin/types/` 下 17 个类型，内容就是 §5 各段 YAML。
+  - `tools/schemacheck/typedef_test.go`：`C1303-T1`–`T5`。顺带写了 C.13 后面几个叶子共用的辅助函数 `assetFiles`、`loadAsset`、`loadTypes`、`baseType`、`typeDefined`（同包，后面的测试直接用）。
+  - `T2` 的类别按 `category_map.yaml` 里写了 `type` 的规则推（`任意` 除外），正好是 4 个。
+- 下一步：领取 `C.13.01`。
+- relay check：领取下一个叶子时跑（验证者：Codex）
+- 评审：整片做完后统一评审（`G.02.06-R23`）
 
 ## 2026-11-23 · 初始化（第 0 片）· Quick（实施）+ Codex（验证）
 - 依据：设计仓库 `mio-cc/miocode` 提交 `da84086`；按 `G.02.06` §5 例外：`tools/relay` 还没写，领取与检查人工执行。

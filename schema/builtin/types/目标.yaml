@@ -1,0 +1,28 @@
+name: 目标
+major: 1
+minor: 0
+description: 主脑设定的目标，构成目标树
+fields:
+  - { name: id,     type: string, label: 编号, required: true }
+  - { name: intent, type: string, label: 意图, required: true, readonly_except: ["tag:主脑"] }
+  - { name: parent, type: string, label: 上级目标 }                 # 值为 ws:// 引用
+  - { name: constraints, type: object, label: 约束, required: true, inherit: true }   # 币种、地区、时间范围等
+  - name: criteria
+    type: "列表[object]"
+    label: 验收标准
+    required: true
+    readonly_except: ["tag:主脑"]
+    fields:
+      - { name: id,     type: string,  label: 编号, required: true }
+      - { name: desc,   type: string,  label: 说明, required: true }
+      - { name: method, type: string,  label: 判定方式, required: true, enum: [规则, 抽检, 评审] }
+      - { name: rule,   type: string,  label: 规则 }                # method 为规则时的表达式
+      - { name: must,   type: boolean, label: 必须满足 }
+  - name: budget
+    type: object
+    label: 预算
+    fields:
+      - { name: tokens, type: integer, label: tokens }
+      - { name: time,   type: string,  label: 时长 }                # ISO-8601 时长
+      - { name: calls,  type: integer, label: 调用次数 }
+  - { name: priority, type: string, label: 优先级, enum: [P0, P1, P2] }

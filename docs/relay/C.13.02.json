@@ -1,0 +1,27 @@
+{
+  "leaf": "C.13.02",
+  "branch": "slice/m0-contract-2",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-23T09:36:39Z",
+  "docs_commit": "28d8bc6fc1e3cfae255ace8850bec7cf3e146740",
+  "docs": {
+    "B_后端服务/B.04_API_资源/B.04.06_defs_节点库.md": "sha256:896772cf2b02f450d91a93ca706bb0465646a5e963980e1a49a63d502666f0be",
+    "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
+    "C_契约层/C.13_内置资产格式/C.13.01_配方_recipe.md": "sha256:55a055294d97a6d6c82d59dbf8d47f88a48d91e73ce0a69906daf74a000d6b90",
+    "C_契约层/C.13_内置资产格式/C.13.02_角色卡_rolecard.md": "sha256:e97bf21ad945b37600d4aedf751da64c67a0ba856e49486e83ff97e9026434f0",
+    "C_契约层/C.13_内置资产格式/C.13_内置资产格式.md": "sha256:74753d158c7149079eb762f9a8e9cb7677f2bd4d3e569788676aa3e681d0c68a",
+    "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
+    "E_内核_engine/E.13_ctxasm_上下文装配/E.13.05_提示词六段拼装.md": "sha256:64d20b9ad56ae9dc13865114265a33cd448a179dad4339901b7a383e8d0477a3",
+    "G_工程规范/G.02_AI_实施者守则/G.02.01_实施任务包格式.md": "sha256:0c703857f67d97d9a3710822a858942a20b63dd69baa9b2a6498617d198a0164",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:853a1c68eb1dee1c6710e3c67f8d52919eab2d1c7615e187447aabe87e2bcd0e",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.10_依赖管理.md": "sha256:86172402cf3842afdca1ec83517864b03a938dbffe488b7558d893c754c9e2ff",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m0-contract-2",
+  "base": "559241136e1e8135f11dfda7a4cab0772bbd3e45",
+  "head": "1b1f654ad604fb7982e585d7c00210a7bf1e7b24"
+}
