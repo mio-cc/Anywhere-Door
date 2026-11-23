@@ -3,7 +3,7 @@
   "branch": "feat/C.02.01-resource-value",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T12:03:18Z",
-  "docs_commit": "858c12439cbdf4295bf05775fcdc745d6cf79493",
+  "docs_commit": "38b66cfdfb29f86e547ec67a43741280699c8787",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.02_图文档/C.02.01_Graph_顶层结构.md": "sha256:b9b9afe5333b1178c5cd43d383f0a708c8dde2aa51646148ae2ac9c7f6a0b79c",
@@ -13,7 +13,7 @@
     "C_契约层/C.02_图文档/C.02.05_视图元数据.md": "sha256:1384f08589798dcd550859b8b68d2ae965055d10c26a02b78566fb82434aeadb",
     "C_契约层/C.02_图文档/C.02_图文档.md": "sha256:c8a5309cd7526168c3640b96a4f79364a4226cf7485a38d2776566153cad8076",
     "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:8d1f6ed7cbcac363b5c36b18a8881348f3163ce7ef26002e3e74b15737414ee1",
-    "C_契约层/C.09_授权书_Mandate.md": "sha256:99fa5d7c7b21a1ac1f2e69f08fd8de1db7f269d2f4cf94e880f42193fcafb151",
+    "C_契约层/C.09_授权书_Mandate.md": "sha256:3553d700f0b7358c7efe075e40c322a35e0bfe1c0e11d0e177e838bcd600259b",
     "C_契约层/C.12_版本与迁移.md": "sha256:c5a6935e956f1e95ce6dca3ec915397c9957681f366894a4f0113943637b16bf",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
     "E_内核_engine/E.02_graph_图模型/E.02.01_数据结构与索引.md": "sha256:c0ca4dc53b517373f967787978131ce8aa065ec8c610679e2b2582c22b07d444",

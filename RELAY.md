@@ -18,6 +18,14 @@
 
 ---
 
+## 2026-11-23 22:50 · 冻结叶子复查（第 4 片 K229–K231 之后） · Quick（AWS Quick） · 设计方结论
+- 依据：设计仓库 38b66cf；`relay stale` 列出 5 个叶子，`relay diff` 的改动都是本棒为第 4 片改的（K229、K230、K231）和第 4 片冻结（状态行、变更记录），改了什么设计方清楚，逐个对照代码。
+- 结论：5 个叶子的代码都不用改，`relay stale --accept`。
+  - `C.01`（`C.06.02`、`C.09`、`C.10`）：`C.09` 把 `Expiry.until` 改名 `until_at`，正是为了满足 `C.01-R7`（K230）；`C.10` 审批卡片块的字段改名 `approval_kind`（K229）；`C.06.02` 只改 §10 验收 2 的示例位置（K231）。`C.01` 的写法、命名、封闭对象、示例清单规则都没变，`schemacheck` 不用改。
+  - `C.02.01`、`C.02.02`、`C.02.05`（`C.09`）：`C.09` 只改了 `Expiry`（§3、R4、实施卡）。图文档里的授权书挂载用的是 `common.schema.json` 的 `MandateMount`，没有变；`Node`、`NodeUi`、`Pos`、`Note` 也不引用 `Expiry`。
+  - `C.07`（`C.06.02`）：只改 §10 验收 2；`state_machine.yaml` 和两个状态枚举没变。
+- 提交 / 推送：验证者提交推送
+
 ## 2026-11-23 22:40 · m0-contract-3 · Quick（AWS Quick） · 整片评审返工
 - 依据：整片评审 `docs/relay/m0-contract-3.review.md`（评审者 Codex，提交 89cf65c）：9 行中 8 行符合，第 5 行（`C.10`）不符合。
 - 完成：`Session.mandates` 的数组项按 `C.10` §2 约束 `anchor` 为 `session`；`C10-T3` 加两条反例。实施者处理写在评审文件里。
