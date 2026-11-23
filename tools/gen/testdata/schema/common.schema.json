@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/common.schema.json",
+  "x-version": "1.0",
+  "title": "测试用公共定义",
+  "$defs": {
+    "Ulid": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "Color": {
+      "enum": [
+        "red",
+        "dark_blue",
+        "tool.L0"
+      ],
+      "description": "颜色"
+    },
+    "Tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Extra": {
+      "type": "object",
+      "x-open": true
+    },
+    "Scores": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "Anything": {
+      "description": "什么都行"
+    },
+    "Size": {
+      "type": "integer"
+    }
+  }
+}

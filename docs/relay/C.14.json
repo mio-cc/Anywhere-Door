@@ -1,0 +1,27 @@
+{
+  "leaf": "C.14",
+  "branch": "feat/C.14-codegen",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-23T15:44:45Z",
+  "docs_commit": "72bc633a2979dbb6a25cc23c906ca1c87a9c3ed0",
+  "docs": {
+    "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
+    "C_契约层/C.06_事件/C.06.01_事件信封.md": "sha256:2feb20c08eafd18d3d66a4721fb12d53c58f39ea3189eb0a632109099b0aea4b",
+    "C_契约层/C.07_运行状态机.md": "sha256:5b5115763696dacdecd5b6e4d2178920deba357a0ca63d04ce3a132ff3762610",
+    "C_契约层/C.14_代码生成映射.md": "sha256:cc6340b20830c512cafdd49e6d34e0101daac1b6bae376220b0278f6c7f79bbe",
+    "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:ced9fb623bfa0fd1b424bcf05c0964c45f90e659f4609d71d87860750934a04a",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.04_命名规范/G.04.03_文件与目录命名.md": "sha256:8eba388544ef4f659881d6039ae6366193f6a515badeaeb5ddd2a3bafdf3d37a",
+    "G_工程规范/G.10_依赖管理.md": "sha256:3499bd21a7dc19efd71b39ab239cc26ecab3b5be2b8e1a8e0c7c6fe40a6dc11b",
+    "G_工程规范/G.16_代码生成规范.md": "sha256:1245d891af4e3b0bfb4c54d2ed651787e14bb2272bc50868dbb16e14bdce8aa3",
+    "O_构建_发布与运维/O.01_构建流水线.md": "sha256:d9f5072cacc592f624fd835d6a88ace02d12f6149f1a12a28d9f12f74a1f155f",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7",
+    "W_前端实现_web/W.04_协议层/W.04.03_字段映射.md": "sha256:12b829ccbaf24e1c59c356ff3d2aa108a3db68fde28ed8ab48c6748b51837932",
+    "W_前端实现_web/W.04_协议层/W.04.04_生成类型使用规则.md": "sha256:9a198ed9b2768d1c3596370541d8a15ea6d2558e10473c29f751a2a12fc4c909",
+    "W_前端实现_web/W.10_国际化与格式化.md": "sha256:4d3a057dd2d35707c6f4ddcbfb53643802d6af3900eeba106ed294799155ec73"
+  },
+  "stubs": [],
+  "state": "merged"
+}

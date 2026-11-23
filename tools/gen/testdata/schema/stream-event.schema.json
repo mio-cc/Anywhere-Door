@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/stream-event.schema.json",
+  "x-version": "1.0",
+  "title": "测试用事件流",
+  "required": [
+    "kind",
+    "sid"
+  ],
+  "properties": {
+    "kind": {
+      "enum": [
+        "hello",
+        "bye"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "base.schema.json#/$defs/Envelope"
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "hello"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "minimum": 1
+          },
+          "data": {
+            "$ref": "#/$defs/DataHello"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "const": "bye"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "seq": {
+            "const": 0
+          },
+          "data": {
+            "$ref": "#/$defs/DataBye"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "DataHello": {
+      "type": "object",
+      "required": [
+        "who"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "who": {
+          "type": "string"
+        }
+      }
+    },
+    "DataBye": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    }
+  }
+}

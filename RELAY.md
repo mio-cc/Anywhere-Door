@@ -18,6 +18,43 @@
 
 ---
 
+## 2026-11-24 00:05 · C.14 · Quick（AWS Quick） · 返工：字段映射表按类型（`P.09` K235）
+- 依据：设计仓库中 K235 那次提交；`C.14-R8`、`C14-T6` 和 `W.04.03` 在领取后改过，`relay start C.14 --resume --accept-docs` 更新依据。
+- 原因：第一版生成的 `wire.ts` 按字段名汇总、同名取最保守（照原来的 `C.14-R8` / K84），30 个字段名分类冲突，`budget`、`usage`、`params`、`ui`、`overrides`、`note` 里的结构字段前端不会转换。规则本身的缺陷，设计方改为按类型。
+- 完成：`tools/gen/wire.go` 重写：`WIRE_TYPES`（每个结构类型和判别联合的每个字段写 `"raw"` / `{t}` / `{list}` / `{map}`，联合写 `union`）、`WireTypeName`、`WireNode`、`WireUnion`、`WireType`；值都不用转换的数组和映射收成 `"raw"`。`tables_test.go` 的 `C14-T6` 重写：期望照文档手写（同名字段在不同类型里分别正确、7 个联合的形状和分支数、testdata 上 `$ref` 到属性和 `#`）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 23:59 · C.14 · Quick（AWS Quick） · 交付（第 5 片）
+- 依据：设计仓库提交（见 docs/relay/C.14.json）；`P.09` K234（生成器自研、往返测试先做 Go 侧、保持一个叶子）
+- 完成：实施卡全部。
+  - `tools/gen`：自研生成器，一个 `package main`：`load.go`（读 schema、解析 `$ref`）、`model.go`（类型模型：§3 的映射、两种判别联合、内联类型取名、`allOf` 合并）、`golang.go`（`gen/types.go`、`gen/union.go`）、`typescript.go`（`types.ts`）、`consts.go`（Go 常量、`consts.ts`）、`tables.go`（`gen/tables.go`、`tables.ts`）、`wire.go`（`wire.ts`）、`messages.go`（`messages.ts`）、`names.go`；`main.go` 整体替换 `O.01` 的桩（`STUB(G.16)`）。
+  - `schema/builtin/aliases.yaml`（根类型名、节点类型别名）、`schema/builtin/sse_control.yaml`。
+  - 测试：`C14-T1`–`T7`（`gen_test.go`、`roundtrip_test.go`、`tables_test.go`）；黄金文件的输入在 `tools/gen/testdata/schema/`。
+  - 生成物（`gen/*.go`、`web/src/lib/protocol/generated/*.ts`、`web/src/lib/i18n/generated/messages.ts`）和黄金文件 `tools/gen/testdata/golden/*` 由验证者运行生成器产出（实施者跑不了 Go，`G.02.05-R1`）。
+- 自主决定的细节：Go 字段、TS 字段都按名字排序；`DecodeAs[T](raw)` 的参数是 `json.RawMessage`（`C.14-R2` 原来写的 `DecodeAs[T](o *Op)` 只能用于 Op）；整体联合在 Go 里是 `{Kind, Raw}`；`ApplyDefaults` / `withDefaults…` 只处理标量默认值，不递归。
+- 进行中：无
+- 桩：替换了 `tools/gen/main.go`（`STUB(G.16)`）
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（`docs/relay/C.14.review.md`）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-23 23:44 · C.14 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 4604788（docs/relay/C.14.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.14.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-23 23:20 · 冻结叶子复查（修复片 `m0-fix-entry` / K233 之后） · Quick（AWS Quick） · 设计方结论
 - 依据：设计仓库 7552a99；`relay stale` 列出 18 个叶子，改过的依据都是 K233 这一组（`C.03.01`、`C.03.05`、`C.10`、`C.13.03`、`E.14.01`、`P.06`、`G.11`），改了什么设计方清楚，逐个对照代码。
 - 结论：18 个叶子的代码都不用改，`relay stale --accept`。

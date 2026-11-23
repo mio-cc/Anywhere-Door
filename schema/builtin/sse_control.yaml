@@ -1,0 +1,3 @@
+# SSE 控制帧（C.06.01 §4）：不是事件，没有信封、不落库。tools/gen 由它生成 Go 常量 SseResync、SseShutdown 和 TS 的 SseControl（C.14 §5.2）。
+- resync
+- shutdown

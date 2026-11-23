@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/shape.schema.json",
+  "x-version": "1.0",
+  "title": "测试用联合",
+  "$defs": {
+    "Shape": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "kind": {
+          "enum": [
+            "circle",
+            "square"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "circle"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/ShapeCircle"
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "square"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/ShapeSquare"
+          }
+        }
+      ]
+    },
+    "ShapeCircle": {
+      "type": "object",
+      "required": [
+        "kind",
+        "r"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "circle"
+        },
+        "r": {
+          "type": "number"
+        }
+      }
+    },
+    "ShapeSquare": {
+      "type": "object",
+      "required": [
+        "kind",
+        "side"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "square"
+        },
+        "side": {
+          "type": "integer"
+        },
+        "at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "open": {
+          "type": "string"
+        }
+      }
+    },
+    "CmdKind": {
+      "enum": [
+        "move",
+        "say"
+      ]
+    },
+    "Cmd": {
+      "type": "object",
+      "required": [
+        "kind",
+        "args"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/CmdKind"
+        },
+        "args": {
+          "type": "object",
+          "x-open": true
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "move"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "$ref": "#/$defs/CmdMove"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "say"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "args": {
+                "$ref": "#/$defs/CmdSay"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "CmdMove": {
+      "type": "object",
+      "required": [
+        "dx"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "dx": {
+          "type": "integer"
+        },
+        "size": {
+          "$ref": "common.schema.json#/$defs/Size"
+        },
+        "scores": {
+          "$ref": "common.schema.json#/$defs/Scores"
+        }
+      }
+    },
+    "CmdSay": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "$ref": "#/$defs/ShapeSquare/properties/at"
+        },
+        "mood": {
+          "$ref": "thing.schema.json#/properties/box"
+        }
+      }
+    },
+    "Checked": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "p",
+            "q"
+          ]
+        },
+        "p": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "p"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "p"
+            ]
+          }
+        }
+      ],
+      "description": "只用于校验的 if/then，不是联合"
+    }
+  }
+}

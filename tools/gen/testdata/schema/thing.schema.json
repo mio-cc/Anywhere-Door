@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/thing.schema.json",
+  "x-version": "1.0",
+  "title": "测试用根结构",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "maybe",
+    "box"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "common.schema.json#/$defs/Ulid"
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "名字"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 3
+    },
+    "ratio": {
+      "type": "number",
+      "default": 0.5
+    },
+    "on": {
+      "type": "boolean",
+      "default": false
+    },
+    "mode": {
+      "enum": [
+        "a",
+        "b"
+      ],
+      "default": "a"
+    },
+    "color": {
+      "$ref": "common.schema.json#/$defs/Color",
+      "default": "red"
+    },
+    "fixed": {
+      "const": "x"
+    },
+    "maybe": {
+      "anyOf": [
+        {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "at": {
+      "$ref": "common.schema.json#/$defs/Timestamp"
+    },
+    "tags": {
+      "$ref": "common.schema.json#/$defs/Tags"
+    },
+    "extra": {
+      "$ref": "common.schema.json#/$defs/Extra"
+    },
+    "open": {
+      "type": "object",
+      "x-open": true
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "raw": {
+      "description": "什么都行"
+    },
+    "num_or_str": {
+      "type": [
+        "string",
+        "number"
+      ]
+    },
+    "box": {
+      "type": "object",
+      "required": [
+        "w"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "w": {
+          "type": "integer"
+        },
+        "h": {
+          "type": "integer"
+        }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "child": {
+      "$ref": "#"
+    },
+    "shape": {
+      "$ref": "shape.schema.json#/$defs/Shape"
+    },
+    "cmd": {
+      "$ref": "shape.schema.json#/$defs/Cmd"
+    }
+  }
+}

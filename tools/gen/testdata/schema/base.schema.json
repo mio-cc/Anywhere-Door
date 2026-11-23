@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://anydoor.local/schema/base.schema.json",
+  "x-version": "1.0",
+  "title": "测试用信封",
+  "$defs": {
+    "Envelope": {
+      "type": "object",
+      "required": [
+        "seq",
+        "kind",
+        "data"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "kind": {
+          "type": "string"
+        },
+        "sid": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "data": {
+          "type": "object",
+          "x-open": true
+        }
+      }
+    }
+  }
+}

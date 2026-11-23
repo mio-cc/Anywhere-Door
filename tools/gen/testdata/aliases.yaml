@@ -1,0 +1,6 @@
+# 黄金文件测试（C14-T3）用的名字表。
+roots:
+  thing.schema.json: Thing
+  stream-event.schema.json: StreamEvent
+nodes:
+  甲: Alpha

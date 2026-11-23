@@ -1,0 +1,26 @@
+# 生成器用的名字表（C.14-R5、R7）。tools/gen 读它，生成的类型名和常量名以这里为准。
+roots: # 有根结构的 schema 文件 → 根类型名
+  graph-event.schema.json: GraphEvent
+  graph.schema.json: Graph
+  graph_patch.schema.json: GraphPatch
+  nodedef.schema.json: NodeDef
+  recipe.schema.json: Recipe
+  rolecard.schema.json: Rolecard
+  run-event.schema.json: RunEvent
+  session-event.schema.json: SessionEvent
+  template.schema.json: Template
+  typedef.schema.json: TypeDef
+nodes: # 原子节点类型名 → 常量名里的英文别名（NodeTypeResource、NodeType.Resource）
+  资源: Resource
+  Agent: Agent
+  上下文装配: ContextAssembly
+  工具: Tool
+  扇出: Fanout
+  汇合: Join
+  聚合: Aggregate
+  分支: Branch
+  循环: Loop
+  账本: Ledger
+  人工: Human
+  子图端口: SubPort
+  子图引用: SubRef
