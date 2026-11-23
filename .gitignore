@@ -1,0 +1,35 @@
+# 构建输出（O.01 §6）
+/bin/
+/dist/
+/.anydoor-dev/
+/cmd/anydoor/dist/*
+!/cmd/anydoor/dist/.gitkeep
+/web/dist/
+/web/dist-perf/
+/web/.perf/
+/web/.test/
+/web/node_modules/
+node_modules/
+
+# 接力工具的本地文件（任务包不提交，G.02.06-R5）
+/.relay/
+
+# 测试与工具
+*.test
+*.out
+cover.out
+coverage/
+
+# 密钥与本机配置（G.07-R7）
+.env
+.env.*
+*.pem
+*.key
+
+# 编辑器与系统
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+~$*
