@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -47,7 +48,7 @@ func (e *Env) Status() error {
 			}
 			continue
 		}
-		e.say("- %s %s：%s · 分支 %s · %s · 领取于 %s", leaf, name, stateName(c.State), c.Branch, c.ClaimedBy, c.ClaimedAt)
+		e.say("- %s %s：%s · 分支 %s · %s · 领取于 %s", leaf, name, stateName(c), c.Branch, c.ClaimedBy, c.ClaimedAt)
 		if last, err := gitOut(e.Repo, "log", "-1", "--format=%h %s（%cr）", c.Branch); err == nil {
 			e.say("    最后一次提交：%s", last)
 		} else {
@@ -99,16 +100,144 @@ func (e *Env) Status() error {
 	return e.pErr
 }
 
-func stateName(s string) string {
-	switch s {
+func stateName(c *Claim) string {
+	switch c.State {
 	case "claimed":
 		return "进行中"
 	case "delivered":
+		if c.Slice != "" {
+			return "片内已完成，等整片验证与合并"
+		}
 		return "已交付，等合并"
 	case "merged":
 		return "已合并，等设计方冻结"
 	}
-	return s
+	return c.State
+}
+
+// sliceClaims 是工作区里属于这一片的领取记录，按领取时间排（G.02.06-R23）。
+func (e *Env) sliceClaims(slice string) []*Claim {
+	var out []*Claim
+	entries, _ := os.ReadDir(filepath.Join(e.Repo, "docs", "relay"))
+	for _, d := range entries {
+		if leaf, ok := strings.CutSuffix(d.Name(), ".json"); ok {
+			if c, err := e.readClaim(leaf); err == nil && c.Slice == slice {
+				out = append(out, c)
+			}
+		}
+	}
+	sort.SliceStable(out, func(i, j int) bool {
+		if out[i].ClaimedAt != out[j].ClaimedAt {
+			return out[i].ClaimedAt < out[j].ClaimedAt
+		}
+		return out[i].Leaf < out[j].Leaf
+	})
+	return out
+}
+
+// deliverSlice 检查片里还在做的叶子（①–⑥；⑦ 整片验证时跑一次）。全部通过才把它们标为片内已完成、
+// 记下完成时的提交，返回改过的领取记录；有不通过的，打印结果、什么也不改。
+func (e *Env) deliverSlice(slice string) (paths []string, ok bool, err error) {
+	head, err := gitOut(e.Repo, "rev-parse", "HEAD")
+	if err != nil {
+		return nil, false, err
+	}
+	var open []*Claim
+	ok = true
+	for _, c := range e.sliceClaims(slice) {
+		if c.State != "claimed" {
+			continue
+		}
+		res, err := e.CheckResults(c.Leaf, true)
+		if err != nil {
+			return nil, false, err
+		}
+		if !allOK(res) {
+			e.say("== %s ==", c.Leaf)
+			e.printResults(withoutBuild(res))
+			ok = false
+		}
+		open = append(open, c)
+	}
+	if !ok {
+		return nil, false, nil
+	}
+	for _, c := range open {
+		c.State, c.Head = "delivered", head
+		if err := e.writeClaim(c); err != nil {
+			return nil, false, err
+		}
+		paths = append(paths, claimPath(c.Leaf))
+		e.say("%s 检查通过，标为片内已完成", c.Leaf)
+	}
+	return paths, true, nil
+}
+
+// CheckSlice 是整片验证（G.02.06-R23）：片里每个叶子按自己的范围检查 ①–⑥，整片跑一次 ⑦。
+// 全部通过时，把还在做的叶子标为片内已完成（要提交它们的领取记录）。
+func (e *Env) CheckSlice(slice string, noBuild bool) (bool, error) {
+	claims := e.sliceClaims(slice)
+	if len(claims) == 0 {
+		return false, fmt.Errorf("工作区里没有片 %s 的领取记录：先切到分支 slice/%s", slice, slice)
+	}
+	if dirty, err := gitOut(e.Repo, "status", "--porcelain"); err != nil {
+		return false, err
+	} else if dirty != "" {
+		return false, errors.New("代码仓库有未提交的改动：整片验证只针对已提交的内容，先提交")
+	}
+	all := true
+	for _, c := range claims {
+		res, err := e.CheckResults(c.Leaf, true)
+		if err != nil {
+			return false, err
+		}
+		e.say("## %s（%s）", c.Leaf, stateName(c))
+		if !e.printResults(withoutBuild(res)) {
+			all = false
+		}
+	}
+	e.say("## 整片")
+	r7 := Result{Item: 7, Title: "go run ./tools/build -check", OK: true}
+	if noBuild {
+		r7.Detail = []string{"已跳过（--no-build，只用于本地快速自查；整片验证不允许跳过）"}
+	} else if err := e.buildCheck(); err != nil {
+		r7.OK, r7.Detail = false, []string{err.Error()}
+	}
+	if !e.printResults([]Result{r7}) {
+		all = false
+	}
+	if !all {
+		e.say("== 片 %s 的检查没有通过 ==", slice)
+		return false, e.pErr
+	}
+	paths, _, err := e.deliverSlice(slice)
+	if err != nil {
+		return false, err
+	}
+	e.say("== 片 %s 的检查全部通过 ==", slice)
+	if len(paths) > 0 {
+		e.say("提交这些领取记录：%s", strings.Join(paths, "、"))
+	}
+	return true, e.pErr
+}
+
+func allOK(res []Result) bool {
+	for _, r := range res {
+		if !r.OK {
+			return false
+		}
+	}
+	return true
+}
+
+func withoutBuild(res []Result) []Result {
+	var out []Result
+	for _, r := range res {
+		if r.Item != 7 {
+			out = append(out, r)
+		}
+	}
+	return out
 }
 
 // scanStubs 找第一、二行写着 STUB(…) 的文件。

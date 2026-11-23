@@ -2,10 +2,11 @@
 //
 //	go run ./tools/relay status                  本仓库的接力状态
 //	go run ./tools/relay next                    可以领取的叶子
-//	go run ./tools/relay start <叶子> [--name 简称] [--by 实施者] [--resume [--accept-docs]]
+//	go run ./tools/relay start <叶子> [--name 简称] [--by 实施者] [--slice 片名] [--resume [--accept-docs]]
 //	go run ./tools/relay check <叶子> [--no-build]
 //	go run ./tools/relay diff <叶子>
 //	go run ./tools/relay stale [--accept <叶子>]
+//	go run ./tools/relay slice <片名> [--no-build]   整片检查（G.02.06-R23）
 //
 // 设计文档的位置：环境变量 ANYDOOR_DOCS；没设时为 ../sj/项目树_v0.5（G.02.06-R1）。
 // 只用 Go 标准库，通过 os/exec 调用 git。退出码：0 通过，1 不通过，2 用法错误。
@@ -28,10 +29,11 @@ import (
 const usage = `用法：
   go run ./tools/relay status
   go run ./tools/relay next
-  go run ./tools/relay start <叶子> [--name 简称] [--by 实施者] [--resume [--accept-docs]]
+  go run ./tools/relay start <叶子> [--name 简称] [--by 实施者] [--slice 片名] [--resume [--accept-docs]]
   go run ./tools/relay check <叶子> [--no-build]
   go run ./tools/relay diff <叶子>
-  go run ./tools/relay stale [--accept <叶子>]`
+  go run ./tools/relay stale [--accept <叶子>]
+  go run ./tools/relay slice <片名> [--no-build]`
 
 // errFailed 表示检查没通过（退出码 1），详细原因已经打印。
 var errFailed = errors.New("没有通过")
@@ -86,6 +88,24 @@ func dispatch(env *Env, args []string) error {
 			return fmt.Errorf("%w：stale 只接受 --accept <叶子>", errUsage)
 		}
 		return env.Stale(*accept)
+	case "slice":
+		fset := flag.NewFlagSet("slice", flag.ContinueOnError)
+		fset.SetOutput(io.Discard)
+		noBuild := fset.Bool("no-build", false, "跳过 go run ./tools/build -check（只用于本地快速自查）")
+		if len(rest) == 0 || strings.HasPrefix(rest[0], "-") {
+			return fmt.Errorf("%w：slice 后面要写片名", errUsage)
+		}
+		if err := fset.Parse(rest[1:]); err != nil || fset.NArg() > 0 {
+			return fmt.Errorf("%w：slice 只接受 --no-build", errUsage)
+		}
+		ok, err := env.CheckSlice(rest[0], *noBuild)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			return errFailed
+		}
+		return nil
 	case "start", "check", "diff":
 	default:
 		return fmt.Errorf("%w：不认识的命令 %q", errUsage, cmd)
@@ -101,6 +121,7 @@ func dispatch(env *Env, args []string) error {
 	resume := fset.Bool("resume", false, "只重新生成任务包")
 	noBuild := fset.Bool("no-build", false, "跳过第 ⑦ 项（只用于本地快速自查）")
 	acceptDocs := fset.Bool("accept-docs", false, "和 --resume 一起用：读过 relay diff 之后，把依据更新为当前的设计文档")
+	slice := fset.String("slice", "", "片内连续领取：在 slice/<片名> 分支上接着领（G.02.06-R23）")
 	if err := fset.Parse(rest[1:]); err != nil {
 		return fmt.Errorf("%w：%v", errUsage, err)
 	}
@@ -111,6 +132,7 @@ func dispatch(env *Env, args []string) error {
 			return fmt.Errorf("%w：--accept-docs 只能和 --resume 一起用", errUsage)
 		}
 		env.AcceptDocs = *acceptDocs
+		env.Slice = *slice
 		return env.Start(leaf, *name, *resume)
 	case "check":
 		ok, err := env.Check(leaf, *noBuild)
@@ -132,7 +154,8 @@ type Env struct {
 	Out        io.Writer
 	Now        func() time.Time
 	By         string
-	AcceptDocs bool // start --resume --accept-docs：把依据更新为当前文档（G.02.06-R13）
+	AcceptDocs bool   // start --resume --accept-docs：把依据更新为当前文档（G.02.06-R13）
+	Slice      string // start --slice：片内连续领取（G.02.06-R23）
 
 	tree *Tree
 	pErr error
@@ -165,7 +188,10 @@ type Claim struct {
 	DocsCommit string            `json:"docs_commit"`
 	Docs       map[string]string `json:"docs"`
 	Stubs      []string          `json:"stubs"`
-	State      string            `json:"state"` // claimed / delivered / merged
+	State      string            `json:"state"`           // claimed / delivered / merged
+	Slice      string            `json:"slice,omitempty"` // 片内连续领取时的片名（G.02.06-R23）
+	Base       string            `json:"base,omitempty"`  // 片内：领取前的提交，检查从这里算起
+	Head       string            `json:"head,omitempty"`  // 片内：完成时的提交（下一个叶子领取前），检查到这里为止
 
 	foundOn string // 在哪个分支（或工作区）找到的
 }

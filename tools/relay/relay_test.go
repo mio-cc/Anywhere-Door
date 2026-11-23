@@ -128,7 +128,7 @@ func TestParse(t *testing.T) {
 		if !ok {
 			t.Fatal("没有读到实施卡")
 		}
-		wantCreate := []string{"pkg/a/a.go", "pkg/a/a_test.go", "Makefile", "pkg/gen/**", "go.mod"}
+		wantCreate := []string{"pkg/a/a.go", "pkg/a/a_test.go", "Makefile", "pkg/gen/**", "go.mod", "pkg/b/shared.go"}
 		if !reflect.DeepEqual(card.Create, wantCreate) {
 			t.Fatalf("要建的文件：%v", card.Create)
 		}
@@ -250,6 +250,17 @@ func TestCheck(t *testing.T) {
 		write(t, env.Repo, "pkg/c/c.go", "package c\n")
 		if itemOK(t, env, 1) {
 			t.Fatal("白名单外的文件应当被拦下")
+		}
+	})
+	t.Run("O01-T9/①逐个写出的文件优先于不许碰的目录", func(t *testing.T) {
+		env := claimX01(t)
+		write(t, env.Repo, "pkg/b/shared.go", "package b\n")
+		if !itemOK(t, env, 1) {
+			t.Fatal("实施卡逐个写出的 pkg/b/shared.go 应当允许（G.02.06-R24 ④）")
+		}
+		write(t, env.Repo, "pkg/b/other.go", "package b\n")
+		if itemOK(t, env, 1) {
+			t.Fatal("不许碰的目录里没写出的文件仍应当拦下")
 		}
 	})
 	t.Run("O01-T9/①桩登记后允许", func(t *testing.T) {
@@ -435,6 +446,104 @@ func TestStatus(t *testing.T) {
 		}
 		if s := out.String(); !strings.Contains(s, "X.04 丁") || strings.Contains(s, "X.01") || strings.Contains(s, "X.03") {
 			t.Fatalf("next 的输出：\n%s", s)
+		}
+	})
+}
+
+func TestSlice(t *testing.T) {
+	t.Run("O01-T12 片内连续领取", func(t *testing.T) {
+		env, out := newEnv(t)
+		env.Slice = "Bad_Name"
+		if err := env.Start("X.01", "a", false); err == nil || !strings.Contains(err.Error(), "片名") {
+			t.Fatalf("不合规的片名应当拒绝：%v", err)
+		}
+		mainHead := gitRun(t, env.Repo, "rev-parse", "HEAD")
+		env.Slice = "s"
+		if err := env.Start("X.01", "a", false); err != nil {
+			t.Fatal(err)
+		}
+		if b := gitRun(t, env.Repo, "rev-parse", "--abbrev-ref", "HEAD"); b != "slice/s" {
+			t.Fatalf("分支应当是 slice/s：%s", b)
+		}
+		c1, _ := env.readClaim("X.01")
+		if c1.Slice != "s" || c1.Base != mainHead || c1.Head != "" {
+			t.Fatalf("领取记录：%+v", c1)
+		}
+		write(t, env.Repo, "pkg/a/a.go", "package a\n")
+		write(t, env.Repo, "pkg/a/a_test.go", compliantTest)
+		write(t, env.Repo, "pkg/c/c.go", "package c\n") // 越界
+		gitRun(t, env.Repo, "add", "-A")
+		gitRun(t, env.Repo, "commit", "-q", "-m", "甲")
+		out.Reset()
+		if err := env.Start("X.02", "b", false); err == nil || !strings.Contains(err.Error(), "上一个叶子") || !strings.Contains(out.String(), "pkg/c/c.go") {
+			t.Fatalf("上一个叶子没通过时不能领下一个：%v\n%s", err, out)
+		}
+		gitRun(t, env.Repo, "rm", "-q", "pkg/c/c.go")
+		gitRun(t, env.Repo, "commit", "-q", "-m", "去掉越界的文件")
+		head1 := gitRun(t, env.Repo, "rev-parse", "HEAD")
+		if err := env.Start("X.02", "b", false); err != nil {
+			t.Fatalf("上一个叶子通过后应当能领下一个：%v\n%s", err, out)
+		}
+		if b := gitRun(t, env.Repo, "rev-parse", "--abbrev-ref", "HEAD"); b != "slice/s" {
+			t.Fatalf("还在同一个分支上：%s", b)
+		}
+		c1, _ = env.readClaim("X.01")
+		c2, _ := env.readClaim("X.02")
+		if c1.State != "delivered" || c1.Head != head1 || c2.Slice != "s" || c2.Base != head1 || c2.State != "claimed" {
+			t.Fatalf("领取记录：X.01 %+v；X.02 %+v", c1, c2)
+		}
+		if s := gitRun(t, env.Repo, "status", "--porcelain"); s != "" {
+			t.Fatalf("领取提交应当带上上一个叶子的领取记录：%s", s)
+		}
+		// X.01 的「不许碰」是 pkg/b/：按各自的范围检查，X.02 的改动不算到 X.01 头上
+		write(t, env.Repo, "pkg/b/b.go", "package b\n")
+		write(t, env.Repo, "pkg/b/b_test.go", "package b\n\nimport \"testing\"\n\nfunc TestB(t *testing.T) {\n\tt.Run(\"X02-T1 乙\", func(t *testing.T) {})\n}\n")
+		gitRun(t, env.Repo, "add", "-A")
+		gitRun(t, env.Repo, "commit", "-q", "-m", "乙")
+		for _, leaf := range []string{"X.01", "X.02"} {
+			res, err := env.CheckResults(leaf, true)
+			if err != nil || !allOK(res) {
+				t.Fatalf("%s 按自己的范围应当通过：%v %+v", leaf, err, res)
+			}
+		}
+		out.Reset()
+		if err := env.Status(); err != nil || !strings.Contains(out.String(), "X.01 甲：片内已完成") || !strings.Contains(out.String(), "X.02 乙：进行中") {
+			t.Fatalf("status：%v\n%s", err, out)
+		}
+		// 整片验证
+		write(t, env.Repo, "pkg/b/tmp.txt", "x")
+		if _, err := env.CheckSlice("s", true); err == nil || !strings.Contains(err.Error(), "未提交") {
+			t.Fatalf("有未提交的改动时不能整片验证：%v", err)
+		}
+		_ = os.Remove(filepath.Join(env.Repo, "pkg", "b", "tmp.txt"))
+		out.Reset()
+		ok, err := env.CheckSlice("s", true)
+		if err != nil || !ok || !strings.Contains(out.String(), "## X.01") || !strings.Contains(out.String(), "## X.02") || !strings.Contains(out.String(), "全部通过") {
+			t.Fatalf("整片验证应当通过：%v\n%s", err, out)
+		}
+		if c2, _ = env.readClaim("X.02"); c2.State != "delivered" || c2.Head != gitRun(t, env.Repo, "rev-parse", "HEAD") {
+			t.Fatalf("整片验证通过后最后一个叶子也标为已完成：%+v", c2)
+		}
+		if _, err := env.CheckSlice("nope", true); err == nil {
+			t.Fatal("没有这一片时应当报错")
+		}
+		// 记录里的提交已经不存在（分支合并删除后）：base、head 一起退回分叉点
+		fork, _ := env.baseCommit()
+		gone := strings.Repeat("0", 40)
+		for _, tc := range []struct{ name, base, head string }{
+			{"head 不存在", c2.Base, gone}, // c2.Base 是 X.01 完成时的提交，不是分叉点
+			{"base 不存在", gone, c2.Head},
+		} {
+			b, h, err := env.claimRange(&Claim{Base: tc.base, Head: tc.head})
+			if err != nil || b != fork || h != "" {
+				t.Fatalf("%s：应当退回分叉点 %s、head 为空，得到 %s、%q、%v", tc.name, fork, b, h, err)
+			}
+		}
+		if c2.Base == fork {
+			t.Fatal("测试前提：X.02 的 base 不是分叉点")
+		}
+		if b, h, _ := env.claimRange(c2); b != c2.Base || h != c2.Head {
+			t.Fatalf("提交都在时用记录里的范围：%s、%s", b, h)
 		}
 	})
 }

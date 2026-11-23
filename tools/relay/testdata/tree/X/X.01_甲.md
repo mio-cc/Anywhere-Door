@@ -17,7 +17,7 @@
 - 甲要快。
 
 ### 实施卡
-- 要建 / 要改的文件：`pkg/a/a.go`、`a_test.go`、`Makefile`、`pkg/gen/**`、`go.mod`。
+- 要建 / 要改的文件：`pkg/a/a.go`、`a_test.go`、`Makefile`、`pkg/gen/**`、`go.mod`、`pkg/b/shared.go`。
 - 不许碰的文件：`pkg/b/`（`X.02`）。
 - 测试用例：
   - `X01-T1 甲`：第一个用例

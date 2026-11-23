@@ -28,6 +28,17 @@ func (e *Env) Check(leaf string, noBuild bool) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	all := e.printResults(results)
+	if all {
+		e.say("== %s 的检查全部通过 ==", leaf)
+	} else {
+		e.say("== %s 的检查没有通过 ==", leaf)
+	}
+	return all, e.pErr
+}
+
+// printResults 打印各项结果，返回是否全部通过。
+func (e *Env) printResults(results []Result) bool {
 	all := true
 	for _, r := range results {
 		status := "通过"
@@ -40,12 +51,7 @@ func (e *Env) Check(leaf string, noBuild bool) (bool, error) {
 			e.say("    %s", d)
 		}
 	}
-	if all {
-		e.say("== %s 的检查全部通过 ==", leaf)
-	} else {
-		e.say("== %s 的检查没有通过 ==", leaf)
-	}
-	return all, e.pErr
+	return all
 }
 
 // CheckResults 逐项检查，不打印。
@@ -63,15 +69,22 @@ func (e *Env) CheckResults(leaf string, noBuild bool) ([]Result, error) {
 		return nil, err
 	}
 	card, _ := ParseCard(text)
-	base, err := e.baseCommit()
+	base, head, err := e.claimRange(claim)
 	if err != nil {
 		return nil, err
 	}
-	changed, err := e.changedFiles(base)
+	changed, err := e.changedFiles(base, head)
 	if err != nil {
 		return nil, err
 	}
 	always := []string{"RELAY.md", "CHANGELOG.md", claimPath(leaf), "docs/relay/" + leaf + ".review.md"}
+	if claim.Slice != "" {
+		// 片内连续领取（G.02.06-R23）：下一个叶子领取时会改上一个叶子的领取记录；整片一份评审记录
+		always = append(always, "docs/relay/"+claim.Slice+".review.md")
+		for _, c := range e.sliceClaims(claim.Slice) {
+			always = append(always, claimPath(c.Leaf))
+		}
+	}
 	stubs := claim.Stubs
 
 	var res []Result
@@ -80,6 +93,8 @@ func (e *Env) CheckResults(leaf string, noBuild bool) ([]Result, error) {
 	for _, f := range changed {
 		switch {
 		case MatchAny(f, always) || MatchAny(f, stubs):
+		case exactlyListed(f, card.Create):
+			// 逐个写出的文件优先于「不许碰」里的目录（G.02.06-R24 ④）
 		case MatchAny(f, card.Forbid):
 			r1.OK = false
 			r1.Detail = append(r1.Detail, f+"：在实施卡的「不许碰」里")
@@ -99,9 +114,9 @@ func (e *Env) CheckResults(leaf string, noBuild bool) ([]Result, error) {
 	}
 	res = append(res, r2)
 	// ③ 依赖
-	res = append(res, e.checkDeps(t, base))
+	res = append(res, e.checkDeps(t, base, head))
 	// ④ 测试没有被删或跳过
-	res = append(res, e.checkTests(base, changed))
+	res = append(res, e.checkTests(base, head, changed))
 	// ⑤ 测试用例编号
 	res = append(res, e.checkTestIDs(card.Tests))
 	// ⑥ 依据文档
@@ -117,16 +132,21 @@ func (e *Env) CheckResults(leaf string, noBuild bool) ([]Result, error) {
 	if noBuild {
 		r7.Detail = []string{"已跳过（--no-build，只用于本地快速自查；交付和 CI 不允许跳过）"}
 	} else {
-		cmd := exec.Command("go", "run", "./tools/build", "-check")
-		cmd.Dir = e.Repo
-		cmd.Stdout, cmd.Stderr = e.Out, e.Out
-		if err := cmd.Run(); err != nil {
+		if err := e.buildCheck(); err != nil {
 			r7.OK = false
 			r7.Detail = []string{err.Error()}
 		}
 	}
 	res = append(res, r7)
 	return res, nil
+}
+
+// buildCheck 运行 go run ./tools/build -check（G.02.06-R14 ⑦）。
+func (e *Env) buildCheck() error {
+	cmd := exec.Command("go", "run", "./tools/build", "-check")
+	cmd.Dir = e.Repo
+	cmd.Stdout, cmd.Stderr = e.Out, e.Out
+	return cmd.Run()
 }
 
 func exactlyListed(f string, patterns []string) bool {
@@ -148,8 +168,32 @@ func (e *Env) baseCommit() (string, error) {
 	return "", fmt.Errorf("找不到和 main 的分叉点：仓库里没有 main 分支")
 }
 
-// changedFiles 是相对分叉点改过的文件：已提交、已暂存、未暂存和未跟踪的（不含 .gitignore 忽略的）。
-func (e *Env) changedFiles(base string) ([]string, error) {
+// claimRange 是一个叶子的检查范围：从 base 到 head。普通叶子 base 是和 main 的分叉点；
+// 片内的叶子 base 是领取前的提交（G.02.06-R23）。head 为空表示到工作区为止；片内已完成的叶子
+// head 是下一个叶子领取前的提交，只看它自己的那一段。记录里的提交已经不存在（分支合并删除后）时，退回分叉点。
+func (e *Env) claimRange(c *Claim) (base, head string, err error) {
+	exists := func(rev string) bool {
+		_, err := gitOut(e.Repo, "cat-file", "-e", rev+"^{commit}")
+		return err == nil
+	}
+	// base、head 要么都用，要么都不用：head 记了却已经不存在时，只用 base 会把后面叶子的改动算进来
+	if c.Base != "" && exists(c.Base) && (c.Head == "" || exists(c.Head)) {
+		return c.Base, c.Head, nil
+	}
+	base, err = e.baseCommit()
+	return base, "", err
+}
+
+// changedFiles 是 base 之后改过的文件。head 为空时：已提交、已暂存、未暂存和未跟踪的（不含 .gitignore 忽略的）；
+// head 不为空时：只看 base 到 head 之间已提交的。
+func (e *Env) changedFiles(base, head string) ([]string, error) {
+	if head != "" {
+		diff, err := gitOut(e.Repo, "diff", "--name-only", base, head)
+		if err != nil {
+			return nil, err
+		}
+		return sortedKeys(setOf(lines(diff))), nil
+	}
 	diff, err := gitOut(e.Repo, "diff", "--name-only", base)
 	if err != nil {
 		return nil, err
@@ -221,6 +265,22 @@ func (e *Env) fileAt(rev, path string) string {
 	return s
 }
 
+// fileIn 是文件在 head 时的内容；head 为空时读工作区。
+func (e *Env) fileIn(head, path string) string {
+	if head != "" {
+		return e.fileAt(head, path)
+	}
+	return e.fileNow(path)
+}
+
+func setOf(items []string) map[string]bool {
+	m := map[string]bool{}
+	for _, s := range items {
+		m[s] = true
+	}
+	return m
+}
+
 func (e *Env) fileNow(path string) string {
 	b, err := os.ReadFile(filepath.Join(e.Repo, filepath.FromSlash(path)))
 	if err != nil {
@@ -230,16 +290,16 @@ func (e *Env) fileNow(path string) string {
 }
 
 // checkDeps：新增的直接依赖都已登记（G.10、G.02.06-R14 ③）。
-func (e *Env) checkDeps(t *Tree, base string) Result {
+func (e *Env) checkDeps(t *Tree, base, head string) Result {
 	r := Result{Item: 3, Title: "没有新增未登记的依赖", OK: true}
 	var added []string
-	before, after := goRequires(e.fileAt(base, "go.mod")), goRequires(e.fileNow("go.mod"))
+	before, after := goRequires(e.fileAt(base, "go.mod")), goRequires(e.fileIn(head, "go.mod"))
 	for _, k := range sortedKeys(after) {
 		if !before[k] {
 			added = append(added, k)
 		}
 	}
-	nb, na := npmDeps(e.fileAt(base, "web/package.json")), npmDeps(e.fileNow("web/package.json"))
+	nb, na := npmDeps(e.fileAt(base, "web/package.json")), npmDeps(e.fileIn(head, "web/package.json"))
 	for _, k := range sortedKeys(na) {
 		if !nb[k] {
 			added = append(added, k)
@@ -292,7 +352,7 @@ func testNames(line string) []string {
 }
 
 // checkTests：没有删除已有测试，没有新增跳过（G.02.06-R14 ④、G.02.05-R30）。
-func (e *Env) checkTests(base string, changed []string) Result {
+func (e *Env) checkTests(base, head string, changed []string) Result {
 	r := Result{Item: 4, Title: "没有删除或跳过已有测试", OK: true}
 	removed, added := map[string]string{}, map[string]bool{}
 	var skips []string
@@ -308,7 +368,11 @@ func (e *Env) checkTests(base string, changed []string) Result {
 		}
 		var minus, plus []string
 		if tracked[f] || e.fileAt(base, f) != "" {
-			d, _ := gitOut(e.Repo, "diff", "-U0", base, "--", f)
+			args := []string{"diff", "-U0", base}
+			if head != "" {
+				args = append(args, head)
+			}
+			d, _ := gitOut(e.Repo, append(args, "--", f)...)
 			for _, l := range lines(d) {
 				switch {
 				case strings.HasPrefix(l, "---") || strings.HasPrefix(l, "+++"):
@@ -319,7 +383,7 @@ func (e *Env) checkTests(base string, changed []string) Result {
 				}
 			}
 		} else {
-			plus = strings.Split(e.fileNow(f), "\n")
+			plus = strings.Split(e.fileIn(head, f), "\n")
 		}
 		for _, l := range minus {
 			for _, n := range testNames(l) {

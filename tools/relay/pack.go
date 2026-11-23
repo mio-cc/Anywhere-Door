@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -224,6 +225,8 @@ func (e *Env) rebase(c *Claim, docsCommit string, docs []PackDoc) error {
 	return e.writeClaim(c)
 }
 
+var sliceNameRe = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{0,39}$`)
+
 // Start 领取一个叶子（G.02.06-R4–R7）；resume 时只重新生成任务包。
 func (e *Env) Start(leaf, name string, resume bool) error {
 	t, err := e.Tree()
@@ -254,6 +257,9 @@ func (e *Env) Start(leaf, name string, resume bool) error {
 		return err
 	}
 	if !resume {
+		if e.Slice != "" && !sliceNameRe.MatchString(e.Slice) {
+			return fmt.Errorf("%w：片名 %q 只能用小写字母、数字和连字符，最多 40 个字符", errUsage, e.Slice)
+		}
 		if err := e.checkClaimable(t, leaf); err != nil {
 			return err
 		}
@@ -298,7 +304,31 @@ func (e *Env) Start(leaf, name string, resume bool) error {
 	if _, err := gitOut(e.Repo, "rev-parse", "--verify", "--quiet", "main"); err != nil {
 		base = "HEAD"
 	}
-	if _, err := gitOut(e.Repo, "switch", "-c", branch, base); err != nil {
+	var claimBase string
+	var prevPaths []string
+	if e.Slice != "" {
+		// 片内连续领取（G.02.06-R23）：同一片的叶子在同一个分支上一个接一个做；
+		// 领下一个之前，上一个必须检查通过（①–⑥），标为片内已完成
+		branch = "slice/" + e.Slice
+		if _, err := gitOut(e.Repo, "rev-parse", "--verify", "--quiet", "refs/heads/"+branch); err == nil {
+			if _, err := gitOut(e.Repo, "switch", branch); err != nil {
+				return err
+			}
+		} else if _, err := gitOut(e.Repo, "switch", "-c", branch, base); err != nil {
+			return err
+		}
+		paths, ok, err := e.deliverSlice(e.Slice)
+		if err != nil {
+			return err
+		}
+		if !ok {
+			return fmt.Errorf("片 %s 里上一个叶子的检查没有通过（见上面），修好并提交后再领 %s", e.Slice, leaf)
+		}
+		prevPaths = paths
+		if claimBase, err = gitOut(e.Repo, "rev-parse", "HEAD"); err != nil {
+			return err
+		}
+	} else if _, err := gitOut(e.Repo, "switch", "-c", branch, base); err != nil {
 		return err
 	}
 	by := e.By
@@ -308,6 +338,7 @@ func (e *Env) Start(leaf, name string, resume bool) error {
 	c := &Claim{
 		Leaf: leaf, Branch: branch, ClaimedBy: by, ClaimedAt: e.Now().UTC().Format("2006-01-02T15:04:05Z"),
 		DocsCommit: docsCommit, Docs: map[string]string{}, Stubs: []string{}, State: "claimed",
+		Slice: e.Slice, Base: claimBase,
 	}
 	for _, d := range docs {
 		if !d.Missing {
@@ -320,7 +351,7 @@ func (e *Env) Start(leaf, name string, resume bool) error {
 	if err := e.addRelayEntry(c); err != nil {
 		return err
 	}
-	if _, err := gitOut(e.Repo, "add", claimPath(leaf), "RELAY.md"); err != nil {
+	if _, err := gitOut(e.Repo, append([]string{"add", claimPath(leaf), "RELAY.md"}, prevPaths...)...); err != nil {
 		return err
 	}
 	if _, err := gitOut(e.Repo, "commit", "-q", "-m", "chore("+leaf+"): 领取 "+n.Name, "-m", "依据设计仓库 "+short(docsCommit)+"。", "-m", "Refs: "+leaf); err != nil {
@@ -349,8 +380,8 @@ func (e *Env) checkClaimable(t *Tree, leaf string) error {
 	mine, _ := ParseCard(text)
 	for _, other := range sortedKeys(claims) {
 		c := claims[other]
-		if other == leaf || c.State == "merged" {
-			continue
+		if other == leaf || c.State == "merged" || (e.Slice != "" && c.Slice == e.Slice) {
+			continue // 同一片的叶子在同一个分支上依次做，不会并行（G.02.06-R23）
 		}
 		otext, err := t.Text(other)
 		if err != nil {
