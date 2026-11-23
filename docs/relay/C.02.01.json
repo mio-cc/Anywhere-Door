@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T05:40:25Z",
-  "docs_commit": "809edd00f823c3c35a9d1b800b77bdb761f9260c",
+  "docs_commit": "a1cfe13bba27d37138fa1fe6f0c236abb667add7",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.02_图文档/C.02.01_Graph_顶层结构.md": "sha256:3a7665da95ccfc3f9207f9d9a90253074600b3b4f95beaefaeeae5071550089e",
@@ -12,7 +12,7 @@
     "C_契约层/C.02_图文档/C.02.04_子图与嵌套.md": "sha256:775b49f095ad69484318a441c46897e4d9bca5fd2656922052f009f0fca68b5a",
     "C_契约层/C.02_图文档/C.02.05_视图元数据.md": "sha256:1384f08589798dcd550859b8b68d2ae965055d10c26a02b78566fb82434aeadb",
     "C_契约层/C.02_图文档/C.02_图文档.md": "sha256:c8a5309cd7526168c3640b96a4f79364a4226cf7485a38d2776566153cad8076",
-    "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:3a73f8e40ae93fb13ccea205bd12f237e8aae6ce724d3ff191b2fdac428d5e4c",
+    "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:8d1f6ed7cbcac363b5c36b18a8881348f3163ce7ef26002e3e74b15737414ee1",
     "C_契约层/C.09_授权书_Mandate.md": "sha256:ae3ddb5dfbe340cc3b7e0dffdfddf750b6cc696863640808ff5af71bab75b62d",
     "C_契约层/C.12_版本与迁移.md": "sha256:f9de0b826501dde46e4aacc3b5ea0d983a15addf744f3b368c1e24a580cbf019",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
