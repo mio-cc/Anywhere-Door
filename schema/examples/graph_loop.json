@@ -46,7 +46,10 @@
         },
         "params": {
           "kind": "模型",
-          "value": "large-model"
+          "value": {
+            "provider": "fake",
+            "model": "large-model"
+          }
         }
       },
       {
@@ -113,7 +116,20 @@
               },
               "params": {
                 "kind": "列表",
-                "value": "3 家厂商大模型"
+                "value": [
+                  {
+                    "provider": "fake",
+                    "model": "vendor-a-large"
+                  },
+                  {
+                    "provider": "fake",
+                    "model": "vendor-b-large"
+                  },
+                  {
+                    "provider": "fake",
+                    "model": "vendor-c-large"
+                  }
+                ]
               }
             },
             {
@@ -126,7 +142,10 @@
               },
               "params": {
                 "kind": "模型",
-                "value": "large-model"
+                "value": {
+                  "provider": "fake",
+                  "model": "large-model"
+                }
               }
             },
             {
@@ -400,7 +419,10 @@
                     },
                     "params": {
                       "kind": "模型",
-                      "value": "small-model"
+                      "value": {
+                        "provider": "fake",
+                        "model": "small-model"
+                      }
                     }
                   },
                   {
@@ -546,7 +568,10 @@
                     },
                     "params": {
                       "kind": "模型",
-                      "value": "small-model"
+                      "value": {
+                        "provider": "fake",
+                        "model": "small-model"
+                      }
                     }
                   },
                   {

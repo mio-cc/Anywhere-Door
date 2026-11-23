@@ -1,24 +1,26 @@
 {
   "leaf": "C.02.01",
-  "branch": "slice/m0-contract",
+  "branch": "feat/C.02.01-resource-value",
   "claimed_by": "Quick（AWS Quick）",
-  "claimed_at": "2026-11-23T05:40:25Z",
-  "docs_commit": "a1cfe13bba27d37138fa1fe6f0c236abb667add7",
+  "claimed_at": "2026-11-23T12:03:18Z",
+  "docs_commit": "858c12439cbdf4295bf05775fcdc745d6cf79493",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
-    "C_契约层/C.02_图文档/C.02.01_Graph_顶层结构.md": "sha256:3a7665da95ccfc3f9207f9d9a90253074600b3b4f95beaefaeeae5071550089e",
+    "C_契约层/C.02_图文档/C.02.01_Graph_顶层结构.md": "sha256:b9b9afe5333b1178c5cd43d383f0a708c8dde2aa51646148ae2ac9c7f6a0b79c",
     "C_契约层/C.02_图文档/C.02.02_Node_节点.md": "sha256:b6afa5736931d6c048b2bf8ae2d4ba0b7bbf577f2a0118a9978edcdb00cf8f1b",
     "C_契约层/C.02_图文档/C.02.03_Edge_连线.md": "sha256:01a47ff5fa817b51689dfd465a6f4f560e83cbb3a845360b0405d234c3a99747",
     "C_契约层/C.02_图文档/C.02.04_子图与嵌套.md": "sha256:775b49f095ad69484318a441c46897e4d9bca5fd2656922052f009f0fca68b5a",
     "C_契约层/C.02_图文档/C.02.05_视图元数据.md": "sha256:1384f08589798dcd550859b8b68d2ae965055d10c26a02b78566fb82434aeadb",
     "C_契约层/C.02_图文档/C.02_图文档.md": "sha256:c8a5309cd7526168c3640b96a4f79364a4226cf7485a38d2776566153cad8076",
     "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:8d1f6ed7cbcac363b5c36b18a8881348f3163ce7ef26002e3e74b15737414ee1",
-    "C_契约层/C.09_授权书_Mandate.md": "sha256:ae3ddb5dfbe340cc3b7e0dffdfddf750b6cc696863640808ff5af71bab75b62d",
-    "C_契约层/C.12_版本与迁移.md": "sha256:f9de0b826501dde46e4aacc3b5ea0d983a15addf744f3b368c1e24a580cbf019",
+    "C_契约层/C.09_授权书_Mandate.md": "sha256:99fa5d7c7b21a1ac1f2e69f08fd8de1db7f269d2f4cf94e880f42193fcafb151",
+    "C_契约层/C.12_版本与迁移.md": "sha256:c5a6935e956f1e95ce6dca3ec915397c9957681f366894a4f0113943637b16bf",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
     "E_内核_engine/E.02_graph_图模型/E.02.01_数据结构与索引.md": "sha256:c0ca4dc53b517373f967787978131ce8aa065ec8c610679e2b2582c22b07d444",
     "E_内核_engine/E.02_graph_图模型/E.02.03_深拷贝与快照.md": "sha256:0ddbf7f95e7d5b216a86a936a71ab54b71b453f06a9074f7a5359dd76256b0e7",
     "E_内核_engine/E.07_store_持久化/E.07.02_SQLite_表结构.md": "sha256:b92da5401429b67574a82244de6a413af5f72a59f346df925e3d8ede34641a0b",
+    "E_内核_engine/E.10_llm_模型适配/E.10.01_Model_统一接口.md": "sha256:9d1cf9244cdb6be750c6fc9cc3c7be510020b1ab8c8653ec4f70c8fbfcf2efb6",
+    "E_内核_engine/E.14_exec_执行器/E.14.01_资源.md": "sha256:b60953ffb7120bdcd372c3f5065c0798e9c23f5f34e7da81a581921c8d2faf34",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:853a1c68eb1dee1c6710e3c67f8d52919eab2d1c7615e187447aabe87e2bcd0e",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
@@ -31,8 +33,5 @@
     "W_前端实现_web/W.12_前端测试.md": "sha256:1a3c351d7d9dc60dc9c172c94f5826bb52df5f0f564e84257b4f158e3095f7aa"
   },
   "stubs": [],
-  "state": "merged",
-  "slice": "m0-contract",
-  "base": "da3de1f246a36258d653316e90b09e6359c5bc44",
-  "head": "5c0734d0896cfc7aa36c99e0b0521e1eacfffddb"
+  "state": "merged"
 }

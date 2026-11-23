@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -94,6 +95,11 @@ func TestGraphExamples(t *testing.T) {
 				if n.Label == "闭环迭代" || n.Label == "资料采集" {
 					found[n.Label] = depth
 				}
+				if n.Type == "资源" {
+					if msg := resourceValueProblem(n.Params); msg != "" {
+						t.Errorf("%s/%s：%s（E.14.01）", path, n.Label, msg)
+					}
+				}
 			}
 			if depth > 0 && (!roles["entry"] || !roles["exit"]) {
 				t.Errorf("%s：子图要有 entry 和 exit 子图端口节点（C.02.04-R2），实际 %v", path, sortedKeys(roles))
@@ -125,4 +131,49 @@ func TestGraphExamples(t *testing.T) {
 			t.Errorf("资料采集应在闭环迭代里（第 1 层的节点）：%v", found)
 		}
 	})
+}
+
+// resourceValueProblem 检查资源节点的 value 是否按 kind 写（E.14.01、E.10.01）：模型是模型引用
+// {provider, model, sampling?, fallback?}；列表是 JSON 数组或工作区引用；提示词写 template、不写 value。没有问题时返回空串。
+func resourceValueProblem(params map[string]any) string {
+	kind, _ := params["kind"].(string)
+	if kind == "" {
+		kind = "模型" // 资源节点 kind 的默认值（schema/builtin/nodedefs/资源.yaml）
+	}
+	v, has := params["value"]
+	switch kind {
+	case "模型":
+		m, ok := v.(map[string]any)
+		if !ok {
+			return "kind 为模型时 value 应是模型引用 {provider, model}"
+		}
+		for _, k := range sortedKeys(m) {
+			switch k {
+			case "provider", "model", "sampling", "fallback":
+			default:
+				return "模型引用里多了字段 " + k
+			}
+		}
+		for _, k := range []string{"provider", "model"} {
+			if s, _ := m[k].(string); s == "" {
+				return "模型引用缺少 " + k
+			}
+		}
+	case "列表":
+		if _, ok := v.([]any); ok {
+			return ""
+		}
+		if s, _ := v.(string); strings.HasPrefix(s, "ws://") {
+			return ""
+		}
+		return "kind 为列表时 value 应是 JSON 数组或工作区引用"
+	case "提示词":
+		if has {
+			return "kind 为提示词时模板写在 template，不写 value"
+		}
+		if s, _ := params["template"].(string); s == "" {
+			return "kind 为提示词时要写 template"
+		}
+	}
+	return ""
 }

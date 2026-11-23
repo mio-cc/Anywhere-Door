@@ -17,6 +17,30 @@
 ```
 
 ---
+## 2026-11-23 20:10 · C.02.01 · Quick（AWS Quick） · 冻结后修复
+- 依据：设计仓库 858c124；`C.02.01` 冻结后改回"已审"（`G.02.06-R21`）。
+- 原因：整体检查时发现 `graph_loop.json` 里 5 个资源节点的 `value` 照 demo 写成了说明文字（`"large-model"`、`"3 家厂商大模型"`），不是 `E.14.01` 的模型引用和数组。schema 里 `Node.params` 开放，查不出来；资源节点执行器和前端读这张图时会出错。
+- 完成：
+  - `schema/examples/graph_loop.json`：3 个"大模型"、2 个"小模型"改为 `{"provider": "fake", "model": "large-model" / "small-model"}`；"模型列表"改为 3 个模型引用的数组（`vendor-a-large`、`vendor-b-large`、`vendor-c-large`）。其余一个字符都没改。`provider` 用 `fake`：示例图要能在 `--fake-llm` 演示模式下跑（`E.10.08`）。
+  - `tools/schemacheck/graph_test.go`：`C0201-T3` 对每个资源节点检查 `value` 按 `kind` 的写法（新增 `resourceValueProblem`：模型是只含 `provider`、`model`、`sampling`、`fallback` 的对象且前两个非空；列表是数组或 `ws://` 引用；提示词写 `template`、不写 `value`；`kind` 缺省按模型）。
+- 没改的：两个连线反例 `invalid/edge_port_*.json` 也是同样写法，属于 `C.02.03`，只测端口名，留到下次（`P.09` K228）。
+- 下一步：验证者跑检查、评审、合并（合并提交里把 `docs/relay/C.02.01.json` 的 `state` 改为 `merged`），设计方重新冻结。
+- 桩：无
+- 上报单 / 阻塞：无
+- 提交 / 推送：未推送
+
+
+
+## 2026-11-23 20:03 · C.02.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 858c124（docs/relay/C.02.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.02.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
 
 ## 2026-11-23 19:45 · 冻结叶子复查 · Quick（AWS Quick） · 设计方结论
 - 依据：设计仓库 a1cfe13；`relay stale` 列出 `C.01`、`C.02.01`、`C.02.03`，改过的文档是第 3 片期间改的 `C.03.01`（§5 R3、§6、§6.1，K224、K226）、`C.03.05`（§4，K226）、`C.13.01`（§2，K226）、`C.13.02`（R4，K226）。
