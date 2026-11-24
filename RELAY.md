@@ -18,6 +18,24 @@
 
 ---
 
+## 2026-11-24 23:40 · Quick（AWS Quick） · 冻结叶子复查（第 ⑨ 片 K250–K252 之后），代码不用改
+- 依据：设计仓库提交 6e91c56；`P.09` K250、K251、K252
+- 完成：`relay stale` 列出 40 个冻结叶子，依据里改过的是第 ⑨ 片复查时改的 10 份文档。逐份看了改动，都不涉及这些叶子的代码：
+  - `G.10` §3.1：只删了 `openai-go`、`anthropic-sdk-go`、`genai` 三行；`tools/deps/allow.txt` 已在 `E.10.01` 同步，没有叶子用到这三个依赖（C、E.07、B、O 各叶子只是把 `G.10` 当依赖清单引用）。
+  - `G.11` §3：只给 `models.providers` 写明"格式见 `E.10.01` §4.3"；`internal/platform/config` 里它本来就是 `Kind: Any`、缺省 `[]`，格式由 `llm.ParseProviders` 校验，配置层不用改（`B.02`、`B.07.03`、`B.07.05`、`O.01`、`O.02`、`O.03`）。
+  - `P.06`（模型提供方的定义、新词条）、`P.08`（ADR-011 取代 ADR-005）：术语和决策记录，没有对应代码（`C.01`、`C.02.04`、`C.03.02`、`C.10`、`C.13.04`）。
+  - `C.16`：连接类型按协议分、字段类型加 `kv` / `json`、R10 对应提供方配置；`C.16` 还是草稿，连接还没有实现；`schema/nodedef.schema.json` 的 `connection_type` 是不限取值的字符串，`widget_map.yaml` 不含 connection，都不受影响（`C.01`、`C.03.02`、`C.03.05`）。
+  - `E.10`、`E.10.05`、`E.10.08`、旧 `E.10.01` 改名：`B.07.02` 的 `secret.ErrLocked` 不变（`llm` 侧另定义 `ErrSecretLocked`、由组装处包装，K251 ⑦）；`C.10` 的 `orchestrator_model` 和 7 级思考强度不变；`B.02` 的 `--fake-llm` 本来就只记一条"M1 起生效（E.10.08）"；`C.02.01` 的模型引用 `{provider, model}` 不变。
+  - `Q.06`：守卫和录放改到 HTTP 层，录放目录、脱敏、`gitleaks` 的规则不变（`C.13.04`、`O.02`）。
+  - `P.07`：M0 / M1 / M2 交付物的写法，不涉及 `O.02`、`O.03` 的代码。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale --accept` 逐个更新依据后，`relay stale` 应为空（验证者：Codex）
+- 评审：不适用
+- 提交 / 推送：验证者提交 / 推送
+
 ## 2026-11-24 23:30 · E.10.03 · Quick（AWS Quick） · 整片评审修复（第 ⑨ 片 m0-llm）
 - 依据：设计仓库提交（Codex 推送 K252 后的 HEAD）；`P.09` K252
 - 完成：处理 `docs/relay/m0-llm.review.md` 的第 3、4、9、12 行（第 14、16 行随之）：
