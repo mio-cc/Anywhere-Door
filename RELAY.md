@@ -17,6 +17,21 @@
 ```
 
 ---
+## 2026-11-24 20:40 · Quick（AWS Quick） · 冻结叶子复查（K248 不用 CI 之后），代码不用改
+- 依据：设计仓库提交（Codex 推送后的 HEAD）；`P.09` K248
+- 完成：K248 改了 `G.02.06` §4、`G.08-R3`、`G.07`、`Q.01`、`S.12`、`O`、`O.02`、`O.03`、`P.07`、`P.09`，`relay stale` 列出的冻结叶子逐个对照过，代码都不用改：
+  - 这些改动只是去掉 GitHub Actions：工作流、每晚任务、分支保护的说法换成"验证者在开发机上运行的合并前检查"（`O.02` §4.2），漏洞与密钥扫描从每天一次改为每片合并前一次，可复现构建改为发布时比较。没有任何冻结叶子的代码读工作流文件，或依赖 CI 的存在。
+  - `G.02.06` §4 只改了 R14 ⑦、R16 由谁、什么时候再跑一遍的说明，`relay` 的检查项和规则（R1–R24）没变；`Q.01` 只改了 R4 的措辞和 R11 的运行时机，测试写法的规则没变。
+  - `O.01`：`tools/build -check` 只检查 `tools/versions.txt` 里两列的行，`gitleaks`、`govulncheck` 的第三列从 `ci` 改为 `run` 不影响它；`tools/dev`、`tools/relay` 不涉及。
+  - `B.02`：`O.03` 的冒烟改为只在开发机的 `windows/amd64` 上做，`B.02` §4 的两行标准输出和 shutdown 接口照旧是它的依据。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale --accept` 逐个更新依据后，`relay stale` 应为空（验证者：Codex）
+- 评审：不适用
+- 提交 / 推送：验证者提交 / 推送
+
 ## 2026-11-24 20:30 · O.02 · Quick（AWS Quick） · 交付（修复片 m0-ci-fix）
 - 依据：设计仓库提交（见 docs/relay/O.02.json）；`P.09` K248
 - 完成：用户决定不用 GitHub Actions：删除 `.github/workflows/ci.yml`、`nightly.yml`、`release.yml`；`docs/ci.md` 改写为 `docs/checks.md`（开发机上的合并前检查清单、还是桩的检查、工具版本）；`tools/versions.txt` 里 `gitleaks`、`govulncheck` 的第三列改为 `run`（用 `go run` 运行，`tools/build -check` 仍只检查两列的行）。`tools/ci`、`tools/release` 不变。第一次照新清单跑检查时，gitleaks 把 `cmd/anydoor/run_test.go`（`B02-T2`）里 RFC 6455 的示例 `Sec-WebSocket-Key` 报成 API 密钥，确认误报（`P.09` K249），新建 `tools/gitleaks/.gitleaksignore` 只忽略这一条的指纹（gitleaks 用 `--gitleaks-ignore-path tools/gitleaks/.gitleaksignore`；不放仓库根是因为 `relay` 认不出那种文件名）；冻结的 `B.02` 文件和已推送的历史都不改。
