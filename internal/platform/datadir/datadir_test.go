@@ -4,8 +4,10 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"testing"
+	"time"
 )
 
 func env(m map[string]string) func(string) string { return func(k string) string { return m[k] } }
@@ -160,6 +162,102 @@ func TestOpen(t *testing.T) {
 		}
 		if _, err := os.Stat(filepath.Join(d.Root, "no-such-dir")); err == nil {
 			t.Error("不应当建出目录")
+		}
+	})
+	t.Run("B0705-T5 覆盖正被读取的文件", func(t *testing.T) {
+		d, err := Open(t.TempDir())
+		if err != nil {
+			t.Fatal(err)
+		}
+		p := d.Config()
+		if err := WritePrivate(p, []byte("a\n")); err != nil {
+			t.Fatal(err)
+		}
+		// 别的句柄打开着目标文件，100 毫秒后才关闭：写入要重试到能改名为止
+		f, err := os.Open(p)
+		if err != nil {
+			t.Fatal(err)
+		}
+		closed := make(chan struct{})
+		go func() {
+			time.Sleep(100 * time.Millisecond)
+			_ = f.Close()
+			close(closed)
+		}()
+		if err := WritePrivate(p, []byte("b\n")); err != nil {
+			t.Fatalf("目标文件被短暂打开时应当重试成功：%v", err)
+		}
+		<-closed
+		if b, _ := os.ReadFile(p); string(b) != "b\n" {
+			t.Errorf("内容是 %q", b)
+		}
+		// 一边不停地读、一边连续写（B.07.03 热更新时写配置的情形）
+		stop, done := make(chan struct{}), make(chan struct{})
+		go func() {
+			defer close(done)
+			for {
+				select {
+				case <-stop:
+					return
+				default:
+					_, _ = os.ReadFile(p)
+				}
+			}
+		}()
+		for i := range 100 {
+			if err := WritePrivate(p, []byte(strconv.Itoa(i))); err != nil {
+				close(stop)
+				<-done
+				t.Fatalf("第 %d 次写入失败：%v", i, err)
+			}
+		}
+		close(stop)
+		<-done
+		if b, _ := os.ReadFile(p); string(b) != "99" {
+			t.Errorf("最后的内容是 %q", b)
+		}
+		// 退避间隔：1ms 起、每次翻倍、最长 100ms 一次（B.07.05 §5）
+		w, waits := time.Millisecond, []time.Duration{time.Millisecond}
+		for range 10 {
+			w = nextWait(w)
+			waits = append(waits, w)
+		}
+		want := []time.Duration{1, 2, 4, 8, 16, 32, 64, 100, 100, 100, 100}
+		for i := range want {
+			if waits[i] != want[i]*time.Millisecond {
+				t.Errorf("第 %d 次等待是 %v，应当是 %v（全部：%v）", i+1, waits[i], want[i]*time.Millisecond, waits)
+				break
+			}
+		}
+		if runtime.GOOS == "windows" {
+			const limit = 300 * time.Millisecond
+			old := renameRetryFor
+			renameRetryFor = limit
+			defer func() { renameRetryFor = old }()
+			g, err := os.Open(p)
+			if err != nil {
+				t.Fatal(err)
+			}
+			began := time.Now()
+			err = WritePrivate(p, []byte("c\n"))
+			took := time.Since(began)
+			_ = g.Close()
+			if err == nil {
+				t.Error("目标一直被打开时应当在重试时限后返回错误")
+			}
+			// 一直重试到时限，等待不越过时限：用时在 [时限, 时限 + 500ms) 里（500ms 是给最后一次改名和计时误差的余量）
+			if took < limit || took >= limit+500*time.Millisecond {
+				t.Errorf("重试用了 %v，应当在 [%v, %v) 里", took, limit, limit+500*time.Millisecond)
+			}
+		}
+		entries, err := os.ReadDir(d.Root)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, e := range entries {
+			if strings.Contains(e.Name(), ".tmp-") {
+				t.Errorf("留下了临时文件 %s", e.Name())
+			}
 		}
 	})
 }

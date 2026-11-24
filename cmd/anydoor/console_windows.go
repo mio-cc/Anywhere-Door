@@ -1,5 +1,3 @@
-// STUB(B.02): 控制台编码。随 anydoor 的桩一起，在对应叶子实施时整体替换（G.02.06-R10）。
-
 //go:build windows
 
 package main

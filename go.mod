@@ -8,6 +8,8 @@ ignore ./web/node_modules
 
 require (
 	github.com/goccy/go-yaml v1.19.2
+	github.com/oklog/ulid/v2 v2.1.2
+	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 	github.com/zalando/go-keyring v0.2.8
 	golang.org/x/crypto v0.59.0

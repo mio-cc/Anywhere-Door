@@ -1,5 +1,3 @@
-// STUB(B.02): 嵌入前端产物。只为让 O.01 能构建与冒烟；B.02 实施时整体替换（G.02.06-R10）。
-
 package main
 
 import "embed"

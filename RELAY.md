@@ -17,6 +17,98 @@
 ```
 
 ---
+## 2026-11-24 15:30 · B.02 · Quick（AWS Quick） · 交付（第 ⑧a 片 m0-server）
+- 依据：设计仓库提交（见 docs/relay/B.02.json）；`P.09` K240–K242
+- 完成：实施卡全部，整体替换 `cmd/anydoor` 的 4 个桩。M0 组装：`ParseArgs` → `datadir` → `config.Load` → 单实例锁（已有实例转交：探活、等待重试、打开带 token 的地址）→ `slog` 日志（标准错误 + `logs/anydoor-YYYYMMDD.log`）→ SQLite → `auth` → `secret` → 监听 127.0.0.1（尽量再监听 `[::1]`）→ `api.NewServer` → `WritePort` → 打开浏览器；生产模式静态文件与前端路由回退、开发模式 Vite 反向代理；关闭（信号或 shutdown 接口，15 秒）；`--version`；测试 `B02-T1`–`T8`；`go.mod` 加 `pkg/browser`。
+- 自主决定的细节：`run` 的签名带 `ctx`（`main` 用 `signal.NotifyContext`）；测试里 `secret` 用加密文件后端、探活重试等待缩短到 300ms、`openURL` 换成记录函数；开发代理用 `ReverseProxy.Rewrite`；schema 版本范围写"图文档 1.0"（`graph.schema.json` 的 `schema_version`）。
+- 进行中：无
+- 桩：`cmd/anydoor` 的 4 个桩已替换（`cmd/anydoor/dist/` 的占位文件不动）
+- 上报单 / 阻塞：无。留给以后：第二个实例在 `lock.Acquire` 之前调用 `datadir.Open`，会清空正在运行的实例的 `tmp/`（M0 没人用 `tmp/`；`B.07.05` 或 `B.02` 下次复查时改为取到锁之后再清）。
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+
+
+## 2026-11-24 15:17 · B.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 adf3e79（docs/relay/B.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+## 2026-11-24 15:30 · B.04.14 · Quick（AWS Quick） · 交付（第 ⑧a 片 m0-server）
+- 依据：设计仓库提交（见 docs/relay/B.04.14.json）；`P.09` K241、K242
+- 完成：实施卡全部。`GET /api/v1/health`（不鉴权，只有 `{ok, version}`）、`POST /api/v1/admin/shutdown`（`IsUser`，先写 202 再调用只执行一次的 `Deps.Shutdown`）；`writeError` 加 `forbidden` 403；测试 `B0414-T1`、`T3`（`T2` 随诊断包推迟到 `O.08`）。
+- 自主决定的细节：shutdown 写完 202 后先 `Flush` 再调用 `Shutdown`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+
+
+## 2026-11-24 15:13 · B.04.14 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 adf3e79（docs/relay/B.04.14.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.04.14.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+## 2026-11-24 15:20 · B.07.05 · Quick（AWS Quick） · 交付（冻结后修复，放进第 ⑧a 片 m0-server）
+- 依据：设计仓库提交（见 docs/relay/B.07.05.json）；`P.09` K244
+- 完成：Windows 上 `WritePrivate` 改名覆盖遇到 `ERROR_ACCESS_DENIED` / `ERROR_SHARING_VIOLATION`（目标正被别的句柄打开）时退避重试，最多 2 秒（`rename_windows.go`；`rename_other.go` 直接改名）；测试 `B0705-T5`。起因：验证 `B.03.05` 时整仓测试里 `B0703-T3 热更新` 偶发 `Access is denied`（`config.Watch` 每 20 毫秒读一次配置文件）。
+- 自主决定的细节：重试时限做成包内变量 `renameRetryFor`，测试里调短。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+
+
+## 2026-11-24 15:09 · B.07.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 adf3e79（docs/relay/B.07.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.07.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+## 2026-11-24 15:30 · B.03.05 · Quick（AWS Quick） · 交付（第 ⑧a 片 m0-server）
+- 依据：设计仓库提交（见 docs/relay/B.03.05.json）；`P.09` K241、K242
+- 完成：实施卡全部。`internal/api` 骨架：`Server`、`Deps`、`NewServer`、`Handler`，路由表 `routes.go`（本叶子没有接口，`/api/` 下不存在的路径 404、方法不对由 `ServeMux` 返回 405）；中间件链（recover 与 request_id 合在最外层 → 安全响应头 → Host → Origin → 鉴权 → 请求体 1MB 与 `/api/` 30 秒时限）；`/?t=` 引导换 cookie；`Caller`、`CallerFrom`、`IsUser`；`writeError` 与 M0 的错误码表，文案从新建的 `schema/builtin/messages`（`go:embed *.zh.yaml`）读；测试 `B0305-T1`–`T4`、`T6`–`T9`（`T5` 在 `S.09` 跑）；`go.mod` 加 `oklog/ulid/v2`。
+- 自主决定的细节：404 的 `details` 写 `resource`（M0 只有"接口""页面"）和 `id`（请求路径），文案里的 `{resource}` 由它替换（`C.11` §3）；带原因的错误（bad_request 的 `{errors}`、forbidden 的 `{reasons}`）用一个 `reasonError`；文案里的列表用"；"连接；错误响应和引导都带 `Cache-Control: no-store`；引导的 token 不对时返回纯文本 401（不是 JSON，浏览器直接显示）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：①–⑥ 通过；⑦ 被冻结叶子 `B.07.05` 的缺陷拦下（整仓测试 `B0703-T3` 在 Windows 上偶发 `Access is denied`），修复作为本片第二个叶子（`P.09` K244），`relay slice` 时 ⑦ 必须通过（验证者：Codex）
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+
+
+## 2026-11-24 14:52 · B.03.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 759fec1（docs/relay/B.03.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.03.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
 
 ## 2026-11-24 03:04 · Codex · 冻结叶子复查（第 ⑦ 片 / K239、K240 之后），代码不用改
 - 依据：设计仓库提交 293f529；`P.09` K239、K240

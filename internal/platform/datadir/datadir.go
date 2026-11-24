@@ -13,6 +13,7 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+	"time"
 )
 
 // EnvDataDir 是指定数据目录的环境变量（优先级在 --data-dir 之后）。
@@ -163,7 +164,17 @@ func (d Dir) Logs() string { return d.file("logs") }
 // Tmp 是临时目录，Open 时清空。
 func (d Dir) Tmp() string { return d.file("tmp") }
 
+// renameRetryFor 是 Windows 上改名覆盖遇到目标正被打开时最多重试多久（B.07.05 §5，P.09 K244）；测试里调短。
+var renameRetryFor = 2 * time.Second
+
+// renameMaxWait 是两次重试之间最长等多久（B.07.05 §5：1 毫秒起、每次翻倍、最长 100 毫秒一次）。
+const renameMaxWait = 100 * time.Millisecond
+
+// nextWait 是下一次重试前的等待：翻倍，不超过 renameMaxWait。
+func nextWait(w time.Duration) time.Duration { return min(2*w, renameMaxWait) }
+
 // WritePrivate 原子写：同目录临时文件 → 写入 → Restrict → 改名覆盖；失败时不留临时文件。
+// Windows 上目标正被别的句柄打开时，改名会退避重试（renameReplace）。
 func WritePrivate(p string, data []byte) error {
 	dir, name := filepath.Split(p)
 	if dir == "" {
@@ -187,7 +198,7 @@ func WritePrivate(p string, data []byte) error {
 		err = Restrict(tmp)
 	}
 	if err == nil {
-		err = os.Rename(tmp, p)
+		err = renameReplace(tmp, p, renameRetryFor)
 	}
 	if err != nil {
 		_ = os.Remove(tmp)
