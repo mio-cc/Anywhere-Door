@@ -1,7 +1,7 @@
-# 开发与 CI 工具的固定版本（设计文档 O-R2）。
+# 开发与检查工具的固定版本（设计文档 O-R2）。
 # Go 以 go.mod 的 toolchain 行为准；Node 与 pnpm 以 web/package.json 的 engines、packageManager 为准；这里只写其余工具。
 golangci-lint 2.15.0
-# 下面两行只在 CI 上安装（第三列 ci）；tools/build -check 只检查两列的行，开发机不用装（P.09 K246）。
-# 安装：go run <模块>@v<版本>（gitleaks：github.com/zricethezav/gitleaks/v8；govulncheck：golang.org/x/vuln/cmd/govulncheck）。
-gitleaks 8.30.1 ci
-govulncheck 1.10.0 ci
+# 下面两行用 go run <模块>@v<版本> 运行、不用预先安装（第三列 run）；tools/build -check 只检查两列的行（P.09 K246、K248）。
+# 模块：gitleaks 是 github.com/zricethezav/gitleaks/v8，govulncheck 是 golang.org/x/vuln/cmd/govulncheck。合并前检查见 docs/checks.md。
+gitleaks 8.30.1 run
+govulncheck 1.10.0 run

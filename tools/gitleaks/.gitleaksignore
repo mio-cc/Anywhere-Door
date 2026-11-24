@@ -1,0 +1,6 @@
+# gitleaks 的误报（O.02 §4.2，设计文档 P.09 K249）。用法：gitleaks git --redact --gitleaks-ignore-path tools/gitleaks/.gitleaksignore .
+# 每条：上一行写为什么是误报和裁决编号，下一行是指纹 <提交>:<文件>:<规则>:<行>。
+# 真密钥不要往这里加：按安全事件处理（作废密钥、上报用户）。
+
+# K249：cmd/anydoor/run_test.go 的 B02-T2 开发代理测试里假的 WebSocket 握手，Sec-WebSocket-Key 用的是 RFC 6455 §1.3 的示例值（"the sample nonce"），不是凭据。
+8d3377c982ba5e870246e8213bb36bea20b11399:cmd/anydoor/run_test.go:generic-api-key:296

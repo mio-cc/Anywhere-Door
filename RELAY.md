@@ -17,6 +17,27 @@
 ```
 
 ---
+## 2026-11-24 20:30 · O.02 · Quick（AWS Quick） · 交付（修复片 m0-ci-fix）
+- 依据：设计仓库提交（见 docs/relay/O.02.json）；`P.09` K248
+- 完成：用户决定不用 GitHub Actions：删除 `.github/workflows/ci.yml`、`nightly.yml`、`release.yml`；`docs/ci.md` 改写为 `docs/checks.md`（开发机上的合并前检查清单、还是桩的检查、工具版本）；`tools/versions.txt` 里 `gitleaks`、`govulncheck` 的第三列改为 `run`（用 `go run` 运行，`tools/build -check` 仍只检查两列的行）。`tools/ci`、`tools/release` 不变。第一次照新清单跑检查时，gitleaks 把 `cmd/anydoor/run_test.go`（`B02-T2`）里 RFC 6455 的示例 `Sec-WebSocket-Key` 报成 API 密钥，确认误报（`P.09` K249），新建 `tools/gitleaks/.gitleaksignore` 只忽略这一条的指纹（gitleaks 用 `--gitleaks-ignore-path tools/gitleaks/.gitleaksignore`；不放仓库根是因为 `relay` 认不出那种文件名）；冻结的 `B.02` 文件和已推送的历史都不改。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无。M0 结束时预览版怎么发待用户决定（`P.09` Q28）。
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 合并后推送
+
+## 2026-11-24 20:13 · O.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 1649f73（docs/relay/O.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/O.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
 ## 2026-11-24 20:15 · Codex · 冻结叶子复查（第 ⑧b 片 / K246、K247 之后），代码不用改
 - 依据：设计仓库提交（第 1 步推送后的 HEAD）；`P.09` K246、K247
 - 完成：`B.02`、`C.01`、`O.01` 冻结后依据文档（`O.02`、`O.03`）改过：只补了 `tools/release` 的测试范围与版本号来源、CI 专用工具在 `tools/versions.txt` 的三列写法、小工具参数、CI 运行器与标签，不涉及这三个叶子的代码；`tools/build -check` 本来就只检查两列的行。
