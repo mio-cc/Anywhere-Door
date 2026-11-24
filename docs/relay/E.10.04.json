@@ -1,0 +1,27 @@
+{
+  "leaf": "E.10.04",
+  "branch": "slice/m0-llm",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-24T14:43:25Z",
+  "docs_commit": "575983c807500727a376f35515844ff72fcfebdc",
+  "docs": {
+    "E_内核_engine/E.01_内核总则.md": "sha256:5c32ec816fabc76fe93f2e89d5475b3f872ed5f8739e54017e72d7e8f098e895",
+    "E_内核_engine/E.10_llm_模型适配/E.10.01_统一接口与提供方配置.md": "sha256:a5dd0056d74c591f0b532bba31d7d564d6651d7e5a9841ecbb54babdb28741fd",
+    "E_内核_engine/E.10_llm_模型适配/E.10.02_Chat_Completions_协议.md": "sha256:e62ba7a8b1e5937d36a44340967d3de0af8eaf91b5cf134995320564d20a0ec3",
+    "E_内核_engine/E.10_llm_模型适配/E.10.04_Responses_协议.md": "sha256:321a4f7d0dee6e2047e837f475c26408241a1f3567f12710a96a838394023c3b",
+    "E_内核_engine/E.10_llm_模型适配/E.10.09_重试_超时与限流.md": "sha256:3ba446b6aa71b5836d73657c14e7d523c4daa1e696e2ad0e33e5bb2f1f69e395",
+    "E_内核_engine/E.10_llm_模型适配/E.10_llm_模型适配.md": "sha256:97b0496716fa6ae11fcb35dcf2544488a7d61fee6a0b9eea0662fba96ff2a36c",
+    "E_内核_engine/E.11_tools_工具/E.11_tools_工具.md": "sha256:501eeb91d60c2ad5309448fcd9cffa5ff27d310eab75f9944b90040c55a8b3db",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m0-llm",
+  "base": "0e62770ef9e326a7c242455eb0faf4d4c18c1b8e",
+  "head": "dc4cccb896bb753d3a2f30d5fae554a2ba10b953"
+}

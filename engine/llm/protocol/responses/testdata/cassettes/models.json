@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-11-24T14:00:00Z",
+  "note": "按官方文档手写：https://platform.openai.com/docs/api-reference/responses-streaming（流式事件）、https://platform.openai.com/docs/api-reference/models/list（模型列表）与 https://platform.openai.com/docs/guides/error-codes（错误体）；请求与 text 用例相同",
+  "interactions": [
+    {
+      "request": {
+        "method": "GET",
+        "path": "/v1/models"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"object\": \"list\", \"data\": [{\"id\": \"mistral-small-latest\", \"object\": \"model\", \"created\": 1764000000, \"owned_by\": \"mistralai\"}, {\"id\": \"mistral-large-latest\", \"object\": \"model\", \"created\": 1764000000, \"owned_by\": \"mistralai\"}]}"
+      }
+    }
+  ]
+}

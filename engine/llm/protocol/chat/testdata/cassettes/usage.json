@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-11-24T14:00:00Z",
+  "note": "按官方文档手写：https://platform.openai.com/docs/api-reference/chat-streaming（流式 chunk、stream_options 的用量 chunk）与 https://platform.openai.com/docs/guides/error-codes（错误体）；请求与 text 用例相同",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "body": {
+          "model": "mistral-small-latest",
+          "stream": true,
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are a terse assistant. Follow the instructions exactly."
+            },
+            {
+              "role": "user",
+              "content": "Reply with the single word: hello"
+            }
+          ],
+          "max_tokens": 64,
+          "temperature": 0
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream"
+        },
+        "body": "data: {\"id\":\"cmpl-handwritten\",\"object\":\"chat.completion.chunk\",\"created\":1764000000,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"hello\"},\"finish_reason\":null}]}\n\ndata: {\"id\":\"cmpl-handwritten\",\"object\":\"chat.completion.chunk\",\"created\":1764000000,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"\"},\"finish_reason\":\"stop\"}]}\n\ndata: {\"id\":\"cmpl-handwritten\",\"object\":\"chat.completion.chunk\",\"created\":1764000000,\"model\":\"mistral-small-latest\",\"choices\":[],\"usage\":{\"prompt_tokens\":24,\"completion_tokens\":2,\"total_tokens\":26,\"prompt_tokens_details\":{\"cached_tokens\":16},\"completion_tokens_details\":{\"reasoning_tokens\":0}}}\n\ndata: [DONE]\n\n"
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "recorded_at": "2026-11-24T14:00:00Z",
+  "note": "按 Anthropic 官方文档手写（还没有测试密钥，P.09 K251 ③）：https://docs.anthropic.com/en/docs/build-with-claude/streaming（流式事件）、https://docs.anthropic.com/en/api/errors（错误体）、https://docs.anthropic.com/en/api/models-list（模型列表）；有密钥后用 -record 重录",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/messages",
+        "body": {
+          "model": "claude-sonnet-4-5",
+          "stream": true,
+          "max_tokens": 256,
+          "system": "You are a terse assistant. Follow the instructions exactly.",
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "What is the weather in Paris right now? Use the get_weather tool."
+                }
+              ]
+            },
+            {
+              "role": "assistant",
+              "content": [
+                {
+                  "type": "tool_use",
+                  "id": "call12345",
+                  "name": "get_weather",
+                  "input": {
+                    "city": "Paris"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "tool_result",
+                  "tool_use_id": "call12345",
+                  "content": "{\"temp_c\":18,\"sky\":\"sunny\"}"
+                }
+              ]
+            }
+          ],
+          "temperature": 0,
+          "tools": [
+            {
+              "name": "get_weather",
+              "description": "Get the current weather for a city.",
+              "input_schema": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string",
+                    "description": "City name"
+                  }
+                },
+                "required": [
+                  "city"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_handwritten\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-sonnet-4-5\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":470,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":1}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"text\",\"text\":\"\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"It is 18°C \"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"text_delta\",\"text\":\"and sunny in Paris.\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":14}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n"
+      }
+    }
+  ]
+}

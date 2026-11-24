@@ -1,0 +1,30 @@
+# 常用厂商（设计文档 E.10.05 §5）：只是"新建连接"时的填法，选了之后每一项都可以改。
+# provider 不含 name 和密钥名，由用户填。地址按各家官方文档，2026-11-24 核对。
+- id: mistral
+  name: Mistral
+  provider:
+    protocol: chat_completions
+    base_url: "https://api.mistral.ai/v1"
+    auth: { type: bearer }
+    # 上游不认 stream_options（用量在最后一个 chunk 里照常返回）
+    override:
+      - { op: delete, path: stream_options }
+  models: [mistral-small-latest, mistral-large-latest]
+- id: openai
+  name: OpenAI（Chat Completions）
+  provider: { protocol: chat_completions, base_url: "https://api.openai.com/v1", auth: { type: bearer } }
+- id: openai-responses
+  name: OpenAI（Responses）
+  provider: { protocol: responses, base_url: "https://api.openai.com/v1", auth: { type: bearer } }
+- id: anthropic
+  name: Anthropic
+  provider: { protocol: anthropic_messages, base_url: "https://api.anthropic.com/v1", auth: { type: header, name: x-api-key } }
+- id: deepseek
+  name: DeepSeek
+  provider: { protocol: chat_completions, base_url: "https://api.deepseek.com", auth: { type: bearer } }
+- id: gemini
+  name: Gemini（OpenAI 兼容接口）
+  provider: { protocol: chat_completions, base_url: "https://generativelanguage.googleapis.com/v1beta/openai", auth: { type: bearer } }
+- id: ollama
+  name: Ollama（本机）
+  provider: { protocol: chat_completions, base_url: "http://127.0.0.1:11434/v1", auth: { type: none } }

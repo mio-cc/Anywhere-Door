@@ -12,9 +12,6 @@ go.opentelemetry.io/otel
 github.com/prometheus/client_golang
 golang.org/x/time
 golang.org/x/sync
-github.com/openai/openai-go
-github.com/anthropics/anthropic-sdk-go
-google.golang.org/genai
 github.com/modelcontextprotocol/go-sdk
 github.com/tetratelabs/wazero
 github.com/zalando/go-keyring

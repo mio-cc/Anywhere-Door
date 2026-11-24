@@ -1,0 +1,100 @@
+{
+  "model": "up-1",
+  "stream": true,
+  "store": false,
+  "instructions": "S\n\nS2",
+  "input": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "look"
+        },
+        {
+          "type": "input_image",
+          "image_url": "data:image/png;base64,AQID"
+        }
+      ]
+    },
+    {
+      "type": "function_call",
+      "call_id": "call1",
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+    },
+    {
+      "type": "function_call_output",
+      "call_id": "call1",
+      "output": "{\"temp\":18}"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "It is 18."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "thanks"
+        }
+      ]
+    }
+  ],
+  "max_output_tokens": 100,
+  "temperature": 0.5,
+  "top_p": 0.9,
+  "tools": [
+    {
+      "type": "function",
+      "name": "get_weather",
+      "description": "Weather",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          }
+        }
+      },
+      "strict": false
+    },
+    {
+      "type": "function",
+      "name": "noop",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "strict": false
+    }
+  ],
+  "tool_choice": {
+    "type": "function",
+    "name": "get_weather"
+  },
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "name": "answer",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        }
+      },
+      "strict": true
+    }
+  },
+  "reasoning": {
+    "effort": "medium"
+  }
+}

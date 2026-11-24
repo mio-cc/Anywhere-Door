@@ -1,0 +1,61 @@
+{
+  "recorded_at": "2026-11-24T14:44:13Z",
+  "note": "Mistral 真实录制（go test -record）：https://api.mistral.ai，模型 mistral-small-latest，2026-11-24",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/responses",
+        "body": {
+          "input": [
+            {
+              "content": [
+                {
+                  "text": "Extract the person from this sentence: Alice is 30 years old.",
+                  "type": "input_text"
+                }
+              ],
+              "role": "user"
+            }
+          ],
+          "instructions": "You are a terse assistant. Follow the instructions exactly.",
+          "max_output_tokens": 256,
+          "model": "mistral-small-latest",
+          "store": false,
+          "stream": true,
+          "temperature": 0,
+          "text": {
+            "format": {
+              "name": "person",
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "age": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "age"
+                ],
+                "type": "object"
+              },
+              "strict": true,
+              "type": "json_schema"
+            }
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "event: response.created\ndata: {\"response\":{\"id\":\"resp_f1aa2f92cdc54b4ca374fd44b1000d03\",\"access_programs\":null,\"created_at\":1795531452.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[],\"top_p\":null,\"background\":false,\"completed_at\":null,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"in_progress\",\"text\":{\"format\":{\"name\":\"person\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"age\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"required\":[\"name\",\"age\"],\"type\":\"object\"},\"type\":\"json_schema\",\"description\":null,\"strict\":true},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":null,\"user\":null,\"store\":false},\"sequence_number\":0,\"type\":\"response.created\"}\n\nevent: response.in_progress\ndata: {\"response\":{\"id\":\"resp_f1aa2f92cdc54b4ca374fd44b1000d03\",\"access_programs\":null,\"created_at\":1795531452.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[],\"top_p\":null,\"background\":false,\"completed_at\":null,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"in_progress\",\"text\":{\"format\":{\"name\":\"person\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"age\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"required\":[\"name\",\"age\"],\"type\":\"object\"},\"type\":\"json_schema\",\"description\":null,\"strict\":true},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":null,\"user\":null,\"store\":false},\"sequence_number\":1,\"type\":\"response.in_progress\"}\n\nevent: response.output_item.added\ndata: {\"item\":{\"id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"content\":[],\"role\":\"assistant\",\"status\":\"in_progress\",\"type\":\"message\",\"phase\":null},\"output_index\":0,\"sequence_number\":2,\"type\":\"response.output_item.added\"}\n\nevent: response.content_part.added\ndata: {\"content_index\":0,\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"output_index\":0,\"part\":{\"annotations\":[],\"text\":\"\",\"type\":\"output_text\",\"logprobs\":null},\"sequence_number\":3,\"type\":\"response.content_part.added\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\"{\\\"\",\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":4,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\"age\\\": \",\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":5,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\"30, \\\"\",\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":6,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\"name\\\": \\\"Alice\",\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":7,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\"\\\"}\",\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":8,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.done\ndata: {\"content_index\":0,\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":9,\"text\":\"{\\\"age\\\": 30, \\\"name\\\": \\\"Alice\\\"}\",\"type\":\"response.output_text.done\"}\n\nevent: response.content_part.done\ndata: {\"content_index\":0,\"item_id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"output_index\":0,\"part\":{\"annotations\":[],\"text\":\"{\\\"age\\\": 30, \\\"name\\\": \\\"Alice\\\"}\",\"type\":\"output_text\",\"logprobs\":null},\"sequence_number\":10,\"type\":\"response.content_part.done\"}\n\nevent: response.output_item.done\ndata: {\"item\":{\"id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"content\":[{\"annotations\":[],\"text\":\"{\\\"age\\\": 30, \\\"name\\\": \\\"Alice\\\"}\",\"type\":\"output_text\",\"logprobs\":null}],\"role\":\"assistant\",\"status\":\"completed\",\"type\":\"message\",\"phase\":null},\"output_index\":0,\"sequence_number\":11,\"type\":\"response.output_item.done\"}\n\nevent: response.completed\ndata: {\"response\":{\"id\":\"resp_f1aa2f92cdc54b4ca374fd44b1000d03\",\"access_programs\":null,\"created_at\":1795531452.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[{\"id\":\"msg_0d9e7dddf44e484195736e192af391a8\",\"content\":[{\"annotations\":[],\"text\":\"{\\\"age\\\": 30, \\\"name\\\": \\\"Alice\\\"}\",\"type\":\"output_text\",\"logprobs\":null}],\"role\":\"assistant\",\"status\":\"completed\",\"type\":\"message\",\"phase\":null}],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[],\"top_p\":null,\"background\":false,\"completed_at\":1795531452.0,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"completed\",\"text\":{\"format\":{\"name\":\"person\",\"schema\":{\"additionalProperties\":false,\"properties\":{\"age\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"required\":[\"name\",\"age\"],\"type\":\"object\"},\"type\":\"json_schema\",\"description\":null,\"strict\":true},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":{\"input_tokens\":43,\"input_tokens_details\":{\"cache_write_tokens\":0,\"cached_tokens\":0},\"output_tokens\":14,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":57},\"user\":null,\"store\":false},\"sequence_number\":12,\"type\":\"response.completed\"}\n\n"
+      }
+    }
+  ]
+}

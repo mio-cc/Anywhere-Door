@@ -1,0 +1,34 @@
+# 厂商差异表（设计文档 E.10.05）：按"协议 + 上游模型名"给出能力，按"协议 + 状态 + 上游错误码 / 说明"给出失败类别。
+# 匹配：protocol、model 支持 * 通配（path.Match 规则），不写的条件算匹配。
+# models 按顺序累积：通用规则在前，具体规则在后，后者覆盖前者写了的字段；之后再套提供方和模型条目的 caps（E.10.01 §5.1）。
+# errors 第一条匹配的生效：status、code 精确匹配，message 是正则。
+# 新增厂商、新模型改这里，不改协议代码（INV-18）。
+models:
+  - match: { protocol: "*", model: "*" }  # 兜底：保守的能力
+    caps: { window: 32000, max_output: 4096, tools: true, parallel_tools: false, native_schema: false, vision: false, prompt_cache: false, tokenizer: approx }
+  - match: { protocol: anthropic_messages, model: "claude-*" }
+    caps: { window: 200000, max_output: 8192, vision: true, prompt_cache: true, parallel_tools: true }
+    reasoning: { values: ["off", low, medium, high, max], budget: { low: 2048, medium: 8192, high: 16384, max: 32000 } }
+  - match: { model: "mistral-*" }
+    caps: { window: 128000, native_schema: true, tools: true, parallel_tools: true }
+  - match: { model: "zai-glm-*" }
+    reasoning: { values: [low, high, max], map: { medium: high } }
+
+errors:
+  - match: { protocol: chat_completions, status: 400, code: context_length_exceeded }
+    class: user_input
+  - match: { protocol: anthropic_messages, status: 529 }
+    class: transient
+  # 流里的错误事件没有 HTTP 状态，按错误码匹配（E.10.03 §5）
+  - match: { protocol: anthropic_messages, code: overloaded_error }
+    class: transient
+  - match: { protocol: anthropic_messages, code: api_error }
+    class: transient
+  - match: { protocol: anthropic_messages, code: rate_limit_error }
+    class: rate_limited
+  - match: { protocol: responses, code: server_error }
+    class: transient
+  - match: { protocol: responses, code: rate_limit_exceeded }
+    class: rate_limited
+  - match: { status: 400, message: "(?i)content.?(filter|policy)|safety" }
+    class: structural

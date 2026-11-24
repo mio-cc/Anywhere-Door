@@ -1,0 +1,35 @@
+{
+  "recorded_at": "2026-11-24T14:40:10Z",
+  "note": "Mistral 真实录制（go test -record）：https://api.mistral.ai，模型 mistral-small-latest，2026-11-24",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "body": {
+          "max_tokens": 64,
+          "messages": [
+            {
+              "content": "You are a terse assistant. Follow the instructions exactly.",
+              "role": "system"
+            },
+            {
+              "content": "Reply with the single word: hello",
+              "role": "user"
+            }
+          ],
+          "model": "mistral-small-latest",
+          "stream": true,
+          "temperature": 0
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "data: {\"id\":\"14f18320b6de46d7902c2a6f088d9411\",\"object\":\"chat.completion.chunk\",\"created\":1795531209,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"finish_reason\":null}]}\n\ndata: {\"id\":\"14f18320b6de46d7902c2a6f088d9411\",\"object\":\"chat.completion.chunk\",\"created\":1795531209,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"Hello\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqrstuvwxyz0123456789\"}\n\ndata: {\"id\":\"14f18320b6de46d7902c2a6f088d9411\",\"object\":\"chat.completion.chunk\",\"created\":1795531209,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":35,\"total_tokens\":37,\"completion_tokens\":2,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"service_tier\":\"standard\"},\"p\":\"abcdefghijklmnopqrstuvwxyz0123456789\"}\n\ndata: [DONE]\n\n"
+      }
+    }
+  ]
+}

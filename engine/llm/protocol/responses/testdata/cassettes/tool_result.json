@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-11-24T14:44:06Z",
+  "note": "Mistral 真实录制（go test -record）：https://api.mistral.ai，模型 mistral-small-latest，2026-11-24",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/responses",
+        "body": {
+          "input": [
+            {
+              "content": [
+                {
+                  "text": "What is the weather in Paris right now? Use the get_weather tool.",
+                  "type": "input_text"
+                }
+              ],
+              "role": "user"
+            },
+            {
+              "arguments": "{\"city\":\"Paris\"}",
+              "call_id": "call12345",
+              "name": "get_weather",
+              "type": "function_call"
+            },
+            {
+              "call_id": "call12345",
+              "output": "{\"temp_c\":18,\"sky\":\"sunny\"}",
+              "type": "function_call_output"
+            }
+          ],
+          "instructions": "You are a terse assistant. Follow the instructions exactly.",
+          "max_output_tokens": 256,
+          "model": "mistral-small-latest",
+          "store": false,
+          "stream": true,
+          "temperature": 0,
+          "tools": [
+            {
+              "description": "Get the current weather for a city.",
+              "name": "get_weather",
+              "parameters": {
+                "properties": {
+                  "city": {
+                    "description": "City name",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "city"
+                ],
+                "type": "object"
+              },
+              "strict": false,
+              "type": "function"
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "event: response.created\ndata: {\"response\":{\"id\":\"resp_781186d50d96447db0434fa7cbfd1de1\",\"access_programs\":null,\"created_at\":1795531445.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[{\"name\":\"get_weather\",\"parameters\":{\"properties\":{\"city\":{\"description\":\"City name\",\"type\":\"string\"}},\"required\":[\"city\"],\"type\":\"object\"},\"strict\":false,\"type\":\"function\",\"allowed_callers\":null,\"defer_loading\":null,\"description\":\"Get the current weather for a city.\",\"output_schema\":null}],\"top_p\":null,\"background\":false,\"completed_at\":null,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"in_progress\",\"text\":{\"format\":{\"type\":\"text\"},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":null,\"user\":null,\"store\":false},\"sequence_number\":0,\"type\":\"response.created\"}\n\nevent: response.in_progress\ndata: {\"response\":{\"id\":\"resp_781186d50d96447db0434fa7cbfd1de1\",\"access_programs\":null,\"created_at\":1795531445.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[{\"name\":\"get_weather\",\"parameters\":{\"properties\":{\"city\":{\"description\":\"City name\",\"type\":\"string\"}},\"required\":[\"city\"],\"type\":\"object\"},\"strict\":false,\"type\":\"function\",\"allowed_callers\":null,\"defer_loading\":null,\"description\":\"Get the current weather for a city.\",\"output_schema\":null}],\"top_p\":null,\"background\":false,\"completed_at\":null,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"in_progress\",\"text\":{\"format\":{\"type\":\"text\"},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":null,\"user\":null,\"store\":false},\"sequence_number\":1,\"type\":\"response.in_progress\"}\n\nevent: response.output_item.added\ndata: {\"item\":{\"id\":\"msg_434bffb332f24fca90097089531356ca\",\"content\":[],\"role\":\"assistant\",\"status\":\"in_progress\",\"type\":\"message\",\"phase\":null},\"output_index\":0,\"sequence_number\":2,\"type\":\"response.output_item.added\"}\n\nevent: response.content_part.added\ndata: {\"content_index\":0,\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"output_index\":0,\"part\":{\"annotations\":[],\"text\":\"\",\"type\":\"output_text\",\"logprobs\":null},\"sequence_number\":3,\"type\":\"response.content_part.added\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\"The\",\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":4,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\" current\",\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":5,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\" weather in Paris is\",\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":6,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\" **18\",\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":7,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\"°C** and\",\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":8,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.delta\ndata: {\"content_index\":0,\"delta\":\" **sunny**.\",\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":9,\"type\":\"response.output_text.delta\"}\n\nevent: response.output_text.done\ndata: {\"content_index\":0,\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"logprobs\":[],\"output_index\":0,\"sequence_number\":10,\"text\":\"The current weather in Paris is **18°C** and **sunny**.\",\"type\":\"response.output_text.done\"}\n\nevent: response.content_part.done\ndata: {\"content_index\":0,\"item_id\":\"msg_434bffb332f24fca90097089531356ca\",\"output_index\":0,\"part\":{\"annotations\":[],\"text\":\"The current weather in Paris is **18°C** and **sunny**.\",\"type\":\"output_text\",\"logprobs\":null},\"sequence_number\":11,\"type\":\"response.content_part.done\"}\n\nevent: response.output_item.done\ndata: {\"item\":{\"id\":\"msg_434bffb332f24fca90097089531356ca\",\"content\":[{\"annotations\":[],\"text\":\"The current weather in Paris is **18°C** and **sunny**.\",\"type\":\"output_text\",\"logprobs\":null}],\"role\":\"assistant\",\"status\":\"completed\",\"type\":\"message\",\"phase\":null},\"output_index\":0,\"sequence_number\":12,\"type\":\"response.output_item.done\"}\n\nevent: response.completed\ndata: {\"response\":{\"id\":\"resp_781186d50d96447db0434fa7cbfd1de1\",\"access_programs\":null,\"created_at\":1795531445.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[{\"id\":\"msg_434bffb332f24fca90097089531356ca\",\"content\":[{\"annotations\":[],\"text\":\"The current weather in Paris is **18°C** and **sunny**.\",\"type\":\"output_text\",\"logprobs\":null}],\"role\":\"assistant\",\"status\":\"completed\",\"type\":\"message\",\"phase\":null}],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[{\"name\":\"get_weather\",\"parameters\":{\"properties\":{\"city\":{\"description\":\"City name\",\"type\":\"string\"}},\"required\":[\"city\"],\"type\":\"object\"},\"strict\":false,\"type\":\"function\",\"allowed_callers\":null,\"defer_loading\":null,\"description\":\"Get the current weather for a city.\",\"output_schema\":null}],\"top_p\":null,\"background\":false,\"completed_at\":1795531445.0,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"completed\",\"text\":{\"format\":{\"type\":\"text\"},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":{\"input_tokens\":138,\"input_tokens_details\":{\"cache_write_tokens\":0,\"cached_tokens\":96},\"output_tokens\":17,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":155},\"user\":null,\"store\":false},\"sequence_number\":13,\"type\":\"response.completed\"}\n\n"
+      }
+    }
+  ]
+}

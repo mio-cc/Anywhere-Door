@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-11-24T14:40:34Z",
+  "note": "Mistral 真实录制（go test -record）：https://api.mistral.ai，模型 mistral-small-latest，2026-11-24",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "body": {
+          "max_tokens": 256,
+          "messages": [
+            {
+              "content": "You are a terse assistant. Follow the instructions exactly.",
+              "role": "system"
+            },
+            {
+              "content": "Extract the person from this sentence: Alice is 30 years old.",
+              "role": "user"
+            }
+          ],
+          "model": "mistral-small-latest",
+          "response_format": {
+            "json_schema": {
+              "name": "person",
+              "schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "age": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "age"
+                ],
+                "type": "object"
+              },
+              "strict": true
+            },
+            "type": "json_schema"
+          },
+          "stream": true,
+          "temperature": 0
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "data: {\"id\":\"5b31e4bf9dd54bc1b1044318c71cd5a4\",\"object\":\"chat.completion.chunk\",\"created\":1795531233,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"finish_reason\":null}]}\n\ndata: {\"id\":\"5b31e4bf9dd54bc1b1044318c71cd5a4\",\"object\":\"chat.completion.chunk\",\"created\":1795531233,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"{\\\"\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqrstuvwxyz0123456\"}\n\ndata: {\"id\":\"5b31e4bf9dd54bc1b1044318c71cd5a4\",\"object\":\"chat.completion.chunk\",\"created\":1795531233,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"age\\\": \"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqrstuvwxyz0123456\"}\n\ndata: {\"id\":\"5b31e4bf9dd54bc1b1044318c71cd5a4\",\"object\":\"chat.completion.chunk\",\"created\":1795531233,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"30, \\\"\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqr\"}\n\ndata: {\"id\":\"5b31e4bf9dd54bc1b1044318c71cd5a4\",\"object\":\"chat.completion.chunk\",\"created\":1795531233,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"name\\\": \\\"Alice\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqrstuvwxyz\"}\n\ndata: {\"id\":\"5b31e4bf9dd54bc1b1044318c71cd5a4\",\"object\":\"chat.completion.chunk\",\"created\":1795531233,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"\\\"}\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":43,\"total_tokens\":57,\"completion_tokens\":14,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"service_tier\":\"standard\"},\"p\":\"abcdefghijklmnopqr\"}\n\ndata: [DONE]\n\n"
+      }
+    }
+  ]
+}

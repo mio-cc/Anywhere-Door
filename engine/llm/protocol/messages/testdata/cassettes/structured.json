@@ -1,0 +1,63 @@
+{
+  "recorded_at": "2026-11-24T14:00:00Z",
+  "note": "按 Anthropic 官方文档手写（还没有测试密钥，P.09 K251 ③）：https://docs.anthropic.com/en/docs/build-with-claude/streaming（流式事件）、https://docs.anthropic.com/en/api/errors（错误体）、https://docs.anthropic.com/en/api/models-list（模型列表）；有密钥后用 -record 重录",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/messages",
+        "body": {
+          "model": "claude-sonnet-4-5",
+          "stream": true,
+          "max_tokens": 256,
+          "system": "You are a terse assistant. Follow the instructions exactly.",
+          "messages": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Extract the person from this sentence: Alice is 30 years old."
+                }
+              ]
+            }
+          ],
+          "temperature": 0,
+          "tools": [
+            {
+              "name": "emit_person",
+              "description": "按要求的格式输出结果（结构化输出）",
+              "input_schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "name",
+                  "age"
+                ],
+                "additionalProperties": false
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "tool",
+            "name": "emit_person"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_handwritten\",\"type\":\"message\",\"role\":\"assistant\",\"content\":[],\"model\":\"claude-sonnet-4-5\",\"stop_reason\":null,\"stop_sequence\":null,\"usage\":{\"input_tokens\":390,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":1}}}\n\nevent: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"toolu_01HandwrittenDef\",\"name\":\"emit_person\",\"input\":{}}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"name\\\": \\\"Alice\\\",\"}}\n\nevent: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"  \\\"age\\\": 30}\"}}\n\nevent: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\nevent: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"tool_use\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":40}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n"
+      }
+    }
+  ]
+}

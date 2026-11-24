@@ -1,0 +1,59 @@
+{
+  "recorded_at": "2026-11-24T14:43:58Z",
+  "note": "Mistral 真实录制（go test -record）：https://api.mistral.ai，模型 mistral-small-latest，2026-11-24",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/responses",
+        "body": {
+          "input": [
+            {
+              "content": [
+                {
+                  "text": "What is the weather in Paris right now? Use the get_weather tool.",
+                  "type": "input_text"
+                }
+              ],
+              "role": "user"
+            }
+          ],
+          "instructions": "You are a terse assistant. Follow the instructions exactly.",
+          "max_output_tokens": 256,
+          "model": "mistral-small-latest",
+          "store": false,
+          "stream": true,
+          "temperature": 0,
+          "tool_choice": "auto",
+          "tools": [
+            {
+              "description": "Get the current weather for a city.",
+              "name": "get_weather",
+              "parameters": {
+                "properties": {
+                  "city": {
+                    "description": "City name",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "city"
+                ],
+                "type": "object"
+              },
+              "strict": false,
+              "type": "function"
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "event: response.created\ndata: {\"response\":{\"id\":\"resp_f7af97cdccf74b33a6b32dedd5dc3800\",\"access_programs\":null,\"created_at\":1795531437.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[{\"name\":\"get_weather\",\"parameters\":{\"properties\":{\"city\":{\"description\":\"City name\",\"type\":\"string\"}},\"required\":[\"city\"],\"type\":\"object\"},\"strict\":false,\"type\":\"function\",\"allowed_callers\":null,\"defer_loading\":null,\"description\":\"Get the current weather for a city.\",\"output_schema\":null}],\"top_p\":null,\"background\":false,\"completed_at\":null,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"in_progress\",\"text\":{\"format\":{\"type\":\"text\"},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":null,\"user\":null,\"store\":false},\"sequence_number\":0,\"type\":\"response.created\"}\n\nevent: response.in_progress\ndata: {\"response\":{\"id\":\"resp_f7af97cdccf74b33a6b32dedd5dc3800\",\"access_programs\":null,\"created_at\":1795531437.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[{\"name\":\"get_weather\",\"parameters\":{\"properties\":{\"city\":{\"description\":\"City name\",\"type\":\"string\"}},\"required\":[\"city\"],\"type\":\"object\"},\"strict\":false,\"type\":\"function\",\"allowed_callers\":null,\"defer_loading\":null,\"description\":\"Get the current weather for a city.\",\"output_schema\":null}],\"top_p\":null,\"background\":false,\"completed_at\":null,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"in_progress\",\"text\":{\"format\":{\"type\":\"text\"},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":null,\"user\":null,\"store\":false},\"sequence_number\":1,\"type\":\"response.in_progress\"}\n\nevent: response.output_item.added\ndata: {\"item\":{\"arguments\":\"\",\"call_id\":\"puLTntWp0\",\"name\":\"get_weather\",\"type\":\"function_call\",\"id\":\"fc_0196aaadb20f4d90b74f3e2950c17552\",\"status\":\"in_progress\"},\"output_index\":0,\"sequence_number\":2,\"type\":\"response.output_item.added\"}\n\nevent: response.function_call_arguments.delta\ndata: {\"delta\":\"{\\\"city\\\": \\\"\",\"item_id\":\"fc_0196aaadb20f4d90b74f3e2950c17552\",\"output_index\":0,\"sequence_number\":3,\"type\":\"response.function_call_arguments.delta\"}\n\nevent: response.function_call_arguments.delta\ndata: {\"delta\":\"Paris\\\"}\",\"item_id\":\"fc_0196aaadb20f4d90b74f3e2950c17552\",\"output_index\":0,\"sequence_number\":4,\"type\":\"response.function_call_arguments.delta\"}\n\nevent: response.function_call_arguments.done\ndata: {\"arguments\":\"{\\\"city\\\": \\\"Paris\\\"}\",\"item_id\":\"fc_0196aaadb20f4d90b74f3e2950c17552\",\"output_index\":0,\"sequence_number\":5,\"type\":\"response.function_call_arguments.done\"}\n\nevent: response.output_item.done\ndata: {\"item\":{\"arguments\":\"{\\\"city\\\": \\\"Paris\\\"}\",\"call_id\":\"puLTntWp0\",\"name\":\"get_weather\",\"type\":\"function_call\",\"id\":\"fc_0196aaadb20f4d90b74f3e2950c17552\",\"status\":\"completed\"},\"output_index\":0,\"sequence_number\":6,\"type\":\"response.output_item.done\"}\n\nevent: response.completed\ndata: {\"response\":{\"id\":\"resp_f7af97cdccf74b33a6b32dedd5dc3800\",\"access_programs\":null,\"created_at\":1795531437.0,\"error\":null,\"incomplete_details\":null,\"instructions\":\"You are a terse assistant. Follow the instructions exactly.\",\"metadata\":{},\"model\":\"mistral-small-latest\",\"object\":\"response\",\"output\":[{\"arguments\":\"{\\\"city\\\": \\\"Paris\\\"}\",\"call_id\":\"puLTntWp0\",\"name\":\"get_weather\",\"type\":\"function_call\",\"id\":\"fc_0196aaadb20f4d90b74f3e2950c17552\",\"status\":\"completed\"}],\"parallel_tool_calls\":true,\"temperature\":0.0,\"tool_choice\":\"auto\",\"tools\":[{\"name\":\"get_weather\",\"parameters\":{\"properties\":{\"city\":{\"description\":\"City name\",\"type\":\"string\"}},\"required\":[\"city\"],\"type\":\"object\"},\"strict\":false,\"type\":\"function\",\"allowed_callers\":null,\"defer_loading\":null,\"description\":\"Get the current weather for a city.\",\"output_schema\":null}],\"top_p\":null,\"background\":false,\"completed_at\":1795531437.0,\"conversation\":null,\"max_output_tokens\":256,\"max_tool_calls\":null,\"moderation\":null,\"previous_response_id\":null,\"prompt\":null,\"prompt_cache_diagnostics\":null,\"prompt_cache_key\":null,\"prompt_cache_options\":null,\"prompt_cache_retention\":null,\"reasoning\":{\"context\":null,\"effort\":null,\"generate_summary\":null,\"mode\":null,\"summary\":null},\"safety_identifier\":null,\"service_tier\":null,\"status\":\"completed\",\"text\":{\"format\":{\"type\":\"text\"},\"verbosity\":null},\"tool_usage\":null,\"top_logprobs\":null,\"truncation\":\"disabled\",\"usage\":{\"input_tokens\":112,\"input_tokens_details\":{\"cache_write_tokens\":0,\"cached_tokens\":0},\"output_tokens\":12,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":124},\"user\":null,\"store\":false},\"sequence_number\":7,\"type\":\"response.completed\"}\n\n"
+      }
+    }
+  ]
+}

@@ -17,6 +17,183 @@
 ```
 
 ---
+
+## 2026-11-24 23:30 · E.10.03 · Quick（AWS Quick） · 整片评审修复（第 ⑨ 片 m0-llm）
+- 依据：设计仓库提交（Codex 推送 K252 后的 HEAD）；`P.09` K252
+- 完成：处理 `docs/relay/m0-llm.review.md` 的第 3、4、9、12 行（第 14、16 行随之）：
+  - 第 3 行（不符合）：`Resp.Raw` 按 `E.10.01` §5.5 的规则脱敏（`collect.go` 的 `redactRaw`；替换后不再是合法 JSON 时不保留）；新测试 `TestRawRedact`（`E1001-T4`：上游回显密钥）。
+  - 第 4 行：`rename` 的 `to` 和 `path` 一样必须是没有空段的点分路径（`provider.go` 的 `dottedPath`）；`E1001-T3` 补两条反例。
+  - 第 9 行：录制写出的 `note` 带请求过的地址（`cassette.go`）；`E1008-T1` 断言 `note` 含地址；已录好的 chat 5 份、responses 4 份的 `note` 手工补上"Mistral、`https://api.mistral.ai`、`mistral-small-latest`、2026-11-24"（只改 `note` 一行，录放内容不动，`note` 不参与匹配）。
+  - 第 12 行：`contract.Suite` 的 `Caps`、`Transport` 由设计方认可，补进 `E.10.01` §4.6。
+- 自主决定的细节：无（处理方式都写在 K252 里）。修复的文件属于片内已完成的叶子，按 K238 的做法记在 `E.10.03` 的实施卡范围里；改过依据的叶子用 `relay start <叶子> --resume --accept-docs` 更新依据（改的只是本条列出的这几处）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者复核
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 23:10 · E.10.03 · Quick（AWS Quick） · 交付（第 ⑨ 片 m0-llm）
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.03.json）；`P.09` K250、K251
+- 完成：实施卡全部。`engine/llm/protocol/messages`：编码（system 合并到顶层，有缓存断点时写成带 `cache_control` 的块；相邻同角色合并、工具结果放进 user；图片和文件的 base64 块；`cache_control`；工具和 `tool_choice` 四种写法；结构化输出一律强制工具；`max_tokens` 缺省用能力表的 `max_output`；`temperature`、`top_p`、`stop_sequences`；`thinking.budget_tokens`）；流式解码（`message_start` 的用量和模型、三种块、三种增量、`message_delta` 的 `stop_reason` 和输出用量、`ping` 忽略、`error` 事件）；错误体；模型列表。录放 8 个用例全部按 Anthropic 官方文档手写，`note` 写明文档地址（没有测试密钥，`P.09` K251 ③）。测试 `E1003-T1`–`T5`。
+- 自主决定的细节：
+  - 契约测试的提供方用缺省鉴权（协议默认的请求头 `x-api-key`），模型 `claude-sonnet-4-5`（只在手写录放里出现，quirks 按 `claude-*` 匹配）。
+  - 能力表和请求都没有输出上限时 `max_tokens` 用 4096。`message_delta` 里也带输入或缓存用量时以它为准。`stop_reason` 的 `model_context_window_exceeded` 当作 length，其他不认识的当作 stop。
+  - 不支持工具的模型要结构化输出时编码报错（这个协议没有原生写法，K251 ④）。
+  - `quirks.yaml` 加了按错误码匹配的规则：`overloaded_error`、`api_error` → transient，`rate_limit_error` → rate_limited（流里的错误事件没有 HTTP 状态）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 22:46 · E.10.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.10.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-24 23:10 · E.10.04 · Quick（AWS Quick） · 交付（第 ⑨ 片 m0-llm）
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.04.json）；`P.09` K250、K251
+- 完成：实施卡全部。`engine/llm/protocol/responses`：无状态编码（`store: false`，没有 `previous_response_id`；system 合并进 `instructions`；user 的 `input_text` / `input_image`；assistant 的 `output_text` 和 `function_call` 条目；`function_call_output`；工具 `strict: false`；`tool_choice`；原生 `text.format` 或强制工具；`max_output_tokens`、`temperature`、`top_p`、`reasoning.effort`）；按 `type` 的流式解码（文本、两种思考、按 `output_index` 的工具调用、`completed`、`incomplete` 的两种原因、`failed`、`error`，不认识的忽略）；错误体；模型列表。录放：`text`、`tool_call`、`tool_result`、`structured` 用 Mistral 真实录制，`usage`、`error_auth`、`error_rate`、`models` 按 OpenAI 官方文档手写。测试 `E1004-T1`–`T5`。
+- 自主决定的细节：
+  - 有的服务不发参数片段、只在 `response.output_item.done` 里给完整参数：这种情况用 done 里的参数，收到过片段时忽略 done（不重复）。
+  - `Stop` 这个协议没有对应字段，不写。文件内容不支持，编码时报错。
+  - `incomplete` 的原因不是 `content_filter` 时都当作 length。
+  - 错误规则另在 `quirks.yaml` 加了 `responses` 的 `server_error` → transient、`rate_limit_exceeded` → rate_limited（`E.10.05` 里登记）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 22:43 · E.10.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.10.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-24 23:10 · E.10.02 · Quick（AWS Quick） · 交付（第 ⑨ 片 m0-llm）
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.02.json）；`P.09` K250、K251
+- 完成：实施卡全部。`engine/llm/protocol/chat`：编码（四种角色；一段文本写字符串、否则写数组；图片 data URL；工具调用与工具结果；工具与 `tool_choice`；原生 `response_format` 或强制工具 `emit_<名>`；`stream_options.include_usage`、`max_tokens`、`temperature`、`top_p`、`stop`、`reasoning_effort`）；流式解码（文本、`reasoning_content` / `reasoning` 思考、按 `index` 拼工具参数、`finish_reason`、最后的用量 chunk、`model` 取最后一次）；错误体；模型列表。录放：`text`、`tool_call`、`tool_result`、`structured`、`models` 用 Mistral（`mistral-small-latest`）真实录制，`usage`、`error_auth`、`error_rate` 按 OpenAI 官方文档手写。测试 `E1002-T1`–`T5`。
+- 自主决定的细节：
+  - 测试用的 Mistral 提供方带 `delete stream_options` 覆盖（和 `vendors.yaml` 的预填一致）。
+  - 有 `finish_reason`、没有 `[DONE]` 就断开时照常结束；两者都没有才是 transient。
+  - `delta.content` 也认数组（文本块和思考块，有的服务这样给）；`finish_reason` 的 `model_length` 当作 length、`function_call` 当作 tool_calls。
+  - 错误体也认顶层的 `message` / `type` / `code` / `detail`（有的服务不包在 `error` 里）；流里的 `error` chunk 交给 `engine/llm` 分类。
+  - assistant 消息只有工具调用、没有文本时不写 `content`。文件内容这个协议不支持，编码时报错。
+  - 录制用的 Mistral 测试密钥：用户 2026-11-24 决定直接交给验证者，只在录制那一条命令里临时设 `ANYDOOR_DEV_SECRET_MISTRAL`，不写进任何文件、配置、提交；代替 `P.09` K251 ③"只由用户在开发机上设环境变量"，冻结时在设计仓库 `P.09` 登记。录制只跑 `text`、`tool_call`、`tool_result`、`structured`、`models` 五个用例，手写的三份不重录。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 22:37 · E.10.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.10.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-24 22:50 · E.10.08 · Quick（AWS Quick） · 交付（第 ⑨ 片 m0-llm）
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.08.json）；`P.09` K251
+- 完成：实施卡全部。`engine/llm/cassette`：`Transport`（回放：按顺序比较方法、路径和键排序后的请求体，缺文件、记录不够、不一致都让测试失败并写出文件名、请求序号、差异，不联网；`-record`：设 `ANYDOOR_LLM_RECORD=1`，经 `llm.NewTransport` 真发请求，测试结束时写文件）、录放文件格式、脱敏（不写请求头，响应头只留 `Content-Type`、`Retry-After`，请求体和响应体里的密钥原文和像密钥的串换成 `[REDACTED]`，规则用 `llm.Redact`）；`engine/llm/fake`：脚本化的 `llm.Client`。测试 `E1008-T1`–`T4`（`T5` 在 `B.06.05` 跑）。
+- 自主决定的细节：
+  - 回放失败用 `t.Errorf` 加返回错误（`RoundTrip` 可能不在测试的 goroutine 上，不能 `Fatal`）；调用方随后拿到错误，测试照样失败。
+  - 录制时把整个响应读完再交给调用方（录制不需要真的流式）；调用方拿到的是没有脱敏的原文。
+  - 请求体不是 JSON 时存成 JSON 字符串；比较时数字按 float64 规范化。
+  - `fake.Step` 同时给 `Deltas` 和 `Err` 时：先吐完 `Deltas` 再返回 `Err`（模拟流到一半断开）；只给 `Err` 时 `Complete` 直接返回它。脚本用完后再调用返回 `Code=fake_exhausted` 的 `*llm.Error`；失败的调用也记进 `Requests()`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 22:35 · E.10.08 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.08.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.10.08.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-24 22:40 · E.10.05 · Quick（AWS Quick） · 交付（第 ⑨ 片 m0-llm）
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.05.json）；`P.09` K250、K251
+- 完成：实施卡全部。`engine/llm/quirks`：`quirks.yaml`（兜底能力、`claude-*`、`mistral-*`、`zai-glm-*`；错误规则）、`vendors.yaml`（Mistral、OpenAI 两种协议、Anthropic、DeepSeek、Gemini 兼容接口、Ollama）、`Load`（格式错报文件和行号，内容错写明第几条）、`Lookup`（按文件顺序累积，`*` 通配，不写的条件算匹配）、`ErrorClass`（第一条匹配的生效）、`Vendors`；`tools/lint/quirkscheck` 整体替换桩。测试 `E1005-T1`–`T6`。
+- 自主决定的细节：
+  - 常用厂商的地址 2026-11-24 按官方文档核对：Mistral `https://api.mistral.ai/v1`、OpenAI `https://api.openai.com/v1`、Anthropic `https://api.anthropic.com/v1`、DeepSeek `https://api.deepseek.com`、Gemini `https://generativelanguage.googleapis.com/v1beta/openai`、Ollama `http://127.0.0.1:11434/v1`。只有 Mistral 列了常用模型（文档里的两个），其他的模型列表由"测试连接"拉取，免得写死过时的模型名。
+  - Mistral 的预填配置带一条 `delete stream_options` 覆盖（上游不认这个字段，用量照常在最后一个 chunk 里）。
+  - 错误规则另加了几条按错误码匹配的（`anthropic_messages` 的 `overloaded_error`、`api_error`、`rate_limit_error`，`responses` 的 `server_error`、`rate_limit_exceeded`）：流里的错误事件没有 HTTP 状态，只能按错误码分类。
+  - `reasoning.values` 里的 `off` 加引号（YAML 1.1 会把不带引号的 off 读成布尔值）。数据加载另外检查：强度名是 7 级之一、`map` 映射到 `values` 里的一级、`budget` 为正数、`class` 是已知的失败类别、`message` 是合法的正则。
+  - 导出 `quirks.Files`（内置的两个数据文件）、`QuirksFile`、`VendorsFile`；`Vendor.Provider.Vendor` 填厂商 id。
+  - `quirkscheck` 不带参数时检查仓库的 `engine/llm`（从当前目录往上找 `go.mod`），可以传一个目录；`switch` 只看带标签的，`strings` 的四个函数只看字面量参数。
+- 进行中：无
+- 桩：`tools/lint/quirkscheck/main.go` 的桩已替换
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 22:33 · E.10.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.10.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-24 22:30 · E.10.01 · Quick（AWS Quick） · 交付（第 ⑨ 片 m0-llm）
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.01.json）；`P.09` K250、K251
+- 完成：实施卡全部。`engine/llm`：统一的请求 / 响应 / 流 / 能力类型；提供方配置（`ParseProviders`：名字、重名、协议、地址、路径、四种鉴权、请求头名、模型 id、覆盖、超时、代理逐项校验，预留的 `keys`、`priority`、`weight`、`fallback` 和 http 远程地址带鉴权各记 warn）；注册表（`SetProviders` 不取密钥，`Client` 三层能力合并，`ListModels`）；请求组装（默认路径与 `Paths` 覆盖、协议默认头、额外请求头里的密钥引用、bearer / header / query / none、`upstream` 映射）；请求体覆盖 set / delete / rename 与按模型过滤；缺省传输层与测试守卫（`NewTransport`，`ANYDOOR_LLM_RECORD=1` 放行）；SSE 读取器；错误分类（quirks 规则优先，`Retry-After` 秒数和日期，密钥脱敏，截到 500 字；`secret_locked` / `secret_missing`）；流的外层（保证最后一个 Delta 带完整 Resp、收集 Raw、取结构化输出、没有用量记 warn）；`Collect`；`ResolveEffort`。`engine/llm/contract`：契约测试框架和 8 个用例加守卫检查。`tools/deps/allow.txt` 去掉三家 SDK。测试 `E1001-T1`–`T7`。
+- 自主决定的细节：
+  - `contract.Suite` 比 §4.6 多两个字段：`Caps`（协议测试传 quirks 表，nil 用 `DefaultCaps`）、`Transport`（传 `cassette.Transport`；`E.10.08` 在本叶子之后，所以不直接 import）。录制判断用 `flag.Lookup("record")`；密钥从 `ANYDOOR_DEV_SECRET_<名>` 取，没有设时用假值（回放不需要）。用例的请求固定写在 `contract.Request`，工具调用 id 用 9 位字母数字 `call12345`（有的服务只认这种）。
+  - 守卫只套在缺省传输层上（`Options.Transport` 为 nil 时）；录放录制时也经 `llm.NewTransport` 真发请求，因此同样经过守卫。
+  - 协议只负责给出片段和带 `Finish`、`Usage`、`Model` 的 `Resp`；文本、思考、工具调用的拼接，结构化输出（强制工具 `emit_<名>` 的参数或原生写法的文本），`Raw`，`Model` 缺省为上游模型名，都在本包的流外层做，三种协议共用。工具参数不是合法 JSON → `format_invalid`。
+  - 流里的错误事件：协议返回 `Class` 为空的 `*llm.Error`（`Status` 写 200），由本包按 quirks 规则和 §5.5 分类。
+  - 新增导出：`KnownProtocols` 与三个协议名常量、`EmitPrefix`、`StructuredTool`、`Errorf`、`Redact`、`NewTransport`、`EnvRecord`、`SSEReader`、错误码常量、`ModelEntry.UpstreamName`、`ProviderConfig.Timeout`、`Caps.Apply`。
+  - 错误体里没有说明时用正文，正文也为空时用 HTTP 状态文本；调用方取消 → `cancelled`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-24 22:02 · E.10.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 c19d8a0（docs/relay/E.10.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.10.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
 ## 2026-11-24 20:40 · Quick（AWS Quick） · 冻结叶子复查（K248 不用 CI 之后），代码不用改
 - 依据：设计仓库提交（Codex 推送后的 HEAD）；`P.09` K248
 - 完成：K248 改了 `G.02.06` §4、`G.08-R3`、`G.07`、`Q.01`、`S.12`、`O`、`O.02`、`O.03`、`P.07`、`P.09`，`relay stale` 列出的冻结叶子逐个对照过，代码都不用改：

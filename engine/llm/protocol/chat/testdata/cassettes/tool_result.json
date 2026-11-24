@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-11-24T14:40:26Z",
+  "note": "Mistral 真实录制（go test -record）：https://api.mistral.ai，模型 mistral-small-latest，2026-11-24",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "body": {
+          "max_tokens": 256,
+          "messages": [
+            {
+              "content": "You are a terse assistant. Follow the instructions exactly.",
+              "role": "system"
+            },
+            {
+              "content": "What is the weather in Paris right now? Use the get_weather tool.",
+              "role": "user"
+            },
+            {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "function": {
+                    "arguments": "{\"city\":\"Paris\"}",
+                    "name": "get_weather"
+                  },
+                  "id": "call12345",
+                  "type": "function"
+                }
+              ]
+            },
+            {
+              "content": "{\"temp_c\":18,\"sky\":\"sunny\"}",
+              "role": "tool",
+              "tool_call_id": "call12345"
+            }
+          ],
+          "model": "mistral-small-latest",
+          "stream": true,
+          "temperature": 0,
+          "tools": [
+            {
+              "function": {
+                "description": "Get the current weather for a city.",
+                "name": "get_weather",
+                "parameters": {
+                  "properties": {
+                    "city": {
+                      "description": "City name",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "city"
+                  ],
+                  "type": "object"
+                }
+              },
+              "type": "function"
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "data: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"finish_reason\":null}]}\n\ndata: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"The\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqrstuvwxy\"}\n\ndata: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" current\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqrstuv\"}\n\ndata: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" weather in Paris is\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqr\"}\n\ndata: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" **1\"},\"finish_reason\":null}],\"p\":\"abcdef\"}\n\ndata: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"8°C** and\"},\"finish_reason\":null}],\"p\":\"abcdefghijklmnopqrstuvwxy\"}\n\ndata: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\" **sunny**.\"},\"finish_reason\":null}],\"p\":\"abcdefghijk\"}\n\ndata: {\"id\":\"6c2f531d0b5f48f6ae00c8c084febe63\",\"object\":\"chat.completion.chunk\",\"created\":1795531225,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"content\":\"\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":138,\"total_tokens\":155,\"completion_tokens\":17,\"prompt_tokens_details\":{\"cached_tokens\":96},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"service_tier\":\"standard\"},\"p\":\"abcd\"}\n\ndata: [DONE]\n\n"
+      }
+    }
+  ]
+}

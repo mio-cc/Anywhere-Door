@@ -1,0 +1,117 @@
+{
+  "model": "up-1",
+  "stream": true,
+  "max_tokens": 8192,
+  "system": [
+    {
+      "type": "text",
+      "text": "S\n\nS2",
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "look"
+        },
+        {
+          "type": "image",
+          "source": {
+            "type": "base64",
+            "media_type": "image/png",
+            "data": "AQID"
+          }
+        },
+        {
+          "type": "text",
+          "text": "more"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "checking"
+        },
+        {
+          "type": "tool_use",
+          "id": "call1",
+          "name": "get_weather",
+          "input": {
+            "city": "Paris"
+          }
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "call1",
+          "content": "{\"temp\":18}"
+        },
+        {
+          "type": "text",
+          "text": "thanks",
+          "cache_control": {
+            "type": "ephemeral"
+          }
+        }
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "get_weather",
+      "description": "Weather",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "noop",
+      "input_schema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "emit_answer",
+      "description": "按要求的格式输出结果（结构化输出）",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  ],
+  "tool_choice": {
+    "type": "tool",
+    "name": "emit_answer"
+  },
+  "temperature": 0.5,
+  "top_p": 0.9,
+  "stop_sequences": [
+    "END"
+  ],
+  "thinking": {
+    "type": "enabled",
+    "budget_tokens": 8192
+  }
+}

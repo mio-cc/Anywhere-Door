@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-11-24T14:40:19Z",
+  "note": "Mistral 真实录制（go test -record）：https://api.mistral.ai，模型 mistral-small-latest，2026-11-24",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "body": {
+          "max_tokens": 256,
+          "messages": [
+            {
+              "content": "You are a terse assistant. Follow the instructions exactly.",
+              "role": "system"
+            },
+            {
+              "content": "What is the weather in Paris right now? Use the get_weather tool.",
+              "role": "user"
+            }
+          ],
+          "model": "mistral-small-latest",
+          "stream": true,
+          "temperature": 0,
+          "tool_choice": "auto",
+          "tools": [
+            {
+              "function": {
+                "description": "Get the current weather for a city.",
+                "name": "get_weather",
+                "parameters": {
+                  "properties": {
+                    "city": {
+                      "description": "City name",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "city"
+                  ],
+                  "type": "object"
+                }
+              },
+              "type": "function"
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream; charset=utf-8"
+        },
+        "body": "data: {\"id\":\"c631421f3b784fb8ac242096f334e5e5\",\"object\":\"chat.completion.chunk\",\"created\":1795531218,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"\"},\"finish_reason\":null}]}\n\ndata: {\"id\":\"c631421f3b784fb8ac242096f334e5e5\",\"object\":\"chat.completion.chunk\",\"created\":1795531218,\"model\":\"mistral-small-latest\",\"choices\":[{\"index\":0,\"delta\":{\"tool_calls\":[{\"id\":\"7GIrCrmZS\",\"type\":\"function\",\"function\":{\"name\":\"get_weather\",\"arguments\":\"{\\\"city\\\": \\\"Paris\\\"}\"},\"index\":0}]},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":112,\"total_tokens\":124,\"completion_tokens\":12,\"prompt_tokens_details\":{\"cached_tokens\":0},\"completion_tokens_details\":{\"reasoning_tokens\":0},\"service_tier\":\"standard\"},\"p\":\"abcdefghijk\"}\n\ndata: [DONE]\n\n"
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "recorded_at": "2026-11-24T14:00:00Z",
+  "note": "按官方文档手写：https://platform.openai.com/docs/api-reference/responses-streaming（流式事件）、https://platform.openai.com/docs/api-reference/models/list（模型列表）与 https://platform.openai.com/docs/guides/error-codes（错误体）；请求与 text 用例相同",
+  "interactions": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/v1/responses",
+        "body": {
+          "model": "mistral-small-latest",
+          "stream": true,
+          "store": false,
+          "instructions": "You are a terse assistant. Follow the instructions exactly.",
+          "input": [
+            {
+              "role": "user",
+              "content": [
+                {
+                  "type": "input_text",
+                  "text": "Reply with the single word: hello"
+                }
+              ]
+            }
+          ],
+          "max_output_tokens": 64,
+          "temperature": 0
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/event-stream"
+        },
+        "body": "event: response.created\ndata: {\"type\":\"response.created\",\"sequence_number\":0,\"response\":{\"id\":\"resp_handwritten\",\"object\":\"response\",\"created_at\":1764000000,\"status\":\"in_progress\",\"model\":\"mistral-small-latest\",\"output\":[],\"usage\":null}}\n\nevent: response.output_item.added\ndata: {\"type\":\"response.output_item.added\",\"sequence_number\":1,\"output_index\":0,\"item\":{\"id\":\"msg_handwritten\",\"type\":\"message\",\"status\":\"in_progress\",\"role\":\"assistant\",\"content\":[]}}\n\nevent: response.output_text.delta\ndata: {\"type\":\"response.output_text.delta\",\"sequence_number\":2,\"item_id\":\"msg_handwritten\",\"output_index\":0,\"content_index\":0,\"delta\":\"hello\"}\n\nevent: response.output_text.done\ndata: {\"type\":\"response.output_text.done\",\"sequence_number\":3,\"item_id\":\"msg_handwritten\",\"output_index\":0,\"content_index\":0,\"text\":\"hello\"}\n\nevent: response.completed\ndata: {\"type\":\"response.completed\",\"sequence_number\":4,\"response\":{\"id\":\"resp_handwritten\",\"object\":\"response\",\"created_at\":1764000000,\"status\":\"completed\",\"model\":\"mistral-small-latest\",\"output\":[{\"id\":\"msg_handwritten\",\"type\":\"message\",\"status\":\"completed\",\"role\":\"assistant\",\"content\":[{\"type\":\"output_text\",\"text\":\"hello\",\"annotations\":[]}]}],\"usage\":{\"input_tokens\":24,\"input_tokens_details\":{\"cached_tokens\":16},\"output_tokens\":2,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":26}}}\n\n"
+      }
+    }
+  ]
+}

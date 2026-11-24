@@ -1,0 +1,109 @@
+{
+  "model": "up-1",
+  "stream": true,
+  "stream_options": {
+    "include_usage": true
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "S"
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "look"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,AQID"
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call1",
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "arguments": "{\"city\":\"Paris\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call1",
+      "content": "{\"temp\":18}"
+    },
+    {
+      "role": "assistant",
+      "content": "It is 18."
+    },
+    {
+      "role": "user",
+      "content": "thanks"
+    }
+  ],
+  "max_tokens": 100,
+  "temperature": 0.5,
+  "top_p": 0.9,
+  "stop": [
+    "END"
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Weather",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "noop",
+        "parameters": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "emit_answer",
+        "description": "按要求的格式输出结果（结构化输出）",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "ok": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "tool_choice": {
+    "type": "function",
+    "function": {
+      "name": "emit_answer"
+    }
+  },
+  "reasoning_effort": "high"
+}
