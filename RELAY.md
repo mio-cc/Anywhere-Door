@@ -17,6 +17,50 @@
 ```
 
 ---
+## 2026-11-24 18:30 · O.03 · Quick（AWS Quick） · 交付（第 ⑧b 片 m0-ci）
+- 依据：设计仓库提交（见 docs/relay/O.03.json）；`P.09` K241、K243、K246
+- 完成：实施卡全部。`tools/release`：六个平台（`Targets`）、逐个 `go run ./tools/build -preview`、`Inspect`（构建信息、go.sum、嵌入的 index.html）、可复现的 zip / tar.gz 归档（`Archive`，含中文 `README.txt`、本版本的变更日志）、`SHA256SUMS.txt`、`sizes.txt`（`-prev-sizes` 比较）、`-version-check`、`-smoke`（`Smoke`）；`release.yml` 全部步骤（三平台冒烟 → 两遍打包比较 → 预发布）；测试 `O03-T1`–`T5`；`CHANGELOG.md` 加一行。
+- 自主决定的细节：版本号取 `tools/build` 打印的"已构建"那一行（`-trimpath` 时构建信息里没有 `-ldflags`，K246）；冒烟的假程序写在测试里、临时编译；Windows 上冒烟用 shutdown 接口关闭；发布说明里贴解压后程序的 `--version` 输出（含 schema 版本范围）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无。`O.03` §10 验收 1、3、4 在 M0 结束打 `v0.1.0` 标签时做。
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+
+## 2026-11-24 18:04 · O.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 374a183（docs/relay/O.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/O.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+## 2026-11-24 18:30 · O.02 · Quick（AWS Quick） · 交付（第 ⑧b 片 m0-ci）
+- 依据：设计仓库提交（见 docs/relay/O.02.json）；`P.09` K241、K243、K246
+- 完成：实施卡全部。`.github/workflows/ci.yml`（gen、go-test 三平台、go-lint、web、build 冒烟、e2e、security、pr-meta）、`nightly.yml`（漏洞扫描、可复现构建，失败开 Issue）、`release.yml` 入口；`.github/pull_request_template.md`；`tools/ci/` 的 commitcheck、deps、allowlist、cover、changelog 及测试 `O02-T1`–`T5`；`tools/deps/allow.txt`；`tools/versions.txt` 加 gitleaks、govulncheck（三列 `ci`）；`docs/ci.md`。
+- 自主决定的细节：6 个 Actions 固定到验证者查到的提交哈希（checkout v7.0.1、setup-go v7.1.0、setup-node v7.1.0、cache v6.1.0、upload-artifact v7.0.2、download-artifact v8.0.2）；gitleaks 8.30.1 用 `git` 子命令扫全部历史、带 `--redact`；所有任务用 bash、设提交者环境变量；pr-meta 的输入经环境变量传入；`cover` 按"文件:位置"去重；`allowlist` 里"总是允许"的条目当作可修改。
+- 进行中：无
+- 桩：无（`ci.yml` 照常调用现有的桩，见 `docs/ci.md` §3）
+- 上报单 / 阻塞：无。合并推送后第一次 CI 运行和门禁演练是人工验收（`O.02` §10）。
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+
+## 2026-11-24 18:00 · O.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 374a183（docs/relay/O.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/O.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
 ## 2026-11-24 15:30 · B.02 · Quick（AWS Quick） · 交付（第 ⑧a 片 m0-server）
 - 依据：设计仓库提交（见 docs/relay/B.02.json）；`P.09` K240–K242
 - 完成：实施卡全部，整体替换 `cmd/anydoor` 的 4 个桩。M0 组装：`ParseArgs` → `datadir` → `config.Load` → 单实例锁（已有实例转交：探活、等待重试、打开带 token 的地址）→ `slog` 日志（标准错误 + `logs/anydoor-YYYYMMDD.log`）→ SQLite → `auth` → `secret` → 监听 127.0.0.1（尽量再监听 `[::1]`）→ `api.NewServer` → `WritePort` → 打开浏览器；生产模式静态文件与前端路由回退、开发模式 Vite 反向代理；关闭（信号或 shutdown 接口，15 秒）；`--version`；测试 `B02-T1`–`T8`；`go.mod` 加 `pkg/browser`。

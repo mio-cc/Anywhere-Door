@@ -1,0 +1,26 @@
+Anywhere Door {{.Version}}（{{.OS}}/{{.Arch}}）
+
+这是未签名的预览版，只用于内部试用。
+
+怎么启动
+  双击 {{.Exe}}，或在终端里运行它。启动后会自动用浏览器打开本机页面
+  （地址形如 http://127.0.0.1:7300/）。不想自动打开浏览器时加 --no-browser，
+  终端里会打印带访问令牌的地址。
+{{- if eq .OS "windows"}}
+  首次运行时 Windows SmartScreen 可能拦截：选"更多信息"→"仍要运行"。
+{{- end}}
+{{- if eq .OS "darwin"}}
+  首次运行被拦截时，在"系统设置 → 隐私与安全性"里允许，
+  或在终端执行：xattr -d com.apple.quarantine anydoor
+{{- end}}
+
+数据存在哪
+  {{.DataDir}}
+  可以用 --data-dir <目录> 或环境变量 ANYDOOR_DATA_DIR 换到别的地方。
+
+怎么停止
+  在运行它的终端窗口按 Ctrl+C，或关闭这个窗口。
+
+其他
+  anydoorctl 是命令行工具，不运行它也能正常使用 anydoor。
+  再次启动时如果已经有一个在运行，会直接打开已有的那个。
