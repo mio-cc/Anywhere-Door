@@ -3,7 +3,7 @@
   "branch": "feat/C.14-codegen",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T15:44:45Z",
-  "docs_commit": "cab75ff35122069c6aef68305f89f1edeb594608",
+  "docs_commit": "11a1ea81763ae20a23b1a0b8ededa8509cc6edd0",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.06_事件/C.06.01_事件信封.md": "sha256:2feb20c08eafd18d3d66a4721fb12d53c58f39ea3189eb0a632109099b0aea4b",
@@ -14,7 +14,7 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:ced9fb623bfa0fd1b424bcf05c0964c45f90e659f4609d71d87860750934a04a",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
     "G_工程规范/G.04_命名规范/G.04.03_文件与目录命名.md": "sha256:8eba388544ef4f659881d6039ae6366193f6a515badeaeb5ddd2a3bafdf3d37a",
-    "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:7ee9338e57c8a243064b1a7c780bc7f620a224290c56da48f28b0571a10c5692",
+    "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:80190689456d87f04b6d64fcb250f3c84e856d9572796a972690ea27c8791b86",
     "G_工程规范/G.10_依赖管理.md": "sha256:6db62706bb90741957e62878591b6fb0d3fe5aefe602a1cd22b431d270da01fe",
     "G_工程规范/G.16_代码生成规范.md": "sha256:a0370eaf07e68900e21049494642e96d144cf36e5f47b8c4d47e5dec6ab19ada",
     "O_构建_发布与运维/O.01_构建流水线.md": "sha256:d9f5072cacc592f624fd835d6a88ace02d12f6149f1a12a28d9f12f74a1f155f",

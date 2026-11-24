@@ -134,6 +134,24 @@
 
 ---
 
+## 2026-11-24 17:50 · Quick（AWS Quick） · 冻结叶子复查（第 ⑧a 片 / K241–K245 之后），代码不用改
+- 依据：设计仓库提交（Codex 推送后的 HEAD）；`P.09` K241–K245
+- 完成：`relay stale` 列出的 34 个冻结叶子逐个对照改过的依据文档，代码都不用改：
+  - **`G.08`（33 个叶子：全部 `C.*`、`C.14`、`O.01`）**：只改了 R3 第 ① 条的说明——M0 不设分支保护，CI 在推送 `main` 后做事后检查（K241）。合并条件本身（`relay check` / `relay slice` 通过、评审没有未处理意见、由验证者合并）没变，和任何代码无关。
+  - **`O.02`（`C.01`、`O.01`）**：CI 的触发方式、桩照常调用、`cover` 只出报告、Actions 固定哈希等（K241、K243），都是 ⑧b 要写的 CI 配置；`schema/`、`tools/schemacheck`、`tools/build`、`tools/dev`、`tools/relay` 不受影响。`O.02` 以后建的 `tools/deps/allow.txt` 由 `relay` 的 `AllowedDeps` 自动改读，不用改 `O.01` 的代码。
+  - **`O.03`（`O.01`）**：冒烟去掉 `nodedefs`、加 `-smoke`、占位页判断等都在 `tools/release`（⑧b），`tools/build` 只被调用、不用改。
+  - **`B.02`（`O.01`、`B.07.04`）**：`cmd/anydoor` 已由 `B.02` 整体替换；`tools/dev` 仍是 `go run ./cmd/anydoor --dev --data-dir ./.anydoor-dev`，这两个参数 `B.02` 照旧支持；`go run ./tools/build -check` 在合并后通过。转交流程用的是 `lock.Acquire`、`Probe`、`WritePort`、`Release`，接口和行为没变。
+  - **`B.03.05`（`B.07.01`）**：HTTP 层用到的 `auth.CookieName`、`SessionTTL`、`NewSession`、`VerifySession`、`VerifyToken`、`Rotate` 都是冻结时的接口，`B.07.01` 的规则没变。
+  - **`B.07.05`（`B.07.03`）**：`WritePrivate` 在 Windows 上加了退避重试（K244），签名和成功时的结果不变；`config.Write` 照常调用，正是这次修复的受益方。
+  - **`B.03.03`（`C.11`）**：§4 只补了一句"M0 由 `B.03.05` 先建 `errors.go` 的一部分"；`C.11` 的错误码表、`errors.schema.json`、`errors.zh.yaml` 都没变。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale --accept` 逐个更新依据后，`relay stale` 应为空（验证者：Codex）
+- 评审：不适用
+- 提交 / 推送：验证者提交 / 推送
+
 ## 2026-11-24 02:47 · B.07.03 · Quick（AWS Quick） · 领取
 - 依据：设计仓库提交 5ca37a9（docs/relay/B.07.03.json）
 - 完成：无
