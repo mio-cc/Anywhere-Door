@@ -3,10 +3,10 @@
   "branch": "slice/m0-store",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T16:48:11Z",
-  "docs_commit": "5f7329c5a424b996a4b00be2a1f8ebd794c14b85",
+  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
   "docs": {
     "C_契约层/C.06_事件/C.06.01_事件信封.md": "sha256:2feb20c08eafd18d3d66a4721fb12d53c58f39ea3189eb0a632109099b0aea4b",
-    "E_内核_engine/E.01_内核总则.md": "sha256:5c32ec816fabc76fe93f2e89d5475b3f872ed5f8739e54017e72d7e8f098e895",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
     "E_内核_engine/E.05_op_Op_引擎/E.05_op_Op_引擎.md": "sha256:94658274c224bee7bea5cf8c26746b063c3f911e066042a6b715a932398917fb",
     "E_内核_engine/E.07_store_持久化/E.07.01_Store_接口.md": "sha256:f01f1e433160d45ea91dcc386d032cb5264db37e481f43b64dc6cde572ed10f9",
     "E_内核_engine/E.07_store_持久化/E.07.02_SQLite_表结构.md": "sha256:7b6257f3279b02880166c9573a0e3dcc7237b7744d211e0d4faf5eb629cb2266",

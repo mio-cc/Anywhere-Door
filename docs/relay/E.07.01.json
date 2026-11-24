@@ -3,7 +3,7 @@
   "branch": "slice/m0-store",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T16:43:47Z",
-  "docs_commit": "0ed340ffed7d9ae3aef18b5d812cbdb0f4e5f8f1",
+  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
   "docs": {
     "B_后端服务/B.04_API_资源/B.04.03_runs_运行.md": "sha256:207c2f084f4f5ea162a01dfcce6b90ba8fa2f96997694fb8555888b25e2eb08a",
     "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:073dd83e7a1f21bcd81cb9cee5d81d2e467bc2ed4903212a68ef21c725aa09f0",
@@ -12,7 +12,7 @@
     "C_契约层/C.06_事件/C.06.01_事件信封.md": "sha256:2feb20c08eafd18d3d66a4721fb12d53c58f39ea3189eb0a632109099b0aea4b",
     "C_契约层/C.06_事件/C.06.03_图事件目录.md": "sha256:4e0a84fd5863be082cade5f6c0fff963ad309198a19937266d168e1b36c53982",
     "C_契约层/C.06_事件/C.06.05_路径_ID_规则.md": "sha256:1bf55987d97349426e71bc117ea97bca90321ae6be49e4a7c5fd6fbb3c15a843",
-    "E_内核_engine/E.01_内核总则.md": "sha256:5c32ec816fabc76fe93f2e89d5475b3f872ed5f8739e54017e72d7e8f098e895",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
     "E_内核_engine/E.05_op_Op_引擎/E.05.03_rebase_与三方合并.md": "sha256:1a2303d13046b9ab83a76f3e8c6b4acd79187d4dfa7caef6b676f5fbca1d0e47",
     "E_内核_engine/E.05_op_Op_引擎/E.05_op_Op_引擎.md": "sha256:94658274c224bee7bea5cf8c26746b063c3f911e066042a6b715a932398917fb",
     "E_内核_engine/E.07_store_持久化/E.07.01_Store_接口.md": "sha256:f01f1e433160d45ea91dcc386d032cb5264db37e481f43b64dc6cde572ed10f9",

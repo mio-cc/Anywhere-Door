@@ -3,7 +3,7 @@
   "branch": "feat/O.01-build",
   "claimed_by": "Quick（AWS Quick，按 G.02.06 §5 例外人工领取）",
   "claimed_at": "2026-11-23T03:20:00Z",
-  "docs_commit": "5f7329c5a424b996a4b00be2a1f8ebd794c14b85",
+  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
   "docs": {
     "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:45048bf6ea456c7935b0db781895410f86e57e58e07f827cb68f99ab1024de54",
     "B_后端服务/B.08_anydoorctl_命令行.md": "sha256:c27f6d4cf6eb1b2acd3522c65f18b7a3c4b1c59c9031cbc3467665b4f1809556",
@@ -13,7 +13,7 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
-    "G_工程规范/G.03_仓库与目录规范.md": "sha256:512326f4e5b195ca4bb433ebd0d40c8408eb2cded233d6163687f0a8a5e4d954",
+    "G_工程规范/G.03_仓库与目录规范/G.03_仓库与目录规范.md": "sha256:4ed424dcb79944dff600044b309eabff1b4236b8af29efc474c0ff0fc7701083",
     "G_工程规范/G.05_Go_编码规范/G.05.05_Go_lint_配置.md": "sha256:31d5d209dcc26822aa2ffd12960e3383b4692460b704d1d1cbda08ddc051c75b",
     "G_工程规范/G.07_Git_工作流.md": "sha256:4165763a8bbe246d18c0d9dd66604f14290612bd8d4f3c572a85c6053fdd7e78",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",

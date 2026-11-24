@@ -18,6 +18,21 @@
 
 ---
 
+## 2026-11-24 23:55 · Quick（AWS Quick） · 冻结叶子复查（K254 之后），代码不用改
+- 依据：设计仓库提交 1cdb869；`P.09` K254
+- 完成：`relay stale` 列出 22 个冻结叶子，依据里改过的是 K254 改的 4 份文档，逐份看了改动，代码都不用改：
+  - `B.01` §2、§5（`B.02`、`B.03.05`、`B.04.14`、`B.07.01`–`B.07.05`、`E.07.03`、`E.10.05`）：依赖表补了"平台包之间可以互相 import"和"`internal/api` 可以用 `schema/builtin/messages`"，这两种写法代码里本来就有（`internal/platform/*` 引用 `datadir`；`internal/api` 引用错误文案，K242）；R1 只加了对应 `G.03.01` 的说明。`tools/depcheck` 在 `main` 上检查 36 个包没有违规。
+  - `E.01` §1、实施卡（`E.07.*`、`E.10.*`）：依赖表补全 `exec`、`sched`、`orch`、`mcp` 的可用包（这些包还没有代码）；`store`、`llm` 两行没变，`engine/store/**`、`engine/llm/**` 现有的 import 都在范围内（depcheck 已查）；实施卡里的 `rules.yaml` 和 `E01-T1` 移到 `G.03.01`，不涉及已有叶子。
+  - `G.03`（`O.01`、`O.02`）：改成文件夹（路径变了）；R3 改为与 `B.01` §2 一致，§4 写明规则文件由 `G.03.01` 实现。`O.01`、`O.02` 只是调用 `go run ./tools/depcheck`，调用方式没变。
+  - `P.07` M0（`O.02`、`O.03`）：只改"依赖方向检查"和"单二进制打包"两行的验收写法（K254），不涉及合并前检查清单和 `tools/release` 的代码。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale --accept` 逐个更新依据后，`relay stale` 应为空（验证者：Codex）
+- 评审：不适用
+- 提交 / 推送：验证者提交 / 推送
+
 ## 2026-11-24 23:59 · G.03.01 · Quick（AWS Quick） · 交付
 - 依据：设计仓库提交（Codex 推送 K254 后的 HEAD，见 docs/relay/G.03.01.json）；`P.09` K254
 - 完成：实施卡全部。`tools/depcheck`：整体替换 `O.01` 留下的桩（`STUB(G.03)`）；`rules.yaml`（24 条，逐行对应 `E.01` §1、`B.01` §2、INV-19，`G.03.01` §5.3）；`rules.go`（加载与校验：格式错带行号，内容错写明第几条、哪个字段，`allow: []` 和不写 `allow` 分开；模式 `x/**`）；`scan.go`（按目录扫描 Go 文件的 import，跳过 `.`、`_` 开头的目录、`testdata`、`vendor`、`node_modules` 和嵌套模块；按规则检查）；`main.go`（退出码 0 / 1 / 2）。`docs/checks.md` §3 删掉 depcheck 一行，顺手删掉 `E.10.05` 已替换的 quirkscheck 一行。测试 `G0301-T1`–`T4`。

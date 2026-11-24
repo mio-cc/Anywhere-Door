@@ -3,9 +3,9 @@
   "branch": "slice/m0-server",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T07:13:42Z",
-  "docs_commit": "0ed340ffed7d9ae3aef18b5d812cbdb0f4e5f8f1",
+  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
   "docs": {
-    "B_后端服务/B.01_后端总则.md": "sha256:72783c5660eba218e9cc36173275f8c83e834077357afc4a93d2be2015414dca",
+    "B_后端服务/B.01_后端总则.md": "sha256:e4173daabfc30b14b150347e43a6d12ee731063ad50afa69f128f79bb566f2b2",
     "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:45048bf6ea456c7935b0db781895410f86e57e58e07f827cb68f99ab1024de54",
     "B_后端服务/B.03_HTTP_API_总则/B.03.03_错误响应格式.md": "sha256:0af064e93d3bfeae99351ab1f1f8d652d76ec2179844dba9b2c2252a03b0c089",
     "B_后端服务/B.03_HTTP_API_总则/B.03.05_本机鉴权.md": "sha256:db826c34e7f05e2e98e4b91e5b742d68b60e150e86972988858bff0c91db2969",

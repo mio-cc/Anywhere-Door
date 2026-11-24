@@ -3,9 +3,9 @@
   "branch": "slice/m0-llm",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T14:46:04Z",
-  "docs_commit": "575983c807500727a376f35515844ff72fcfebdc",
+  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
   "docs": {
-    "E_内核_engine/E.01_内核总则.md": "sha256:5c32ec816fabc76fe93f2e89d5475b3f872ed5f8739e54017e72d7e8f098e895",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
     "E_内核_engine/E.10_llm_模型适配/E.10.01_统一接口与提供方配置.md": "sha256:a5dd0056d74c591f0b532bba31d7d564d6651d7e5a9841ecbb54babdb28741fd",
     "E_内核_engine/E.10_llm_模型适配/E.10.02_Chat_Completions_协议.md": "sha256:e62ba7a8b1e5937d36a44340967d3de0af8eaf91b5cf134995320564d20a0ec3",
     "E_内核_engine/E.10_llm_模型适配/E.10.03_Anthropic_Messages_协议.md": "sha256:9f80e02bf848fca129d23ec00b607b8b2eddeb867771405ddc661d068cff8193",
@@ -18,6 +18,7 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
     "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
   },
   "stubs": [],
