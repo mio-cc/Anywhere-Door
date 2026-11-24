@@ -17,6 +17,16 @@
 ```
 
 ---
+## 2026-11-24 20:15 · Codex · 冻结叶子复查（第 ⑧b 片 / K246、K247 之后），代码不用改
+- 依据：设计仓库提交（第 1 步推送后的 HEAD）；`P.09` K246、K247
+- 完成：`B.02`、`C.01`、`O.01` 冻结后依据文档（`O.02`、`O.03`）改过：只补了 `tools/release` 的测试范围与版本号来源、CI 专用工具在 `tools/versions.txt` 的三列写法、小工具参数、CI 运行器与标签，不涉及这三个叶子的代码；`tools/build -check` 本来就只检查两列的行。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale` 已通过
+- 评审：不适用
+- 提交 / 推送：见下一条
 ## 2026-11-24 18:30 · O.03 · Quick（AWS Quick） · 交付（第 ⑧b 片 m0-ci）
 - 依据：设计仓库提交（见 docs/relay/O.03.json）；`P.09` K241、K243、K246
 - 完成：实施卡全部。`tools/release`：六个平台（`Targets`）、逐个 `go run ./tools/build -preview`、`Inspect`（构建信息、go.sum、嵌入的 index.html）、可复现的 zip / tar.gz 归档（`Archive`，含中文 `README.txt`、本版本的变更日志）、`SHA256SUMS.txt`、`sizes.txt`（`-prev-sizes` 比较）、`-version-check`、`-smoke`（`Smoke`）；`release.yml` 全部步骤（三平台冒烟 → 两遍打包比较 → 预发布）；测试 `O03-T1`–`T5`；`CHANGELOG.md` 加一行。

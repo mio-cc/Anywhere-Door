@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T04:58:30Z",
-  "docs_commit": "11a1ea81763ae20a23b1a0b8ededa8509cc6edd0",
+  "docs_commit": "f6384aa432b32d02114196a5e14aa19f1456552c",
   "docs": {
     "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:073dd83e7a1f21bcd81cb9cee5d81d2e467bc2ed4903212a68ef21c725aa09f0",
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
@@ -39,7 +39,7 @@
     "G_工程规范/G.10_依赖管理.md": "sha256:6db62706bb90741957e62878591b6fb0d3fe5aefe602a1cd22b431d270da01fe",
     "G_工程规范/G.16_代码生成规范.md": "sha256:a0370eaf07e68900e21049494642e96d144cf36e5f47b8c4d47e5dec6ab19ada",
     "O_构建_发布与运维/O.01_构建流水线.md": "sha256:d9f5072cacc592f624fd835d6a88ace02d12f6149f1a12a28d9f12f74a1f155f",
-    "O_构建_发布与运维/O.02_CI_门禁.md": "sha256:eaa24f38198af4caf8f6f3d1ca00b2debd9750a9823f6e1ad27af3ca46f8cac7",
+    "O_构建_发布与运维/O.02_CI_门禁.md": "sha256:d4c199a8b6d4e62bc7affce566146a46b52f9a299682e63532a84b55ba103f5d",
     "P_产品总纲/P.06_术语表.md": "sha256:4111263ac8525a35e1f070864e0a76075ce0b04c407c244a323a7d15e441fe3b",
     "P_产品总纲/P.08_决策记录_ADR/P.08_决策记录_ADR.md": "sha256:d37b49efa5ed088ef3fc85e5298a7bb98896851a50260c82d32863ef075c08b8",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:7218d0b6f50552e481b5a01112ffdb09e90874fb897689a773841e5a4006f5a7",
