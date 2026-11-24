@@ -1,0 +1,25 @@
+{
+  "leaf": "G.03.01",
+  "branch": "feat/G.03.01-depcheck",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-24T15:38:26Z",
+  "docs_commit": "ba4bb5e79d4e6fa57c3d1ec0cb00985ccc7feb8a",
+  "docs": {
+    "B_后端服务/B.01_后端总则.md": "sha256:e4173daabfc30b14b150347e43a6d12ee731063ad50afa69f128f79bb566f2b2",
+    "C_契约层/C.14_代码生成映射.md": "sha256:cc6340b20830c512cafdd49e6d34e0101daac1b6bae376220b0278f6c7f79bbe",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.03_仓库与目录规范/G.03.01_depcheck_依赖方向检查.md": "sha256:b5648524f723353892f318ae974f2b832d04168912e3fbdfab50c7ac50958018",
+    "G_工程规范/G.03_仓库与目录规范/G.03_仓库与目录规范.md": "sha256:4ed424dcb79944dff600044b309eabff1b4236b8af29efc474c0ff0fc7701083",
+    "G_工程规范/G.10_依赖管理.md": "sha256:c25b789af7c25976d356aa11d920d165d42af1918daf65b0826c2792a2f15f6c",
+    "G_工程规范/G_工程规范.md": "sha256:6a69227d9fb68b8afef065dca17e9a244fce9fdc2baddf7992bd31c34d7a89e6",
+    "O_构建_发布与运维/O.01_构建流水线.md": "sha256:d9f5072cacc592f624fd835d6a88ace02d12f6149f1a12a28d9f12f74a1f155f",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
+    "W_前端实现_web/W.01_前端总则.md": "sha256:f88936181531e191dfeef4e0e016fc5357a95616abd80c50df11eaf650379725",
+    "W_前端实现_web/W.03_状态层/W.03.05_session_store.md": "sha256:8cfc701698d6dd9d35ee24e3ee49ac6e780e7a3bf077ead37457e1fb804b54db"
+  },
+  "stubs": [],
+  "state": "merged"
+}

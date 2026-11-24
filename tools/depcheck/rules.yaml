@@ -1,0 +1,86 @@
+# 依赖方向规则（设计文档 G.03.01 §5.3）：逐行对应 E.01 §1、B.01 §2 的依赖表，表改了这里同一批改。
+# 模式：仓库内的包写相对模块根的路径，仓库外的写完整 import 路径；x/** 匹配 x 本身和它下面的所有包。
+# 一个包匹配到的每条规则都要满足。allow：仓库内的 import 只能是这些（[] = 一个都不能有）；deny：一律不许。
+# tests: true 时也检查 _test.go；缺省只检查非测试文件。cmd/**、tools/** 不受约束。
+rules:
+  # 内核（INV-19、G.03-R2）
+  - pkg: engine/**
+    deny: [internal/**, cmd/**]
+    tests: true
+    why: 内核不依赖产品层和程序入口（INV-19、G.03-R2）
+  - pkg: engine/**
+    deny: [net/http, net/http/**]
+    except: [engine/llm/**, engine/tools/builtin/http/**, engine/tools/builtin/fetch/**, engine/mcp/**]
+    why: 内核不依赖 net/http，只有 llm、内置 http / fetch 工具、mcp 例外（INV-19）
+  - pkg: engine/**
+    allow: [gen/**, engine/**]
+    why: 内核只能 import gen/ 和 engine/ 其他包（G.03-R2）
+
+  # 内核各包（E.01 §1）
+  - pkg: engine/graph/**
+    allow: [gen/**, engine/graph/**]
+    why: graph 只依赖 gen（E.01 §1）
+  - pkg: engine/schema/**
+    allow: [gen/**, engine/graph/**, engine/schema/**]
+    why: schema 只依赖 gen、graph（E.01 §1）
+  - pkg: engine/op/**
+    allow: [gen/**, engine/graph/**, engine/schema/**, engine/authz/**, engine/op/**]
+    why: op 只依赖 gen、graph、schema、authz；run、exec、store 通过接口使用（E.01 §1）
+  - pkg: engine/authz/**
+    allow: [gen/**, engine/graph/**, engine/authz/**]
+    why: authz 只依赖 gen、graph（E.01 §1）
+  - pkg: engine/store/**
+    allow: [gen/**, engine/store/**]
+    why: store 只依赖 gen（E.01 §1）
+  - pkg: engine/blob/**
+    allow: [engine/blob/**]
+    why: blob 只依赖标准库（E.01 §1）
+  - pkg: engine/obs/**
+    allow: [gen/**, engine/obs/**]
+    why: obs 只依赖 gen（E.01 §1）
+  - pkg: engine/llm/**
+    allow: [gen/**, engine/obs/**, engine/llm/**]
+    why: llm 只依赖 gen、obs（E.01 §1）
+  - pkg: engine/tools/**
+    allow: [gen/**, engine/blob/**, engine/obs/**, engine/authz/**, engine/tools/**]
+    why: tools 只依赖 gen、blob、obs、authz（E.01 §1）
+  - pkg: engine/mcp/**
+    allow: [gen/**, engine/tools/**, engine/mcp/**]
+    why: mcp 只依赖 gen、tools（E.01 §1）
+  - pkg: engine/ctxasm/**
+    allow: [gen/**, engine/schema/**, engine/blob/**, engine/llm, engine/ctxasm/**]
+    why: ctxasm 只依赖 gen、schema、blob 和 llm 的接口包（E.01 §1）
+  - pkg: engine/exec/**
+    allow: [gen/**, engine/graph/**, engine/schema/**, engine/ctxasm/**, engine/llm, engine/tools, engine/obs/**, engine/blob/**, engine/exec/**]
+    why: exec 只依赖 gen、graph、schema、ctxasm、obs、blob 和 llm、tools 的接口包（E.01 §1）
+  - pkg: engine/sched/**
+    allow: [gen/**, engine/graph/**, engine/obs/**, engine/exec, engine/sched/**]
+    why: sched 只依赖 gen、graph、obs 和 exec 的接口包（E.01 §1）
+  - pkg: engine/run/**
+    deny: [engine/orch/**]
+    why: run 不依赖 orch（E.01 §1）
+  - pkg: engine/orch/**
+    allow: [gen/**, engine/graph/**, engine/op/**, engine/schema/**, engine/authz/**, engine/tools/**, engine/exec, engine/orch/**]
+    why: orch 只依赖 gen、graph、op、schema、authz、tools 和 exec 的接口包（E.01 §1）
+
+  # 产品层（B.01 §2、G.03-R3）
+  - pkg: internal/platform/**
+    allow: [gen/**, internal/platform/**]
+    why: 平台层只依赖 gen 和其他平台包，不 import engine、api、app、sse（B.01 §2、G.03-R3）
+  - pkg: internal/app/**
+    allow: [gen/**, engine/**, internal/platform/**, internal/app/**]
+    why: app 不 import api、sse（B.01 §2）
+  - pkg: internal/sse/**
+    allow: [gen/**, engine/obs/**, engine/store/**, internal/sse/**]
+    why: sse 只依赖 gen、engine/obs、engine/store（B.01 §2）
+  - pkg: internal/api/**
+    allow: [gen/**, engine, internal/app/**, internal/sse/**, internal/platform/auth, schema/builtin/messages, internal/api/**]
+    why: api 只通过 app 的接口、sse、platform/auth、engine 的公开方法、错误文案使用其他包（B.01 §2、G.03-R3）
+
+  # 契约与生成物
+  - pkg: gen/**
+    allow: []
+    why: 生成物只依赖标准库（C.14）
+  - pkg: schema/**
+    allow: []
+    why: 契约层的 Go 包只放嵌入的数据（G.03 §2）

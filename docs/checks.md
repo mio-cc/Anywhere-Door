@@ -28,8 +28,6 @@
 `go run ./tools/build -check` 照常调用它们，桩以 0 退出（`P.09` K243）。对应叶子实施时整体替换，届时在这里删掉一行。
 | 命令 | 桩所在 | 由谁替换 |
 |---|---|---|
-| `go run ./tools/depcheck` | `tools/depcheck/main.go` | `G.03` |
-| `go run ./tools/lint/quirkscheck` | `tools/lint/quirkscheck/main.go` | `G.05.05` |
 | `go run ./tools/lint/typenamecheck` | `tools/lint/typenamecheck/main.go` | `G.05.05` |
 | `pnpm -C web test`、`test:e2e`、`test:visual` | `web/scripts/stub.mjs` | `W.12` |
 | 前端界面 | `web/` 的空白页 | `W.01`、`W.02` |
