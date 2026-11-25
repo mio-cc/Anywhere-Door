@@ -3,7 +3,7 @@
   "branch": "slice/m0-llm",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T14:33:44Z",
-  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
+  "docs_commit": "288a544f7f0aab45a11916124394b8ff313387b8",
   "docs": {
     "B_后端服务/B.01_后端总则.md": "sha256:e4173daabfc30b14b150347e43a6d12ee731063ad50afa69f128f79bb566f2b2",
     "C_契约层/C.15_包与贡献点.md": "sha256:c7af42f9a931eb5cf00083409f1f573dfcdfa0e0681daf9c562322392d78733a",
@@ -18,7 +18,7 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
-    "G_工程规范/G.05_Go_编码规范/G.05.05_Go_lint_配置.md": "sha256:31d5d209dcc26822aa2ffd12960e3383b4692460b704d1d1cbda08ddc051c75b",
+    "G_工程规范/G.05_Go_编码规范/G.05.05_Go_lint_配置/G.05.05_Go_lint_配置.md": "sha256:f36fb8697d901eb72ef5c5b2a35ef8c09a238d48964472517ed0625a4df21a19",
     "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",

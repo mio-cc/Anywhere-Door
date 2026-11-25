@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T05:23:28Z",
-  "docs_commit": "5f7329c5a424b996a4b00be2a1f8ebd794c14b85",
+  "docs_commit": "288a544f7f0aab45a11916124394b8ff313387b8",
   "docs": {
     "B_后端服务/B.03_HTTP_API_总则/B.03.03_错误响应格式.md": "sha256:0af064e93d3bfeae99351ab1f1f8d652d76ec2179844dba9b2c2252a03b0c089",
     "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:073dd83e7a1f21bcd81cb9cee5d81d2e467bc2ed4903212a68ef21c725aa09f0",
@@ -13,7 +13,7 @@
     "C_契约层/C.11_错误码表.md": "sha256:bffafd4a1cad6e745dfc19583eb553f81856f12fbe1e56abb3b17694b387cf26",
     "C_契约层/C.14_代码生成映射.md": "sha256:cc6340b20830c512cafdd49e6d34e0101daac1b6bae376220b0278f6c7f79bbe",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
-    "E_内核_engine/E.03_schema_注册与校验/E.03.04_诊断_Diag_格式.md": "sha256:51b36110472fff60f9eac7b27c128c1a44cde89d92fb690bfb510d35c5cecae4",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.04_诊断_Diag_格式.md": "sha256:9a4b2c866e010fce98e45994099ce6e83d107f8431c6372ee72d9cb0ebe309f5",
     "G_工程规范/G.01_文档体系规范.md": "sha256:3140664d68ff72910973ad78970e578b7a99d0271dde6315088670d44d807d57",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
