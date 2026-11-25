@@ -652,6 +652,9 @@ type Edge struct {
 	To PortRef `json:"to"`
 }
 
+// Effort：思考强度（U.09.06-R5）
+type Effort string
+
 // ErrorResponse 由 schema/errors.schema.json 生成。
 type ErrorResponse struct {
 	Error ErrorResponseError `json:"error"`
@@ -781,6 +784,29 @@ func (v *Graph) ApplyDefaults() {
 	}
 }
 
+// GraphConflictDetails：409 graph_conflict 的 details（B.04.15、W.05 §6.6）
+type GraphConflictDetails struct {
+	Conflicts []GraphConflictDetailsConflictsItem `json:"conflicts"`
+	// 服务器上的 head 版本
+	Head int64 `json:"head"`
+	// base_version 之后、和这次提交冲突的 Op 所在的整段记录，前端据此本地合并
+	MissedOps []OpRecord `json:"missed_ops"`
+}
+
+// GraphConflictDetailsConflictsItem：一处冲突
+type GraphConflictDetailsConflictsItem struct {
+	// 冲突的对象（E.05.01 判断能否交换时用的写法）
+	Object string `json:"object"`
+	// 这次提交里冲突的那条 Op
+	OpID Ulid `json:"op_id"`
+}
+
+// GraphCreate：POST /graphs 的请求体（B.04.15）
+type GraphCreate struct {
+	// 缺省空串
+	Title *string `json:"title,omitempty"`
+}
+
 // GraphEvent 由 schema/graph-event.schema.json 生成。
 type GraphEvent struct {
 	Actor Actor `json:"actor"`
@@ -819,6 +845,13 @@ type GraphMeta struct {
 	Version int64 `json:"version"`
 }
 
+// GraphMetaPage：GET /graphs（B.04.15）
+type GraphMetaPage struct {
+	Items []GraphMeta `json:"items"`
+	// 下一页的游标；没有下一页时省略（B.03.02 §4）
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
 // GraphMetaStats：图的规模，提交时由 engine/op 算好写入
 type GraphMetaStats struct {
 	// 嵌套层数（根图算 1）
@@ -826,6 +859,12 @@ type GraphMetaStats struct {
 	// 全部层的节点总数
 	Nodes     int64 `json:"nodes"`
 	Subgraphs int64 `json:"subgraphs"`
+}
+
+// GraphMetaUpdate：PATCH /graphs/{id} 的请求体（B.04.15）；M1 只改标题，转成 set_graph_title Op
+type GraphMetaUpdate struct {
+	BaseVersion int64  `json:"base_version"`
+	Title       string `json:"title"`
 }
 
 // GraphPatch 由 schema/graph_patch.schema.json 生成。
@@ -860,6 +899,22 @@ type GraphPatchExpectedEffect struct {
 	Latency *string `json:"latency,omitempty"`
 	Quality *string `json:"quality,omitempty"`
 	Risk    *string `json:"risk,omitempty"`
+}
+
+// GraphRead：GET /graphs/{id}、POST /graphs 的响应（B.04.15）
+type GraphRead struct {
+	// 全量校验结果（E.03.03）
+	Diags []Diag `json:"diags"`
+	Graph Graph  `json:"graph"`
+	// 读取时的注册表哈希（C.12 §2）
+	RegistryHash string `json:"registry_hash"`
+}
+
+// GraphValidation：GET /graphs/{id}/validate 的响应（B.04.15）
+type GraphValidation struct {
+	Diags []Diag `json:"diags"`
+	// 校验的是哪个版本
+	Version int64 `json:"version"`
 }
 
 // Impl：执行方式（C.03.01 §4、C.03.04 §3）。按 type 判别：字段由对应的 Impl* 定义封闭；判别用 if/then 而不是 oneOf，type 写错时只在 /type 报一处错
@@ -1109,6 +1164,32 @@ type MessageUsage struct {
 // Meta：开放对象，未知字段原样保留（C.01-R19）
 type Meta map[string]json.RawMessage
 
+// Model：GET /models 的一项（B.04.15）
+type Model struct {
+	// 合并后的能力（E.10.01 §5.1）
+	Caps ModelCaps `json:"caps"`
+	// 支持的思考强度（C.16-R5）；不支持调节时省略
+	Effort    *[]Effort `json:"effort,omitempty"`
+	MaxOutput int64     `json:"max_output"`
+	// 提供方配置里的 models[].id
+	Model string `json:"model"`
+	// 价格表里有没有它；M1 没有价格表，恒为 false
+	Priced   bool   `json:"priced"`
+	Provider string `json:"provider"`
+	// <提供方名>/<模型 id>，在第一个 / 处分开；Session.orchestrator_model 和 orchestrator_effort 的键用这个写法
+	Ref    string `json:"ref"`
+	Window int64  `json:"window"`
+}
+
+// ModelCaps：合并后的能力（E.10.01 §5.1）
+type ModelCaps struct {
+	NativeSchema  bool `json:"native_schema"`
+	ParallelTools bool `json:"parallel_tools"`
+	PromptCache   bool `json:"prompt_cache"`
+	Tools         bool `json:"tools"`
+	Vision        bool `json:"vision"`
+}
+
 // Node：节点实例（C.02.02）
 type Node struct {
 	Children *Subgraph `json:"children,omitempty"`
@@ -1165,10 +1246,55 @@ func (v *NodeDef) ApplyDefaults() {
 	}
 }
 
+// NodeDefItem：GET /nodedefs 的一项（B.04.15）
+type NodeDefItem struct {
+	Def NodeDef `json:"def"`
+	// 来自哪个包；内置是 core
+	Package string `json:"package"`
+	// 图里写的类型名：原子节点是名字，扩展节点是 包/名字@主版本
+	Ref NodeTypeRef `json:"ref"`
+}
+
 // NodeDefPorts 由 schema/nodedef.schema.json 生成。
 type NodeDefPorts struct {
 	Inputs  map[string]PortDef `json:"inputs"`
 	Outputs map[string]PortDef `json:"outputs"`
+}
+
+// NodeDetail：GET /runs/{id}/nodes/{exec_key} 的响应（B.04.15）；大内容只给引用，用 GET /blobs/{ref} 读
+type NodeDetail struct {
+	Attempt    int64 `json:"attempt"`
+	CostMicros int64 `json:"cost_micros"`
+	// 上下文包（ctx.assembled）
+	CtxRef  *WsRef     `json:"ctx_ref,omitempty"`
+	EndedAt *Timestamp `json:"ended_at,omitempty"`
+	Error   *NodeError `json:"error,omitempty"`
+	ExecKey string     `json:"exec_key"`
+	// 来自 node.input 事件
+	Inputs   []NodeDetailInputsItem `json:"inputs"`
+	LLMCalls []DataLlmCall          `json:"llm_calls"`
+	Loc      Loc                    `json:"loc"`
+	NodeID   Ulid                   `json:"node_id"`
+	// 来自 node.output 事件
+	Outputs []NodeDetailOutputsItem `json:"outputs"`
+	// 渲染后的提示词（prompt.rendered）
+	PromptRef *WsRef         `json:"prompt_ref,omitempty"`
+	StartedAt *Timestamp     `json:"started_at,omitempty"`
+	State     NodeState      `json:"state"`
+	ToolCalls []DataToolCall `json:"tool_calls"`
+}
+
+// NodeDetailInputsItem：一个输入端口的值
+type NodeDetailInputsItem struct {
+	Port     string `json:"port"`
+	ValueRef WsRef  `json:"value_ref"`
+}
+
+// NodeDetailOutputsItem：一个输出端口的值
+type NodeDetailOutputsItem struct {
+	Partial  bool   `json:"partial"`
+	Port     string `json:"port"`
+	ValueRef WsRef  `json:"value_ref"`
 }
 
 // NodeError：节点失败（C.06.02 §3、C.11 §4）
@@ -1177,6 +1303,13 @@ type NodeError struct {
 	Code      string       `json:"code"`
 	Message   string       `json:"message"`
 	Retryable bool         `json:"retryable"`
+}
+
+// NodeSnapshot：GET /runs/{id}/nodes 的响应（B.04.15）
+type NodeSnapshot struct {
+	Items []NodeStateRow `json:"items"`
+	// 投影对应的事件序号，重连对齐用（W.03.04 §6.2）
+	Seq int64 `json:"seq"`
 }
 
 // NodeState：节点状态（C.07 §3）
@@ -1284,6 +1417,13 @@ type OpRecord struct {
 	Undone bool `json:"undone"`
 	// 这条 Op 应用后的图版本
 	Version int64 `json:"version"`
+}
+
+// OpRecordPage：GET /graphs/{id}/ops（B.04.15）
+type OpRecordPage struct {
+	Items []OpRecord `json:"items"`
+	// 下一页的游标；没有下一页时省略（B.03.02 §4）
+	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
 // OpTarget：这个 Op 主要作用于哪里；用于授权和冲突检测。服务器会按 payload 重新计算并校验
@@ -1752,6 +1892,15 @@ type RecipeBudget struct {
 	Ratio float64 `json:"ratio"`
 }
 
+// RecipeItem：GET /recipes 的一项（B.04.15）
+type RecipeItem struct {
+	Def Recipe `json:"def"`
+	// 来自哪个包；内置是 core
+	Package string `json:"package"`
+	// 名称@版本，注册表的键（E.03.01）
+	Ref string `json:"ref"`
+}
+
 // RefFile：引用一个文件：ref（上传到会话工作区）和 path（允许目录里的文件，S.06）恰好一个
 type RefFile struct {
 	Kind string  `json:"kind"`
@@ -1862,6 +2011,15 @@ func (v *Rolecard) ApplyDefaults() {
 	}
 }
 
+// RolecardItem：GET /rolecards 的一项（B.04.15）；def 是继承合并之后的结果（E.13.05）
+type RolecardItem struct {
+	Def Rolecard `json:"def"`
+	// 来自哪个包；内置是 core
+	Package string `json:"package"`
+	// 名称@版本，注册表的键（E.03.01）
+	Ref string `json:"ref"`
+}
+
 // RunEvent 由 schema/run-event.schema.json 生成。
 type RunEvent struct {
 	Actor Actor `json:"actor"`
@@ -1924,11 +2082,38 @@ type RunMetaHeadline struct {
 	Steps     *RunSteps `json:"steps,omitempty"`
 }
 
+// RunMetaPage：GET /runs（B.04.15）
+type RunMetaPage struct {
+	Items []RunMeta `json:"items"`
+	// 下一页的游标；没有下一页时省略（B.03.02 §4）
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
 // RunMetaUsage：累计 token 数（C.01-R10）
 type RunMetaUsage struct {
 	Cached int64 `json:"cached"`
 	In     int64 `json:"in"`
 	Out    int64 `json:"out"`
+}
+
+// RunStart：POST /runs 的请求体（B.04.15）
+type RunStart struct {
+	// 缺省 main
+	Branch  *Branch `json:"branch,omitempty"`
+	GraphID Ulid    `json:"graph_id"`
+	// 根图入口端口名 → 值
+	Inputs    *map[string]json.RawMessage `json:"inputs,omitempty"`
+	SessionID *Ulid                       `json:"session_id,omitempty"`
+	// 缺省 head
+	Version *int64 `json:"version,omitempty"`
+}
+
+// RunStarted：POST /runs 的 201 响应（B.04.15）
+type RunStarted struct {
+	// 冻结的图版本
+	GraphVersion int64     `json:"graph_version"`
+	RunID        Ulid      `json:"run_id"`
+	Status       RunStatus `json:"status"`
 }
 
 // RunStatus：运行状态（C.07 §2）
@@ -1938,6 +2123,16 @@ type RunStatus string
 type RunSteps struct {
 	Done  int64 `json:"done"`
 	Total int64 `json:"total"`
+}
+
+// RunView：GET /runs/{id} 的响应（B.04.15）
+type RunView struct {
+	// 现在处于 running 或 waiting 的节点执行位置
+	CurrentPath []Loc `json:"current_path"`
+	// 用量、费用在 meta.usage、meta.cost_micros
+	Meta RunMeta `json:"meta"`
+	// 等待处理的审批数；M1 没有审批，恒为 0
+	PendingApprovals int64 `json:"pending_approvals"`
 }
 
 // Section 由 schema/recipe.schema.json 生成。
@@ -2026,6 +2221,11 @@ func (v *Session) ApplyDefaults() {
 	}
 }
 
+// SessionCreate：POST /sessions 的请求体（B.04.15）
+type SessionCreate struct {
+	Title *string `json:"title,omitempty"`
+}
+
 // SessionEvent 由 schema/session-event.schema.json 生成。
 type SessionEvent struct {
 	Actor Actor `json:"actor"`
@@ -2050,8 +2250,50 @@ type SessionEvent struct {
 // SessionEventKind 由 schema/session-event.schema.json 生成。
 type SessionEventKind string
 
+// SessionGraphAttach：POST /sessions/{sid}/graphs 的请求体（B.04.15）
+type SessionGraphAttach struct {
+	GraphID Ulid `json:"graph_id"`
+}
+
 // SessionLastLocation：用户上次在这个会话里所在的图和层，切回时恢复（U.09.04）
 type SessionLastLocation struct {
+	GraphID *Ulid `json:"graph_id,omitempty"`
+	// 当前层：root = 根图，否则为所在容器节点的 ID（与 Selection.scope、前端路由 ?scope= 同一写法）
+	Scope *string `json:"scope,omitempty"`
+}
+
+// SessionPage：GET /sessions（B.04.15）
+type SessionPage struct {
+	Items []Session `json:"items"`
+	// 下一页的游标；没有下一页时省略（B.03.02 §4）
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// SessionUpdate：PATCH /sessions/{sid} 的请求体（B.04.15）；至少写一个字段
+type SessionUpdate struct {
+	// 必须是已挂上的图
+	ActiveGraphID *Ulid `json:"active_graph_id,omitempty"`
+	// 用户上次在这个会话里所在的图和层，切回时恢复（U.09.04）
+	LastLocation *SessionUpdateLastLocation `json:"last_location,omitempty"`
+	// 模型引用 → 强度；整体替换
+	OrchestratorEffort *map[string]Effort `json:"orchestrator_effort,omitempty"`
+	// Model.ref；空串表示清除
+	OrchestratorModel *string `json:"orchestrator_model,omitempty"`
+	// default 只是 C.01-R12 的写法要求；PATCH 里不写这个字段表示不改，不是改成 false
+	Pinned *bool   `json:"pinned,omitempty"`
+	Title  *string `json:"title,omitempty"`
+}
+
+// ApplyDefaults 把没填的可选字段设为 schema 的默认值（C.14 §3）。
+func (v *SessionUpdate) ApplyDefaults() {
+	if v.Pinned == nil {
+		d := bool(false)
+		v.Pinned = &d
+	}
+}
+
+// SessionUpdateLastLocation：用户上次在这个会话里所在的图和层，切回时恢复（U.09.04）
+type SessionUpdateLastLocation struct {
 	GraphID *Ulid `json:"graph_id,omitempty"`
 	// 当前层：root = 根图，否则为所在容器节点的 ID（与 Selection.scope、前端路由 ?scope= 同一写法）
 	Scope *string `json:"scope,omitempty"`
@@ -2136,6 +2378,12 @@ func (t *Timestamp) UnmarshalJSON(b []byte) error {
 // TmpId：GraphPatch 里的临时 ID（C.08-R1、R3）
 type TmpId string
 
+// TypeCompatRequest：POST /types/compat 的请求体（B.04.15）
+type TypeCompatRequest struct {
+	Dst TypeRef `json:"dst"`
+	Src TypeRef `json:"src"`
+}
+
 // TypeDef 由 schema/typedef.schema.json 生成。
 type TypeDef struct {
 	// 业务类型只能是 gen
@@ -2169,11 +2417,27 @@ func (v *TypeDef) ApplyDefaults() {
 	}
 }
 
+// TypeItem：GET /types 的一项（B.04.15）
+type TypeItem struct {
+	// 继承链，从父到根；没有 extends 时省略
+	Chain *[]TypeRef `json:"chain,omitempty"`
+	Def   TypeDef    `json:"def"`
+	// 来自哪个包；内置是 core
+	Package string `json:"package"`
+	// 名称@主.次
+	Ref TypeRef `json:"ref"`
+}
+
 // TypeRef：数据类型写法（C.04.01 §2）：任意、$T、列表[…]、名称@主版本[.次版本]。只检查外形，列表里面的写法和类型变量出现的位置由解析器检查（E.03.02）
 type TypeRef string
 
 // Ulid 由 schema/common.schema.json 生成。
 type Ulid string
+
+// UndoRequest：POST /graphs/{id}/undo、/redo 的请求体（B.04.15）
+type UndoRequest struct {
+	Branch Branch `json:"branch"`
+}
 
 // WsRef 由 schema/common.schema.json 生成。
 type WsRef string

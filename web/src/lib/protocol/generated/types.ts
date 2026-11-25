@@ -667,6 +667,20 @@ export interface Edge {
   to: PortRef;
 }
 
+/** 思考强度（U.09.06-R5） */
+export type Effort = "off" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
+
+/** Effort 的取值（C.14-R6） */
+export const Effort = {
+  Off: "off",
+  Minimal: "minimal",
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+  Xhigh: "xhigh",
+  Max: "max",
+} as const;
+
 export interface ErrorResponse {
   error: ErrorResponseError;
 }
@@ -788,6 +802,29 @@ export function withDefaultsGraph(v: Graph): Graph {
   return { title: "", ...v };
 }
 
+/** 409 graph_conflict 的 details（B.04.15、W.05 §6.6） */
+export interface GraphConflictDetails {
+  conflicts: GraphConflictDetailsConflictsItem[];
+  /** 服务器上的 head 版本 */
+  head: number;
+  /** base_version 之后、和这次提交冲突的 Op 所在的整段记录，前端据此本地合并 */
+  missed_ops: OpRecord[];
+}
+
+/** 一处冲突 */
+export interface GraphConflictDetailsConflictsItem {
+  /** 冲突的对象（E.05.01 判断能否交换时用的写法） */
+  object: string;
+  /** 这次提交里冲突的那条 Op */
+  op_id: Ulid;
+}
+
+/** POST /graphs 的请求体（B.04.15） */
+export interface GraphCreate {
+  /** 缺省空串 */
+  title?: string;
+}
+
 export interface GraphEventCommon {
   actor: Actor;
   /** 引起这条事件的上一条事件的 seq（同一流内），用于因果追踪 */
@@ -834,6 +871,13 @@ export interface GraphMeta {
   version: number;
 }
 
+/** GET /graphs（B.04.15） */
+export interface GraphMetaPage {
+  items: GraphMeta[];
+  /** 下一页的游标；没有下一页时省略（B.03.02 §4） */
+  next_cursor?: string;
+}
+
 /** 图的规模，提交时由 engine/op 算好写入 */
 export interface GraphMetaStats {
   /** 嵌套层数（根图算 1） */
@@ -841,6 +885,12 @@ export interface GraphMetaStats {
   /** 全部层的节点总数 */
   nodes: number;
   subgraphs: number;
+}
+
+/** PATCH /graphs/{id} 的请求体（B.04.15）；M1 只改标题，转成 set_graph_title Op */
+export interface GraphMetaUpdate {
+  base_version: number;
+  title: string;
 }
 
 export interface GraphPatch {
@@ -870,6 +920,22 @@ export interface GraphPatchExpectedEffect {
   latency?: string;
   quality?: string;
   risk?: string;
+}
+
+/** GET /graphs/{id}、POST /graphs 的响应（B.04.15） */
+export interface GraphRead {
+  /** 全量校验结果（E.03.03） */
+  diags: Diag[];
+  graph: Graph;
+  /** 读取时的注册表哈希（C.12 §2） */
+  registry_hash: string;
+}
+
+/** GET /graphs/{id}/validate 的响应（B.04.15） */
+export interface GraphValidation {
+  diags: Diag[];
+  /** 校验的是哪个版本 */
+  version: number;
 }
 
 /** 执行方式（C.03.01 §4、C.03.04 §3）。按 type 判别：字段由对应的 Impl* 定义封闭；判别用 if/then 而不是 oneOf，type 写错时只在 /type 报一处错 */
@@ -1102,6 +1168,32 @@ export interface MessageUsage {
 /** 开放对象，未知字段原样保留（C.01-R19） */
 export type Meta = { [key: string]: unknown };
 
+/** GET /models 的一项（B.04.15） */
+export interface Model {
+  /** 合并后的能力（E.10.01 §5.1） */
+  caps: ModelCaps;
+  /** 支持的思考强度（C.16-R5）；不支持调节时省略 */
+  effort?: Effort[];
+  max_output: number;
+  /** 提供方配置里的 models[].id */
+  model: string;
+  /** 价格表里有没有它；M1 没有价格表，恒为 false */
+  priced: boolean;
+  provider: string;
+  /** <提供方名>/<模型 id>，在第一个 / 处分开；Session.orchestrator_model 和 orchestrator_effort 的键用这个写法 */
+  ref: string;
+  window: number;
+}
+
+/** 合并后的能力（E.10.01 §5.1） */
+export interface ModelCaps {
+  native_schema: boolean;
+  parallel_tools: boolean;
+  prompt_cache: boolean;
+  tools: boolean;
+  vision: boolean;
+}
+
 /** 节点实例（C.02.02） */
 export interface Node {
   children?: Subgraph;
@@ -1151,9 +1243,54 @@ export function withDefaultsNodeDef(v: NodeDef): NodeDef {
   return { container: "none", ...v };
 }
 
+/** GET /nodedefs 的一项（B.04.15） */
+export interface NodeDefItem {
+  def: NodeDef;
+  /** 来自哪个包；内置是 core */
+  package: string;
+  /** 图里写的类型名：原子节点是名字，扩展节点是 包/名字@主版本 */
+  ref: NodeTypeRef;
+}
+
 export interface NodeDefPorts {
   inputs: { [key: string]: PortDef };
   outputs: { [key: string]: PortDef };
+}
+
+/** GET /runs/{id}/nodes/{exec_key} 的响应（B.04.15）；大内容只给引用，用 GET /blobs/{ref} 读 */
+export interface NodeDetail {
+  attempt: number;
+  cost_micros: number;
+  /** 上下文包（ctx.assembled） */
+  ctx_ref?: WsRef;
+  ended_at?: Timestamp;
+  error?: NodeError;
+  exec_key: string;
+  /** 来自 node.input 事件 */
+  inputs: NodeDetailInputsItem[];
+  llm_calls: DataLlmCall[];
+  loc: Loc;
+  node_id: Ulid;
+  /** 来自 node.output 事件 */
+  outputs: NodeDetailOutputsItem[];
+  /** 渲染后的提示词（prompt.rendered） */
+  prompt_ref?: WsRef;
+  started_at?: Timestamp;
+  state: NodeState;
+  tool_calls: DataToolCall[];
+}
+
+/** 一个输入端口的值 */
+export interface NodeDetailInputsItem {
+  port: string;
+  value_ref: WsRef;
+}
+
+/** 一个输出端口的值 */
+export interface NodeDetailOutputsItem {
+  partial: boolean;
+  port: string;
+  value_ref: WsRef;
 }
 
 /** 节点失败（C.06.02 §3、C.11 §4） */
@@ -1162,6 +1299,13 @@ export interface NodeError {
   code: string;
   message: string;
   retryable: boolean;
+}
+
+/** GET /runs/{id}/nodes 的响应（B.04.15） */
+export interface NodeSnapshot {
+  items: NodeStateRow[];
+  /** 投影对应的事件序号，重连对齐用（W.03.04 §6.2） */
+  seq: number;
 }
 
 /** 节点状态（C.07 §3） */
@@ -1334,6 +1478,13 @@ export interface OpRecord {
   undone: boolean;
   /** 这条 Op 应用后的图版本 */
   version: number;
+}
+
+/** GET /graphs/{id}/ops（B.04.15） */
+export interface OpRecordPage {
+  items: OpRecord[];
+  /** 下一页的游标；没有下一页时省略（B.03.02 §4） */
+  next_cursor?: string;
 }
 
 /** 这个 Op 主要作用于哪里；用于授权和冲突检测。服务器会按 payload 重新计算并校验 */
@@ -1754,6 +1905,15 @@ export interface RecipeBudget {
   ratio: number;
 }
 
+/** GET /recipes 的一项（B.04.15） */
+export interface RecipeItem {
+  def: Recipe;
+  /** 来自哪个包；内置是 core */
+  package: string;
+  /** 名称@版本，注册表的键（E.03.01） */
+  ref: string;
+}
+
 /** 引用一个文件：ref（上传到会话工作区）和 path（允许目录里的文件，S.06）恰好一个 */
 export interface RefFile {
   kind: "file";
@@ -1860,6 +2020,15 @@ export function withDefaultsRolecard(v: Rolecard): Rolecard {
   return { status: "active", ...v };
 }
 
+/** GET /rolecards 的一项（B.04.15）；def 是继承合并之后的结果（E.13.05） */
+export interface RolecardItem {
+  def: Rolecard;
+  /** 来自哪个包；内置是 core */
+  package: string;
+  /** 名称@版本，注册表的键（E.03.01） */
+  ref: string;
+}
+
 export interface RunEventCommon {
   actor: Actor;
   /** 引起这条事件的上一条事件的 seq（同一流内），用于因果追踪 */
@@ -1959,11 +2128,38 @@ export interface RunMetaHeadline {
   steps?: RunSteps;
 }
 
+/** GET /runs（B.04.15） */
+export interface RunMetaPage {
+  items: RunMeta[];
+  /** 下一页的游标；没有下一页时省略（B.03.02 §4） */
+  next_cursor?: string;
+}
+
 /** 累计 token 数（C.01-R10） */
 export interface RunMetaUsage {
   cached: number;
   in: number;
   out: number;
+}
+
+/** POST /runs 的请求体（B.04.15） */
+export interface RunStart {
+  /** 缺省 main */
+  branch?: Branch;
+  graph_id: Ulid;
+  /** 根图入口端口名 → 值 */
+  inputs?: { [key: string]: unknown };
+  session_id?: Ulid;
+  /** 缺省 head */
+  version?: number;
+}
+
+/** POST /runs 的 201 响应（B.04.15） */
+export interface RunStarted {
+  /** 冻结的图版本 */
+  graph_version: number;
+  run_id: Ulid;
+  status: RunStatus;
 }
 
 /** 运行状态（C.07 §2） */
@@ -1983,6 +2179,16 @@ export const RunStatus = {
 export interface RunSteps {
   done: number;
   total: number;
+}
+
+/** GET /runs/{id} 的响应（B.04.15） */
+export interface RunView {
+  /** 现在处于 running 或 waiting 的节点执行位置 */
+  current_path: Loc[];
+  /** 用量、费用在 meta.usage、meta.cost_micros */
+  meta: RunMeta;
+  /** 等待处理的审批数；M1 没有审批，恒为 0 */
+  pending_approvals: number;
 }
 
 export interface Section {
@@ -2048,6 +2254,11 @@ export function withDefaultsSession(v: Session): Session {
   return { pinned: false, ...v };
 }
 
+/** POST /sessions 的请求体（B.04.15） */
+export interface SessionCreate {
+  title?: string;
+}
+
 export interface SessionEventCommon {
   actor: Actor;
   /** 引起这条事件的上一条事件的 seq（同一流内），用于因果追踪 */
@@ -2079,8 +2290,47 @@ export type SessionEvent = SessionEventCommon & (
 
 export type SessionEventKind = "session.updated" | "session.graph_attached" | "session.graph_detached" | "message.created" | "message.delta" | "message.block_added" | "message.completed" | "message.failed" | "chat.status";
 
+/** POST /sessions/{sid}/graphs 的请求体（B.04.15） */
+export interface SessionGraphAttach {
+  graph_id: Ulid;
+}
+
 /** 用户上次在这个会话里所在的图和层，切回时恢复（U.09.04） */
 export interface SessionLastLocation {
+  graph_id?: Ulid;
+  /** 当前层：root = 根图，否则为所在容器节点的 ID（与 Selection.scope、前端路由 ?scope= 同一写法） */
+  scope?: string;
+}
+
+/** GET /sessions（B.04.15） */
+export interface SessionPage {
+  items: Session[];
+  /** 下一页的游标；没有下一页时省略（B.03.02 §4） */
+  next_cursor?: string;
+}
+
+/** PATCH /sessions/{sid} 的请求体（B.04.15）；至少写一个字段 */
+export interface SessionUpdate {
+  /** 必须是已挂上的图 */
+  active_graph_id?: Ulid;
+  /** 用户上次在这个会话里所在的图和层，切回时恢复（U.09.04） */
+  last_location?: SessionUpdateLastLocation;
+  /** 模型引用 → 强度；整体替换 */
+  orchestrator_effort?: { [key: string]: Effort };
+  /** Model.ref；空串表示清除 */
+  orchestrator_model?: string;
+  /** default 只是 C.01-R12 的写法要求；PATCH 里不写这个字段表示不改，不是改成 false */
+  pinned?: boolean;
+  title?: string;
+}
+
+/** 把没填的可选字段设为 schema 的默认值（C.14 §3）。 */
+export function withDefaultsSessionUpdate(v: SessionUpdate): SessionUpdate {
+  return { pinned: false, ...v };
+}
+
+/** 用户上次在这个会话里所在的图和层，切回时恢复（U.09.04） */
+export interface SessionUpdateLastLocation {
   graph_id?: Ulid;
   /** 当前层：root = 根图，否则为所在容器节点的 ID（与 Selection.scope、前端路由 ?scope= 同一写法） */
   scope?: string;
@@ -2140,6 +2390,12 @@ export type Timestamp = string;
 /** GraphPatch 里的临时 ID（C.08-R1、R3） */
 export type TmpId = string;
 
+/** POST /types/compat 的请求体（B.04.15） */
+export interface TypeCompatRequest {
+  dst: TypeRef;
+  src: TypeRef;
+}
+
 export interface TypeDef {
   /** 业务类型只能是 gen */
   category?: Category;
@@ -2165,9 +2421,25 @@ export function withDefaultsTypeDef(v: TypeDef): TypeDef {
   return { category: "gen", system: false, ...v };
 }
 
+/** GET /types 的一项（B.04.15） */
+export interface TypeItem {
+  /** 继承链，从父到根；没有 extends 时省略 */
+  chain?: TypeRef[];
+  def: TypeDef;
+  /** 来自哪个包；内置是 core */
+  package: string;
+  /** 名称@主.次 */
+  ref: TypeRef;
+}
+
 /** 数据类型写法（C.04.01 §2）：任意、$T、列表[…]、名称@主版本[.次版本]。只检查外形，列表里面的写法和类型变量出现的位置由解析器检查（E.03.02） */
 export type TypeRef = string;
 
 export type Ulid = string & { readonly __brand: "Ulid" };
+
+/** POST /graphs/{id}/undo、/redo 的请求体（B.04.15） */
+export interface UndoRequest {
+  branch: Branch;
+}
 
 export type WsRef = string;

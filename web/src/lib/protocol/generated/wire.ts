@@ -107,11 +107,18 @@ export type WireTypeName =
   | "GhostMark"
   | "GhostMarkTarget"
   | "Graph"
+  | "GraphConflictDetails"
+  | "GraphConflictDetailsConflictsItem"
+  | "GraphCreate"
   | "GraphEvent"
   | "GraphMeta"
+  | "GraphMetaPage"
   | "GraphMetaStats"
+  | "GraphMetaUpdate"
   | "GraphPatch"
   | "GraphPatchExpectedEffect"
+  | "GraphRead"
+  | "GraphValidation"
   | "Impl"
   | "ImplBuiltin"
   | "ImplHttp"
@@ -131,15 +138,23 @@ export type WireTypeName =
   | "MessageError"
   | "MessageRef"
   | "MessageUsage"
+  | "Model"
+  | "ModelCaps"
   | "Node"
   | "NodeDef"
+  | "NodeDefItem"
   | "NodeDefPorts"
+  | "NodeDetail"
+  | "NodeDetailInputsItem"
+  | "NodeDetailOutputsItem"
   | "NodeError"
+  | "NodeSnapshot"
   | "NodeStateRow"
   | "Note"
   | "NoteSize"
   | "Op"
   | "OpRecord"
+  | "OpRecordPage"
   | "OpTarget"
   | "OpsApplied"
   | "OpsProposed"
@@ -189,6 +204,7 @@ export type WireTypeName =
   | "ProposalPreview"
   | "Recipe"
   | "RecipeBudget"
+  | "RecipeItem"
   | "RefFile"
   | "RefNode"
   | "RefSession"
@@ -200,22 +216,35 @@ export type WireTypeName =
   | "ResolutionObject"
   | "RewireItem"
   | "Rolecard"
+  | "RolecardItem"
   | "RunEvent"
   | "RunMeta"
   | "RunMetaHeadline"
+  | "RunMetaPage"
   | "RunMetaUsage"
+  | "RunStart"
+  | "RunStarted"
   | "RunSteps"
+  | "RunView"
   | "Section"
   | "Selection"
   | "Session"
+  | "SessionCreate"
   | "SessionEvent"
+  | "SessionGraphAttach"
   | "SessionLastLocation"
+  | "SessionPage"
+  | "SessionUpdate"
+  | "SessionUpdateLastLocation"
   | "Subgraph"
   | "SubgraphRef"
   | "Template"
   | "TemplateInputsItem"
   | "TemplateRequires"
+  | "TypeCompatRequest"
   | "TypeDef"
+  | "TypeItem"
+  | "UndoRequest"
   ;
 
 export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
@@ -856,6 +885,24 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "version": "raw",
     },
   },
+  GraphConflictDetails: {
+    fields: {
+      "conflicts": { list: { t: "GraphConflictDetailsConflictsItem" } },
+      "head": "raw",
+      "missed_ops": { list: { t: "OpRecord" } },
+    },
+  },
+  GraphConflictDetailsConflictsItem: {
+    fields: {
+      "object": "raw",
+      "op_id": "raw",
+    },
+  },
+  GraphCreate: {
+    fields: {
+      "title": "raw",
+    },
+  },
   GraphEvent: {
     fields: {
       "actor": { t: "Actor" },
@@ -897,11 +944,23 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "version": "raw",
     },
   },
+  GraphMetaPage: {
+    fields: {
+      "items": { list: { t: "GraphMeta" } },
+      "next_cursor": "raw",
+    },
+  },
   GraphMetaStats: {
     fields: {
       "layers": "raw",
       "nodes": "raw",
       "subgraphs": "raw",
+    },
+  },
+  GraphMetaUpdate: {
+    fields: {
+      "base_version": "raw",
+      "title": "raw",
     },
   },
   GraphPatch: {
@@ -924,6 +983,19 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "latency": "raw",
       "quality": "raw",
       "risk": "raw",
+    },
+  },
+  GraphRead: {
+    fields: {
+      "diags": { list: { t: "Diag" } },
+      "graph": { t: "Graph" },
+      "registry_hash": "raw",
+    },
+  },
+  GraphValidation: {
+    fields: {
+      "diags": { list: { t: "Diag" } },
+      "version": "raw",
     },
   },
   Impl: {
@@ -1105,6 +1177,27 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "out": "raw",
     },
   },
+  Model: {
+    fields: {
+      "caps": { t: "ModelCaps" },
+      "effort": "raw",
+      "max_output": "raw",
+      "model": "raw",
+      "priced": "raw",
+      "provider": "raw",
+      "ref": "raw",
+      "window": "raw",
+    },
+  },
+  ModelCaps: {
+    fields: {
+      "native_schema": "raw",
+      "parallel_tools": "raw",
+      "prompt_cache": "raw",
+      "tools": "raw",
+      "vision": "raw",
+    },
+  },
   Node: {
     fields: {
       "children": { t: "Subgraph" },
@@ -1139,10 +1232,49 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "version": "raw",
     },
   },
+  NodeDefItem: {
+    fields: {
+      "def": { t: "NodeDef" },
+      "package": "raw",
+      "ref": "raw",
+    },
+  },
   NodeDefPorts: {
     fields: {
       "inputs": { map: { t: "PortDef" } },
       "outputs": { map: { t: "PortDef" } },
+    },
+  },
+  NodeDetail: {
+    fields: {
+      "attempt": "raw",
+      "cost_micros": "raw",
+      "ctx_ref": "raw",
+      "ended_at": "raw",
+      "error": { t: "NodeError" },
+      "exec_key": "raw",
+      "inputs": { list: { t: "NodeDetailInputsItem" } },
+      "llm_calls": { list: { t: "DataLlmCall" } },
+      "loc": { t: "Loc" },
+      "node_id": "raw",
+      "outputs": { list: { t: "NodeDetailOutputsItem" } },
+      "prompt_ref": "raw",
+      "started_at": "raw",
+      "state": "raw",
+      "tool_calls": { list: { t: "DataToolCall" } },
+    },
+  },
+  NodeDetailInputsItem: {
+    fields: {
+      "port": "raw",
+      "value_ref": "raw",
+    },
+  },
+  NodeDetailOutputsItem: {
+    fields: {
+      "partial": "raw",
+      "port": "raw",
+      "value_ref": "raw",
     },
   },
   NodeError: {
@@ -1151,6 +1283,12 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "code": "raw",
       "message": "raw",
       "retryable": "raw",
+    },
+  },
+  NodeSnapshot: {
+    fields: {
+      "items": { list: { t: "NodeStateRow" } },
+      "seq": "raw",
     },
   },
   NodeStateRow: {
@@ -1249,6 +1387,12 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "op": { t: "Op" },
       "undone": "raw",
       "version": "raw",
+    },
+  },
+  OpRecordPage: {
+    fields: {
+      "items": { list: { t: "OpRecord" } },
+      "next_cursor": "raw",
     },
   },
   OpTarget: {
@@ -1609,6 +1753,13 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "ratio": "raw",
     },
   },
+  RecipeItem: {
+    fields: {
+      "def": { t: "Recipe" },
+      "package": "raw",
+      "ref": "raw",
+    },
+  },
   RefFile: {
     fields: {
       "kind": "raw",
@@ -1693,6 +1844,13 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "vars": "raw",
       "version": "raw",
       "when_stuck": "raw",
+    },
+  },
+  RolecardItem: {
+    fields: {
+      "def": { t: "Rolecard" },
+      "package": "raw",
+      "ref": "raw",
     },
   },
   RunEvent: {
@@ -1786,6 +1944,12 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "steps": { t: "RunSteps" },
     },
   },
+  RunMetaPage: {
+    fields: {
+      "items": { list: { t: "RunMeta" } },
+      "next_cursor": "raw",
+    },
+  },
   RunMetaUsage: {
     fields: {
       "cached": "raw",
@@ -1793,10 +1957,33 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "out": "raw",
     },
   },
+  RunStart: {
+    fields: {
+      "branch": "raw",
+      "graph_id": "raw",
+      "inputs": "raw",
+      "session_id": "raw",
+      "version": "raw",
+    },
+  },
+  RunStarted: {
+    fields: {
+      "graph_version": "raw",
+      "run_id": "raw",
+      "status": "raw",
+    },
+  },
   RunSteps: {
     fields: {
       "done": "raw",
       "total": "raw",
+    },
+  },
+  RunView: {
+    fields: {
+      "current_path": { list: { t: "Loc" } },
+      "meta": { t: "RunMeta" },
+      "pending_approvals": "raw",
     },
   },
   Section: {
@@ -1838,6 +2025,11 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "updated_at": "raw",
     },
   },
+  SessionCreate: {
+    fields: {
+      "title": "raw",
+    },
+  },
   SessionEvent: {
     fields: {
       "actor": { t: "Actor" },
@@ -1867,7 +2059,34 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       },
     },
   },
+  SessionGraphAttach: {
+    fields: {
+      "graph_id": "raw",
+    },
+  },
   SessionLastLocation: {
+    fields: {
+      "graph_id": "raw",
+      "scope": "raw",
+    },
+  },
+  SessionPage: {
+    fields: {
+      "items": { list: { t: "Session" } },
+      "next_cursor": "raw",
+    },
+  },
+  SessionUpdate: {
+    fields: {
+      "active_graph_id": "raw",
+      "last_location": { t: "SessionUpdateLastLocation" },
+      "orchestrator_effort": "raw",
+      "orchestrator_model": "raw",
+      "pinned": "raw",
+      "title": "raw",
+    },
+  },
+  SessionUpdateLastLocation: {
     fields: {
       "graph_id": "raw",
       "scope": "raw",
@@ -1917,6 +2136,12 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "subgraphs": "raw",
     },
   },
+  TypeCompatRequest: {
+    fields: {
+      "dst": "raw",
+      "src": "raw",
+    },
+  },
   TypeDef: {
     fields: {
       "category": "raw",
@@ -1930,6 +2155,19 @@ export const WIRE_TYPES: { readonly [K in WireTypeName]: WireType } = {
       "producer": "raw",
       "scalar": "raw",
       "system": "raw",
+    },
+  },
+  TypeItem: {
+    fields: {
+      "chain": "raw",
+      "def": { t: "TypeDef" },
+      "package": "raw",
+      "ref": "raw",
+    },
+  },
+  UndoRequest: {
+    fields: {
+      "branch": "raw",
     },
   },
 };

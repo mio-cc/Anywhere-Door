@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://anydoor.local/schema/api.schema.json",
-  "x-version": "1.0",
-  "title": "HTTP 接口与存储共用的结构（C.01 文件表；本版只有 E.07.01 的 6 个，P.09 K236）",
+  "x-version": "1.1",
+  "title": "HTTP 接口与存储共用的结构（正文在 B.04.15；E.07.01 的 6 个在前）",
   "$defs": {
     "GraphMeta": {
       "type": "object",
@@ -367,6 +367,734 @@
           "type": "integer",
           "minimum": 0,
           "description": "更新这一行的最后一条事件的 seq"
+        }
+      }
+    },
+    "GraphMetaPage": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false,
+      "description": "GET /graphs（B.04.15）",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/GraphMeta"
+          }
+        },
+        "next_cursor": {
+          "type": "string",
+          "minLength": 1,
+          "description": "下一页的游标；没有下一页时省略（B.03.02 §4）"
+        }
+      }
+    },
+    "OpRecordPage": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false,
+      "description": "GET /graphs/{id}/ops（B.04.15）",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpRecord"
+          }
+        },
+        "next_cursor": {
+          "type": "string",
+          "minLength": 1,
+          "description": "下一页的游标；没有下一页时省略（B.03.02 §4）"
+        }
+      }
+    },
+    "RunMetaPage": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false,
+      "description": "GET /runs（B.04.15）",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RunMeta"
+          }
+        },
+        "next_cursor": {
+          "type": "string",
+          "minLength": 1,
+          "description": "下一页的游标；没有下一页时省略（B.03.02 §4）"
+        }
+      }
+    },
+    "SessionPage": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false,
+      "description": "GET /sessions（B.04.15）",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "session.schema.json#/$defs/Session"
+          }
+        },
+        "next_cursor": {
+          "type": "string",
+          "minLength": 1,
+          "description": "下一页的游标；没有下一页时省略（B.03.02 §4）"
+        }
+      }
+    },
+    "GraphCreate": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "POST /graphs 的请求体（B.04.15）",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "缺省空串"
+        }
+      }
+    },
+    "GraphRead": {
+      "type": "object",
+      "required": [
+        "graph",
+        "registry_hash",
+        "diags"
+      ],
+      "additionalProperties": false,
+      "description": "GET /graphs/{id}、POST /graphs 的响应（B.04.15）",
+      "properties": {
+        "graph": {
+          "$ref": "graph.schema.json"
+        },
+        "registry_hash": {
+          "type": "string",
+          "minLength": 1,
+          "description": "读取时的注册表哈希（C.12 §2）"
+        },
+        "diags": {
+          "type": "array",
+          "items": {
+            "$ref": "errors.schema.json#/$defs/Diag"
+          },
+          "description": "全量校验结果（E.03.03）"
+        }
+      }
+    },
+    "GraphMetaUpdate": {
+      "type": "object",
+      "required": [
+        "base_version",
+        "title"
+      ],
+      "additionalProperties": false,
+      "description": "PATCH /graphs/{id} 的请求体（B.04.15）；M1 只改标题，转成 set_graph_title Op",
+      "properties": {
+        "base_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 120
+        }
+      }
+    },
+    "GraphValidation": {
+      "type": "object",
+      "required": [
+        "version",
+        "diags"
+      ],
+      "additionalProperties": false,
+      "description": "GET /graphs/{id}/validate 的响应（B.04.15）",
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "校验的是哪个版本"
+        },
+        "diags": {
+          "type": "array",
+          "items": {
+            "$ref": "errors.schema.json#/$defs/Diag"
+          }
+        }
+      }
+    },
+    "GraphConflictDetails": {
+      "type": "object",
+      "required": [
+        "head",
+        "missed_ops",
+        "conflicts"
+      ],
+      "additionalProperties": false,
+      "description": "409 graph_conflict 的 details（B.04.15、W.05 §6.6）",
+      "properties": {
+        "head": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "服务器上的 head 版本"
+        },
+        "missed_ops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpRecord"
+          },
+          "description": "base_version 之后、和这次提交冲突的 Op 所在的整段记录，前端据此本地合并"
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "op_id",
+              "object"
+            ],
+            "additionalProperties": false,
+            "description": "一处冲突",
+            "properties": {
+              "op_id": {
+                "$ref": "common.schema.json#/$defs/Ulid",
+                "description": "这次提交里冲突的那条 Op"
+              },
+              "object": {
+                "type": "string",
+                "minLength": 1,
+                "description": "冲突的对象（E.05.01 判断能否交换时用的写法）"
+              }
+            }
+          }
+        }
+      }
+    },
+    "UndoRequest": {
+      "type": "object",
+      "required": [
+        "branch"
+      ],
+      "additionalProperties": false,
+      "description": "POST /graphs/{id}/undo、/redo 的请求体（B.04.15）",
+      "properties": {
+        "branch": {
+          "$ref": "op.schema.json#/$defs/Branch"
+        }
+      }
+    },
+    "RunStart": {
+      "type": "object",
+      "required": [
+        "graph_id"
+      ],
+      "additionalProperties": false,
+      "description": "POST /runs 的请求体（B.04.15）",
+      "properties": {
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "branch": {
+          "$ref": "op.schema.json#/$defs/Branch",
+          "description": "缺省 main"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "缺省 head"
+        },
+        "inputs": {
+          "type": "object",
+          "x-open": true,
+          "description": "根图入口端口名 → 值"
+        },
+        "session_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        }
+      }
+    },
+    "RunStarted": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "graph_version",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "POST /runs 的 201 响应（B.04.15）",
+      "properties": {
+        "run_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "graph_version": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "冻结的图版本"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/RunStatus"
+        }
+      }
+    },
+    "RunView": {
+      "type": "object",
+      "required": [
+        "meta",
+        "current_path",
+        "pending_approvals"
+      ],
+      "additionalProperties": false,
+      "description": "GET /runs/{id} 的响应（B.04.15）",
+      "properties": {
+        "meta": {
+          "$ref": "#/$defs/RunMeta",
+          "description": "用量、费用在 meta.usage、meta.cost_micros"
+        },
+        "current_path": {
+          "type": "array",
+          "items": {
+            "$ref": "common.schema.json#/$defs/Loc"
+          },
+          "description": "现在处于 running 或 waiting 的节点执行位置"
+        },
+        "pending_approvals": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "等待处理的审批数；M1 没有审批，恒为 0"
+        }
+      }
+    },
+    "NodeSnapshot": {
+      "type": "object",
+      "required": [
+        "seq",
+        "items"
+      ],
+      "additionalProperties": false,
+      "description": "GET /runs/{id}/nodes 的响应（B.04.15）",
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "投影对应的事件序号，重连对齐用（W.03.04 §6.2）"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/NodeStateRow"
+          }
+        }
+      }
+    },
+    "NodeDetail": {
+      "type": "object",
+      "required": [
+        "exec_key",
+        "node_id",
+        "loc",
+        "state",
+        "attempt",
+        "inputs",
+        "outputs",
+        "llm_calls",
+        "tool_calls",
+        "cost_micros"
+      ],
+      "additionalProperties": false,
+      "description": "GET /runs/{id}/nodes/{exec_key} 的响应（B.04.15）；大内容只给引用，用 GET /blobs/{ref} 读",
+      "properties": {
+        "exec_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "node_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
+        },
+        "loc": {
+          "$ref": "common.schema.json#/$defs/Loc"
+        },
+        "state": {
+          "$ref": "common.schema.json#/$defs/NodeState"
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "inputs": {
+          "type": "array",
+          "description": "来自 node.input 事件",
+          "items": {
+            "type": "object",
+            "required": [
+              "port",
+              "value_ref"
+            ],
+            "additionalProperties": false,
+            "description": "一个输入端口的值",
+            "properties": {
+              "port": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value_ref": {
+                "$ref": "common.schema.json#/$defs/WsRef"
+              }
+            }
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "description": "来自 node.output 事件",
+          "items": {
+            "type": "object",
+            "required": [
+              "port",
+              "value_ref",
+              "partial"
+            ],
+            "additionalProperties": false,
+            "description": "一个输出端口的值",
+            "properties": {
+              "port": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value_ref": {
+                "$ref": "common.schema.json#/$defs/WsRef"
+              },
+              "partial": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "ctx_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef",
+          "description": "上下文包（ctx.assembled）"
+        },
+        "prompt_ref": {
+          "$ref": "common.schema.json#/$defs/WsRef",
+          "description": "渲染后的提示词（prompt.rendered）"
+        },
+        "llm_calls": {
+          "type": "array",
+          "items": {
+            "$ref": "run-event.schema.json#/$defs/DataLlmCall"
+          }
+        },
+        "tool_calls": {
+          "type": "array",
+          "items": {
+            "$ref": "run-event.schema.json#/$defs/DataToolCall"
+          }
+        },
+        "error": {
+          "$ref": "run-event.schema.json#/$defs/NodeError"
+        },
+        "cost_micros": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "started_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "ended_at": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      }
+    },
+    "NodeDefItem": {
+      "type": "object",
+      "required": [
+        "ref",
+        "package",
+        "def"
+      ],
+      "additionalProperties": false,
+      "description": "GET /nodedefs 的一项（B.04.15）",
+      "properties": {
+        "ref": {
+          "$ref": "graph.schema.json#/$defs/NodeTypeRef",
+          "description": "图里写的类型名：原子节点是名字，扩展节点是 包/名字@主版本"
+        },
+        "package": {
+          "type": "string",
+          "minLength": 1,
+          "description": "来自哪个包；内置是 core"
+        },
+        "def": {
+          "$ref": "nodedef.schema.json"
+        }
+      }
+    },
+    "TypeItem": {
+      "type": "object",
+      "required": [
+        "ref",
+        "package",
+        "def"
+      ],
+      "additionalProperties": false,
+      "description": "GET /types 的一项（B.04.15）",
+      "properties": {
+        "ref": {
+          "$ref": "types.schema.json#/$defs/TypeRef",
+          "description": "名称@主.次"
+        },
+        "package": {
+          "type": "string",
+          "minLength": 1,
+          "description": "来自哪个包；内置是 core"
+        },
+        "def": {
+          "$ref": "typedef.schema.json"
+        },
+        "chain": {
+          "type": "array",
+          "items": {
+            "$ref": "types.schema.json#/$defs/TypeRef"
+          },
+          "description": "继承链，从父到根；没有 extends 时省略"
+        }
+      }
+    },
+    "TypeCompatRequest": {
+      "type": "object",
+      "required": [
+        "src",
+        "dst"
+      ],
+      "additionalProperties": false,
+      "description": "POST /types/compat 的请求体（B.04.15）",
+      "properties": {
+        "src": {
+          "$ref": "types.schema.json#/$defs/TypeRef"
+        },
+        "dst": {
+          "$ref": "types.schema.json#/$defs/TypeRef"
+        }
+      }
+    },
+    "RecipeItem": {
+      "type": "object",
+      "required": [
+        "ref",
+        "package",
+        "def"
+      ],
+      "additionalProperties": false,
+      "description": "GET /recipes 的一项（B.04.15）",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "名称@版本，注册表的键（E.03.01）"
+        },
+        "package": {
+          "type": "string",
+          "minLength": 1,
+          "description": "来自哪个包；内置是 core"
+        },
+        "def": {
+          "$ref": "recipe.schema.json"
+        }
+      }
+    },
+    "RolecardItem": {
+      "type": "object",
+      "required": [
+        "ref",
+        "package",
+        "def"
+      ],
+      "additionalProperties": false,
+      "description": "GET /rolecards 的一项（B.04.15）；def 是继承合并之后的结果（E.13.05）",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "名称@版本，注册表的键（E.03.01）"
+        },
+        "package": {
+          "type": "string",
+          "minLength": 1,
+          "description": "来自哪个包；内置是 core"
+        },
+        "def": {
+          "$ref": "rolecard.schema.json"
+        }
+      }
+    },
+    "Effort": {
+      "enum": [
+        "off",
+        "minimal",
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ],
+      "description": "思考强度（U.09.06-R5）"
+    },
+    "Model": {
+      "type": "object",
+      "required": [
+        "ref",
+        "provider",
+        "model",
+        "window",
+        "max_output",
+        "caps",
+        "priced"
+      ],
+      "additionalProperties": false,
+      "description": "GET /models 的一项（B.04.15）",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "minLength": 3,
+          "description": "<提供方名>/<模型 id>，在第一个 / 处分开；Session.orchestrator_model 和 orchestrator_effort 的键用这个写法"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "description": "提供方配置里的 models[].id"
+        },
+        "window": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_output": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "caps": {
+          "type": "object",
+          "required": [
+            "tools",
+            "parallel_tools",
+            "vision",
+            "native_schema",
+            "prompt_cache"
+          ],
+          "additionalProperties": false,
+          "description": "合并后的能力（E.10.01 §5.1）",
+          "properties": {
+            "tools": {
+              "type": "boolean"
+            },
+            "parallel_tools": {
+              "type": "boolean"
+            },
+            "vision": {
+              "type": "boolean"
+            },
+            "native_schema": {
+              "type": "boolean"
+            },
+            "prompt_cache": {
+              "type": "boolean"
+            }
+          }
+        },
+        "effort": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Effort"
+          },
+          "uniqueItems": true,
+          "description": "支持的思考强度（C.16-R5）；不支持调节时省略"
+        },
+        "priced": {
+          "type": "boolean",
+          "description": "价格表里有没有它；M1 没有价格表，恒为 false"
+        }
+      }
+    },
+    "SessionCreate": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "POST /sessions 的请求体（B.04.15）",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 80
+        }
+      }
+    },
+    "SessionUpdate": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "PATCH /sessions/{sid} 的请求体（B.04.15）；至少写一个字段",
+      "minProperties": 1,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "pinned": {
+          "type": "boolean",
+          "default": false,
+          "description": "default 只是 C.01-R12 的写法要求；PATCH 里不写这个字段表示不改，不是改成 false"
+        },
+        "active_graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid",
+          "description": "必须是已挂上的图"
+        },
+        "orchestrator_model": {
+          "type": "string",
+          "description": "Model.ref；空串表示清除"
+        },
+        "orchestrator_effort": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Effort"
+          },
+          "description": "模型引用 → 强度；整体替换"
+        },
+        "last_location": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "用户上次在这个会话里所在的图和层，切回时恢复（U.09.04）",
+          "properties": {
+            "graph_id": {
+              "$ref": "common.schema.json#/$defs/Ulid"
+            },
+            "scope": {
+              "type": "string",
+              "pattern": "^(root|[0-9A-HJKMNP-TV-Z]{26})$",
+              "description": "当前层：root = 根图，否则为所在容器节点的 ID（与 Selection.scope、前端路由 ?scope= 同一写法）"
+            }
+          }
+        }
+      }
+    },
+    "SessionGraphAttach": {
+      "type": "object",
+      "required": [
+        "graph_id"
+      ],
+      "additionalProperties": false,
+      "description": "POST /sessions/{sid}/graphs 的请求体（B.04.15）",
+      "properties": {
+        "graph_id": {
+          "$ref": "common.schema.json#/$defs/Ulid"
         }
       }
     }

@@ -18,6 +18,34 @@
 
 ---
 
+## 2026-11-25 21:40 · B.04.15 · Quick（AWS Quick） · 交付（M1 第 ② 片 m1-api-schema）
+- 依据：设计仓库（见 docs/relay/B.04.15.json）；`P.09` K260
+- 完成：实施卡全部。`schema/api.schema.json` 加 25 个结构（§4.2）：4 个分页、图 6 个（`GraphCreate`、`GraphRead`、`GraphMetaUpdate`、`GraphValidation`、`GraphConflictDetails`、`UndoRequest`）、运行 5 个（`RunStart`、`RunStarted`、`RunView`、`NodeSnapshot`、`NodeDetail`）、节点库 5 个（`NodeDefItem`、`TypeItem`、`TypeCompatRequest`、`RecipeItem`、`RolecardItem`）、`Effort`、`Model`、会话 3 个（`SessionCreate`、`SessionUpdate`、`SessionGraphAttach`）；`x-version` 改为 1.1，`title` 改写；E.07.01 的 6 个结构逐字不变（Python 读出再按 indent=2 写回，和原文件逐字节相同后才加）。测试 `tools/schemacheck/api_m1_test.go`：`B0415-T1`–`T4`。
+- 自主决定的细节：
+  - 合法例里的图、会话、诊断读仓库的示例（`graph_minimal.json`、`session/session.json`、`errors/diag_v12_warn.json`），节点定义、类型、配方、角色卡读内置的 `Agent.yaml`、`任务卡.yaml`、`主脑配方.yaml`、`主脑.yaml`；`OpRecord`、`RunMeta`、`NodeStateRow`、`GraphMeta` 用 `api_test.go` 的 `apiValid`（同一个包，只读）。
+  - `SessionUpdate.last_location` 照抄 `Session.last_location` 的写法（Python 从 `session.schema.json` 复制，不手写）。
+  - `next_cursor` 写 `minLength: 1`；`Model.ref` 写 `minLength: 3`，有没有 `/` 不在 schema 里查（第 ⑦ 片查）。
+  - `B0415-T4` 查 6 个旧结构的 `required` 和结构总数（31），并重跑一遍 `apiValid`。
+  - `SessionUpdate.pinned` 写 `default: false`：`C.01-R12` 要求不是必填的布尔字段写 `default`（第一轮 `C01-T3`、`C01-T7` 因此失败）。`default` 在 JSON Schema 里只是注解，生成的 Go 字段照样是 `*bool`（同 `Session.pinned`）；说明里写明 PATCH 不写表示不改。设计文档 §4.2 的写法要求本来就继承 `C.01`，不用改。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+
+## 2026-11-25 21:14 · B.04.15 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ff82cc2（docs/relay/B.04.15.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/B.04.15.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-25 20:50 · Quick（AWS Quick） · 冻结叶子复查（第 ①b 片合并后 / K259 之后），代码不用改
 - 依据：设计仓库提交 49f654e；`P.09` K259
 - 完成：`relay stale` 列出 11 个冻结叶子，依据里改过的只有 `E.03.02`、`E.03.03` 两份（K259 的改动和第 ①b 片合并后的冻结记录），逐份看了改动，代码都不用改：

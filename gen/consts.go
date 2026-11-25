@@ -120,6 +120,17 @@ const (
 	DiagLevelWarn  DiagLevel = "warn"
 )
 
+// Effort 的取值（C.14-R6）。
+const (
+	EffortOff     Effort = "off"
+	EffortMinimal Effort = "minimal"
+	EffortLow     Effort = "low"
+	EffortMedium  Effort = "medium"
+	EffortHigh    Effort = "high"
+	EffortXhigh   Effort = "xhigh"
+	EffortMax     Effort = "max"
+)
+
 // FailureClass 的取值（C.14-R6）。
 const (
 	FailureClassTransient      FailureClass = "transient"
