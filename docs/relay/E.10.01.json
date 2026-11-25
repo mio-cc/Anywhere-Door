@@ -3,10 +3,10 @@
   "branch": "slice/m0-llm",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T14:02:26Z",
-  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
+  "docs_commit": "64ed846fddf8b1e040a0833b454ceae7abe0975f",
   "docs": {
     "B_后端服务/B.07_platform_平台层/B.07.02_密钥存储.md": "sha256:04e7a8bedfe9d91a8e95cafdcc5993dcdd3d90ca2fa2634492a86ccb624229e0",
-    "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:f31f1d1cc624e6e8aee492546927179029772fb615bf9c10ec311912e556d849",
+    "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:c5032b2c62026b675c667da77a37211cbfa400a642a9f3c5b98482f47b05f21c",
     "C_契约层/C.11_错误码表.md": "sha256:bffafd4a1cad6e745dfc19583eb553f81856f12fbe1e56abb3b17694b387cf26",
     "C_契约层/C.16_连接类型与连接.md": "sha256:53983f472c1f492b7ba04b589b22fa9ad7f9a57491b3d44fda4933627a2286a1",
     "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",

@@ -3,9 +3,9 @@
   "branch": "slice/m0-ci-fix",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T12:13:18Z",
-  "docs_commit": "288a544f7f0aab45a11916124394b8ff313387b8",
+  "docs_commit": "64ed846fddf8b1e040a0833b454ceae7abe0975f",
   "docs": {
-    "E_内核_engine/E.14_exec_执行器/E.14.07_聚合.md": "sha256:f35ffbf65faebecb446a4d04aa058a17a18c4d9f8db6aeb4ab6db0fbd85fbba4",
+    "E_内核_engine/E.14_exec_执行器/E.14.07_聚合.md": "sha256:a77efda951cbb862b7ce967765daf2c72b4dd4a41b8cdbd5a9a8853ae94b61e3",
     "G_工程规范/G.02_AI_实施者守则/G.02.01_实施任务包格式.md": "sha256:0c703857f67d97d9a3710822a858942a20b63dd69baa9b2a6498617d198a0164",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
