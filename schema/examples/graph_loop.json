@@ -325,7 +325,8 @@
               },
               "params": {
                 "op": "group_ratio",
-                "key": "cluster"
+                "key": "cluster",
+                "list_field": "labels"
               }
             },
             {
@@ -637,7 +638,8 @@
                     },
                     "params": {
                       "op": "dedupe",
-                      "key": "url"
+                      "key": "url",
+                      "list_field": "sources"
                     }
                   },
                   {
@@ -768,7 +770,7 @@
                     },
                     "to": {
                       "node": "01JDNE00000000000000000007",
-                      "port": "items"
+                      "port": "value"
                     }
                   },
                   {
@@ -898,7 +900,7 @@
               "id": "01JDEB00000000000000000002",
               "from": {
                 "node": "01JDNB00000000000000000002",
-                "port": "ref"
+                "port": "items"
               },
               "to": {
                 "node": "01JDNB00000000000000000004",
@@ -946,7 +948,7 @@
               },
               "to": {
                 "node": "01JDNB00000000000000000007",
-                "port": "items"
+                "port": "value"
               }
             },
             {

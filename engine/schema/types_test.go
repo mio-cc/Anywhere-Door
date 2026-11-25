@@ -440,6 +440,101 @@ func TestInfer(t *testing.T) {
 	})
 }
 
+// extraTypes 在内置视图上多加几个类型（E0302-T8 的嵌套字段）。
+type extraTypes struct {
+	View
+	types map[string]*gen.TypeDef
+}
+
+func (e extraTypes) Type(ref string) (*gen.TypeDef, bool) {
+	if d, ok := e.types[ref]; ok {
+		return d, true
+	}
+	return e.View.Type(ref)
+}
+
+// aggDoc：Agent（output_schema = schema）→ 聚合的 port 端口（op、list_field 按参数）→ 子图端口，让 result 有连线。
+func aggDoc(schema, port, op, listField string) *gen.Graph {
+	raw := func(s string) json.RawMessage { b, _ := json.Marshal(s); return b }
+	ap := map[string]json.RawMessage{"output_schema": raw(schema)}
+	gp := map[string]json.RawMessage{"op": raw(op)}
+	if listField != "" {
+		gp["list_field"] = raw(listField)
+	}
+	d := &gen.Graph{ID: "01JDAGG0000000000000000001", Branch: "main", SchemaVersion: "1.0"}
+	d.Root.Nodes = []gen.Node{
+		{ID: "A", Type: "Agent", Params: &ap},
+		{ID: "G", Type: "聚合", Params: &gp},
+		{ID: "P", Type: "子图端口"},
+	}
+	d.Root.Edges = []gen.Edge{
+		{ID: "E1", From: gen.PortRef{Node: "A", Port: "result"}, To: gen.PortRef{Node: "G", Port: port}},
+		{ID: "E2", From: gen.PortRef{Node: "G", Port: "result"}, To: gen.PortRef{Node: "P", Port: "in"}},
+	}
+	return d
+}
+
+func TestInferField(t *testing.T) {
+	r := builtinRegistry(t)
+	base := r.Live()
+	strp := func(s string) *string { return &s }
+	nested := []gen.Field{{Name: "a", Type: "object", Fields: &[]gen.Field{{Name: "b", Type: "列表[方案@1]"}, {Name: "c", Type: "string"}}}}
+	v := extraTypes{View: base, types: map[string]*gen.TypeDef{"嵌套@1": {Name: "嵌套", Major: 1, Fields: &nested, Description: strp("测试用")}}}
+
+	t.Run("E0302-T8 字段来源与备选来源", func(t *testing.T) {
+		cases := []struct {
+			name, schema, port, op, field string
+			items, result                 string
+		}{
+			{"聚类 → 按比例分级", "簇标注@1", "value", "group_ratio", "labels", "列表[任意]", "聚合结果@1"},
+			{"采集 → 按来源去重", "执行结果@1", "value", "dedupe", "sources", "列表[任意]", "列表[任意]"},
+			{"嵌套字段", "嵌套@1", "value", "vote", "a.b", "列表[方案@1]", "方案@1"},
+			{"接 items 照旧取元素", "列表[方案@1]", "items", "vote", "", "列表[方案@1]", "方案@1"},
+			{"接 items 时 list_field 不起作用", "列表[方案@1]", "items", "dedupe", "labels", "列表[方案@1]", "列表[方案@1]"},
+		}
+		for _, c := range cases {
+			types, diags := Infer(mustFromDoc(t, aggDoc(c.schema, c.port, c.op, c.field)), v)
+			for _, d := range diags {
+				if d.Code == gen.DiagV16 {
+					t.Errorf("%s：不应当有 V16：%s", c.name, d.Msg)
+				}
+			}
+			if got := types.Port("G", "items", DirIn); got == nil || got.String() != c.items {
+				t.Errorf("%s：items 应当是 %s：%v", c.name, c.items, got)
+			}
+			if got := types.Port("G", "result", DirOut); got == nil || got.String() != c.result {
+				t.Errorf("%s：result 应当是 %s：%v", c.name, c.result, got)
+			}
+		}
+		// 字段写错、不是列表、没写：value 接了线，在 list_field 上报 V16
+		def, _ := v.NodeDef("聚合")
+		for _, field := range []string{"nope", "understanding_consistent", "", "a.c", "a.nope"} {
+			schema := "簇标注@1"
+			if strings.HasPrefix(field, "a.") {
+				schema = "嵌套@1"
+			}
+			_, diags := Infer(mustFromDoc(t, aggDoc(schema, "value", "dedupe", field)), v)
+			found := false
+			for _, d := range diags {
+				if d.Code == gen.DiagV16 && ulid(d.Node) == "G" && str(d.Param) == "list_field" && str(d.Port) == "value" && strings.Contains(d.Msg, paramLabel(def, "list_field")) {
+					found = true
+				}
+			}
+			if !found {
+				t.Errorf("list_field = %q：应当在 G 的 value / list_field 上报 V16：%+v", field, diags)
+			}
+		}
+		// 上游是 任意：取 任意，不报 V16
+		types, diags := Infer(mustFromDoc(t, aggDoc("任意", "value", "dedupe", "labels")), v)
+		if len(diags) != 0 {
+			t.Errorf("上游是任意时不应当有诊断：%+v", diags)
+		}
+		if got := types.Port("G", "result", DirOut); got == nil || got.String() != "列表[任意]" {
+			t.Errorf("上游是任意时 result 应当是 列表[任意]：%v", got)
+		}
+	})
+}
+
 type withSchema struct {
 	View
 	schema json.RawMessage

@@ -28,7 +28,6 @@
 `go run ./tools/build -check` 照常调用它们，桩以 0 退出（`P.09` K243）。对应叶子实施时整体替换，届时在这里删掉一行。
 | 命令 | 桩所在 | 由谁替换 |
 |---|---|---|
-| `go run ./tools/lint/typenamecheck` | `tools/lint/typenamecheck/main.go` | `G.05.05` |
 | `pnpm -C web test`、`test:e2e`、`test:visual` | `web/scripts/stub.mjs` | `W.12` |
 | 前端界面 | `web/` 的空白页 | `W.01`、`W.02` |
 | 覆盖率门槛 | `tools/ci/cover` 不带 `-min` | `Q.01` 复查后开（门槛见 `Q.01-R5`） |
@@ -45,3 +44,4 @@
 |---|---|
 | 2026-11-24 | 首版（原 `docs/ci.md`）：不用 GitHub Actions，删掉 `ci.yml`、`nightly.yml`、`release.yml`（`P.09` K248） |
 | 2026-11-24 | 第一次跑：gitleaks 把测试里 RFC 6455 的示例 WebSocket 密钥报成 API 密钥，确认误报，加 `tools/gitleaks/.gitleaksignore`（`P.09` K249） |
+| 2026-11-25 | `tools/lint/typenamecheck` 由 `G.05.05.01` 实现，§3 删掉这一行（`P.09` K256） |

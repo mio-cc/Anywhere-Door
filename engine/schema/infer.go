@@ -114,9 +114,27 @@ func (in *inferer) outType(nodeID, port string) *Type {
 	return t
 }
 
-// source 按 NodeDef.type_vars 的来源写法（C.04.03 §2）取一个变量的类型；暂时取不到时为 nil。
+// splitSources 把 "a | b" 拆成依次尝试的来源（C.04.03 §2）。
+func splitSources(src string) []string {
+	parts := strings.Split(src, "|")
+	for i := range parts {
+		parts[i] = strings.TrimSpace(parts[i])
+	}
+	return parts
+}
+
+// source 按 NodeDef.type_vars 的来源写法（C.04.03 §2）取一个变量的类型：几个来源依次尝试，第一个取到的为准；
+// 暂时都取不到时为 nil。
 func (in *inferer) source(info *nodeInfo, name string) *Type {
-	src := (*info.def.TypeVars)[name]
+	for _, src := range splitSources((*info.def.TypeVars)[name]) {
+		if t := in.source1(info, src); t != nil {
+			return t
+		}
+	}
+	return nil
+}
+
+func (in *inferer) source1(info *nodeInfo, src string) *Type {
 	kind, arg, _ := strings.Cut(src, ":")
 	id := string(info.n.ID)
 	switch kind {
@@ -148,6 +166,24 @@ func (in *inferer) source(info *nodeInfo, name string) *Type {
 		return t
 	case "body":
 		return in.bodyType(info, arg)
+	case "field":
+		port, pname, ok := fieldArgs(arg)
+		if !ok {
+			return nil
+		}
+		path, ok := paramString(info.n, info.def, pname)
+		if !ok || path == "" {
+			return nil
+		}
+		edges := info.scope.In(id, port)
+		if len(edges) == 0 {
+			return nil
+		}
+		t := in.outType(string(edges[0].From.Node), edges[0].From.Port)
+		if t == nil {
+			return nil
+		}
+		return in.fieldElem(t, path)
 	case "op":
 		pname, rest, ok := strings.Cut(arg, "(")
 		if !ok {
@@ -171,29 +207,113 @@ func (in *inferer) source(info *nodeInfo, name string) *Type {
 	return nil
 }
 
+// fieldArgs 拆开 field:<端口>(<参数>) 的参数部分。
+func fieldArgs(arg string) (port, param string, ok bool) {
+	port, rest, ok := strings.Cut(arg, "(")
+	if !ok || port == "" || !strings.HasSuffix(rest, ")") {
+		return "", "", false
+	}
+	return port, strings.TrimSuffix(rest, ")"), true
+}
+
+// fieldElem 是类型 t 里字段路径 path（点分）的列表元素类型（C.04.03 §2 的 field:，P.09 K258）：t 是 任意 时为 任意；
+// 中间的字段经过 fields 嵌套或命名类型往下找；最后一个字段要是 列表[X]：X 是已注册的命名类型时取 X，
+// 是 object、标量这类不是命名类型的写法时为 任意。字段不存在、不是列表时为 nil。
+func (in *inferer) fieldElem(t *Type, path string) *Type {
+	if t.Kind == Any {
+		return &Type{Kind: Any}
+	}
+	fields, ok := in.typeFields(t)
+	if !ok {
+		return nil
+	}
+	segs := strings.Split(path, ".")
+	for i, seg := range segs {
+		var f *gen.Field
+		for j := range fields {
+			if fields[j].Name == seg {
+				f = &fields[j]
+				break
+			}
+		}
+		if f == nil {
+			return nil
+		}
+		if i < len(segs)-1 {
+			if f.Fields != nil {
+				fields = *f.Fields
+				continue
+			}
+			nt, err := Parse(f.Type)
+			if err != nil {
+				return nil
+			}
+			if fields, ok = in.typeFields(nt); !ok {
+				return nil
+			}
+			continue
+		}
+		inner, isList := strings.CutPrefix(f.Type, "列表[")
+		if !isList || !strings.HasSuffix(inner, "]") {
+			return nil
+		}
+		et, err := Parse(strings.TrimSuffix(inner, "]"))
+		switch {
+		case err != nil, et.HasVar():
+			return &Type{Kind: Any}
+		case et.Kind == Named:
+			if _, ok := in.v.Type(et.key()); !ok {
+				return &Type{Kind: Any}
+			}
+		}
+		return et
+	}
+	return nil
+}
+
+// typeFields 是命名类型的字段；不是命名类型、没注册或没有字段时 ok 为 false。
+func (in *inferer) typeFields(t *Type) ([]gen.Field, bool) {
+	if t == nil || t.Kind != Named {
+		return nil, false
+	}
+	d, ok := in.v.Type(t.key())
+	if !ok || d.Fields == nil {
+		return nil, false
+	}
+	return *d.Fields, true
+}
+
 // entryType：容器子图里的入口端口节点（role=entry）没有上游连线时，类型取自容器节点（C.04.03 §3 第 4 步的反方向），依次：
 //  1. 容器上对应的类型变量：写了 port_name 取来自那个输入端口的变量，否则取容器第一个来自 input: 的变量；
 //  2. 容器上那个输入端口声明的类型（不是 任意、变量都已确定时）；
 //  3. 连到容器那个输入端口的上游类型（port_name 没写时按 in）：子图引用的端口来自子图里的端口节点、没有声明，
-//     声明为 任意 的端口（如扇出的 shared）也靠这一步拿到具体类型；接了几路上游时按 任意。
+//     声明为 任意 的端口（如扇出的 shared）也靠这一步拿到具体类型；接了几路上游时按 任意；
+//  4. 都没有来源（根图的入口、容器那个端口没接线）时按 任意，不报 V16（P.09 K259 ①）。
 func (in *inferer) entryType(info *nodeInfo) *Type {
-	parent := in.g.Parent(info.scope.ID())
-	if parent == nil {
-		return nil
-	}
 	if role, _ := paramString(info.n, info.def, "role"); role != "entry" {
 		return nil
 	}
+	parent := in.g.Parent(info.scope.ID())
+	if parent == nil {
+		return &Type{Kind: Any} // 根图的入口：值来自运行的输入，类型不定（P.09 K259 ①）
+	}
 	c := in.infos[string(parent.ID)]
 	if c == nil {
-		return nil
+		return &Type{Kind: Any}
 	}
+	cid := string(c.n.ID)
 	pn, _ := paramString(info.n, info.def, "port_name")
 	if c.def.TypeVars != nil {
 		for _, v := range c.vars {
 			src := (*c.def.TypeVars)[v]
 			if pn == "" && strings.HasPrefix(src, "input:") || pn != "" && (src == "input:"+pn || src == "input:"+pn+".elem") {
-				return c.binds[v]
+				if b := c.binds[v]; b != nil {
+					return b
+				}
+				if p := strings.TrimSuffix(strings.TrimPrefix(src, "input:"), ".elem"); len(c.scope.In(cid, p)) == 0 {
+					return &Type{Kind: Any} // 容器那个端口没有接线：值不存在，类型不定（K259 ①）
+				}
+				return nil
 			}
 		}
 	}
@@ -201,7 +321,6 @@ func (in *inferer) entryType(info *nodeInfo) *Type {
 	if port == "" {
 		port = "in"
 	}
-	cid := string(c.n.ID)
 	if d, ok := c.decl[pkey{cid, port, DirIn}]; ok && d.Kind != Any {
 		if t := d.Subst(c.binds); !t.HasVar() {
 			return t
@@ -214,10 +333,7 @@ func (in *inferer) entryType(info *nodeInfo) *Type {
 	case len(edges) > 1: // multi 端口接了几路上游：不猜，按 任意
 		return &Type{Kind: Any}
 	}
-	if _, ok := c.decl[pkey{cid, port, DirIn}]; ok {
-		return &Type{Kind: Any}
-	}
-	return nil
+	return &Type{Kind: Any} // 找不到来源（容器那个端口没有接线，或没有这个端口）：类型不定（K259 ①）
 }
 
 // bodyType：容器子图里 role 为 R 的端口节点推断出的类型（body:R）。
@@ -278,7 +394,8 @@ func (in *inferer) result() (Types, []gen.Diag) {
 			if info.binds[name] != nil {
 				continue
 			}
-			port := ""
+			srcs := splitSources((*info.def.TypeVars)[name])
+			port, src := "", srcs[0] // 建议按第一个来源写（E.03.02 §5）
 			for _, k := range keys {
 				if !mentions(info.decl[k], name) {
 					continue
@@ -288,10 +405,20 @@ func (in *inferer) result() (Types, []gen.Diag) {
 					break
 				}
 			}
+			if port == "" {
+				// field: 来源的端口声明里不带这个变量（聚合的 value 是 任意），接了线也算用到（P.09 K258）
+				for _, s := range srcs {
+					k, a, _ := strings.Cut(s, ":")
+					if p, _, ok := fieldArgs(a); k == "field" && ok && len(info.scope.In(id, p)) > 0 {
+						port, src = p, s
+						break
+					}
+				}
+			}
 			if port == "" || msgs == nil {
 				continue
 			}
-			kind, arg, _ := strings.Cut((*info.def.TypeVars)[name], ":")
+			kind, arg, _ := strings.Cut(src, ":")
 			at := Loc{Scope: info.scope.ID(), Node: id, Port: port}
 			hint := "「" + arg + "」的连线"
 			switch kind {
@@ -304,6 +431,10 @@ func (in *inferer) result() (Types, []gen.Diag) {
 				hint = "参数「" + paramLabel(info.def, p) + "」"
 			case "body":
 				hint = "子图里的" + arg + "端口"
+			case "field":
+				_, p, _ := fieldArgs(arg)
+				at.Param = p
+				hint = "参数「" + paramLabel(info.def, p) + "」"
 			}
 			diags = append(diags, msgs.Diag(gen.DiagV16, gen.DiagLevelError, at, map[string]any{"var": "「" + port + "」的类型", "param": hint}))
 		}

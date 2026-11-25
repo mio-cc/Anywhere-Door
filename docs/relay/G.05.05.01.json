@@ -1,0 +1,26 @@
+{
+  "leaf": "G.05.05.01",
+  "branch": "slice/m1-validate",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-25T10:30:16Z",
+  "docs_commit": "f0510f2a7ffd609cfc641a9713abd33bfb9bbb0d",
+  "docs": {
+    "E_内核_engine/E.03_schema_注册与校验/E.03_schema_注册与校验.md": "sha256:e81ab276c6d9d39dbdd6e67a8e4348b142e5050fc9f986549eab4290e96196d7",
+    "E_内核_engine/E.10_llm_模型适配/E.10.05_quirks_厂商差异表.md": "sha256:6939d38c3bab8ca8b81d91cef589023c9f0e768b195837c35b7dce45d44eac6b",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.03_仓库与目录规范/G.03.01_depcheck_依赖方向检查.md": "sha256:b5648524f723353892f318ae974f2b832d04168912e3fbdfab50c7ac50958018",
+    "G_工程规范/G.05_Go_编码规范/G.05.05_Go_lint_配置/G.05.05.01_typenamecheck_节点类型名比较检查.md": "sha256:00bf17d727992917ee96f04294d76144cdd5b59e57c19982ed8a0d5144cb8a77",
+    "G_工程规范/G.05_Go_编码规范/G.05.05_Go_lint_配置/G.05.05_Go_lint_配置.md": "sha256:f36fb8697d901eb72ef5c5b2a35ef8c09a238d48964472517ed0625a4df21a19",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G_工程规范.md": "sha256:6a69227d9fb68b8afef065dca17e9a244fce9fdc2baddf7992bd31c34d7a89e6",
+    "O_构建_发布与运维/O.01_构建流水线.md": "sha256:d9f5072cacc592f624fd835d6a88ace02d12f6149f1a12a28d9f12f74a1f155f",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-validate",
+  "base": "37ed1c1487b9eba8efc7e82038a683bfddfa9e1e",
+  "head": "8d98488cd208c7760d8f8fc87ffa2a1ee568a955"
+}

@@ -134,7 +134,8 @@ func TestGraphExamples(t *testing.T) {
 }
 
 // resourceValueProblem 检查资源节点的 value 是否按 kind 写（E.14.01、E.10.01）：模型是模型引用
-// {provider, model, sampling?, fallback?}；列表是 JSON 数组或工作区引用；提示词写 template、不写 value。没有问题时返回空串。
+// {provider, model, sampling?, fallback?}；列表是 JSON 数组或工作区引用；提示词写 template、角色卡写 rolecard，
+// 都不写 value（P.09 K233）。没有问题时返回空串。
 func resourceValueProblem(params map[string]any) string {
 	kind, _ := params["kind"].(string)
 	if kind == "" {
@@ -173,6 +174,13 @@ func resourceValueProblem(params map[string]any) string {
 		}
 		if s, _ := params["template"].(string); s == "" {
 			return "kind 为提示词时要写 template"
+		}
+	case "角色卡":
+		if has {
+			return "kind 为角色卡时角色卡写在 rolecard，不写 value"
+		}
+		if s, _ := params["rolecard"].(string); s == "" {
+			return "kind 为角色卡时要写 rolecard"
 		}
 	}
 	return ""

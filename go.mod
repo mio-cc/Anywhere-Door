@@ -7,6 +7,7 @@ toolchain go1.27.4
 ignore ./web/node_modules
 
 require (
+	github.com/expr-lang/expr v1.18.1
 	github.com/goccy/go-yaml v1.19.2
 	github.com/oklog/ulid/v2 v2.1.2
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c

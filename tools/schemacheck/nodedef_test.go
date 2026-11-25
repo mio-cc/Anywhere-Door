@@ -130,13 +130,13 @@ func TestNodeDefs(t *testing.T) {
 		// C.03.01 §6 的表（多 = multi，必 = required，动态 = dynamic）
 		type sig = portSig
 		want := map[string][2]map[string]sig{
-			"资源":    {{}, {"ref": {Type: "资源引用@1"}}},
+			"资源":    {{}, {"ref": {Type: "资源引用@1"}, "items": {Type: "列表[资源引用@1]"}}},
 			"Agent": {{"context": {Type: "上下文包@1", Required: true}, "model": {Type: "资源引用@1", Required: true}, "prompt": {Type: "资源引用@1"}, "role": {Type: "资源引用@1"}, "tools": {Type: "工具端点@1", Multi: true}}, {"result": {Type: "$T"}}},
 			"上下文装配": {{"in": {Type: "任意", Multi: true}, "model": {Type: "资源引用@1"}}, {"context": {Type: "上下文包@1"}, "dropped": {Type: "列表[任意]"}}},
 			"工具":    {{"request": {Type: "任意"}}, {"endpoint": {Type: "工具端点@1"}, "result": {Type: "$T"}}},
 			"扇出":    {{"items": {Type: "列表[$T]"}, "shared": {Type: "任意", Multi: true}}, {"results": {Type: "列表[$U]"}}},
 			"汇合":    {{"in": {Type: "任意", Dynamic: true}}, {"collected": {Type: "列表[任意]"}}},
-			"聚合":    {{"items": {Type: "列表[$T]", Required: true}}, {"result": {Type: "$U"}}},
+			"聚合":    {{"items": {Type: "列表[$T]"}, "value": {Type: "任意"}}, {"result": {Type: "$U"}}},
 			"分支":    {{"value": {Type: "$T", Required: true}}, {"yes": {Type: "$T"}, "no": {Type: "$T"}}},
 			"循环":    {{"init": {Type: "$T"}}, {"final": {Type: "$T"}, "summary": {Type: "简报@1"}}},
 			"账本":    {{"value": {Type: "任意"}}, {"value": {Type: "状态@1"}}},
@@ -192,7 +192,7 @@ func TestNodeDefs(t *testing.T) {
 			"Agent": {"T": "param:output_schema"},
 			"工具":    {"T": "param:result_type"},
 			"扇出":    {"T": "input:items.elem", "U": "body:exit"},
-			"聚合":    {"T": "input:items.elem", "U": "op:op(T)"},
+			"聚合":    {"T": "input:items.elem | field:value(list_field)", "U": "op:op(T)"},
 			"分支":    {"T": "input:value"},
 			"循环":    {"T": "input:init"},
 			"人工":    {"T": "input:request"},
