@@ -3,7 +3,7 @@
   "branch": "slice/m0-fix-entry",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T15:00:53Z",
-  "docs_commit": "288a544f7f0aab45a11916124394b8ff313387b8",
+  "docs_commit": "73e6095789527e508eb5c892916ad47e10700034",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.02_图文档/C.02.03_Edge_连线.md": "sha256:01a47ff5fa817b51689dfd465a6f4f560e83cbb3a845360b0405d234c3a99747",
@@ -19,7 +19,7 @@
     "C_契约层/C.04_端口类型系统/C.04.03_泛型_T_推断.md": "sha256:4e7f662db519debc0abb75fc2705652c5dcc80d5d601ab1b9ed29c81f37297a7",
     "C_契约层/C.04_端口类型系统/C.04.04_多连与列表.md": "sha256:d295ee3b34e300f0582992c014e0744b5708bab7e724ddbcb5bea4bc099a4bfd",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
-    "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:18c98a59b704774b4318f592929889b578ec14ea8ff04755665ac5e903de4a74",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:5946eaa25d9abbf7c8a450647fc2e2fe26d535339528fd6c67bf283f3b5307ee",
     "E_内核_engine/E.04_ext_扩展包加载.md": "sha256:ec7e876e0011e5569017520b3c74bb79cd68a1f3eff4e2f218faea0569aa264a",
     "E_内核_engine/E.14_exec_执行器/E.14.01_资源.md": "sha256:dd7fd1fb66858a02e8201cc25c002fbd90a9cf21a7f39f48768814a0633a5291",
     "E_内核_engine/E.14_exec_执行器/E.14.13_子图引用.md": "sha256:86f09052f4252c32ae46982dbd3284a76d3663c7a2aeb40a57190643b2420c9d",

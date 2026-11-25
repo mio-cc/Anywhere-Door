@@ -1,0 +1,47 @@
+{
+  "description": "图文档规范化序列化与哈希的测试向量（E.02.03 §5、C.02.01 §6，P.09 K93）：Go（engine/graph）和 TS（W.05 的 ops/hash.ts）对每条的 doc 做规范化序列化，结果必须等于 canonical，sha256 等于 hash。键按 Unicode 码点排序；字符串按 JSON.stringify 转义、不做 HTML 转义；数字按 JSON.stringify 的写法。名字以 graph_ 开头的 doc 是合法的图文档。",
+  "vectors": [
+    {
+      "name": "键排序",
+      "doc": {"b":1,"a":2,"A":3,"_":4,"aa":5,"a b":6},
+      "canonical": "{\"A\":3,\"_\":4,\"a\":2,\"a b\":6,\"aa\":5,\"b\":1}",
+      "hash": "sha256:487e07b6eb63a42f471eb693f3d5811ae371cc49ae47910525cf68af6aac5163"
+    },
+    {
+      "name": "中文键与码点顺序",
+      "doc": {"规范":1,"图":2,"z":3,"\uff61":4,"\ud83d\ude00":5,"a":{"乙":1,"甲":2}},
+      "canonical": "{\"a\":{\"乙\":1,\"甲\":2},\"z\":3,\"图\":2,\"规范\":1,\"｡\":4,\"😀\":5}",
+      "hash": "sha256:617590e23bbd767d7e964e58280d43df2eb160eca4ed6b12755f32898639f5f6"
+    },
+    {
+      "name": "HTML 字符与行分隔符不转义",
+      "doc": {"s":"<a href=\"x\">&amp;</a>","line":"\u2028\u2029","slash":"a/b"},
+      "canonical": "{\"line\":\"  \",\"s\":\"<a href=\\\"x\\\">&amp;</a>\",\"slash\":\"a/b\"}",
+      "hash": "sha256:37c7c8456eab854219b964990a461f43772b8c1a864b984c5490f54217420aac"
+    },
+    {
+      "name": "控制字符",
+      "doc": {"s":"a\nb\tc\u0001d\u001f\b\f\r\\\"e","del":"\u007f"},
+      "canonical": "{\"del\":\"\",\"s\":\"a\\nb\\tc\\u0001d\\u001f\\b\\f\\r\\\\\\\"e\"}",
+      "hash": "sha256:a53128909f10bd847b95fae0cc6c467d8d8665e26b9c0408219ec99ffe0a4465"
+    },
+    {
+      "name": "数字",
+      "doc": {"int":1,"float_int":1.0,"neg_zero":-0.0,"small":0.1,"tiny":1.5e-7,"big":1e21,"big2":123456789012345680000,"exp":1E-7,"neg":-2.5,"micro":0.000001,"trail":2.50,"e2":1e2},
+      "canonical": "{\"big\":1e+21,\"big2\":123456789012345680000,\"e2\":100,\"exp\":1e-7,\"float_int\":1,\"int\":1,\"micro\":0.000001,\"neg\":-2.5,\"neg_zero\":0,\"small\":0.1,\"tiny\":1.5e-7,\"trail\":2.5}",
+      "hash": "sha256:b1cdf30875c86a3805be58129517fc92d45c8a537ace0ef4af7c87d0f8b87ac4"
+    },
+    {
+      "name": "空数组、空对象与字面量",
+      "doc": {"a":[],"o":{},"n":null,"t":true,"f":false,"nested":[[],[{}],[null,1]]},
+      "canonical": "{\"a\":[],\"f\":false,\"n\":null,\"nested\":[[],[{}],[null,1]],\"o\":{},\"t\":true}",
+      "hash": "sha256:7f60bb2aca3a539e6602bcce01a76e41efa05486a400f2a29438293b446eea60"
+    },
+    {
+      "name": "graph_嵌套子图与开放对象",
+      "doc": {"id":"01JDHASH000000000000000001","schema_version":"1.0","version":3,"branch":"main","root":{"nodes":[   {"id":"01JDHASHN00000000000000002","type":"Agent","pos":{"x":10,"y":-20},"params":{"temperature":0.7,"x_future":{"b":[1,2.50,"<&>"],"a":true}},"ui":{"collapsed":false,"x_extra":{"z":1,"中":2}}},   {"id":"01JDHASHN00000000000000001","type":"循环","pos":{"x":0,"y":0},"params":{"max_rounds":3},"children":{"nodes":[{"id":"01JDHASHN00000000000000003","type":"资源","pos":{"x":1,"y":2}}],"edges":[]}}],  "edges":[{"id":"01JDHASHE00000000000000001","from":{"node":"01JDHASHN00000000000000001","port":"final"},"to":{"node":"01JDHASHN00000000000000002","port":"in"}}]}},
+      "canonical": "{\"branch\":\"main\",\"id\":\"01JDHASH000000000000000001\",\"root\":{\"edges\":[{\"from\":{\"node\":\"01JDHASHN00000000000000001\",\"port\":\"final\"},\"id\":\"01JDHASHE00000000000000001\",\"to\":{\"node\":\"01JDHASHN00000000000000002\",\"port\":\"in\"}}],\"nodes\":[{\"id\":\"01JDHASHN00000000000000002\",\"params\":{\"temperature\":0.7,\"x_future\":{\"a\":true,\"b\":[1,2.5,\"<&>\"]}},\"pos\":{\"x\":10,\"y\":-20},\"type\":\"Agent\",\"ui\":{\"collapsed\":false,\"x_extra\":{\"z\":1,\"中\":2}}},{\"children\":{\"edges\":[],\"nodes\":[{\"id\":\"01JDHASHN00000000000000003\",\"pos\":{\"x\":1,\"y\":2},\"type\":\"资源\"}]},\"id\":\"01JDHASHN00000000000000001\",\"params\":{\"max_rounds\":3},\"pos\":{\"x\":0,\"y\":0},\"type\":\"循环\"}]},\"schema_version\":\"1.0\",\"version\":3}",
+      "hash": "sha256:fa1cd87fbf02d13f6d73348055d005a0f2a6eba3853f5e1661f06d536ee62394"
+    }
+  ]
+}

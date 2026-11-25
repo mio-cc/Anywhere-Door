@@ -1,0 +1,28 @@
+{
+  "leaf": "E.02.02",
+  "branch": "slice/m1-graph",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-25T05:57:53Z",
+  "docs_commit": "fad1d5f5993fe7dd841012015bdbb898c2196458",
+  "docs": {
+    "C_契约层/C.02_图文档/C.02.04_子图与嵌套.md": "sha256:775b49f095ad69484318a441c46897e4d9bca5fd2656922052f009f0fca68b5a",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.02_graph_图模型/E.02.02_遍历与拓扑排序.md": "sha256:e5264d77aa5ee4dab30a4ad0395ca0da0408a4cadacc773ce3d627df4c919ccb",
+    "E_内核_engine/E.02_graph_图模型/E.02_graph_图模型.md": "sha256:98c036242547a4e717a4ebcb0cfa06a85089bafa090671a263ed3ef6c2f7f42a",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.03_图校验规则清单.md": "sha256:c2ec495e441707a87f9cd943ace9bc3ad73a928fb39fd9e07b8622fdf7f2e65d",
+    "E_内核_engine/E.06_authz_授权/E.06.02_Check_判定流程.md": "sha256:4668daaf2a8cb544823ebde5c482a1f186c848d2badacd8f74134def0bcc46e4",
+    "E_内核_engine/E.09_obs_可观测/E.09.01_事件写入.md": "sha256:3152b76d349d83de36eb63f9da1f69a3e556c5b64dd8124f56a856ff35bbe368",
+    "E_内核_engine/E.14_exec_执行器/E.14.06_汇合.md": "sha256:1f86c0a45ac954d57967871793edce19ecfdffda80e3ec071a482a915993a740",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-graph",
+  "base": "b57de146f6598e074e3b4faa3e22308d3d635028",
+  "head": "a9bafc52696ce0b73decd74f9a5a7dc31ea3c92d"
+}

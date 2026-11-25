@@ -1,0 +1,27 @@
+{
+  "leaf": "E.03.04",
+  "branch": "slice/m1-graph",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-25T05:59:52Z",
+  "docs_commit": "fad1d5f5993fe7dd841012015bdbb898c2196458",
+  "docs": {
+    "C_契约层/C.04_端口类型系统/C.04.02_兼容规则.md": "sha256:2e0b6695ef4e117fa82e1fa98e0fa2a0d893ba081e33962c5e57c72cef751036",
+    "C_契约层/C.11_错误码表.md": "sha256:bffafd4a1cad6e745dfc19583eb553f81856f12fbe1e56abb3b17694b387cf26",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.04_诊断_Diag_格式.md": "sha256:d413647b59d9c778841ebd9fa89266dbb97a25e5409708e2e34c355aab0416a1",
+    "E_内核_engine/E.03_schema_注册与校验/E.03_schema_注册与校验.md": "sha256:d7545d3f76d993c010a9efe4eb29163f556f2ffa1da4ad5ca62f806bddd28927",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G.13_错误码与错误信息.md": "sha256:cd8d60863a68246e8cd6bf4bac801ed31058c466291201ff0f1417b48aaa3f6b",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
+    "U_UI_UX_规范/U.14_状态反馈与异常/U.14.03_错误与恢复.md": "sha256:5c9a87dfe2c463de94126d4953eabb08f26700f5f564cf29a15bbca915e727e0"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-graph",
+  "base": "b57de146f6598e074e3b4faa3e22308d3d635028",
+  "head": "a9bafc52696ce0b73decd74f9a5a7dc31ea3c92d"
+}

@@ -18,6 +18,185 @@
 
 ---
 
+## 2026-11-25 15:40 · Quick（AWS Quick） · 冻结叶子复查（M1 第 ①a 片 / K257 之后），代码不用改
+- 依据：设计仓库提交 73e6095；`P.09` K256、K257
+- 完成：`relay stale` 列出 10 个冻结叶子，依据里改过的是 `E.02.03`（602c645）、`E.03.01`、`E.03.02`、`E.03.04`（fad1d5f，以及 73e6095 的 K257），逐份看了 `relay diff`，代码都不用改：
+  - `C.02.01`（`E.02.03` §4、§5、实施卡）：规范化哈希的写法按 `JSON.stringify` 补清楚，`schema/examples/hash_vectors.json` 归 `E.02.03` 自己的实施卡；`C.02.01` 只在"在其他叶子跑的测试用例"里引用 `E0203-T3`，`graph.schema.json` 和示例都没变。
+  - `C.02.03`、`C.03.05`、`C.04.02`、`C.04.03`（`E.03.02` §4、§5、变更记录、实施卡）：改的是内核侧的接口（`AssignAt`、`View.Messages()`、`InferCache`、`SchemaSource`）和推断的补充规则（K257）；这几个叶子的契约（`assign_vectors.json` 已有 `src_node`、`dst_container`，`assign.zh.yaml`、`aggregate_ops.yaml`、`schema_expand_vectors.json`）一处都没变，`E.03.02` 不许碰 `schema/`，实现跑的就是这些向量。
+  - `C.03.02`、`C.04.01`（`E.03.01` §4、§5 和 `E.03.02`）：同上；注册表读的 `widget_map.yaml`、`category_map.yaml` 是现有文件。
+  - `C.03.01`、`C.13.03`（`E.03.01` §4、§5）：注册表的接口和注册时的检查顺序写清楚（改副本、成功才换上；跨项检查在全部加入后做）；NodeDef、TypeDef 的 schema 和内置 YAML 没变。
+  - `C.11`（`E.03.04` §4）：`Messages` / `Loc` 的接口写清楚；`errors.schema.json`、`diags.zh.yaml` 没变。
+- 已知、不在这次处理：`graph_loop.json`（归 `C.02.01`）里有三根单值接到列表端口的线，推断不再报 V16 之后会被连线检查按 C8 拒绝；`P.09` K257 已登记，第 ①b 片复查时定怎么改（届时 `C.02.01` 改回"已审"开修复分支）。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale --accept` 逐个更新依据后，`relay stale` 应为空（验证者：Codex）
+- 评审：不适用
+- 提交 / 推送：验证者提交 / 随整片合并推送
+
+## 2026-11-25 15:23 · E.02.01、E.03.01 · Quick（AWS Quick） · 续做（依据复查）
+- 依据：设计仓库 73e6095（docs/relay/E.02.01.json、E.03.01.json）
+- 完成：读了 relay diff：两个叶子的依据里只有 E.03.02 改过（P.09 K257：§5 补两条类型推断规则、变更记录加一行）。E.02.01（图的数据结构与索引）、E.03.01（注册表与迁移）不做类型推断，代码不用改；推断的改动已在 E.03.02（636c656）实现。用 relay start --resume --accept-docs 更新依据（G.02.06-R13）。
+- 进行中：无
+- 下一步：整片检查 relay slice m1-graph，通过后整片评审
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：见整片检查（验证者：Codex）
+- 评审：待评审者
+- 提交 / 推送：见下 / 不推送
+
+## 2026-11-25 14:40 · E.03.02 · Quick（AWS Quick） · 交付（M1 第 ①a 片 m1-graph）
+- 依据：设计仓库（见 docs/relay/E.03.02.json）；`P.09` K256、K257
+- 完成：实施卡全部。`Parse` / `Type` / `String`、`Category`、`Assignable`、`Infer` / `Types`、`InferCache`、`Ports`、`ExpandSchema`、`TemplateVars`。测试 `E0302-T1`–`T6`（`T7` 在第 ⑪ 片跑）。
+- 自主决定的细节：
+  - `Assignable(src, dst, AssignAt{SrcNode, DstContainer}, TypeSource)`：目标是容器时不做 C7 展开（`C.04.02-R3`），所以要多一个参数；只依赖 `TypeSource`，测试直接用向量里的类型表。
+  - 推断：入口端口节点（`role=entry`）没有上游连线时，类型取自容器节点（写了 `port_name` 取容器上那个端口对应的变量，否则取容器第一个来自 `input:` 的变量）；`body:R` 取子图里 `role=R` 的端口节点的变量。读的是子图端口节点定义里的参数 `role`、`port_name`，不比较节点类型名。
+  - 推断（第一轮验证 `E0302-T3` 失败后补，`P.09` K257）：`input:X.elem` 的上游不是列表时，变量取上游本身的类型，"单个值接列表"交给连线检查按 C8 报 V06，不报 V16（`C.04.03-R1`）；入口端口节点在容器上找不到对应变量、端口又没有声明具体类型时（子图引用的动态端口、扇出的 `shared`），取连到容器那个端口的上游类型（`port_name` 没写按 `in`；接了几路按 `任意`）。
+  - V16 只在"用到这个变量的端口有连线"时报（没接线的节点不报），文案里写端口和建议设置的参数（或要接的线）。
+  - 缓存按整张图的哈希加注册表哈希（`InferCache`），不按子图分：推断要跨子图传类型，按子图缓存容易出错；性能够用时不拆。`E.03.02` §5 已同步改写。
+  - `schema_from` 动态端口要知道所选对象的入参 schema：视图实现了 `SchemaSource` 才展开（工具注册表在 `E.11` 接入），M1 的内置视图不展开。展开规则照 `tools/schemacheck` 的参考实现搬过来，跑同一组向量。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 14:01 · E.03.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 fad1d5f（docs/relay/E.03.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.03.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-25 14:40 · E.03.01 · Quick（AWS Quick） · 交付（M1 第 ①a 片 m1-graph）
+- 依据：设计仓库（见 docs/relay/E.03.01.json）；`P.09` K256
+- 完成：实施卡全部。`engine/schema`：`Registry`（`NewRegistry`、`LoadBuiltin`、`Install`、`Uninstall`、`Snapshot`、`Live`）、`View`、`Package`、`RegistryError` / `Errors`；`engine/schema/migrate`（`Current`、`Chain`、`Step`、`ErrTooNew`、`Apply`）。测试 `E0301-T1`–`T10`（`T11`、`T12` 在别的片跑）。
+- 自主决定的细节：
+  - 每次修改都在一份副本上做，成功后整体替换（写时复制）：`Snapshot()` 直接返回当时那一版，不用复制；`Live()` 每次调用读最新一版。安装失败、`LoadBuiltin` 有错误时注册表不变。
+  - 名字归属：节点定义、类型、配方、角色卡各按名字记归谁（内置或哪个包）；别的包、内置已经用过的名字一律拒绝（不只是内置）。扩展节点的查找键是 `包名/名称@主版本`。
+  - 跨项的检查（引用的类型已注册、角色卡继承链、类型的 JSON Schema 编译）在全部项加进来之后统一做，所以加载顺序、包内顺序都不影响结果。
+  - 类型的 JSON Schema：字段按 `type` 换成 JSON Schema（`max_chars` → `maxLength`，引用别的类型用 `$ref`，`extends` 用 `allOf`），不限制多余字段（次版本加字段时旧的校验仍然通过）。
+  - 控件兼容按 `gen.WidgetRules` 推得出的控件加 `auto`；`connection` 只能用于 `string`。`LooksLikeSecret` 导出给后面的 V03 用。
+  - `View` 拆出 `TypeSource`（`Type` + `Messages`），连线判定只要它；`Recipe`、`RoleCard` 只写名字时取最高版本。
+  - `migrate.Apply`：输入版本高于 `Current` 和链上所有版本时返回 `ErrTooNew`；没有 `schema_version` 时返回 `ErrNoVersion`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 14:00 · E.03.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 fad1d5f（docs/relay/E.03.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.03.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-25 14:00 · E.03.04 · Quick（AWS Quick） · 交付（M1 第 ①a 片 m1-graph）
+- 依据：设计仓库（见 docs/relay/E.03.04.json）；`P.09` K256
+- 完成：实施卡全部。`engine/schema`：`LoadMessages`（从 `fs.FS` 读 `diags.zh.yaml`、`assign.zh.yaml`，格式错写出文件和行号）、`Messages.Diag`（按码和级别渲染，`Loc` 的空字段不写）、`Messages.Assign`、`Messages.Levels`、`Sort`、`Dedup`、`HasError`。测试 `E0304-T1`–`T3`。
+- 自主决定的细节：模板变量的写法按 `{名字}`（名字里不含空白和花括号）；值用 `fmt.Sprint`；加了 `Levels(code)`（给 `E0304-T1` 和以后的校验规则查一个码允许哪些级别）；`Sort` 最后按 `msg` 比，`Dedup` 不改原切片。包注释写在 `messages.go`（本包第一个文件）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 13:59 · E.03.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 fad1d5f（docs/relay/E.03.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.03.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-25 13:40 · E.02.03 · Quick（AWS Quick） · 交付（M1 第 ①a 片 m1-graph）
+- 依据：设计仓库（见 docs/relay/E.02.03.json）；`P.09` K256
+- 完成：实施卡全部。`Clone`、`Freeze` / `Frozen`、`CloneSubgraph`、`Canonical`、`Hash`、`HashBytes`；测试向量 `schema/examples/hash_vectors.json`（7 条：键排序、中文键与码点顺序、HTML 字符和 U+2028 不转义、控制字符、数字写法、空数组空对象、带嵌套子图和开放对象的图文档）。测试 `E0203-T1`–`T3`（`T4` 在 `W.05` 跑）。
+- 自主决定的细节：
+  - 数字按 `JSON.stringify` 的写法输出（先转 float64 再取最短表示，`1e+21`、`1.5e-7`，`-0` 写成 `0`），字符串按 `JSON.stringify` 转义（U+2028、U+2029 不转义，Go 的 `encoding/json` 会转义它们，所以自己写了编码）。这样前端用 `JSON.stringify` 加按码点排序的键就能逐字节相同；`E.02.03` §5 已同步写明。向量的期望值是用另一份独立实现（Python）按同样规则算出来的。
+  - `Frozen` 加了 `Graph()`，给 `Walk` 这类接受 `*Graph` 的函数用。
+  - `E0203-T2`：开发机没有 C 编译器，`-race` 用不了；测试照样 100 个 goroutine 并发读并比较结果。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 13:58 · E.02.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 fad1d5f（docs/relay/E.02.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.02.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-25 13:40 · E.02.02 · Quick（AWS Quick） · 交付（M1 第 ①a 片 m1-graph）
+- 依据：设计仓库（见 docs/relay/E.02.02.json）；`P.09` K256
+- 完成：实施卡全部。`TopoLevels`（Kahn，同层排序，有环返回 `*ErrCycle`）、`SCCs`（Tarjan，只返回大小 > 1 或自环的）、`Upstream`、`Downstream`、`Dominated`（不动点：所有后继都是目标或已经在集合里的上游节点）、`Walk`（先序深度优先，`path` 是容器链）。测试 `E0202-T1`–`T5`。
+- 自主决定的细节：同一对节点之间的多条连线只算一条边；两端不都在本子图的连线忽略；邻接表每次调用时算（`Scope` 不缓存，冻结视图并发读时不用加锁）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 13:57 · E.02.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 fad1d5f（docs/relay/E.02.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.02.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-25 13:40 · E.02.01 · Quick（AWS Quick） · 交付（M1 第 ①a 片 m1-graph）
+- 依据：设计仓库（见 docs/relay/E.02.01.json）；`P.09` K256
+- 完成：实施卡全部。`engine/graph`：`FromDoc`（先序列化一份自己的副本再建索引；节点、连线、便签共用一个 ID 命名空间，重复时报 `ErrDuplicateID` 并写出两处位置；悬空连线照常加载）、`Doc`（从副本解出，深拷贝、数组顺序不变）、按 ID 查节点 / 连线 / 便签 / 子图、`ScopeOf`、`Parent`、`Depth`、`Scopes`；`Scope` 的按端口索引。测试 `E0201-T1`–`T5`。
+- 自主决定的细节：
+  - 副本用 `json.Encoder`（`SetEscapeHTML(false)`）序列化后再解出，`Doc()`、`Clone()` 都从这份字节重建，保证和输入、和彼此都不共享内存。
+  - `Depth` 对不存在的子图返回 -1；`Scope` 加了 `Has(nodeID)`；`Scope` 的查询都返回切片的副本。
+  - 往返无损的测试用"按键排序的序列化"比较（规范化函数在 `E.02.03`，本叶子还没有）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 13:56 · E.02.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 fad1d5f（docs/relay/E.02.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.02.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-25 13:10 · Quick（AWS Quick） · 冻结叶子复查（K256 和 M0 验收结论之后），代码不用改
 - 依据：设计仓库提交 288a544；`P.09` K256；`P.07` M0 验收结论（680e7ec）
 - 完成：`relay stale` 列出 18 个冻结叶子，逐份看了改动，代码都不用改：
