@@ -3,7 +3,7 @@
   "branch": "feat/C.14-codegen",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T15:44:45Z",
-  "docs_commit": "5f7329c5a424b996a4b00be2a1f8ebd794c14b85",
+  "docs_commit": "66818d32cd2dca93fa02ac0583d487a958651fec",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.06_事件/C.06.01_事件信封.md": "sha256:2feb20c08eafd18d3d66a4721fb12d53c58f39ea3189eb0a632109099b0aea4b",
@@ -20,7 +20,7 @@
     "O_构建_发布与运维/O.01_构建流水线.md": "sha256:d9f5072cacc592f624fd835d6a88ace02d12f6149f1a12a28d9f12f74a1f155f",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
     "W_前端实现_web/W.04_协议层/W.04.03_字段映射.md": "sha256:12b829ccbaf24e1c59c356ff3d2aa108a3db68fde28ed8ab48c6748b51837932",
-    "W_前端实现_web/W.04_协议层/W.04.04_生成类型使用规则.md": "sha256:24291931d02824e0aca123bea2f46f1849eef093d6d7f4778955497319113c5f",
+    "W_前端实现_web/W.04_协议层/W.04.04_生成类型使用规则.md": "sha256:7db9572e0685b78b8fbeb2cc896c756b85fc1a6a21d679bbdbed403d8a7548d6",
     "W_前端实现_web/W.10_国际化与格式化.md": "sha256:4d3a057dd2d35707c6f4ddcbfb53643802d6af3900eeba106ed294799155ec73"
   },
   "stubs": [],

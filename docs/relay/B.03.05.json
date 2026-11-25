@@ -3,7 +3,7 @@
   "branch": "slice/m0-server",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T06:52:02Z",
-  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
+  "docs_commit": "66818d32cd2dca93fa02ac0583d487a958651fec",
   "docs": {
     "B_后端服务/B.01_后端总则.md": "sha256:e4173daabfc30b14b150347e43a6d12ee731063ad50afa69f128f79bb566f2b2",
     "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:45048bf6ea456c7935b0db781895410f86e57e58e07f827cb68f99ab1024de54",
@@ -14,7 +14,7 @@
     "B_后端服务/B.03_HTTP_API_总则/B.03.06_OpenAPI_文档生成.md": "sha256:e096f05cce22943bcd01a25b8ebf85143a6cc0729658b407cc5dd97be1328cfb",
     "B_后端服务/B.03_HTTP_API_总则/B.03_HTTP_API_总则.md": "sha256:799e060041f68c8b401837bae29a3a85000003e1e92d32c860d92feb53fd9c29",
     "B_后端服务/B.04_API_资源/B.04.14_health_与诊断.md": "sha256:34f48ec0b8688d01b10f19f64d7f3470b45aa083062a6a8df71b47bdcbb8d794",
-    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:073dd83e7a1f21bcd81cb9cee5d81d2e467bc2ed4903212a68ef21c725aa09f0",
+    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:7d95ea062f3c53997c248c75ee6148a6e6425cfacc569fded93b341c47474d28",
     "B_后端服务/B.05_SSE_事件流/B.05_SSE_事件流.md": "sha256:a1e1a628021e285115edb089f21018c553e0994085c1a4fa99f324b60639b70a",
     "B_后端服务/B.07_platform_平台层/B.07.01_本地鉴权.md": "sha256:dc9f8306fdd1690f7633f29a114d689b71d217a8f94fd4569c207e4ee8e9bf1c",
     "B_后端服务/B_后端服务.md": "sha256:1efbac8e9348e04866adad7dbafc278d513b74701c912253277bd4debf8d2126",

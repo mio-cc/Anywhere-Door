@@ -18,6 +18,19 @@
 
 ---
 
+## 2026-11-25 22:40 · Quick（AWS Quick） · 冻结叶子复查（第 ② 片合并后 / K260 之后），代码不用改
+- 依据：设计仓库提交 66818d3；`P.09` K260
+- 完成：`relay stale` 列出 7 个冻结叶子，依据里改过的是 `B.04`、`W.04.04` 两份，逐份看了改动，代码都不用改：
+  - `B.04`（`B.03.05`、`B.04.14`、`C.01`、`C.11`、`E.07.01`、`O.03`）：下级清单加 `B.04.15`、新增 `B.04-R5`（结构正文只写在 `B.04.15`）。已有的服务器骨架、health / shutdown、错误响应、`schema/` 的规则、存储、打包都不涉及；`api.schema.json` 的新结构已随 `ca987fe` 合并。
+  - `W.04.04` §3.5（`C.14`、`E.07.01`）：`OpResult`、`ProposalAccepted` 改用已有的 `OpsApplied`、`OpsProposed`；`RunView`、`Model` 的字段；正文指向 `B.04.15`、分页结构。`tools/gen` 的生成规则没变（`ca987fe` 里 `build -check` 生成物一致）；`E.07.01` 的 6 个结构逐字未改。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale --accept` 逐个更新依据后，`relay stale` 应为空（验证者：Codex）
+- 评审：不适用
+- 提交 / 推送：验证者提交 / 推送
+
 ## 2026-11-25 21:40 · B.04.15 · Quick（AWS Quick） · 交付（M1 第 ② 片 m1-api-schema）
 - 依据：设计仓库（见 docs/relay/B.04.15.json）；`P.09` K260
 - 完成：实施卡全部。`schema/api.schema.json` 加 25 个结构（§4.2）：4 个分页、图 6 个（`GraphCreate`、`GraphRead`、`GraphMetaUpdate`、`GraphValidation`、`GraphConflictDetails`、`UndoRequest`）、运行 5 个（`RunStart`、`RunStarted`、`RunView`、`NodeSnapshot`、`NodeDetail`）、节点库 5 个（`NodeDefItem`、`TypeItem`、`TypeCompatRequest`、`RecipeItem`、`RolecardItem`）、`Effort`、`Model`、会话 3 个（`SessionCreate`、`SessionUpdate`、`SessionGraphAttach`）；`x-version` 改为 1.1，`title` 改写；E.07.01 的 6 个结构逐字不变（Python 读出再按 indent=2 写回，和原文件逐字节相同后才加）。测试 `tools/schemacheck/api_m1_test.go`：`B0415-T1`–`T4`。

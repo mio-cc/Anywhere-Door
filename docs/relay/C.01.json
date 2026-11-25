@@ -3,9 +3,9 @@
   "branch": "slice/m0-contract",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T04:58:30Z",
-  "docs_commit": "49f654e3c890bc36ab5395389fc716bb7891a2a9",
+  "docs_commit": "66818d32cd2dca93fa02ac0583d487a958651fec",
   "docs": {
-    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:073dd83e7a1f21bcd81cb9cee5d81d2e467bc2ed4903212a68ef21c725aa09f0",
+    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:7d95ea062f3c53997c248c75ee6148a6e6425cfacc569fded93b341c47474d28",
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.02_图文档/C.02.03_Edge_连线.md": "sha256:01a47ff5fa817b51689dfd465a6f4f560e83cbb3a845360b0405d234c3a99747",
     "C_契约层/C.02_图文档/C.02_图文档.md": "sha256:c8a5309cd7526168c3640b96a4f79364a4226cf7485a38d2776566153cad8076",

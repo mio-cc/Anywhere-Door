@@ -3,10 +3,10 @@
   "branch": "slice/m0-ci",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T10:04:24Z",
-  "docs_commit": "64ed846fddf8b1e040a0833b454ceae7abe0975f",
+  "docs_commit": "66818d32cd2dca93fa02ac0583d487a958651fec",
   "docs": {
     "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:45048bf6ea456c7935b0db781895410f86e57e58e07f827cb68f99ab1024de54",
-    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:073dd83e7a1f21bcd81cb9cee5d81d2e467bc2ed4903212a68ef21c725aa09f0",
+    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:7d95ea062f3c53997c248c75ee6148a6e6425cfacc569fded93b341c47474d28",
     "B_后端服务/B.06_app_产品层/B.06.05_模板实例化.md": "sha256:adb8f9853470edcfe568563e511a2392a650b440f5b771721fc89938067757fc",
     "B_后端服务/B.07_platform_平台层/B.07.05_数据目录布局.md": "sha256:94075bcb80e3e342a6f2c9e62b68da7543fad73d0f9055e9a9971cac3c7a3227",
     "B_后端服务/B.08_anydoorctl_命令行.md": "sha256:c27f6d4cf6eb1b2acd3522c65f18b7a3c4b1c59c9031cbc3467665b4f1809556",

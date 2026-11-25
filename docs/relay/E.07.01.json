@@ -3,10 +3,10 @@
   "branch": "slice/m0-store",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T16:43:47Z",
-  "docs_commit": "1cdb869fd3403668da26704abcb26963f80311e8",
+  "docs_commit": "66818d32cd2dca93fa02ac0583d487a958651fec",
   "docs": {
     "B_后端服务/B.04_API_资源/B.04.03_runs_运行.md": "sha256:207c2f084f4f5ea162a01dfcce6b90ba8fa2f96997694fb8555888b25e2eb08a",
-    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:073dd83e7a1f21bcd81cb9cee5d81d2e467bc2ed4903212a68ef21c725aa09f0",
+    "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:7d95ea062f3c53997c248c75ee6148a6e6425cfacc569fded93b341c47474d28",
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.05_Op_操作/C.05.04_并发与冲突.md": "sha256:671e33b349015eaa71882c030c546d6a2638aa5e669dcb3eaba5363345964e96",
     "C_契约层/C.06_事件/C.06.01_事件信封.md": "sha256:2feb20c08eafd18d3d66a4721fb12d53c58f39ea3189eb0a632109099b0aea4b",
@@ -26,7 +26,7 @@
     "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
-    "W_前端实现_web/W.04_协议层/W.04.04_生成类型使用规则.md": "sha256:24291931d02824e0aca123bea2f46f1849eef093d6d7f4778955497319113c5f"
+    "W_前端实现_web/W.04_协议层/W.04.04_生成类型使用规则.md": "sha256:7db9572e0685b78b8fbeb2cc896c756b85fc1a6a21d679bbdbed403d8a7548d6"
   },
   "stubs": [],
   "state": "merged",
