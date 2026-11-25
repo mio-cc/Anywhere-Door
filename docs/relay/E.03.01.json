@@ -3,7 +3,7 @@
   "branch": "slice/m1-graph",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-25T06:00:55Z",
-  "docs_commit": "64ed846fddf8b1e040a0833b454ceae7abe0975f",
+  "docs_commit": "49f654e3c890bc36ab5395389fc716bb7891a2a9",
   "docs": {
     "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:c5032b2c62026b675c667da77a37211cbfa400a642a9f3c5b98482f47b05f21c",
     "C_契约层/C.03_节点定义_NodeDef/C.03.02_参数_schema_与控件映射.md": "sha256:fc75fee3cb4101167d0e83726cce4cf708ed4df836d8ebdc95b88096e8ff6f26",
@@ -13,7 +13,7 @@
     "C_契约层/C.13_内置资产格式/C.13_内置资产格式.md": "sha256:74753d158c7149079eb762f9a8e9cb7677f2bd4d3e569788676aa3e681d0c68a",
     "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
     "E_内核_engine/E.03_schema_注册与校验/E.03.01_Registry.md": "sha256:5946eaa25d9abbf7c8a450647fc2e2fe26d535339528fd6c67bf283f3b5307ee",
-    "E_内核_engine/E.03_schema_注册与校验/E.03.02_类型检查与_T_推断.md": "sha256:3046a312995d00efa61863a49dcc573ba2ce70a03aa528b84fd22b817be3c6c1",
+    "E_内核_engine/E.03_schema_注册与校验/E.03.02_类型检查与_T_推断.md": "sha256:c09295ec53374e1c4ce83ac52f1c87abf5151ef20943940444d33a9955227dc1",
     "E_内核_engine/E.03_schema_注册与校验/E.03_schema_注册与校验.md": "sha256:e81ab276c6d9d39dbdd6e67a8e4348b142e5050fc9f986549eab4290e96196d7",
     "E_内核_engine/E.04_ext_扩展包加载.md": "sha256:ec7e876e0011e5569017520b3c74bb79cd68a1f3eff4e2f218faea0569aa264a",
     "E_内核_engine/E.05_op_Op_引擎/E.05.01_应用_Apply.md": "sha256:fa29067b4bc9f9cd20981796c949142b0a88853a8d1715a0a2f449fee9ee4c86",

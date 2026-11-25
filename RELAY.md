@@ -18,6 +18,20 @@
 
 ---
 
+## 2026-11-25 20:50 · Quick（AWS Quick） · 冻结叶子复查（第 ①b 片合并后 / K259 之后），代码不用改
+- 依据：设计仓库提交 49f654e；`P.09` K259
+- 完成：`relay stale` 列出 11 个冻结叶子，依据里改过的只有 `E.03.02`、`E.03.03` 两份（K259 的改动和第 ①b 片合并后的冻结记录），逐份看了改动，代码都不用改：
+  - `E.03.02` §5（`C.02.03`、`C.03.02`、`C.03.05`、`C.04.01`、`C.04.02`、`C.04.03`、`E.02.01`、`E.03.01`）：入口端口节点找不到来源时按 `任意`。实现在 `E.03.02` 自己的 `infer.go`（修复提交 `3d3cbb9`，已随 `e662c6d` 合并）；节点定义、类型声明、`aggregate_ops.yaml`、`assign_vectors.json`、注册表都不变。
+  - `E.03.03` §5、实施卡（`C.01`、`C.02.03`、`C.02.04`、`E.02.01`、`E.02.02`）：V14 只管内核锁定的端口、别的 C2 报 V06；V03、V05 写全；增量的范围、删除时退回全量、`ForRun`；`T22` 允许 warn、`T25` 改用例。都是校验器自己的实现和测试（已随 `e662c6d` 合并）；`graph.schema.json`、`container_rules.yaml`、`schema/examples/` 的图和 `semantic/manifest.yaml` 都没改，`engine/graph` 不受影响。
+  - 两份文档最后一行是"状态改为冻结"的记录，不涉及代码。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`stale --accept` 逐个更新依据后，`relay stale` 应为空（验证者：Codex）
+- 评审：不适用
+- 提交 / 推送：验证者提交 / 推送
+
 ## 2026-11-25 17:50 · G.05.05.01 · Quick（AWS Quick） · 交付（M1 第 ①b 片 m1-validate）
 - 依据：设计仓库（见 docs/relay/G.05.05.01.json）；`P.09` K256
 - 完成：实施卡全部。`tools/lint/typenamecheck/main.go` 整体替换 `O.01` 留下的桩（`STUB(G.05.05)`）：扫描 `engine/sched`、`engine/schema`、`engine/run`（不存在的跳过）的非测试 Go 文件，跳过 `testdata/`；`==`、`!=`、带标签的 `switch` 的 `case`、`strings.HasPrefix` / `HasSuffix` / `Contains` / `EqualFold` 的操作数是节点类型名字面量或 `gen.NodeType*` 常量（包括包一层转换、括号）时报出文件、行号和那一行代码。类型名读 `schema/builtin/nodedefs/*.yaml` 的 `name`，读不到时读 `gen/consts.go` 的 `NodeType*` 常量。`docs/checks.md` §3 删掉 typenamecheck 那一行。测试 `G050501-T1`–`T3`，另加解析失败退出码 2。
