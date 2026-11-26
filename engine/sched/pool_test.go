@@ -148,4 +148,32 @@ func TestPools(t *testing.T) {
 			t.Errorf("一秒后应当拿到：%v", err)
 		}
 	})
+
+	t.Run("E1502-T5 降速", func(t *testing.T) {
+		v := NewVirtualClock(t0)
+		p := NewPools(Config{Default: PoolConfig{PerMinute: 60, Burst: 1}}, v).Snapshot().Get("llm:p/m")
+		rel, err := p.Acquire(context.Background(), nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		rel()
+		p.Penalize(0.5, time.Minute)
+		v.Advance(time.Second)
+		if p.Ready() {
+			t.Error("降速一半后 1 秒只补了半个令牌，不应当 Ready")
+		}
+		v.Advance(time.Second)
+		if !p.Ready() {
+			t.Error("降速一半后 2 秒应当补满一个令牌")
+		}
+		v.Advance(time.Minute)
+		if _, err := p.Acquire(context.Background(), nil); err != nil {
+			t.Fatal(err)
+		}
+		v.Advance(time.Second)
+		if !p.Ready() {
+			t.Error("1 分钟后恢复原速，1 秒补一个令牌")
+		}
+		NewPools(Config{}, RealClock).Snapshot().Get("tool:x").Penalize(0.5, time.Minute) // 不限速的池不出错
+	})
 }

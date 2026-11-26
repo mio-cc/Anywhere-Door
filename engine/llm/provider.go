@@ -29,7 +29,8 @@ type ProviderConfig struct {
 	Proxy    string            `json:"proxy,omitempty"`     // http(s):// 代理；空用系统代理设置
 	Vendor   string            `json:"vendor,omitempty"`    // 从哪个常用厂商填的（E.10.05），只用于显示
 
-	// 预留给 M1（多密钥轮询、优先级、故障转移，P.09 K250）：M0 能解析、校验类型，不生效，写了就记一条 warn
+	// 多密钥轮询、优先级、故障转移（P.09 K250、K268；E.10.10、E.10.09）：写了 keys 时只用 keys；fallback 是别的已有提供方名；
+	// priority 决定被列在别人 fallback 里时的先后（大的先）；weight 还不生效，写了记 warn
 	Keys     []string `json:"keys,omitempty"`
 	Priority int      `json:"priority,omitempty"`
 	Weight   int      `json:"weight,omitempty"`
@@ -143,7 +144,11 @@ func validateProviders(ps []ProviderConfig) ([]string, error) {
 				return nil, at("paths."+k, fmt.Sprintf("%q 要以 / 开头", v))
 			}
 		}
-		if err := validateAuth(p.Auth); err != nil {
+		auth := p.Auth
+		if auth.Secret == "" && len(p.Keys) > 0 && auth.Type != AuthNone {
+			auth.Secret = p.Keys[0]
+		}
+		if err := validateAuth(auth); err != nil {
 			return nil, at("auth", err.Error())
 		}
 		for k := range p.Headers {
@@ -175,20 +180,40 @@ func validateProviders(ps []ProviderConfig) ([]string, error) {
 				return nil, at("proxy", fmt.Sprintf("%q 不是 http:// 或 https:// 开头的代理地址", p.Proxy))
 			}
 		}
-		if len(p.Keys) > 0 {
-			warn("keys（多密钥轮询）在 M0 还不生效，M1 实现")
+		keys := map[string]bool{}
+		for j, k := range p.Keys {
+			if k == "" {
+				return nil, at(fmt.Sprintf("keys[%d]", j), "不能为空")
+			}
+			if keys[k] {
+				return nil, at(fmt.Sprintf("keys[%d]", j), fmt.Sprintf("密钥名 %q 重复", k))
+			}
+			keys[k] = true
 		}
-		if p.Priority != 0 {
-			warn("priority（优先级）在 M0 还不生效，M1 实现")
+		if len(p.Keys) > 0 && p.Auth.Secret != "" {
+			warn("auth.secret 和 keys 都写了：keys 生效，auth.secret 不再使用")
 		}
 		if p.Weight != 0 {
-			warn("weight（权重）在 M0 还不生效，M1 实现")
-		}
-		if len(p.Fallback) > 0 {
-			warn("fallback（故障转移）在 M0 还不生效，M1 实现")
+			warn("weight（权重）还不生效：以后有模型分组时用（P.09 K268）")
 		}
 		if u.Scheme == "http" && p.Auth.Type != AuthNone && !isLoopback(u.Hostname()) {
 			warn("base_url 是 http:// 的远程地址，密钥会以明文发送")
+		}
+	}
+	for i, p := range ps {
+		dup := map[string]bool{}
+		for j, f := range p.Fallback {
+			at := fmt.Sprintf("llm: 模型提供方 #%d（%s）的 fallback[%d]：", i+1, p.Name, j)
+			if f == p.Name {
+				return nil, fmt.Errorf("%s不能指向自己", at)
+			}
+			if dup[f] {
+				return nil, fmt.Errorf("%s%q 重复", at, f)
+			}
+			if _, ok := seen[f]; !ok {
+				return nil, fmt.Errorf("%s没有名为 %q 的提供方", at, f)
+			}
+			dup[f] = true
 		}
 	}
 	return warns, nil

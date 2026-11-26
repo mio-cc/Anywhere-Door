@@ -5,6 +5,7 @@ import (
 	"maps"
 	"sync"
 	"sync/atomic"
+	"time"
 )
 
 // sem 是计数信号量：channel 的容量就是上限。
@@ -200,4 +201,11 @@ func (p *Pool) Ready() bool {
 		}
 	}
 	return p.rate == nil || p.rate.Ready()
+}
+
+// Penalize 临时降低这个池的速率（模型返回 429 时由调用外层调用，E.10.09）；不限速的池什么也不做。
+func (p *Pool) Penalize(factor float64, d time.Duration) {
+	if p.rate != nil {
+		p.rate.Penalize(factor, d)
+	}
 }

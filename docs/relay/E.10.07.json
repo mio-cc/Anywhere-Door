@@ -1,0 +1,24 @@
+{
+  "leaf": "E.10.07",
+  "branch": "slice/m1-llm",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-26T08:21:48Z",
+  "docs_commit": "423e24cde174337a87b175b981380d27b33752bb",
+  "docs": {
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.09_obs_可观测/E.09.03_成本累计与价格表.md": "sha256:6f95672692adc816cc7d828c389eac534f62038da61495d4ee0c8723aa40bef1",
+    "E_内核_engine/E.10_llm_模型适配/E.10.07_Token_计数.md": "sha256:c17254bb642d78aecfa6ddf33cf545c1433b95fb8e252b97b2e840441e763f9c",
+    "E_内核_engine/E.10_llm_模型适配/E.10_llm_模型适配.md": "sha256:f97f6376bd1cf524fdb673965be6f4caceff3edc2e00fccd02b544285fcfb362",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "delivered",
+  "slice": "m1-llm",
+  "base": "21a654926fa23141c997ca40f3e971af45a73335",
+  "head": "9d75fc77c2f9ee903903883c86cd319138c10c79"
+}

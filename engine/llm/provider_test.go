@@ -53,15 +53,31 @@ func TestParseProviders(t *testing.T) {
 			t.Errorf("错误应当写明是第 2 个提供方 q：%v", err)
 		}
 
-		// 预留字段能解析，各记一条 warn
-		_, warns, err = ParseProviders([]byte("[" + base(`,"keys":["a","b"],"priority":1,"weight":3,"fallback":["q"]`) + "]"))
-		if err != nil || len(warns) != 4 {
-			t.Errorf("keys、priority、weight、fallback 各记一条 warn：%v %v", warns, err)
+		// 多密钥、优先级、故障转移（K268）：能解析；只有 weight 记 warn；fallback 要指向别的已有提供方
+		q := `{"name":"q","protocol":"chat_completions","base_url":"https://q.example","auth":{"type":"none"}}`
+		_, warns, err = ParseProviders([]byte("[" + base(`,"keys":["a","b"],"priority":1,"weight":3,"fallback":["q"]`) + "," + q + "]"))
+		if err != nil || len(warns) != 1 || !strings.Contains(warns[0], "weight") {
+			t.Errorf("只有 weight 记一条 warn：%v %v", warns, err)
 		}
-		for _, k := range []string{"keys", "priority", "weight", "fallback"} {
-			if !strings.Contains(strings.Join(warns, "\n"), k) {
-				t.Errorf("warn 里应当提到 %s：%v", k, warns)
+		for _, c := range []struct{ name, extra, want string }{
+			{"fallback 指向不存在的提供方", `,"fallback":["nope"]`, "nope"},
+			{"fallback 指向自己", `,"fallback":["p"]`, "自己"},
+			{"fallback 重复", `,"fallback":["q","q"]`, "重复"},
+			{"keys 有空名", `,"keys":["a",""]`, "keys[1]"},
+			{"keys 重名", `,"keys":["a","a"]`, "重复"},
+		} {
+			if _, _, err := ParseProviders([]byte("[" + base(c.extra) + "," + q + "]")); err == nil || !strings.Contains(err.Error(), c.want) {
+				t.Errorf("%s 应当报错（含 %q）：%v", c.name, c.want, err)
 			}
+		}
+		// 写了 keys 可以不写 auth.secret；两个都写记 warn
+		kp := `[{"name":"k","protocol":"chat_completions","base_url":"https://k.example","auth":{"type":"bearer"},"keys":["a"]}]`
+		if _, warns, err := ParseProviders([]byte(kp)); err != nil || len(warns) != 0 {
+			t.Errorf("写了 keys 时可以不写 auth.secret：%v %v", warns, err)
+		}
+		kp2 := `[{"name":"k","protocol":"chat_completions","base_url":"https://k.example","auth":{"type":"bearer","secret":"s"},"keys":["a"]}]`
+		if _, warns, _ := ParseProviders([]byte(kp2)); len(warns) != 1 || !strings.Contains(warns[0], "auth.secret") {
+			t.Errorf("auth.secret 和 keys 都写记 warn：%v", warns)
 		}
 		// http:// 加远程主机加鉴权记 warn；本机不记
 		_, warns, _ = ParseProviders([]byte(`[{"name":"p","protocol":"chat_completions","base_url":"http://10.0.0.5:8000/v1","auth":{"type":"bearer","secret":"k"}}]`))

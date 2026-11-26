@@ -1,0 +1,28 @@
+{
+  "leaf": "E.10.09",
+  "branch": "slice/m1-llm",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-26T08:40:26Z",
+  "docs_commit": "423e24cde174337a87b175b981380d27b33752bb",
+  "docs": {
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.10_llm_模型适配/E.10.01_统一接口与提供方配置.md": "sha256:e0c46ba384e8544e8da092b6292610367a2d37c16ac4e42838c769edf34402be",
+    "E_内核_engine/E.10_llm_模型适配/E.10.09_重试_超时与限流.md": "sha256:d04fb0300d421de5f5e24c54ddfc1706eecf7f4f8ca9dcf4e4a85a0568cf571e",
+    "E_内核_engine/E.10_llm_模型适配/E.10.10_多密钥与故障转移.md": "sha256:fe9678af49223c0ee654f1ebd46b2326f9f73c0e300db4fbd9b01d265a3ff8fa",
+    "E_内核_engine/E.10_llm_模型适配/E.10_llm_模型适配.md": "sha256:f97f6376bd1cf524fdb673965be6f4caceff3edc2e00fccd02b544285fcfb362",
+    "E_内核_engine/E.14_exec_执行器/E.14.02_Agent/E.14.02_Agent.md": "sha256:c6a006bf96a66302e4b7cee2dfb2c017c053c3cb6a6dbbfe8f830fb9977ecfd8",
+    "E_内核_engine/E.15_sched_调度/E.15.02_并发与资源池.md": "sha256:d23644ef05f94bfe24f8905b6f34d13a0c809083e3d998e6c01ce22f11db9f79",
+    "E_内核_engine/E.15_sched_调度/E.15.03_令牌桶限流.md": "sha256:3f857ac56f722e92ceb66a113a3204b243096836dcea817cafca1537e07f18d1",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "delivered",
+  "slice": "m1-llm",
+  "base": "afcfa45be8026f777fbe5dfbff4020d1919904c1",
+  "head": "0586be876baea4529a706499e2747f96265c3d83"
+}

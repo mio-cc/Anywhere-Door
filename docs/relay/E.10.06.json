@@ -1,0 +1,27 @@
+{
+  "leaf": "E.10.06",
+  "branch": "slice/m1-llm",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-26T08:30:43Z",
+  "docs_commit": "423e24cde174337a87b175b981380d27b33752bb",
+  "docs": {
+    "C_契约层/C.13_内置资产格式/C.13.03_类型声明_types.md": "sha256:5068b4c6c12304f4ffe2ee96e9f1be53d0000311ff3c530ba21b3b71b0cad8c9",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.10_llm_模型适配/E.10.01_统一接口与提供方配置.md": "sha256:e0c46ba384e8544e8da092b6292610367a2d37c16ac4e42838c769edf34402be",
+    "E_内核_engine/E.10_llm_模型适配/E.10.06_结构化输出与修复.md": "sha256:e5c56d4e5881cf9aaa05930c641b2ec4ae9bd0bff4e067262892ac950cb1ed15",
+    "E_内核_engine/E.10_llm_模型适配/E.10_llm_模型适配.md": "sha256:f97f6376bd1cf524fdb673965be6f4caceff3edc2e00fccd02b544285fcfb362",
+    "E_内核_engine/E.14_exec_执行器/E.14.02_Agent/E.14.02.03_输出类型校验.md": "sha256:ed9512827a2891ed884443bc328c0162105dff3b43f63fce9ff9cb9dd95c2848",
+    "E_内核_engine/E.14_exec_执行器/E.14.02_Agent/E.14.02_Agent.md": "sha256:c6a006bf96a66302e4b7cee2dfb2c017c053c3cb6a6dbbfe8f830fb9977ecfd8",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "delivered",
+  "slice": "m1-llm",
+  "base": "9d75fc77c2f9ee903903883c86cd319138c10c79",
+  "head": "612802b4ce54ce09e83882522365a042a63df1cf"
+}

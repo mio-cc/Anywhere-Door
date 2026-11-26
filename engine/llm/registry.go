@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"net/http"
 	"regexp"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -123,6 +124,54 @@ func (r *Registry) lookup(name string) (*provider, error) {
 
 // Client 把资源节点的模型引用 {provider, model} 换成可调用的 Client（E.10.01 §5.1 第 1 步）。
 func (r *Registry) Client(providerName, model string) (Client, error) {
+	return r.clientFor(providerName, model, "")
+}
+
+// CodeKeyNotFound：ClientWithKey 给的密钥名不在提供方的 keys 里。
+const CodeKeyNotFound = "key_not_found"
+
+// ClientWithKey 同 Client，鉴权用指定的密钥名（必须在提供方的 keys 里；换密钥在 E.10.10、E.10.09）。
+func (r *Registry) ClientWithKey(providerName, model, key string) (Client, error) {
+	p, err := r.lookup(providerName)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains(p.cfg.Keys, key) {
+		return nil, &Error{Class: gen.FailureClassUserInput, Provider: p.cfg.Name, Code: CodeKeyNotFound, Message: fmt.Sprintf("提供方 %s 的 keys 里没有密钥 %s", p.cfg.Name, key)}
+	}
+	return r.clientFor(providerName, model, key)
+}
+
+// Keys 是提供方的 keys（副本）；没写或没有这个提供方时为 nil。
+func (r *Registry) Keys(providerName string) []string {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	if p := r.byName[providerName]; p != nil {
+		return slices.Clone(p.cfg.Keys)
+	}
+	return nil
+}
+
+// Fallbacks 是提供方的 fallback，按目标提供方的 priority 从大到小（一样大保持原顺序）。
+func (r *Registry) Fallbacks(providerName string) []string {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+	p := r.byName[providerName]
+	if p == nil || len(p.cfg.Fallback) == 0 {
+		return nil
+	}
+	prio := func(name string) int {
+		if q := r.byName[name]; q != nil {
+			return q.cfg.Priority
+		}
+		return 0
+	}
+	out := slices.Clone(p.cfg.Fallback)
+	slices.SortStableFunc(out, func(a, b string) int { return prio(b) - prio(a) })
+	return out
+}
+
+func (r *Registry) clientFor(providerName, model, key string) (Client, error) {
 	p, err := r.lookup(providerName)
 	if err != nil {
 		return nil, err
@@ -146,7 +195,7 @@ func (r *Registry) Client(providerName, model string) (Client, error) {
 		caps = r.caps.Lookup(p.proto.Name(), upstream)
 	}
 	caps = caps.Apply(p.cfg.Caps).Apply(entry.Caps)
-	return &client{r: r, p: p, upstream: upstream, caps: caps}, nil
+	return &client{r: r, p: p, upstream: upstream, caps: caps, key: key}, nil
 }
 
 // ListModels 取上游的模型列表（"测试连接"用）。
@@ -187,6 +236,7 @@ type client struct {
 	p        *provider
 	upstream string
 	caps     Caps
+	key      string // ClientWithKey 指定的密钥名；空：keys 的第一个，没写 keys 时用 auth.secret
 }
 
 func (c *client) Caps() Caps { return c.caps }
@@ -296,6 +346,11 @@ func (c *client) newRequest(ctx context.Context, method, pathKey string, body []
 			d.Name = auth.Name
 		}
 		auth = d
+	}
+	if c.key != "" {
+		auth.Secret = c.key
+	} else if len(cfg.Keys) > 0 {
+		auth.Secret = cfg.Keys[0]
 	}
 	var key string
 	if auth.Type != AuthNone {

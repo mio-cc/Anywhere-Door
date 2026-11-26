@@ -18,6 +18,82 @@
 
 ---
 
+## 2026-11-26 17:30 · E.10.09 · Quick（AWS Quick） · 交付（M1 第 ⑤a 片 m1-llm）
+- 依据：设计仓库（见 docs/relay/E.10.09.json）；`P.09` K268
+- 完成：实施卡全部。`engine/llm/wrap.go`（`Limiter`、`Source`、`Target`、`CallRecord`、`Hooks`、`WrapOpts`、`Wrap`）、`retry.go`（`RetryCfg`、`DefaultRetry`）、`breaker.go`（`Breakers`、`Breaker`、`Outcome`、状态常量）。测试 `wrap_test.go`（外部测试包，用 `fake` 和 `sched.Pool`）：`E1009-T1`–`T6`。
+- 自主决定的细节：
+  - 熔断在拿到资源池名额之后、发请求之前判断（半开时的试探名额不会因为排队被占着）；设计文档 §4 的调用链已按这个顺序写。
+  - 被限流 / 鉴权失败的密钥总是冷却；还有没试过的密钥才马上换，都试过了按重试规则走（`auth_denied` 不重试、直接转移）。
+  - `Wrap` 时取一次主提供方的 Client 拿 `Caps`，拿不到就报错。
+  - 提前 `Close` 记一次 `cancelled`，熔断不计；第一个片段是 `Done` 时也照常记录。
+  - `Retry.Max ≤ 0` 用整份 `DefaultRetry`；自己给的 `RetryCfg` 没写 `MaxRetryAfter` 时任何 `Retry-After` 都不等。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+## 2026-11-26 17:30 · E.10.10 · Quick（AWS Quick） · 交付（M1 第 ⑤a 片 m1-llm）
+- 依据：设计仓库（见 docs/relay/E.10.10.json）；`P.09` K268
+- 完成：实施卡全部。`engine/llm/keys.go`（`KeyRing`、`CoolFor`、`CodeKeysCooling`）。测试 `keys_test.go`：`E1010-T1`–`T3`。
+- 自主决定的细节：
+  - 冷却表的键是"提供方 + 密钥名"；`Pick` 遇到已到期的冷却顺手删掉。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+## 2026-11-26 17:30 · E.10.06 · Quick（AWS Quick） · 交付（M1 第 ⑤a 片 m1-llm）
+- 依据：设计仓库（见 docs/relay/E.10.06.json）；`P.09` K268
+- 完成：实施卡全部。`engine/llm/structured/structured.go`（`Strategy`、`Pick`、`Next`、`Prepare`、`Decode`、`Feedback`、`Validator`、宽松修正、校验错误整理）、`repair.go`（`Repair` 和 5 类修复）。测试 `structured_test.go`：`E1006-T1`–`T3`。
+- 自主决定的细节：
+  - 修复按字节扫一遍：去注释、单引号转双引号（里面的 `"` 转义、`\'` 还原）、去尾逗号、到第一个块闭合为止；最后补没闭合的字符串和括号。
+  - `Decode` 里先修工具参数 / `Structured`，不成再修 `Text`；ForcedTool 取不到工具调用时也看 `Structured`（请求里设了 `Output` 时 `engine/llm` 已经取出）。
+  - 数字字符串按 JSON 数字的写法判断（`integer` 不能有小数点和指数），避免 `NaN` 之类。
+  - 校验错误按最底层原因列出，位置用 `InstanceLocation`，说明从错误文本里对应的那一行取（取不到时写"不符合要求"）。
+  - 结果用 `json.Marshal` 重新序列化：对象的键按字母排序，语义不变。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+## 2026-11-26 17:30 · E.10.07 · Quick（AWS Quick） · 交付（M1 第 ⑤a 片 m1-llm）
+- 依据：设计仓库（见 docs/relay/E.10.07.json）；`P.09` K268
+- 完成：实施卡全部。`engine/llm/tokens/tokens.go`（`Counter`、`Approx`、`For`、`Stats`）。测试 `tokens_test.go`：`E1007-T2`、`T3`（`T1` 在 M5）。
+- 自主决定的细节：
+  - 中日韩字符用 `unicode.Han`、`Hiragana`、`Katakana`、`Hangul` 判断；其余字符（含空格、标点）都按 4 个 1 算。
+  - 工具调用按名字和参数文本各自 `Approx` 相加；`Stats` 方法对 nil 也能调用（比值为 1）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+## 2026-11-26 17:30 · E.10.01 · Quick（AWS Quick） · 交付（M1 第 ⑤a 片 m1-llm）
+- 依据：设计仓库（见 docs/relay/E.10.01.json）；`P.09` K268
+- 完成：冻结后修改（`G.02.06-R21`）。`registry.go`：`ClientWithKey`、`Keys`、`Fallbacks`、`CodeKeyNotFound`；`Client` 改为调用内部的 `clientFor`；请求鉴权：指定了密钥用它，否则写了 `keys` 用第一个。`provider.go`：`keys` 空名 / 重名报错、写了 `keys` 时可以不写 `auth.secret`（两个都写记 warn）、`fallback` 指向不存在 / 自己 / 重复报错，去掉 `keys`、`priority`、`fallback` 的 M0 warn，`weight` 的 warn 改了说法。`provider_test.go` 改 `E1001-T3` 那一段；新文件 `registry_test.go`：`E1001-T8`。
+- 自主决定的细节：
+  - `fallback` 的检查放在逐个校验之后再走一遍（要知道全部提供方的名字）。
+  - `Fallbacks` 在读锁里按目标的 `priority` 稳定排序；目标不存在时按 0（校验已经保证存在）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 17:30 · E.15.02 · Quick（AWS Quick） · 交付（M1 第 ⑤a 片 m1-llm）
+- 依据：设计仓库（见 docs/relay/E.15.02.json）；`P.09` K268
+- 完成：冻结后修改（`G.02.06-R21`）。`engine/sched/pool.go` 加 `Pool.Penalize`（不限速的池什么也不做），`pool_test.go` 加 `E1502-T5`。原有代码和测试不变。
+- 自主决定的细节：无
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
 ## 2026-11-26 15:40 · Quick（AWS Quick） · 冻结叶子复查（第 ③、④ 片合并后 / K261–K266 之后），代码不用改
 - 依据：设计仓库提交 f988a8b；`P.09` K261–K267
 - 完成：`relay stale` 列出 17 个冻结叶子，依据里改过的是 `E.05`、`E.05.01`、`E.05.03`（改名）、`C.05.04` §3、`E.17.01` §5、`E.02` §3、`E.08`、`E.09.01`、`E.16.01` §5，逐份看了改动，代码都不用改：
