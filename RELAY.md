@@ -18,6 +18,18 @@
 
 ---
 
+## 2026-11-27 01:11 · m1-tools-ctx · Quick（AWS Quick） · 合并（第 ⑤b 片）
+- 依据：设计仓库 `3d4ce76`（`P.09` K271–K274）
+- 完成：评审第 18 行按 K274 修复（`5511cc5`），Codex 复核通过（`be62975`）；`relay slice m1-tools-ctx` 通过；squash 合并 `615eb8b`，9 个叶子领取记录标为 `merged`；片分支已删
+- 合并时 `RELAY.md` 和第 ⑧ 片的记录有三处冲突，两边都保留、本片在上；Codex 发现 git 把三个领取条目相同的尾部五行当成共享上下文，已补回，相对两边原版零删除
+- 进行中：无
+- 下一步：设计仓库冻结这 9 个叶子；`relay stale`；第 ⑥ 片 `m1-exec` 复查
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：通过（验证者：Codex）
+- 评审：`docs/relay/m1-tools-ctx.review.md` 18 条全部符合（评审者：Codex）
+- 提交 / 推送：`615eb8b` / 已推送
+
 ## 2026-11-27 00:17 · E.13.05 · Quick（AWS Quick） · 续做（第 ⑤b 片整片评审第 18 行与 3 条建议，K274）
 - 依据：设计仓库 K274 提交（验证者 `--resume --accept-docs` 后见 docs/relay/E.13.05.json）；`P.09` K274
 - 完成：

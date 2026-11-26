@@ -2,7 +2,7 @@
 
 - 评审者：Codex · 2026-11-26
 - 依据：设计仓库 main（`2f5fa8b`）；各叶子的任务包和领取记录 `docs/relay/E.11.02.json`、`E.11.01.json`、`E.11.08.json`、`E.13.03.json`、`E.13.01.json`、`E.13.06.json`、`E.13.02.json`、`E.13.05.json`；各叶子的交付记录和自主决定见 `RELAY.md`；裁决见 `P.09` K271、K272、K273
-- 结论：18 项里 17 项符合、1 项有疑问（第 18 行：`engine/tools/handle.go` 成功路径写账本用调用方 ctx、失败路径用 `context.WithoutCancel`）。整片检查（`relay slice m1-tools-ctx`、GOOS=linux/darwin 的 `go vet ./engine/...`、`tools/ci/deps`、govulncheck、gitleaks）全部通过。因第 18 行有疑问，按用户要求停下等处理，**不合并**。
+- 结论：18 项全部符合（第 18 行按 P.09 K274 修复后复核通过）。整片检查全部通过，已合并 615eb8b
 
 | # | 实施卡 / 小节 | 结论 | 说明 |
 |---|---|---|---|
