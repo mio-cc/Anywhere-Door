@@ -1,0 +1,42 @@
+/* 空状态（W.08.05 §6.6、U.14.02、U.23-R13） */
+.hx-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--hx-s-4);
+  padding: var(--hx-s-8) var(--hx-s-6);
+}
+
+.hx-empty__icon {
+  display: inline-flex;
+  color: var(--hx-text-3);
+}
+
+.hx-empty__title {
+  margin: 0;
+  font-size: var(--hx-fs-14);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--hx-text-1);
+}
+
+.hx-empty--page .hx-empty__title {
+  font-size: var(--hx-fs-20);
+}
+
+.hx-empty__desc {
+  margin: 0;
+  font-size: var(--hx-fs-13);
+  line-height: 1.5;
+  color: var(--hx-text-2);
+}
+
+.hx-empty__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hx-s-3);
+  margin-top: var(--hx-s-2);
+}

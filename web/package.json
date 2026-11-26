@@ -19,6 +19,7 @@
     "test:visual": "node scripts/stub.mjs test:visual"
   },
   "dependencies": {
+    "@floating-ui/dom": "1.8.0",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },

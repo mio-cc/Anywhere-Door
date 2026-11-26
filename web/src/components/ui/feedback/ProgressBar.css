@@ -1,0 +1,36 @@
+/* 进度条（W.08.05 §6.5、U.07.01-R2） */
+.hx-progress {
+  position: relative;
+  width: 100%;
+  height: var(--hx-s-2);
+  background-color: var(--hx-line-2);
+  border-radius: var(--hx-r-full);
+  overflow: hidden;
+}
+
+.hx-progress__fill {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--hx-r-full);
+  transform-origin: left center;
+  transform: scaleX(var(--_v, 0));
+  transition-property: transform;
+  transition-duration: var(--hx-t-2);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-progress--accent .hx-progress__fill {
+  background-color: var(--hx-accent);
+}
+
+.hx-progress--ok .hx-progress__fill {
+  background-color: var(--hx-ok);
+}
+
+.hx-progress--danger .hx-progress__fill {
+  background-color: var(--hx-danger);
+}
+
+html[data-motion='reduce'] .hx-progress__fill {
+  transition-duration: 0s;
+}

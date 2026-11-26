@@ -1,0 +1,106 @@
+/* 选择列表 Picker（W.08.03 §6.5、U.11 §2） */
+.hx-picker {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hx-picker__scroll--sm {
+  max-height: calc(var(--hx-s-10) * 5);
+}
+
+.hx-picker__scroll--md {
+  max-height: calc(var(--hx-s-10) * 6 + var(--hx-s-9));
+}
+
+.hx-picker__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.hx-picker__group {
+  display: flex;
+  align-items: center;
+  height: var(--hx-ctl-h-sm);
+  padding: 0 var(--hx-s-4);
+  font-size: var(--hx-fs-11);
+  color: var(--hx-text-3);
+}
+
+.hx-picker__item {
+  display: flex;
+  align-items: center;
+  gap: var(--hx-s-3);
+  height: var(--hx-s-9);
+  padding: 0 var(--hx-s-4);
+  border-radius: var(--hx-r-sm);
+  color: var(--hx-text-1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.hx-picker__item--desc {
+  height: calc(var(--hx-s-9) + var(--hx-s-5));
+}
+
+.hx-picker__item.is-active {
+  background-color: var(--hx-bg-4);
+}
+
+.hx-picker__item.is-disabled {
+  color: var(--hx-text-3);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hx-picker__icon {
+  display: inline-flex;
+  color: var(--hx-text-2);
+  flex-shrink: 0;
+}
+
+.hx-picker__text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.hx-picker__label {
+  font-size: var(--hx-fs-13);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hx-picker__desc {
+  font-size: var(--hx-fs-11);
+  line-height: 1.3;
+  color: var(--hx-text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hx-picker__right {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: var(--hx-s-3);
+  color: var(--hx-text-3);
+}
+
+.hx-picker__empty {
+  padding: var(--hx-s-5) var(--hx-s-4);
+  font-size: var(--hx-fs-12);
+  color: var(--hx-text-3);
+  text-align: center;
+}
+
+.hx-picker__footer {
+  padding: var(--hx-s-3) var(--hx-s-4) var(--hx-s-2);
+  border-top: 1px solid var(--hx-line-1);
+  font-size: var(--hx-fs-11);
+  color: var(--hx-text-3);
+}

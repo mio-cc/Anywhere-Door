@@ -1,0 +1,42 @@
+/* 流动高亮分组（W.08.01 §6.5、U.23-R21） */
+.hx-glide {
+  position: relative;
+}
+
+.hx-glide > :not(.hx-glide__block) {
+  position: relative;
+}
+
+.hx-glide__block {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+  opacity: 0;
+  background-color: var(--hx-bg-glide);
+  border-radius: var(--hx-r-md);
+  transition-property: transform, opacity;
+  transition-duration: var(--hx-t-glide), var(--hx-t-2);
+  transition-timing-function: var(--hx-ease-out), var(--hx-ease);
+}
+
+.hx-glide__block.is-instant {
+  transition-property: opacity;
+  transition-duration: var(--hx-t-2);
+}
+
+.hx-glide__block.is-on {
+  opacity: 1;
+}
+
+.hx-glide--icon .hx-iconbtn:hover:not([aria-pressed='true']),
+.hx-glide--row .hx-btn--ghost:hover {
+  background-color: transparent;
+}
+
+html[data-motion='reduce'] .hx-glide__block {
+  transition-property: opacity;
+  transition-duration: var(--hx-t-2);
+  transition-timing-function: var(--hx-ease);
+}

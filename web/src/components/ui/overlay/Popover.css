@@ -1,0 +1,31 @@
+/* 锚定弹层（W.08.04 §6.2、U.23-R6） */
+.hx-pop {
+  position: fixed;
+  background-color: var(--hx-bg-2);
+  box-shadow: var(--hx-shadow-pop);
+  border-radius: var(--hx-r-lg);
+  color: var(--hx-text-1);
+}
+
+.hx-pop--pad-none {
+  padding: 0;
+}
+
+.hx-pop--pad-sm {
+  padding: var(--hx-s-2);
+}
+
+.hx-pop--pad-md {
+  padding: var(--hx-s-5);
+}
+
+.hx-pop--glass {
+  background-color: var(--hx-bg-glass);
+  backdrop-filter: blur(var(--hx-blur-glass)) saturate(1.6);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .hx-pop--glass {
+    background-color: var(--hx-bg-2);
+  }
+}

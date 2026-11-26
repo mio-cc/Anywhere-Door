@@ -1,0 +1,7 @@
+/* 字段级错误行（W.08.02 §6.1、U.14.03 §1） */
+.hx-ferr {
+  margin: var(--hx-s-2) 0 0;
+  font-size: var(--hx-fs-12);
+  line-height: 1.4;
+  color: var(--hx-danger);
+}

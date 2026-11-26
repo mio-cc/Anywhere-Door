@@ -1,0 +1,52 @@
+/* 徽标（W.08.05 §6.2、U.03.02-R1） */
+.hx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hx-s-2);
+  height: calc(var(--hx-s-7) - var(--hx-s-1));
+  padding: 0 var(--hx-s-3);
+  border-radius: var(--hx-r-xs);
+  font-family: var(--hx-font-mono);
+  font-size: var(--hx-fs-10);
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hx-badge__dot {
+  width: var(--hx-s-3);
+  height: var(--hx-s-3);
+  border-radius: var(--hx-r-full);
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.hx-badge--neutral {
+  background-color: var(--hx-bg-5);
+  color: var(--hx-text-2);
+}
+
+.hx-badge--accent {
+  background-color: var(--hx-accent-weak);
+  color: var(--hx-accent-strong);
+}
+
+.hx-badge--ok {
+  background-color: var(--hx-ok-weak);
+  color: var(--hx-ok);
+}
+
+.hx-badge--danger {
+  background-color: var(--hx-danger-weak);
+  color: var(--hx-danger);
+}
+
+.hx-badge--wait {
+  background-color: var(--hx-wait-weak);
+  color: var(--hx-wait);
+}
+
+.hx-badge--model {
+  background-color: var(--hx-model-weak);
+  color: var(--hx-model);
+}

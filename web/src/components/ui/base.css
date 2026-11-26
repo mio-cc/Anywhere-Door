@@ -1,0 +1,26 @@
+/* 基础组件库共用类（W.08 §6.1、W.08.01 §4.3） */
+.hx-focusring:focus-visible {
+  outline: var(--hx-s-1) solid var(--hx-focus);
+  outline-offset: var(--hx-s-1);
+}
+
+.hx-ctl {
+  --_h: var(--hx-ctl-h);
+  --_fs: var(--hx-fs-13);
+  --_ic: var(--hx-s-6);
+  --_px: var(--hx-s-5);
+  height: var(--_h);
+  font-size: var(--_fs);
+}
+
+.hx-ctl--sm {
+  --_h: var(--hx-ctl-h-sm);
+  --_fs: var(--hx-fs-12);
+  --_ic: calc(var(--hx-s-6) - var(--hx-s-1));
+  --_px: var(--hx-s-4);
+}
+
+.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

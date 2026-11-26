@@ -1,0 +1,72 @@
+/* 搜索框（W.08.02 §6.6、demo 17_fix.css） */
+.hx-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  border-radius: var(--hx-r-sm);
+  transition-property: background-color;
+  transition-duration: var(--hx-t-1);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-search:hover {
+  background-color: var(--hx-bg-4);
+}
+
+.hx-search:focus-within {
+  background-color: var(--hx-bg-2);
+}
+
+.hx-search__icon {
+  position: absolute;
+  left: var(--hx-s-4);
+  display: inline-flex;
+  color: var(--hx-text-3);
+  pointer-events: none;
+}
+
+.hx-search__el {
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--hx-s-8) 0 calc(var(--hx-s-4) + var(--hx-s-6) + var(--hx-s-2));
+  border: 0;
+  border-radius: var(--hx-r-sm);
+  background-color: transparent;
+  color: var(--hx-text-1);
+  font-family: var(--hx-font-ui);
+  font-size: inherit;
+  min-width: 0;
+}
+
+.hx-search__el::placeholder {
+  color: var(--hx-text-3);
+}
+
+.hx-search__clear {
+  position: absolute;
+  right: var(--hx-s-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--hx-ctl-h-sm);
+  height: var(--hx-ctl-h-sm);
+  padding: 0;
+  border: 0;
+  border-radius: var(--hx-r-sm);
+  background-color: transparent;
+  color: var(--hx-text-3);
+  cursor: pointer;
+}
+
+.hx-search__clear:hover {
+  color: var(--hx-text-1);
+}
+
+.hx-search__kbd {
+  position: absolute;
+  right: var(--hx-s-4);
+  display: inline-flex;
+  pointer-events: none;
+}

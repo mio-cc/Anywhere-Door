@@ -1,0 +1,45 @@
+/* 确认框（W.08.04 §6.4、U.11 §2） */
+.hx-dialog__wrap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--hx-s-6);
+  pointer-events: none;
+}
+
+.hx-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hx-s-5);
+  max-width: 100%;
+  padding: var(--hx-s-8);
+  background-color: var(--hx-bg-2);
+  color: var(--hx-text-1);
+  box-shadow: var(--hx-shadow-pop);
+  border-radius: var(--hx-r-xl);
+  pointer-events: auto;
+}
+
+.hx-dialog__title {
+  margin: 0;
+  font-size: var(--hx-fs-16);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--hx-text-1);
+}
+
+.hx-dialog__body {
+  font-size: var(--hx-fs-13);
+  line-height: 1.55;
+  color: var(--hx-text-2);
+}
+
+.hx-dialog__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--hx-s-3);
+  margin-top: var(--hx-s-2);
+}

@@ -1,0 +1,63 @@
+/* 状态点（W.08.05 §6.3、U.16-R2、U.07.03） */
+@keyframes hx-dot-breath {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.45);
+  }
+}
+
+.hx-dot {
+  position: relative;
+  display: inline-block;
+  width: var(--hx-s-4);
+  height: var(--hx-s-4);
+  flex-shrink: 0;
+}
+
+.hx-dot--idle {
+  border-radius: var(--hx-r-full);
+  color: var(--hx-text-3);
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.hx-dot--running {
+  border-radius: var(--hx-r-full);
+  background-color: var(--hx-accent);
+  color: var(--hx-accent);
+}
+
+.hx-dot--running.is-breathing::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--hx-s-1) * -1);
+  border-radius: var(--hx-r-full);
+  box-shadow: 0 0 0 1px currentColor;
+  animation: hx-dot-breath var(--hx-t-breath) var(--hx-ease) infinite;
+}
+
+.hx-dot--waiting {
+  border-radius: var(--hx-r-full);
+  color: var(--hx-wait);
+  box-shadow: inset 0 0 0 var(--hx-s-1) currentColor;
+}
+
+.hx-dot--failed {
+  border-radius: var(--hx-r-xs);
+  background-color: var(--hx-danger);
+  transform: scale(0.85) rotate(45deg);
+}
+
+.hx-dot--done {
+  border-radius: var(--hx-r-full);
+  background-color: var(--hx-ok);
+}
+
+html[data-motion='reduce'] .hx-dot--running.is-breathing::after {
+  animation: none;
+  display: none;
+}

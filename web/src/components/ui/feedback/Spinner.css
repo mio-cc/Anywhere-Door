@@ -1,0 +1,52 @@
+/* 旋转弧（W.08.05 §6.4、U.14.01、U.07.04） */
+@keyframes hx-spin-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hx-spin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.hx-spin--12 {
+  width: var(--hx-s-5);
+  height: var(--hx-s-5);
+}
+
+.hx-spin--16 {
+  width: var(--hx-s-6);
+  height: var(--hx-s-6);
+}
+
+.hx-spin__svg {
+  width: 100%;
+  height: 100%;
+  animation: hx-spin-rotate var(--hx-t-spin) linear infinite;
+}
+
+.hx-spin__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+html[data-motion='reduce'] .hx-spin__svg {
+  animation: none;
+}
+
+html[data-motion='reduce'] .hx-spin__arc {
+  stroke-dasharray: 17.6 35.2;
+}

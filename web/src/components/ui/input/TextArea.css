@@ -1,0 +1,72 @@
+/* 多行输入（W.08.02 §6.3） */
+.hx-textarea__field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hx-textarea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--hx-bg-4);
+  border-radius: var(--hx-r-sm);
+  transition-property: background-color;
+  transition-duration: var(--hx-t-1);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-textarea:hover:not(.is-disabled) {
+  background-color: var(--hx-bg-5);
+}
+
+.hx-textarea:focus-within:not(.is-disabled) {
+  background-color: var(--hx-bg-2);
+}
+
+.hx-textarea.is-invalid {
+  background-color: var(--hx-danger-weak);
+}
+
+.hx-textarea__el {
+  width: 100%;
+  padding: var(--hx-s-3) var(--hx-s-4);
+  border: 0;
+  border-radius: var(--hx-r-sm);
+  background-color: transparent;
+  color: var(--hx-text-1);
+  font-family: var(--hx-font-ui);
+  font-size: var(--hx-fs-13);
+  line-height: 1.55;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.hx-textarea--mono .hx-textarea__el {
+  font-family: var(--hx-font-mono);
+  font-size: var(--hx-fs-12);
+}
+
+.hx-textarea__el::placeholder {
+  color: var(--hx-text-3);
+}
+
+.hx-textarea__lock {
+  position: absolute;
+  top: var(--hx-s-3);
+  right: var(--hx-s-4);
+  color: var(--hx-text-3);
+}
+
+.hx-textarea__counter {
+  align-self: flex-end;
+  padding: 0 var(--hx-s-4) var(--hx-s-2);
+  font-family: var(--hx-font-mono);
+  font-size: var(--hx-fs-11);
+  color: var(--hx-text-3);
+}
+
+.hx-textarea__counter.is-over {
+  color: var(--hx-danger);
+}

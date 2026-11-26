@@ -1,0 +1,60 @@
+/* 单行输入（W.08.02 §6.1–§6.2、U.11 §1、U.23-R5） */
+.hx-input__field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hx-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--hx-bg-4);
+  border-radius: var(--hx-r-sm);
+  transition-property: background-color;
+  transition-duration: var(--hx-t-1);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-input:hover:not(.is-disabled) {
+  background-color: var(--hx-bg-5);
+}
+
+.hx-input:focus-within:not(.is-disabled) {
+  background-color: var(--hx-bg-2);
+}
+
+.hx-input.is-invalid {
+  background-color: var(--hx-danger-weak);
+}
+
+.hx-input__el {
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--hx-s-4);
+  border: 0;
+  border-radius: var(--hx-r-sm);
+  background-color: transparent;
+  color: var(--hx-text-1);
+  font-family: var(--hx-font-ui);
+  font-size: inherit;
+  min-width: 0;
+}
+
+.hx-input--mono .hx-input__el {
+  font-family: var(--hx-font-mono);
+  font-size: var(--hx-fs-12);
+}
+
+.hx-input__el::placeholder {
+  color: var(--hx-text-3);
+}
+
+.hx-input__lock {
+  display: inline-flex;
+  align-items: center;
+  padding-right: var(--hx-s-4);
+  color: var(--hx-text-3);
+  flex-shrink: 0;
+}

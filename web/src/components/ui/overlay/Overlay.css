@@ -1,0 +1,95 @@
+/* 浮层底座（W.08.04 §6.1、U.06 §3） */
+@keyframes hx-ov-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hx-ov-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hx-ov-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.hx-ov {
+  outline: none;
+}
+
+.hx-ov--pane {
+  z-index: var(--hx-z-pane);
+}
+
+.hx-ov--popover {
+  z-index: var(--hx-z-popover);
+}
+
+.hx-ov--modal {
+  z-index: var(--hx-z-modal);
+}
+
+.hx-ov--toast {
+  z-index: var(--hx-z-toast);
+}
+
+.hx-ov--tooltip {
+  z-index: var(--hx-z-tooltip);
+  pointer-events: none;
+}
+
+.hx-ov__scrim {
+  position: fixed;
+  inset: 0;
+  background-color: var(--hx-scrim);
+  animation: hx-ov-fade-in var(--hx-t-3) var(--hx-ease-out);
+}
+
+.hx-ov__scrim.is-leaving {
+  pointer-events: none;
+  animation: hx-ov-out var(--hx-t-2) var(--hx-ease-in) forwards;
+}
+
+.hx-ov.is-open.hx-ov--popover,
+.hx-ov.is-open.hx-ov--pane,
+.hx-ov.is-open.hx-ov--modal {
+  animation: hx-ov-in var(--hx-t-3) var(--hx-ease-out);
+}
+
+.hx-ov.is-open.hx-ov--tooltip {
+  animation: hx-ov-fade-in var(--hx-t-1) var(--hx-ease-out);
+}
+
+.hx-ov.is-leaving {
+  pointer-events: none;
+  animation: hx-ov-out var(--hx-t-2) var(--hx-ease-in) forwards;
+}
+
+.hx-ov.is-leaving.hx-ov--tooltip {
+  animation: hx-ov-out var(--hx-t-1) var(--hx-ease-in) forwards;
+}
+
+.hx-ov.is-reduced.is-open,
+html[data-motion='reduce'] .hx-ov.is-open {
+  animation: hx-ov-fade-in var(--hx-t-2) var(--hx-ease);
+}
+
+.hx-ov.is-reduced.is-leaving,
+html[data-motion='reduce'] .hx-ov.is-leaving {
+  animation: hx-ov-out var(--hx-t-2) var(--hx-ease) forwards;
+}

@@ -1,0 +1,130 @@
+/* 按钮（W.08.01 §6.1、U.11 §2、U.23-R2/R5） */
+.hx-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--_px);
+  border: 0;
+  border-radius: var(--hx-r-md);
+  font-family: var(--hx-font-ui);
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  transition-property: background-color, color, transform;
+  transition-duration: var(--hx-t-1);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-btn.hx-ctl--sm {
+  border-radius: var(--hx-r-sm);
+}
+
+.hx-btn--full {
+  width: 100%;
+}
+
+.hx-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hx-btn:active:not(:disabled):not([aria-disabled='true']):not(.is-loading) {
+  transform: scale(0.97);
+}
+
+html[data-motion='reduce'] .hx-btn:active {
+  transform: none;
+}
+
+.hx-btn__content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hx-s-3);
+  min-width: 0;
+}
+
+.hx-btn.hx-ctl--sm .hx-btn__content {
+  gap: var(--hx-s-2);
+}
+
+.hx-btn__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hx-btn.is-loading {
+  min-width: var(--_w);
+  cursor: default;
+}
+
+.hx-btn.is-loading .hx-btn__content {
+  visibility: hidden;
+}
+
+.hx-btn__spinner {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 变体 */
+.hx-btn--primary {
+  background-color: var(--hx-primary);
+  color: var(--hx-primary-fg);
+}
+
+.hx-btn--secondary {
+  background-color: var(--hx-bg-4);
+  color: var(--hx-text-1);
+}
+
+.hx-btn--secondary:hover:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--hx-bg-5);
+}
+
+.hx-btn--ghost {
+  background-color: transparent;
+  color: var(--hx-text-2);
+}
+
+.hx-btn--ghost:hover:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--hx-bg-4);
+  color: var(--hx-text-1);
+}
+
+.hx-btn--danger {
+  background-color: var(--hx-danger-weak);
+  color: var(--hx-danger);
+}
+
+.hx-btn--model {
+  background-color: var(--hx-model-weak);
+  color: var(--hx-model);
+}
+
+.hx-btn--primary::after,
+.hx-btn--danger::after,
+.hx-btn--model::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity;
+  transition-duration: var(--hx-t-1);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-btn--primary:hover:not(:disabled):not([aria-disabled='true'])::after,
+.hx-btn--danger:hover:not(:disabled):not([aria-disabled='true'])::after,
+.hx-btn--model:hover:not(:disabled):not([aria-disabled='true'])::after {
+  opacity: 0.08;
+}

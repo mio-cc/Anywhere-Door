@@ -18,6 +18,77 @@
 
 ---
 
+## 2026-11-27 00:00 · W.08.03 · Gemini · 交付（M1 第 ⑨b 片 m1-web-ui：W.08.04 / W.08.05 / W.08.01 / W.08.02 / W.08.03）
+- 依据：设计仓库提交（`W.08.04` / `.05` / `.01` / `.02` / `.03`，`P.09` K304）；分支基于 `slice/m1-web-assets`（`debd189`）
+- 完成：实施卡全部（5 个叶子共 67/67 实施卡测试用例全覆盖）。
+  - `W.08.04`（15/15）：安装 `@floating-ui/dom@1.8.0`；新建 `web/tests/kit/shell.ts`（`fakeEnv`）、`overlay/{UiEnv,Overlay,Popover,Menu,Dialog,Tooltip,layerStack,position,focus}` 与全套单测。
+  - `W.08.05`（12/12）：`feedback/{Toast,Badge,StatusDot,Spinner,ProgressBar,EmptyState,ScrollArea,ErrorBoundary}` 与全套单测。
+  - `W.08.01`（13/13）：`index.ts`、`types.ts`、`base.css`、`button/{Button,IconButton,Kbd}`、`icon/{Icon,iconSvg}`、`glide/{GlideGroup,glide}` 与全套单测（含 `W0801-T13` ESLint 边界测试）。
+  - `W.08.02`（14/14）：`input/{TextInput,TextArea,NumberStepper,Slider,SearchInput,FieldError,stepMath,autosize}` 与全套单测。
+  - `W.08.03`（13/13）：`select/{Select,Segmented,Switch,Tabs,Picker,listNav}` 与全套单测；在 `web/tsconfig.json` 补充 `vite/client` 类型并修复跨叶子联调类型与 React 19 hooks 规则。
+- 进行中：无
+- 下一步：跑 `relay slice m1-web-ui` 并交独立评审者（Codex CLI `zai-glm-5-3`）审查
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：全部通过（①–⑦，5 个叶子 67/67 实施卡用例覆盖，前端双时区 52 文件 121+17 全绿，Go 全仓通过；验证者：Gemini）
+- 评审：通过（`docs/relay/m1-web-ui.review.md`，三轮独立交叉评审全部 13 条返工已处理，结论允许合并；评审者：Codex CLI `zai-glm-5-3`）
+- 提交 / 推送：已提交并推送 `slice/m1-web-ui`
+
+## 2026-11-26 23:36 · W.08.03 · Gemini · 领取
+- 依据：设计仓库提交 f11d8d4（docs/relay/W.08.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 23:31 · W.08.02 · Gemini · 领取
+- 依据：设计仓库提交 f11d8d4（docs/relay/W.08.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 23:27 · W.08.01 · Gemini · 领取
+- 依据：设计仓库提交 f11d8d4（docs/relay/W.08.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 23:24 · W.08.05 · Gemini · 领取
+- 依据：设计仓库提交 f11d8d4（docs/relay/W.08.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 23:18 · W.08.04 · Gemini · 领取
+- 依据：设计仓库提交 f11d8d4（docs/relay/W.08.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-26 23:02 · C.14 · Gemini · 续做（第 ⑨a 片评审返工）
 - 依据：设计仓库提交 a8cffae（`U.03.05`、`C.14` 已同步并 `--resume --accept-docs`）；`docs/relay/m1-web-assets.review.md` 11 项返工（7 不符合 + 4 有疑问）
 - 完成：逐项修复 `tools/gen/tokens.go`（结构化 CSS 解析、精确选择器、禁止非颜色/普通声明/@规则、amber 元数据重复与 key 校验、`rgb/rgba` 支持、`tsQuote` 完整转义）、`tools/gen/icons.go`（`U.08-R1`/`R4` 线宽/圆头/DTD/处理指令/实体/严格属性白名单/有限数校验）、`tools/gen/tables.go`（`shortcuts.yaml` 键语法/修饰顺序/保留键/同层冲突/单键 `in_input` 校验）与 `tools/gen/assets_test.go`（补齐全部反例测试）；已在 `docs/relay/m1-web-assets.review.md` 写入「实施者处理」。

@@ -1,0 +1,87 @@
+/* 图标按钮（W.08.01 §6.2、U.11 §2、U.08-R5） */
+.hx-iconbtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: var(--hx-text-2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition-property: background-color, color, transform;
+  transition-duration: var(--hx-t-1);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-iconbtn--28 {
+  width: var(--hx-ctl-h);
+  height: var(--hx-ctl-h);
+  border-radius: var(--hx-r-md);
+}
+
+.hx-iconbtn--24 {
+  width: var(--hx-ctl-h-sm);
+  height: var(--hx-ctl-h-sm);
+  border-radius: var(--hx-r-sm);
+}
+
+.hx-iconbtn--quiet {
+  color: var(--hx-text-3);
+}
+
+.hx-iconbtn:hover:not(:disabled):not([aria-disabled='true']) {
+  background-color: var(--hx-bg-4);
+  color: var(--hx-text-1);
+}
+
+.hx-iconbtn:active:not(:disabled):not([aria-disabled='true']),
+.hx-iconbtn.is-pressed {
+  background-color: var(--hx-bg-5);
+  color: var(--hx-text-1);
+}
+
+.hx-iconbtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hx-iconbtn__dot {
+  position: absolute;
+  top: var(--hx-s-2);
+  right: var(--hx-s-2);
+  width: calc(var(--hx-s-3) + 1px);
+  height: calc(var(--hx-s-3) + 1px);
+  border-radius: var(--hx-r-full);
+}
+
+.hx-iconbtn__dot--accent {
+  background-color: var(--hx-accent);
+}
+
+.hx-iconbtn__dot--danger {
+  background-color: var(--hx-danger);
+}
+
+.hx-iconbtn__dot--wait {
+  background-color: var(--hx-wait);
+}
+
+.hx-iconbtn__dot--model {
+  background-color: var(--hx-model);
+}
+
+.hx-iconbtn__dot--focus {
+  background-color: var(--hx-focus);
+}
+
+.hx-iconbtn__tip {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--hx-s-1);
+}
+
+.hx-iconbtn__tipreason {
+  color: var(--hx-text-3);
+}

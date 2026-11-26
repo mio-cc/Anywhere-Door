@@ -1,0 +1,46 @@
+/* 隐藏式滚动容器（W.08.05 §6.7、U.23-R20） */
+.hx-scroll {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.hx-scroll--x {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.hx-scroll--both {
+  overflow: auto;
+}
+
+.hx-scroll--stable {
+  scrollbar-gutter: stable;
+}
+
+.hx-scroll:hover,
+.hx-scroll:focus-within {
+  scrollbar-color: var(--hx-bg-thumb) transparent;
+}
+
+.hx-scroll::-webkit-scrollbar {
+  width: var(--hx-s-3);
+  height: var(--hx-s-3);
+}
+
+.hx-scroll::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.hx-scroll::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: var(--hx-r-full);
+}
+
+.hx-scroll:hover::-webkit-scrollbar-thumb,
+.hx-scroll:focus-within::-webkit-scrollbar-thumb {
+  background-color: var(--hx-bg-thumb);
+}

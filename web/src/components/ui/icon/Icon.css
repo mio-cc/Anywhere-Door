@@ -1,0 +1,21 @@
+/* 图标尺寸（W.08.01 §6.4、U.08-R1） */
+.hx-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.hx-icon--14 {
+  width: calc(var(--hx-s-6) - var(--hx-s-1));
+  height: calc(var(--hx-s-6) - var(--hx-s-1));
+}
+
+.hx-icon--16 {
+  width: var(--hx-s-6);
+  height: var(--hx-s-6);
+}
+
+.hx-icon--32 {
+  width: var(--hx-s-9);
+  height: var(--hx-s-9);
+}

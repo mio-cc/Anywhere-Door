@@ -1,0 +1,117 @@
+/* 数字步进（W.08.02 §6.4、U.11 §2） */
+.hx-step__field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hx-step {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--hx-bg-4);
+  border-radius: var(--hx-r-sm);
+  user-select: none;
+  transition-property: background-color;
+  transition-duration: var(--hx-t-1);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-step:hover:not(.is-disabled) {
+  background-color: var(--hx-bg-5);
+}
+
+.hx-step.is-invalid {
+  background-color: var(--hx-danger-weak);
+}
+
+.hx-step__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_h);
+  height: var(--_h);
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: var(--hx-text-2);
+  border-radius: var(--hx-r-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.hx-step__btn:hover:not(:disabled) {
+  color: var(--hx-text-1);
+}
+
+.hx-step__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.hx-step__v,
+.hx-step__edit {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--hx-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--hx-fs-12);
+  color: var(--hx-text-1);
+  text-align: center;
+  border-radius: var(--hx-r-sm);
+}
+
+.hx-step__v {
+  cursor: ew-resize;
+}
+
+.hx-step__v.is-dragging {
+  background-color: var(--hx-bg-5);
+}
+
+.hx-step__edit {
+  border: 0;
+  padding: 0 var(--hx-s-2);
+  background-color: var(--hx-bg-2);
+}
+
+.hx-step__lock {
+  display: inline-flex;
+  align-items: center;
+  padding-right: var(--hx-s-3);
+  color: var(--hx-text-3);
+  flex-shrink: 0;
+}
+
+.hx-step__float {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  padding: var(--hx-s-1) var(--hx-s-3);
+  background-color: var(--hx-bg-2);
+  color: var(--hx-text-1);
+  box-shadow: var(--hx-shadow-pop);
+  border-radius: var(--hx-r-sm);
+  font-family: var(--hx-font-mono);
+  font-size: var(--hx-fs-11);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.hx-step__float.is-on {
+  opacity: 1;
+}
+
+.hx-step__hint {
+  position: fixed;
+  padding: var(--hx-s-2) var(--hx-s-4);
+  background-color: var(--hx-bg-2);
+  color: var(--hx-text-1);
+  box-shadow: var(--hx-shadow-pop);
+  border-radius: var(--hx-r-sm);
+  font-size: var(--hx-fs-12);
+}

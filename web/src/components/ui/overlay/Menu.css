@@ -1,0 +1,93 @@
+/* 菜单与子菜单（W.08.04 §6.3、U.13.05） */
+.hx-menu {
+  min-width: calc(var(--hx-s-10) * 4 + var(--hx-s-8) + var(--hx-s-2));
+  max-width: calc(var(--hx-s-10) * 6 + var(--hx-s-5));
+}
+
+.hx-menu__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.hx-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--hx-s-3);
+  height: var(--hx-ctl-h);
+  padding: 0 var(--hx-s-4);
+  border-radius: var(--hx-r-sm);
+  font-size: var(--hx-fs-13);
+  color: var(--hx-text-1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.hx-menu__item.is-active {
+  background-color: var(--hx-bg-4);
+}
+
+.hx-menu__item--danger {
+  color: var(--hx-danger);
+}
+
+.hx-menu__item--danger.is-active {
+  background-color: var(--hx-danger-weak);
+}
+
+.hx-menu__item--model {
+  color: var(--hx-model);
+}
+
+.hx-menu__item.is-disabled {
+  color: var(--hx-text-3);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hx-menu__lead {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--hx-s-6);
+  height: var(--hx-s-6);
+  flex-shrink: 0;
+  color: var(--hx-text-2);
+}
+
+.hx-menu__item--danger .hx-menu__lead {
+  color: var(--hx-danger);
+}
+
+.hx-menu__item--model .hx-menu__lead {
+  color: var(--hx-model);
+}
+
+.hx-menu__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hx-menu__trail {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: var(--hx-s-4);
+}
+
+.hx-menu__group {
+  display: flex;
+  align-items: center;
+  height: var(--hx-ctl-h-sm);
+  padding: 0 var(--hx-s-4);
+  font-size: var(--hx-fs-11);
+  color: var(--hx-text-3);
+}
+
+.hx-menu__sep {
+  height: 1px;
+  margin: var(--hx-s-2) 0;
+  background-color: var(--hx-line-1);
+}

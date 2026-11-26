@@ -1,0 +1,24 @@
+/* 提示框（W.08.04 §6.5、U.11 §2） */
+.hx-tip {
+  position: fixed;
+  max-width: calc(var(--hx-s-10) * 5 + var(--hx-s-9) + var(--hx-s-4));
+  padding: var(--hx-s-2) var(--hx-s-4);
+  background-color: var(--hx-bg-2);
+  color: var(--hx-text-1);
+  box-shadow: var(--hx-shadow-pop);
+  border-radius: var(--hx-r-sm);
+  font-size: var(--hx-fs-12);
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.hx-tip__body {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hx-s-3);
+}
+
+.hx-tip__text {
+  white-space: pre-line;
+  word-break: break-word;
+}

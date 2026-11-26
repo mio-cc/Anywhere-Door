@@ -1,0 +1,60 @@
+/* 分段控件（W.08.03 §6.2、U.11 §2） */
+.hx-seg {
+  position: relative;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  align-items: center;
+  padding: var(--hx-s-1);
+  background-color: var(--hx-bg-4);
+  border-radius: var(--hx-r-md);
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.hx-seg__thumb {
+  position: absolute;
+  top: var(--hx-s-1);
+  bottom: var(--hx-s-1);
+  left: var(--hx-s-1);
+  width: calc((100% - 2 * var(--hx-s-1)) / var(--_n, 1));
+  background-color: var(--hx-bg-seg);
+  box-shadow: var(--hx-shadow-node);
+  border-radius: var(--hx-r-sm);
+  transform: translateX(calc(100% * var(--_i, 0)));
+  pointer-events: none;
+}
+
+.hx-seg.has-motion .hx-seg__thumb {
+  transition-property: transform;
+  transition-duration: var(--hx-t-2);
+  transition-timing-function: var(--hx-ease);
+}
+
+.hx-seg.is-reduced .hx-seg__thumb,
+html[data-motion='reduce'] .hx-seg__thumb {
+  transition-duration: 0s;
+}
+
+.hx-seg__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 var(--hx-s-4);
+  border: 0;
+  border-radius: var(--hx-r-sm);
+  background-color: transparent;
+  color: var(--hx-text-2);
+  font-family: var(--hx-font-ui);
+  font-size: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.hx-seg__item:hover:not(:disabled):not([aria-disabled='true']),
+.hx-seg__item.is-selected {
+  color: var(--hx-text-1);
+}

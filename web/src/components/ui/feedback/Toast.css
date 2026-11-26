@@ -1,0 +1,109 @@
+/* 单条提示（W.08.05 §6.1、U.11 §2、U.23-R6） */
+@keyframes hx-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--hx-s-5));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hx-toast-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hx-toastcard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--hx-s-3);
+  padding: var(--hx-s-4) var(--hx-s-5);
+  background-color: var(--hx-bg-2);
+  color: var(--hx-text-1);
+  box-shadow: var(--hx-shadow-float);
+  border-radius: var(--hx-r-lg);
+  animation: hx-toast-in var(--hx-t-3) var(--hx-ease-out);
+}
+
+.hx-toastcard--glass {
+  background-color: var(--hx-bg-glass);
+  backdrop-filter: blur(var(--hx-blur-glass)) saturate(1.6);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .hx-toastcard--glass {
+    background-color: var(--hx-bg-2);
+  }
+}
+
+.hx-toastcard__lead {
+  display: inline-flex;
+  align-items: center;
+  padding-top: var(--hx-s-1);
+  flex-shrink: 0;
+}
+
+.hx-toastcard--info .hx-toastcard__lead {
+  color: var(--hx-text-2);
+}
+
+.hx-toastcard--ok .hx-toastcard__lead {
+  color: var(--hx-ok);
+}
+
+.hx-toastcard--wait .hx-toastcard__lead {
+  color: var(--hx-wait);
+}
+
+.hx-toastcard--error .hx-toastcard__lead {
+  color: var(--hx-danger);
+}
+
+.hx-toastcard__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hx-s-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.hx-toastcard__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hx-s-3);
+}
+
+.hx-toastcard__text {
+  font-size: var(--hx-fs-13);
+  line-height: 1.45;
+  color: var(--hx-text-1);
+  word-break: break-word;
+}
+
+.hx-toastcard__detail {
+  font-size: var(--hx-fs-12);
+  line-height: 1.45;
+  color: var(--hx-text-2);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.hx-toastcard__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--hx-s-2);
+  flex-wrap: wrap;
+}
+
+html[data-motion='reduce'] .hx-toastcard {
+  animation: hx-toast-fade var(--hx-t-2) var(--hx-ease);
+}

@@ -12,3 +12,4 @@ export {
 } from './dom';
 export { expectConsole, type ConsoleLevel } from './console';
 export { memStorage, loadVectors, loadExample, type VectorName } from './data';
+export { fakeEnv, type FakeEnvController, type FakeOverlayRecord } from './shell';

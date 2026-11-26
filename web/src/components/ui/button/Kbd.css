@@ -1,0 +1,29 @@
+/* 键帽（W.08.01 §6.3） */
+.hx-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--hx-font-mono);
+  font-size: var(--hx-fs-11);
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hx-kbd--inline {
+  color: var(--hx-text-3);
+}
+
+.hx-kbd--tip {
+  color: var(--hx-text-2);
+}
+
+.hx-kbd--key {
+  min-width: var(--hx-s-7);
+  height: var(--hx-s-7);
+  padding: 0 var(--hx-s-2);
+  background-color: var(--hx-bg-3);
+  color: var(--hx-text-1);
+  border-radius: var(--hx-r-xs);
+  box-shadow: inset 0 -1px 0 var(--hx-line-2);
+}
