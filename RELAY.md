@@ -18,6 +18,22 @@
 
 ---
 
+## 2026-11-26 18:27 · m1-llm（第 ⑤a 片） · Codex · 验证、评审与合并
+- 依据：设计仓库 `423e24c`（各叶子见 `docs/relay/E.10.*.json`、`E.15.02.json`）；`P.09` K268
+- 完成：
+  - E.10.09 验证：`gofmt -l` 干净（`wrap.go` 的两处格式已由实施者 `gofmt -w` 修好）；`go vet` 三平台（windows 原生、`GOOS=linux`、`GOOS=darwin`）exit 0；`golangci-lint run ./... --max-same-issues=0 --max-issues-per-linter=0` 0 issues（实施者已修好 errcheck 的 4 处裸 `call(c)`，同类问题没有藏的）；`engine/llm` 包测试通过；`relay check E.10.09` ①–⑦ 全过。交付提交 `0586be8`。
+  - 整片 `relay slice m1-llm`：6 个叶子 ①–⑥、整片 ⑦（`build -check`）全部通过；E.10.09 标为片内已完成。
+  - 评审：15 条重点全部符合，记录在 `docs/relay/m1-llm.review.md`。
+  - 合并前检查：`tools/ci/deps` 直接依赖都在白名单；`govulncheck` 无漏洞、`pnpm audit` 无已知漏洞；`pnpm -C web lint` 通过（本片没改前端，构建与冒烟按 `O.02` §4.2 跳过）；`gitleaks` 55 commits 无泄漏。
+  - squash 进 main：`cbf6568`，已推送；片内 6 个叶子标 `merged`：`8d5b36e`，已推送；删片分支 `slice/m1-llm`；清空 `.relay/staged/`。
+- 自主决定的细节：无
+- 进行中：无
+- 下一步：设计方冻结该片叶子后按 `relay stale` 复查；下一片按 `relay next` 领取
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：E.10.09 与整片全部通过（验证者：Codex）
+- 评审：15 条全部符合（评审者：Codex）
+- 提交 / 推送：`8d5b36e` / 已推送
 ## 2026-11-26 17:30 · E.10.09 · Quick（AWS Quick） · 交付（M1 第 ⑤a 片 m1-llm）
 - 依据：设计仓库（见 docs/relay/E.10.09.json）；`P.09` K268
 - 完成：实施卡全部。`engine/llm/wrap.go`（`Limiter`、`Source`、`Target`、`CallRecord`、`Hooks`、`WrapOpts`、`Wrap`）、`retry.go`（`RetryCfg`、`DefaultRetry`）、`breaker.go`（`Breakers`、`Breaker`、`Outcome`、状态常量）。测试 `wrap_test.go`（外部测试包，用 `fake` 和 `sched.Pool`）：`E1009-T1`–`T6`。
