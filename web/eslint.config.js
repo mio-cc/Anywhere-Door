@@ -16,6 +16,8 @@ export function createConfig({ enableTypeChecked = true } = {}) {
         'node_modules/**',
         'src/lib/protocol/generated/**',
         'src/lib/i18n/generated/**',
+        'src/styles/themes.ts',
+        'src/styles/icons.ts',
         'tests/lint/**',
       ],
     },

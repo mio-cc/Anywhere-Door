@@ -1,0 +1,358 @@
+# 快捷键总表（来源：U.13.04、W.02.04 §4.1）。
+# 改快捷键前先改 U.13.04 并确认不与浏览器保留键冲突，再运行 go run ./tools/gen 重新生成。
+
+# ── 全局 ──
+- id: palette.open
+  keys: ["Mod+K"]
+  layer: global
+  in_input: true
+  hold: false
+  label: shortcut.palette.open
+  group: 全局
+
+- id: center.open
+  keys: ["Mod+,"]
+  layer: global
+  in_input: true
+  hold: false
+  label: shortcut.center.open
+  group: 全局
+
+- id: run.start
+  keys: ["Mod+Enter"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.run.start
+  group: 全局
+
+- id: estop.trigger
+  keys: ["Mod+."]
+  layer: global
+  in_input: true
+  hold: false
+  label: shortcut.estop.trigger
+  group: 全局
+
+- id: ls.toggle
+  keys: ["["]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.ls.toggle
+  group: 全局
+
+- id: rs.toggle
+  keys: ["]"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.rs.toggle
+  group: 全局
+
+- id: rs.insp
+  keys: ["I"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.rs.insp
+  group: 全局
+
+- id: focus.toggle
+  keys: ["F"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.focus.toggle
+  group: 全局
+
+- id: lib.search
+  keys: ["/"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.lib.search
+  group: 全局
+
+- id: help.keys
+  keys: ["Shift+/"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.help.keys
+  group: 全局
+
+- id: session.prev
+  keys: ["Alt+["]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.session.prev
+  group: 全局
+
+- id: session.next
+  keys: ["Alt+]"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.session.next
+  group: 全局
+
+- id: session.new
+  keys: ["Alt+N"]
+  layer: global
+  in_input: false
+  hold: false
+  label: shortcut.session.new
+  group: 全局
+
+# ── 画布 ──
+- id: tool.select
+  keys: ["V"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.tool.select
+  group: 画布
+
+- id: tool.pan
+  keys: ["H"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.tool.pan
+  group: 画布
+
+- id: tool.pan.hold
+  keys: ["Space"]
+  layer: canvas
+  in_input: false
+  hold: true
+  label: shortcut.tool.pan.hold
+  group: 画布
+
+- id: node.quickAdd
+  keys: ["A"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.node.quickAdd
+  group: 画布
+
+- id: sel.delete
+  keys: ["Delete", "Backspace"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.sel.delete
+  group: 画布
+
+- id: sel.all
+  keys: ["Mod+A"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.sel.all
+  group: 画布
+
+- id: sel.duplicate
+  keys: ["Mod+D"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.sel.duplicate
+  group: 画布
+
+- id: clip.copy
+  keys: ["Mod+C"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.clip.copy
+  group: 画布
+
+- id: clip.paste
+  keys: ["Mod+V"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.clip.paste
+  group: 画布
+
+- id: group
+  keys: ["Mod+G"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.group
+  group: 画布
+
+- id: ungroup
+  keys: ["Mod+Shift+G"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.ungroup
+  group: 画布
+
+- id: undo
+  keys: ["Mod+Z"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.undo
+  group: 画布
+
+- id: redo
+  keys: ["Mod+Shift+Z", "Mod+Y"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.redo
+  group: 画布
+
+- id: view.fit
+  keys: ["1"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.view.fit
+  group: 画布
+
+- id: view.focusSel
+  keys: ["2"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.view.focusSel
+  group: 画布
+
+- id: layout.tidy
+  keys: ["L"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.layout.tidy
+  group: 画布
+
+- id: node.rename
+  keys: ["F2"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.node.rename
+  group: 画布
+
+- id: sel.move
+  keys: ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.sel.move
+  group: 画布
+
+- id: sel.moveFar
+  keys: ["Shift+ArrowUp", "Shift+ArrowDown", "Shift+ArrowLeft", "Shift+ArrowRight"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.sel.moveFar
+  group: 画布
+
+- id: focus.nextNode
+  keys: ["Tab"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.focus.nextNode
+  group: 画布
+
+- id: focus.prevNode
+  keys: ["Shift+Tab"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.focus.prevNode
+  group: 画布
+
+- id: link.keyboard
+  keys: ["C"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.link.keyboard
+  group: 画布
+
+- id: menu.context
+  keys: ["Shift+F10", "ContextMenu"]
+  layer: canvas
+  in_input: false
+  hold: false
+  label: shortcut.menu.context
+  group: 画布
+
+# ── 嵌套导航 ──
+- id: nest.peek
+  keys: ["P"]
+  layer: nest
+  in_input: false
+  hold: false
+  label: shortcut.nest.peek
+  group: 嵌套导航
+
+- id: nest.enter
+  keys: ["Enter"]
+  layer: nest
+  in_input: false
+  hold: false
+  label: shortcut.nest.enter
+  group: 嵌套导航
+
+- id: nest.up
+  keys: ["Alt+ArrowUp"]
+  layer: nest
+  in_input: false
+  hold: false
+  label: shortcut.nest.up
+  group: 嵌套导航
+
+- id: canvas.escape
+  keys: ["Escape"]
+  layer: nest
+  in_input: false
+  hold: false
+  label: shortcut.canvas.escape
+  group: 嵌套导航
+
+# ── 对话框 ──
+- id: composer.send
+  keys: ["Enter", "Mod+Enter"]
+  layer: composer
+  in_input: true
+  hold: false
+  label: shortcut.composer.send
+  group: 对话框
+
+- id: composer.newline
+  keys: ["Shift+Enter"]
+  layer: composer
+  in_input: true
+  hold: false
+  label: shortcut.composer.newline
+  group: 对话框
+
+- id: composer.editLast
+  keys: ["ArrowUp"]
+  layer: composer
+  in_input: true
+  hold: false
+  label: shortcut.composer.editLast
+  group: 对话框
+
+- id: composer.blur
+  keys: ["Escape"]
+  layer: composer
+  in_input: true
+  hold: false
+  label: shortcut.composer.blur
+  group: 对话框

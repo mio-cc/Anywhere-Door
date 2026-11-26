@@ -25,7 +25,7 @@ const (
 	outTSMessage = "web/src/lib/i18n/generated/messages.ts"
 )
 
-// Generate 读 root 下的 schema/，返回全部生成物（顺序固定）。
+// Generate 读 root 下的 schema/ 与 design/，返回全部生成物（顺序固定）。
 func Generate(root string) ([]Output, error) {
 	schemaDir := filepath.Join(root, "schema")
 	builtin := filepath.Join(schemaDir, "builtin")
@@ -41,11 +41,21 @@ func Generate(root string) ([]Output, error) {
 	if err != nil {
 		return nil, err
 	}
+	tokensOut, err := generateTokens(filepath.Join(root, "design"))
+	if err != nil {
+		return nil, err
+	}
+	iconsOut, err := generateIcons(filepath.Join(root, "design", "icons"), filepath.Join(builtin, "aliases.yaml"))
+	if err != nil {
+		return nil, err
+	}
 	outs = append(outs,
 		Output{outGoTables, goTables},
 		Output{outTSTables, tsTables},
 		Output{outTSMessage, msgs},
 	)
+	outs = append(outs, tokensOut...)
+	outs = append(outs, iconsOut...)
 	return outs, nil
 }
 

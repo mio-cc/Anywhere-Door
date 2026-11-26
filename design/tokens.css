@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Anywhere Door · 设计令牌源 design/tokens.css（U.02-R1、U.03.05 §4）
+   唯一事实来源：与主题无关的令牌 + 琥珀（amber）默认配色。
+   @theme-key: amber
+   @theme-name: 琥珀
+   @theme-ref: 设计规范 v0.3
+   @theme-desc: 中性灰底，主色琥珀，模型色靛蓝
+   ========================================================================== */
+
+/* ---------------- 琥珀 · 浅色（:root 默认） ---------------- */
+:root,
+[data-theme='light'],
+[data-palette='amber'],
+[data-palette='amber'][data-theme='light'] {
+  color-scheme: light;
+
+  /* 表面层级（U.03.01 §1） */
+  --hx-bg-0: #f3f3f1;
+  --hx-bg-1: #f8f8f6;
+  --hx-bg-2: #ffffff;
+  --hx-bg-3: #ffffff;
+  --hx-bg-4: #f2f2ef;
+  --hx-bg-5: #e8e8e4;
+  --hx-bg-glass: rgba(255, 255, 255, 0.82);
+  --hx-bg-glide: rgba(24, 24, 32, 0.06);
+  --hx-bg-thumb: rgba(22, 23, 27, 0.22);
+  --hx-bg-seg: #ffffff;
+
+  /* 线（U.03.01 §2） */
+  --hx-line-1: rgba(24, 24, 32, 0.06);
+  --hx-line-2: rgba(24, 24, 32, 0.11);
+  --hx-line-3: rgba(24, 24, 32, 0.2);
+  --hx-highlight: rgba(255, 255, 255, 0.9);
+
+  /* 文字（U.03.01 §3） */
+  --hx-text-1: #16171b;
+  --hx-text-2: #4f535c;
+  --hx-text-3: #6b6f78;
+  --hx-text-inv: #1c1404;
+
+  /* 语义色（U.03.02；amber 三处按 K303 微调以满足 bg-1/bg-2/bg-4 >= 4.5:1） */
+  --hx-accent: #f0a01e;
+  --hx-accent-strong: #9a5c00;
+  --hx-accent-weak: rgba(240, 160, 30, 0.14);
+  --hx-accent-line: rgba(200, 125, 0, 0.55);
+  --hx-primary: #f0a01e;
+  --hx-primary-fg: #1c1404;
+  --hx-ok: #187a49;
+  --hx-ok-weak: rgba(24, 122, 73, 0.11);
+  --hx-danger: #c23640;
+  --hx-danger-weak: rgba(194, 54, 64, 0.1);
+  --hx-wait: #876507;
+  --hx-wait-weak: rgba(180, 132, 16, 0.14);
+  --hx-model: #4f5fd6;
+  --hx-model-weak: rgba(79, 95, 214, 0.1);
+  --hx-model-line: rgba(79, 95, 214, 0.55);
+  --hx-focus: #16171b;
+
+  /* 端口数据类型色（U.03.03） */
+  --hx-type-any: #80848d;
+  --hx-type-ctx: #9f7a0e;
+  --hx-type-ref: #2f75c0;
+  --hx-type-list: #13897a;
+  --hx-type-tool: #c35f3c;
+  --hx-type-gen: #6f6a5e;
+  --hx-type-ctrl: #c24774;
+  --hx-type-state: #7656b8;
+
+  /* 节点与便签标记色（U.03.01 §4） */
+  --hx-mark-c1: #5a728a;
+  --hx-mark-c1-weak: rgba(90, 114, 138, 0.12);
+  --hx-mark-c2: #387c7e;
+  --hx-mark-c2-weak: rgba(56, 124, 126, 0.12);
+  --hx-mark-c3: #4d7c58;
+  --hx-mark-c3-weak: rgba(77, 124, 88, 0.12);
+  --hx-mark-c4: #8f7428;
+  --hx-mark-c4-weak: rgba(143, 116, 40, 0.13);
+  --hx-mark-c5: #9c6442;
+  --hx-mark-c5-weak: rgba(156, 100, 66, 0.12);
+  --hx-mark-c6: #75668a;
+  --hx-mark-c6-weak: rgba(117, 102, 138, 0.12);
+
+  /* 画布专用（U.10.01） */
+  --hx-grid-dot: rgba(24, 24, 32, 0.14);
+  --hx-marquee: rgba(24, 24, 32, 0.05);
+  --hx-marquee-line: rgba(24, 24, 32, 0.38);
+  --hx-scrim: rgba(243, 243, 241, 0.7);
+
+  /* 阴影（U.06 §2） */
+  --hx-shadow-node:
+    0 0 0 1px rgba(24, 24, 32, 0.02), 0 1px 2px rgba(24, 24, 32, 0.06), 0 3px 10px rgba(24, 24, 32, 0.05);
+  --hx-shadow-node-drag: 0 2px 4px rgba(24, 24, 32, 0.06), 0 16px 36px rgba(24, 24, 32, 0.14);
+  --hx-shadow-float:
+    0 0 0 1px var(--hx-line-2), 0 2px 4px rgba(24, 24, 32, 0.04), 0 12px 32px rgba(24, 24, 32, 0.09);
+  --hx-shadow-pop:
+    0 0 0 1px var(--hx-line-3), 0 4px 8px rgba(24, 24, 32, 0.06), 0 20px 48px rgba(24, 24, 32, 0.16);
+}
+
+/* ---------------- 琥珀 · 深色 ---------------- */
+[data-theme='dark'],
+[data-palette='amber'][data-theme='dark'] {
+  color-scheme: dark;
+
+  --hx-bg-0: #0a0b0e;
+  --hx-bg-1: #101217;
+  --hx-bg-2: #15171d;
+  --hx-bg-3: #1b1e25;
+  --hx-bg-4: #22262e;
+  --hx-bg-5: #2a2f39;
+  --hx-bg-glass: rgba(21, 23, 29, 0.8);
+  --hx-bg-glide: rgba(255, 255, 255, 0.07);
+  --hx-bg-thumb: rgba(236, 235, 230, 0.22);
+  --hx-bg-seg: #2a2f39;
+
+  --hx-line-1: rgba(255, 255, 255, 0.055);
+  --hx-line-2: rgba(255, 255, 255, 0.09);
+  --hx-line-3: rgba(255, 255, 255, 0.15);
+  --hx-highlight: rgba(255, 255, 255, 0.04);
+
+  --hx-text-1: #ecebe6;
+  --hx-text-2: #a7aab2;
+  --hx-text-3: #858994;
+  --hx-text-inv: #121317;
+
+  --hx-accent: #f5a524;
+  --hx-accent-strong: #f5a524;
+  --hx-accent-weak: rgba(245, 165, 36, 0.14);
+  --hx-accent-line: rgba(245, 165, 36, 0.45);
+  --hx-primary: #f5a524;
+  --hx-primary-fg: #121317;
+  --hx-ok: #5fc48a;
+  --hx-ok-weak: rgba(95, 196, 138, 0.14);
+  --hx-danger: #ec6a6f;
+  --hx-danger-weak: rgba(236, 106, 111, 0.14);
+  --hx-wait: #e9c46a;
+  --hx-wait-weak: rgba(233, 196, 106, 0.14);
+  --hx-model: #93a5ff;
+  --hx-model-weak: rgba(147, 165, 255, 0.14);
+  --hx-model-line: rgba(147, 165, 255, 0.5);
+  --hx-focus: #ecebe6;
+
+  --hx-type-any: #7e828c;
+  --hx-type-ctx: #e3c46b;
+  --hx-type-ref: #6fa8dc;
+  --hx-type-list: #4fb6a5;
+  --hx-type-tool: #d98e73;
+  --hx-type-gen: #cbc7bd;
+  --hx-type-ctrl: #e07b9a;
+  --hx-type-state: #a58bd6;
+
+  --hx-mark-c1: #8ba3bd;
+  --hx-mark-c1-weak: rgba(139, 163, 189, 0.15);
+  --hx-mark-c2: #6cb0b2;
+  --hx-mark-c2-weak: rgba(108, 176, 178, 0.15);
+  --hx-mark-c3: #7eb089;
+  --hx-mark-c3-weak: rgba(126, 176, 137, 0.15);
+  --hx-mark-c4: #c2a75b;
+  --hx-mark-c4-weak: rgba(194, 167, 91, 0.15);
+  --hx-mark-c5: #cc9472;
+  --hx-mark-c5-weak: rgba(204, 148, 114, 0.15);
+  --hx-mark-c6: #a697bd;
+  --hx-mark-c6-weak: rgba(166, 151, 189, 0.15);
+
+  --hx-grid-dot: rgba(255, 255, 255, 0.075);
+  --hx-marquee: rgba(255, 255, 255, 0.06);
+  --hx-marquee-line: rgba(255, 255, 255, 0.38);
+  --hx-scrim: rgba(6, 7, 9, 0.6);
+
+  --hx-shadow-node:
+    inset 0 1px 0 var(--hx-highlight), 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 14px rgba(0, 0, 0, 0.25);
+  --hx-shadow-node-drag: inset 0 1px 0 var(--hx-highlight), 0 14px 34px rgba(0, 0, 0, 0.55);
+  --hx-shadow-float:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-2), 0 12px 32px rgba(0, 0, 0, 0.45);
+  --hx-shadow-pop:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-3), 0 18px 48px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------------- 与主题无关的令牌（U.02-R3、U.03.05-R6） ---------------- */
+:root {
+  /* 字体（U.04） */
+  --hx-font-ui: 'Geist', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --hx-font-mono: 'Geist Mono', 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+  /* 字号：8 档（U.04） */
+  --hx-fs-10: 10.5px;
+  --hx-fs-11: 11px;
+  --hx-fs-12: 12px;
+  --hx-fs-13: 13px;
+  --hx-fs-14: 14px;
+  --hx-fs-16: 16px;
+  --hx-fs-20: 20px;
+  --hx-fs-28: 28px;
+
+  /* 间距（U.05 §1） */
+  --hx-s-1: 2px;
+  --hx-s-2: 4px;
+  --hx-s-3: 6px;
+  --hx-s-4: 8px;
+  --hx-s-5: 12px;
+  --hx-s-6: 16px;
+  --hx-s-7: 20px;
+  --hx-s-8: 24px;
+  --hx-s-9: 32px;
+  --hx-s-10: 48px;
+
+  /* 圆角（U.06 §1） */
+  --hx-r-xs: 3px;
+  --hx-r-sm: 5px;
+  --hx-r-md: 7px;
+  --hx-r-lg: 10px;
+  --hx-r-xl: 14px;
+  --hx-r-full: 999px;
+
+  /* 节点与控件尺寸（U.05 §2） */
+  --hx-node-w: 236px;
+  --hx-node-w-sm: 184px;
+  --hx-node-head: 38px;
+  --hx-node-row: 24px;
+  --hx-node-widget: 28px;
+  --hx-port: 10px;
+  --hx-ctl-h: 28px;
+  --hx-ctl-h-sm: 24px;
+  --hx-grid: 20px;
+
+  /* 应用布局尺寸（U.09.01 §3） */
+  --hx-top-h: 48px;
+  --hx-ls-w: 264px;
+  --hx-ls-w-min: 56px;
+  --hx-rs-w: 340px;
+  --hx-comp-max: 720px;
+  --hx-comp-min: 440px;
+  --hx-comp-gutter: 460px;
+  --hx-float-inset: 12px;
+
+  /* 材质与层级（U.06 §3–§4） */
+  --hx-blur-glass: 18px;
+  --hx-z-canvas: 0;
+  --hx-z-canvas-ui: 10;
+  --hx-z-float: 20;
+  --hx-z-composer: 30;
+  --hx-z-peek: 40;
+  --hx-z-pane: 50;
+  --hx-z-popover: 60;
+  --hx-z-modal: 70;
+  --hx-z-toast: 80;
+  --hx-z-tooltip: 90;
+
+  /* 动效（U.07.01 §1） */
+  --hx-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --hx-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --hx-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --hx-ease-flow: cubic-bezier(0.6, 0, 0.25, 1);
+  --hx-t-1: 90ms;
+  --hx-t-2: 160ms;
+  --hx-t-3: 240ms;
+  --hx-t-4: 380ms;
+  --hx-t-flow: 1200ms;
+  --hx-t-glide: 320ms;
+  --hx-t-spin: 800ms;
+  --hx-t-breath: 1200ms;
+}
+
+html[data-motion='reduce'] {
+  --hx-t-1: 0ms;
+  --hx-t-2: 0ms;
+  --hx-t-3: 0ms;
+  --hx-t-4: 0ms;
+  --hx-t-flow: 0ms;
+  --hx-t-glide: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --hx-t-1: 0ms;
+    --hx-t-2: 0ms;
+    --hx-t-3: 0ms;
+    --hx-t-4: 0ms;
+    --hx-t-flow: 0ms;
+    --hx-t-glide: 0ms;
+  }
+}

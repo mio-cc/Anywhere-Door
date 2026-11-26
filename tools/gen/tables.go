@@ -60,10 +60,63 @@ type stateMachineYAML struct {
 	Node machineYAML `yaml:"node"`
 }
 
+type shortcutYAML struct {
+	ID      string   `yaml:"id"`
+	Keys    []string `yaml:"keys"`
+	Layer   string   `yaml:"layer"`
+	InInput bool     `yaml:"in_input"`
+	Hold    bool     `yaml:"hold"`
+	Label   string   `yaml:"label"`
+	Group   string   `yaml:"group"`
+}
+
 var (
 	authzDecisions  = []string{"allow", "propose", "ask", "deny"}
 	authzConditions = []string{"overrides_ops", "in_overrides_models", "overrides_allow_spawn", "within_tools_max_risk"}
+	shortcutLayers  = []string{"global", "canvas", "nest", "composer"}
+	reservedKeys    = map[string]bool{
+		"Mod+W": true, "Mod+T": true, "Mod+N": true, "Mod+L": true, "Mod+R": true,
+		"Mod+Shift+[": true, "Mod+Shift+]": true,
+		"F5": true, "F11": true, "F12": true,
+	}
+	shortcutModRank = map[string]int{"Mod": 0, "Ctrl": 1, "Alt": 2, "Shift": 3}
+	shortcutSpecial = map[string]bool{
+		"[": true, "]": true, ",": true, ".": true, "/": true,
+		"Enter": true, "Escape": true, "Delete": true, "Backspace": true,
+		"Space": true, "Tab": true, "ContextMenu": true,
+		"ArrowUp": true, "ArrowDown": true, "ArrowLeft": true, "ArrowRight": true,
+		"F1": true, "F2": true, "F3": true, "F4": true, "F5": true, "F6": true,
+		"F7": true, "F8": true, "F9": true, "F10": true, "F11": true, "F12": true,
+	}
 )
+
+func validateShortcutCombo(combo string) (hasMod bool, isSinglePrintable bool, err error) {
+	if combo == "" || strings.TrimSpace(combo) != combo {
+		return false, false, fmt.Errorf("组合 %q 不能为空或含首尾空白", combo)
+	}
+	parts := strings.Split(combo, "+")
+	main := parts[len(parts)-1]
+	mods := parts[:len(parts)-1]
+	lastRank := -1
+	for _, mod := range mods {
+		rank, ok := shortcutModRank[mod]
+		if !ok {
+			return false, false, fmt.Errorf("组合 %q 含未知修饰键 %q（仅允许 Mod/Ctrl/Alt/Shift）", combo, mod)
+		}
+		if rank <= lastRank {
+			return false, false, fmt.Errorf("组合 %q 的修饰键顺序错误或重复（应按 Mod+Ctrl+Alt+Shift，W.02.04 §5.1）", combo)
+		}
+		lastRank = rank
+		hasMod = true
+	}
+	isLetter := len(main) == 1 && main[0] >= 'A' && main[0] <= 'Z'
+	isDigit := len(main) == 1 && main[0] >= '0' && main[0] <= '9'
+	isSym := main == "[" || main == "]" || main == "," || main == "." || main == "/"
+	if !isLetter && !isDigit && !shortcutSpecial[main] {
+		return false, false, fmt.Errorf("组合 %q 含非法主键 %q（W.02.04 §5.1）", combo, main)
+	}
+	return hasMod, !hasMod && (isLetter || isDigit || isSym), nil
+}
 
 func readYAMLStrict(path string, v any) ([]byte, error) {
 	b, err := os.ReadFile(path)
@@ -328,6 +381,60 @@ export function nodeIsTerminal(s: NodeState): boolean {
   return nodeTerminal.includes(s);
 }
 `)
+	}
+
+	// 快捷键总表（只给前端，W.02.04 §4.1、C.14 §5.3）
+	var scs []shortcutYAML
+	if raw, e := readYAMLStrict(filepath.Join(dir, "shortcuts.yaml"), &scs); e != nil {
+		errs.add("%v", e)
+	} else {
+		if len(scs) == 0 {
+			errs.add("shortcuts.yaml：快捷键表不能为空")
+		}
+		seen := map[string]bool{}
+		layerCombos := map[string]string{}
+		for i, sc := range scs {
+			if sc.ID == "" || strings.TrimSpace(sc.ID) != sc.ID {
+				errs.add("shortcuts.yaml[%d]：id 不能为空或含首尾空白", i)
+			} else if seen[sc.ID] {
+				errs.add("shortcuts.yaml[%d]：id %q 重复", i, sc.ID)
+			} else {
+				seen[sc.ID] = true
+			}
+			if len(sc.Keys) == 0 {
+				errs.add("shortcuts.yaml[%d]（%s）：keys 不能为空", i, sc.ID)
+			}
+			if !contains(shortcutLayers, sc.Layer) {
+				errs.add("shortcuts.yaml[%d]（%s）：layer %q 不在 %v 中", i, sc.ID, sc.Layer, shortcutLayers)
+			}
+			for j, k := range sc.Keys {
+				_, isSingle, kerr := validateShortcutCombo(k)
+				if kerr != nil {
+					errs.add("shortcuts.yaml[%d].keys[%d]（%s）：%v", i, j, sc.ID, kerr)
+					continue
+				}
+				if reservedKeys[k] {
+					errs.add("shortcuts.yaml[%d].keys[%d]（%s）：不能占用保留键 %q（U.13.04-R2）", i, j, sc.ID, k)
+				}
+				if isSingle && sc.InInput && sc.Layer != "composer" {
+					errs.add("shortcuts.yaml[%d].keys[%d]（%s）：非 composer 层的单键 %q 不能设 in_input: true（U.13.04-R1）", i, j, sc.ID, k)
+				}
+				lk := sc.Layer + "\x00" + k
+				if prev, dup := layerCombos[lk]; dup {
+					errs.add("shortcuts.yaml[%d].keys[%d]（%s）：同层 %s 组合 %q 与 %s 冲突（W.02.04 §6.3）", i, j, sc.ID, sc.Layer, k, prev)
+				} else {
+					layerCombos[lk] = sc.ID
+				}
+			}
+			if !strings.HasPrefix(sc.Label, "shortcut.") {
+				errs.add("shortcuts.yaml[%d]（%s）：label %q 必须以 shortcut. 开头", i, sc.ID, sc.Label)
+			}
+			if strings.TrimSpace(sc.Group) == "" {
+				errs.add("shortcuts.yaml[%d]（%s）：group 不能为空", i, sc.ID)
+			}
+		}
+		tw.WriteString("\n")
+		addTS("SHORTCUTS", "shortcuts.yaml", "快捷键总表（U.13.04、W.02.04 §4.1）", raw)
 	}
 	if err := errs.err(); err != nil {
 		return nil, nil, err

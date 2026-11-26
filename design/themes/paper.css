@@ -1,0 +1,162 @@
+/* ==========================================================================
+   主题：宣纸（paper，默认）
+   @theme-key: paper
+   @theme-name: 宣纸
+   @theme-ref: Claude
+   @theme-desc: 暖调纸面，所有灰色带一点黄褐；主色陶土橙；模型色灰蓝
+   ========================================================================== */
+
+[data-palette='paper'],
+[data-palette='paper'][data-theme='light'] {
+  color-scheme: light;
+
+  --hx-bg-0: #ebe8df;
+  --hx-bg-1: #f4f2ec;
+  --hx-bg-2: #fdfcf9;
+  --hx-bg-3: #fffefb;
+  --hx-bg-4: #f1efe8;
+  --hx-bg-5: #e4e1d6;
+  --hx-bg-glass: rgba(253, 252, 249, 0.82);
+  --hx-bg-glide: rgba(58, 48, 30, 0.065);
+  --hx-bg-thumb: rgba(31, 29, 24, 0.2);
+  --hx-bg-seg: #fdfcf9;
+
+  --hx-line-1: rgba(58, 48, 30, 0.075);
+  --hx-line-2: rgba(58, 48, 30, 0.13);
+  --hx-line-3: rgba(58, 48, 30, 0.24);
+  --hx-highlight: rgba(255, 255, 255, 0.85);
+
+  --hx-text-1: #1f1d18;
+  --hx-text-2: #524f47;
+  --hx-text-3: #6c695f;
+  --hx-text-inv: #fffaf4;
+
+  --hx-accent: #b9573a;
+  --hx-accent-strong: #9b4428;
+  --hx-accent-weak: rgba(185, 87, 58, 0.12);
+  --hx-accent-line: rgba(185, 87, 58, 0.5);
+  --hx-primary: #b9573a;
+  --hx-primary-fg: #fffaf4;
+  --hx-ok: #3d7448;
+  --hx-ok-weak: rgba(61, 116, 72, 0.12);
+  --hx-danger: #a8323e;
+  --hx-danger-weak: rgba(168, 50, 62, 0.11);
+  --hx-wait: #82651a;
+  --hx-wait-weak: rgba(130, 101, 26, 0.13);
+  --hx-model: #46659c;
+  --hx-model-weak: rgba(70, 101, 156, 0.11);
+  --hx-model-line: rgba(70, 101, 156, 0.55);
+  --hx-focus: #1f1d18;
+
+  --hx-type-any: #86837a;
+  --hx-type-ctx: #9a7414;
+  --hx-type-ref: #46659c;
+  --hx-type-list: #3f7a6a;
+  --hx-type-tool: #b9573a;
+  --hx-type-gen: #6c665a;
+  --hx-type-ctrl: #a8466a;
+  --hx-type-state: #7a5c99;
+
+  --hx-mark-c1: #5a728a;
+  --hx-mark-c1-weak: rgba(90, 114, 138, 0.12);
+  --hx-mark-c2: #387c7e;
+  --hx-mark-c2-weak: rgba(56, 124, 126, 0.12);
+  --hx-mark-c3: #4d7c58;
+  --hx-mark-c3-weak: rgba(77, 124, 88, 0.12);
+  --hx-mark-c4: #8f7428;
+  --hx-mark-c4-weak: rgba(143, 116, 40, 0.13);
+  --hx-mark-c5: #9c6442;
+  --hx-mark-c5-weak: rgba(156, 100, 66, 0.12);
+  --hx-mark-c6: #75668a;
+  --hx-mark-c6-weak: rgba(117, 102, 138, 0.12);
+
+  --hx-grid-dot: rgba(58, 48, 30, 0.17);
+  --hx-marquee: rgba(58, 48, 30, 0.05);
+  --hx-marquee-line: rgba(58, 48, 30, 0.38);
+  --hx-scrim: rgba(235, 232, 223, 0.7);
+
+  --hx-shadow-node:
+    0 0 0 1px rgba(52, 40, 20, 0.025), 0 1px 2px rgba(52, 40, 20, 0.06), 0 3px 10px rgba(52, 40, 20, 0.05);
+  --hx-shadow-node-drag: 0 2px 4px rgba(52, 40, 20, 0.06), 0 16px 36px rgba(52, 40, 20, 0.15);
+  --hx-shadow-float:
+    0 0 0 1px var(--hx-line-2), 0 2px 4px rgba(52, 40, 20, 0.04), 0 12px 32px rgba(52, 40, 20, 0.09);
+  --hx-shadow-pop:
+    0 0 0 1px var(--hx-line-3), 0 4px 8px rgba(52, 40, 20, 0.06), 0 20px 48px rgba(52, 40, 20, 0.16);
+}
+
+[data-palette='paper'][data-theme='dark'] {
+  color-scheme: dark;
+
+  --hx-bg-0: #141413;
+  --hx-bg-1: #1a1a18;
+  --hx-bg-2: #21211f;
+  --hx-bg-3: #272725;
+  --hx-bg-4: #30302d;
+  --hx-bg-5: #3b3b37;
+  --hx-bg-glass: rgba(33, 33, 31, 0.8);
+  --hx-bg-glide: rgba(250, 240, 220, 0.07);
+  --hx-bg-thumb: rgba(240, 238, 230, 0.22);
+  --hx-bg-seg: #3b3b37;
+
+  --hx-line-1: rgba(250, 240, 220, 0.06);
+  --hx-line-2: rgba(250, 240, 220, 0.1);
+  --hx-line-3: rgba(250, 240, 220, 0.17);
+  --hx-highlight: rgba(250, 240, 220, 0.045);
+
+  --hx-text-1: #f0eee6;
+  --hx-text-2: #b4b1a7;
+  --hx-text-3: #9a978d;
+  --hx-text-inv: #1c1208;
+
+  --hx-accent: #d97757;
+  --hx-accent-strong: #e88d6d;
+  --hx-accent-weak: rgba(217, 119, 87, 0.15);
+  --hx-accent-line: rgba(217, 119, 87, 0.5);
+  --hx-primary: #d97757;
+  --hx-primary-fg: #1c1208;
+  --hx-ok: #8fb47c;
+  --hx-ok-weak: rgba(143, 180, 124, 0.15);
+  --hx-danger: #f07a7c;
+  --hx-danger-weak: rgba(240, 122, 124, 0.14);
+  --hx-wait: #dbb45e;
+  --hx-wait-weak: rgba(219, 180, 94, 0.16);
+  --hx-model: #8fb0e3;
+  --hx-model-weak: rgba(143, 176, 227, 0.15);
+  --hx-model-line: rgba(143, 176, 227, 0.5);
+  --hx-focus: #f0eee6;
+
+  --hx-type-any: #8d8a80;
+  --hx-type-ctx: #d9b45e;
+  --hx-type-ref: #8fb0e3;
+  --hx-type-list: #7fb8a6;
+  --hx-type-tool: #e0896a;
+  --hx-type-gen: #cfcbbf;
+  --hx-type-ctrl: #e08aa6;
+  --hx-type-state: #b59ad8;
+
+  --hx-mark-c1: #8ba3bd;
+  --hx-mark-c1-weak: rgba(139, 163, 189, 0.15);
+  --hx-mark-c2: #6cb0b2;
+  --hx-mark-c2-weak: rgba(108, 176, 178, 0.15);
+  --hx-mark-c3: #7eb089;
+  --hx-mark-c3-weak: rgba(126, 176, 137, 0.15);
+  --hx-mark-c4: #c2a75b;
+  --hx-mark-c4-weak: rgba(194, 167, 91, 0.15);
+  --hx-mark-c5: #cc9472;
+  --hx-mark-c5-weak: rgba(204, 148, 114, 0.15);
+  --hx-mark-c6: #a697bd;
+  --hx-mark-c6-weak: rgba(166, 151, 189, 0.15);
+
+  --hx-grid-dot: rgba(250, 240, 220, 0.07);
+  --hx-marquee: rgba(250, 240, 220, 0.06);
+  --hx-marquee-line: rgba(250, 240, 220, 0.38);
+  --hx-scrim: rgba(20, 20, 19, 0.6);
+
+  --hx-shadow-node:
+    inset 0 1px 0 var(--hx-highlight), 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 14px rgba(0, 0, 0, 0.25);
+  --hx-shadow-node-drag: inset 0 1px 0 var(--hx-highlight), 0 14px 34px rgba(0, 0, 0, 0.55);
+  --hx-shadow-float:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-2), 0 12px 32px rgba(0, 0, 0, 0.45);
+  --hx-shadow-pop:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-3), 0 18px 48px rgba(0, 0, 0, 0.6);
+}

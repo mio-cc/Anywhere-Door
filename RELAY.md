@@ -18,6 +18,33 @@
 
 ---
 
+## 2026-11-26 23:02 · C.14 · Gemini · 续做（第 ⑨a 片评审返工）
+- 依据：设计仓库提交 a8cffae（`U.03.05`、`C.14` 已同步并 `--resume --accept-docs`）；`docs/relay/m1-web-assets.review.md` 11 项返工（7 不符合 + 4 有疑问）
+- 完成：逐项修复 `tools/gen/tokens.go`（结构化 CSS 解析、精确选择器、禁止非颜色/普通声明/@规则、amber 元数据重复与 key 校验、`rgb/rgba` 支持、`tsQuote` 完整转义）、`tools/gen/icons.go`（`U.08-R1`/`R4` 线宽/圆头/DTD/处理指令/实体/严格属性白名单/有限数校验）、`tools/gen/tables.go`（`shortcuts.yaml` 键语法/修饰顺序/保留键/同层冲突/单键 `in_input` 校验）与 `tools/gen/assets_test.go`（补齐全部反例测试）；已在 `docs/relay/m1-web-assets.review.md` 写入「实施者处理」。
+- 进行中：无
+- 下一步：跑 `relay slice m1-web-assets`，提交并交独立评审者（Codex CLI `zai-glm-5-3`）第 2 轮复核
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：全部通过（①–⑦，覆盖 10/10，Go 全仓 + 前端双时区 39+17 通过；验证者：Gemini）
+- 评审：通过（`docs/relay/m1-web-assets.review.md`，第 3 轮复核全部 11 项已处理，结论允许合并；评审者：Codex CLI `zai-glm-5-3`）
+- 提交 / 推送：已提交并推送 `slice/m1-web-assets`
+
+## 2026-11-26 22:27 · C.14 · Gemini · 交付（M1 第 ⑨a 片 m1-web-assets）
+- 依据：设计仓库提交 7c04cb8（docs/relay/C.14.json）；`P.09` K234、K303
+- 完成：实施卡全部。新增设计源资产 `design/tokens.css`、`design/themes/{paper,graphite,whale}.css`（4 套配色 × 明暗 8 组全覆盖 62 个颜色/阴影令牌并通过 WCAG 对比度与色相差检查）、`design/icons/`（58 个界面与状态 SVG）与 `design/icons/node/`（13 个原子节点 + `Extension.svg` 共 14 个 SVG，合计 72 个）、`schema/builtin/shortcuts.yaml`（44 条快捷键）；扩展 `tools/gen`（`tokens.go`、`icons.go`、`tables.go`、`main.go`、`generate.go`、`assets_test.go`）支持默认 `go run ./tools/gen` 及 `tokens`/`icons` 子命令；生成 `web/src/styles/{tokens.css,themes.css,themes.ts,icons.ts}` 与 `web/src/lib/protocol/generated/tables.ts`（新增 `SHORTCUTS`）；同步 `web/src/lib/protocol/index.ts` 转发 `SHORTCUTS` 与 `web/eslint.config.js` 生成物忽略。测试：`C14-T1`–`T10`（10/10）。
+- 进行中：无
+- 下一步：提交 `C.14`，跑 `relay slice m1-web-assets`，提交独立交叉评审（隔离版 Codex CLI `zai-glm-5-3`）
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：全部通过（①–⑦，覆盖 10/10，Go 全仓 + 前端双时区 39+17 通过；验证者：Gemini）
+- 评审：待独立评审者（Codex CLI `zai-glm-5-3`）审查
+- 提交 / 推送：本棒提交 / 评审通过后合并
+
+## 2026-11-26 22:09 · C.14 · Gemini · 领取
+- 依据：设计仓库提交 7c04cb8（docs/relay/C.14.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/C.14.md，从实施卡第 1 条开始
 ## 2026-11-27 01:11 · m1-tools-ctx · Quick（AWS Quick） · 合并（第 ⑤b 片）
 - 依据：设计仓库 `3d4ce76`（`P.09` K271–K274）
 - 完成：评审第 18 行按 K274 修复（`5511cc5`），Codex 复核通过（`be62975`）；`relay slice m1-tools-ctx` 通过；squash 合并 `615eb8b`，9 个叶子领取记录标为 `merged`；片分支已删

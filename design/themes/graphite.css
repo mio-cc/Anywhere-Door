@@ -1,0 +1,162 @@
+/* ==========================================================================
+   主题：石墨（graphite）
+   @theme-key: graphite
+   @theme-name: 石墨
+   @theme-ref: Codex
+   @theme-desc: 冷灰哑光，像原生开发工具；主按钮是墨色，蓝色只表示运行中；模型色紫
+   ========================================================================== */
+
+[data-palette='graphite'],
+[data-palette='graphite'][data-theme='light'] {
+  color-scheme: light;
+
+  --hx-bg-0: #efeff1;
+  --hx-bg-1: #f8f8f9;
+  --hx-bg-2: #ffffff;
+  --hx-bg-3: #ffffff;
+  --hx-bg-4: #f2f2f4;
+  --hx-bg-5: #e5e5e9;
+  --hx-bg-glass: rgba(255, 255, 255, 0.82);
+  --hx-bg-glide: rgba(15, 17, 23, 0.06);
+  --hx-bg-thumb: rgba(17, 18, 21, 0.2);
+  --hx-bg-seg: #ffffff;
+
+  --hx-line-1: rgba(15, 17, 23, 0.07);
+  --hx-line-2: rgba(15, 17, 23, 0.12);
+  --hx-line-3: rgba(15, 17, 23, 0.21);
+  --hx-highlight: rgba(255, 255, 255, 0.9);
+
+  --hx-text-1: #111215;
+  --hx-text-2: #4a4d56;
+  --hx-text-3: #686c76;
+  --hx-text-inv: #ffffff;
+
+  --hx-accent: #2f6bdc;
+  --hx-accent-strong: #1f55b5;
+  --hx-accent-weak: rgba(47, 107, 220, 0.12);
+  --hx-accent-line: rgba(47, 107, 220, 0.5);
+  --hx-primary: #18191d;
+  --hx-primary-fg: #ffffff;
+  --hx-ok: #167a3b;
+  --hx-ok-weak: rgba(22, 122, 59, 0.12);
+  --hx-danger: #cc3535;
+  --hx-danger-weak: rgba(204, 53, 53, 0.11);
+  --hx-wait: #9a5d06;
+  --hx-wait-weak: rgba(154, 93, 6, 0.13);
+  --hx-model: #7048d6;
+  --hx-model-weak: rgba(112, 72, 214, 0.11);
+  --hx-model-line: rgba(112, 72, 214, 0.55);
+  --hx-focus: #111215;
+
+  --hx-type-any: #80838c;
+  --hx-type-ctx: #a0700c;
+  --hx-type-ref: #2f6bdc;
+  --hx-type-list: #0f8378;
+  --hx-type-tool: #c4552e;
+  --hx-type-gen: #5f6370;
+  --hx-type-ctrl: #c23f72;
+  --hx-type-state: #7048d6;
+
+  --hx-mark-c1: #5a728a;
+  --hx-mark-c1-weak: rgba(90, 114, 138, 0.12);
+  --hx-mark-c2: #387c7e;
+  --hx-mark-c2-weak: rgba(56, 124, 126, 0.12);
+  --hx-mark-c3: #4d7c58;
+  --hx-mark-c3-weak: rgba(77, 124, 88, 0.12);
+  --hx-mark-c4: #8f7428;
+  --hx-mark-c4-weak: rgba(143, 116, 40, 0.13);
+  --hx-mark-c5: #9c6442;
+  --hx-mark-c5-weak: rgba(156, 100, 66, 0.12);
+  --hx-mark-c6: #75668a;
+  --hx-mark-c6-weak: rgba(117, 102, 138, 0.12);
+
+  --hx-grid-dot: rgba(15, 17, 23, 0.13);
+  --hx-marquee: rgba(15, 17, 23, 0.05);
+  --hx-marquee-line: rgba(15, 17, 23, 0.38);
+  --hx-scrim: rgba(239, 239, 241, 0.7);
+
+  --hx-shadow-node:
+    0 0 0 1px rgba(15, 17, 23, 0.025), 0 1px 2px rgba(15, 17, 23, 0.06), 0 3px 10px rgba(15, 17, 23, 0.05);
+  --hx-shadow-node-drag: 0 2px 4px rgba(15, 17, 23, 0.06), 0 16px 36px rgba(15, 17, 23, 0.15);
+  --hx-shadow-float:
+    0 0 0 1px var(--hx-line-2), 0 2px 4px rgba(15, 17, 23, 0.04), 0 12px 32px rgba(15, 17, 23, 0.09);
+  --hx-shadow-pop:
+    0 0 0 1px var(--hx-line-3), 0 4px 8px rgba(15, 17, 23, 0.06), 0 20px 48px rgba(15, 17, 23, 0.16);
+}
+
+[data-palette='graphite'][data-theme='dark'] {
+  color-scheme: dark;
+
+  --hx-bg-0: #0f0f11;
+  --hx-bg-1: #151517;
+  --hx-bg-2: #1b1b1e;
+  --hx-bg-3: #212125;
+  --hx-bg-4: #29292e;
+  --hx-bg-5: #333339;
+  --hx-bg-glass: rgba(27, 27, 30, 0.8);
+  --hx-bg-glide: rgba(255, 255, 255, 0.07);
+  --hx-bg-thumb: rgba(236, 236, 238, 0.22);
+  --hx-bg-seg: #333339;
+
+  --hx-line-1: rgba(255, 255, 255, 0.055);
+  --hx-line-2: rgba(255, 255, 255, 0.09);
+  --hx-line-3: rgba(255, 255, 255, 0.15);
+  --hx-highlight: rgba(255, 255, 255, 0.04);
+
+  --hx-text-1: #ececee;
+  --hx-text-2: #a2a4ab;
+  --hx-text-3: #8a8d95;
+  --hx-text-inv: #0c0e13;
+
+  --hx-accent: #5c92f4;
+  --hx-accent-strong: #7ea8f7;
+  --hx-accent-weak: rgba(92, 146, 244, 0.15);
+  --hx-accent-line: rgba(92, 146, 244, 0.5);
+  --hx-primary: #ececee;
+  --hx-primary-fg: #111113;
+  --hx-ok: #58c180;
+  --hx-ok-weak: rgba(88, 193, 128, 0.15);
+  --hx-danger: #ef6e6e;
+  --hx-danger-weak: rgba(239, 110, 110, 0.14);
+  --hx-wait: #e2b347;
+  --hx-wait-weak: rgba(226, 179, 71, 0.16);
+  --hx-model: #a78bfa;
+  --hx-model-weak: rgba(167, 139, 250, 0.15);
+  --hx-model-line: rgba(167, 139, 250, 0.5);
+  --hx-focus: #ececee;
+
+  --hx-type-any: #80838c;
+  --hx-type-ctx: #e2b347;
+  --hx-type-ref: #7ea8f7;
+  --hx-type-list: #4fc0b0;
+  --hx-type-tool: #ec8f6a;
+  --hx-type-gen: #c6c8ce;
+  --hx-type-ctrl: #ec7fa6;
+  --hx-type-state: #a78bfa;
+
+  --hx-mark-c1: #8ba3bd;
+  --hx-mark-c1-weak: rgba(139, 163, 189, 0.15);
+  --hx-mark-c2: #6cb0b2;
+  --hx-mark-c2-weak: rgba(108, 176, 178, 0.15);
+  --hx-mark-c3: #7eb089;
+  --hx-mark-c3-weak: rgba(126, 176, 137, 0.15);
+  --hx-mark-c4: #c2a75b;
+  --hx-mark-c4-weak: rgba(194, 167, 91, 0.15);
+  --hx-mark-c5: #cc9472;
+  --hx-mark-c5-weak: rgba(204, 148, 114, 0.15);
+  --hx-mark-c6: #a697bd;
+  --hx-mark-c6-weak: rgba(166, 151, 189, 0.15);
+
+  --hx-grid-dot: rgba(255, 255, 255, 0.07);
+  --hx-marquee: rgba(255, 255, 255, 0.06);
+  --hx-marquee-line: rgba(255, 255, 255, 0.38);
+  --hx-scrim: rgba(15, 15, 17, 0.6);
+
+  --hx-shadow-node:
+    inset 0 1px 0 var(--hx-highlight), 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 14px rgba(0, 0, 0, 0.25);
+  --hx-shadow-node-drag: inset 0 1px 0 var(--hx-highlight), 0 14px 34px rgba(0, 0, 0, 0.55);
+  --hx-shadow-float:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-2), 0 12px 32px rgba(0, 0, 0, 0.45);
+  --hx-shadow-pop:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-3), 0 18px 48px rgba(0, 0, 0, 0.6);
+}

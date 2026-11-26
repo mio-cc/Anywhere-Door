@@ -22,6 +22,7 @@ export {
   AUTHZ_MATRIX,
   CATEGORY_MAP,
   CONTAINER_RULES,
+  SHORTCUTS,
   STATE_MACHINE,
   WIDGET_MAP,
 } from './generated/tables';

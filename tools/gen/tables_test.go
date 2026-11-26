@@ -100,7 +100,7 @@ func TestTables(t *testing.T) {
 		// 反例：写坏的表和文案生成失败
 		m := repoModel(t)
 		bad := t.TempDir()
-		for _, f := range []string{"container_rules.yaml", "widget_map.yaml", "category_map.yaml", "aggregate_ops.yaml", "authz_matrix.yaml", "state_machine.yaml"} {
+		for _, f := range []string{"container_rules.yaml", "widget_map.yaml", "category_map.yaml", "aggregate_ops.yaml", "authz_matrix.yaml", "state_machine.yaml", "shortcuts.yaml"} {
 			b, err := os.ReadFile(filepath.Join(dir, f))
 			if err != nil {
 				t.Fatal(err)

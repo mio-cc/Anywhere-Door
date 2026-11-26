@@ -1,0 +1,162 @@
+/* ==========================================================================
+   主题：墨鲸（whale）
+   @theme-key: whale
+   @theme-name: 墨鲸
+   @theme-ref: DeepSeek Harness
+   @theme-desc: 冷白与墨色底，主色浅海蓝，模型色紫
+   ========================================================================== */
+
+[data-palette='whale'],
+[data-palette='whale'][data-theme='light'] {
+  color-scheme: light;
+
+  --hx-bg-0: #eff2f8;
+  --hx-bg-1: #f8f9fd;
+  --hx-bg-2: #ffffff;
+  --hx-bg-3: #ffffff;
+  --hx-bg-4: #f0f2f6;
+  --hx-bg-5: #e2e6ee;
+  --hx-bg-glass: rgba(255, 255, 255, 0.82);
+  --hx-bg-glide: rgba(16, 24, 48, 0.06);
+  --hx-bg-thumb: rgba(15, 17, 21, 0.2);
+  --hx-bg-seg: #ffffff;
+
+  --hx-line-1: rgba(16, 24, 48, 0.07);
+  --hx-line-2: rgba(16, 24, 48, 0.12);
+  --hx-line-3: rgba(16, 24, 48, 0.21);
+  --hx-highlight: rgba(255, 255, 255, 0.9);
+
+  --hx-text-1: #0f1115;
+  --hx-text-2: #454d63;
+  --hx-text-3: #636c84;
+  --hx-text-inv: #ffffff;
+
+  --hx-accent: #6b88ff;
+  --hx-accent-strong: #3d5ae8;
+  --hx-accent-weak: rgba(107, 136, 255, 0.14);
+  --hx-accent-line: rgba(107, 136, 255, 0.55);
+  --hx-primary: #4866f8;
+  --hx-primary-fg: #ffffff;
+  --hx-ok: #0f7a55;
+  --hx-ok-weak: rgba(15, 122, 85, 0.12);
+  --hx-danger: #c5303b;
+  --hx-danger-weak: rgba(197, 48, 59, 0.11);
+  --hx-wait: #93630c;
+  --hx-wait-weak: rgba(147, 99, 12, 0.13);
+  --hx-model: #8a3fd1;
+  --hx-model-weak: rgba(138, 63, 209, 0.11);
+  --hx-model-line: rgba(138, 63, 209, 0.55);
+  --hx-focus: #0f1115;
+
+  --hx-type-any: #7f8699;
+  --hx-type-ctx: #a0700c;
+  --hx-type-ref: #5574ff;
+  --hx-type-list: #0f8a7c;
+  --hx-type-tool: #c85a32;
+  --hx-type-gen: #5c6478;
+  --hx-type-ctrl: #c63d78;
+  --hx-type-state: #8a3fd1;
+
+  --hx-mark-c1: #5a728a;
+  --hx-mark-c1-weak: rgba(90, 114, 138, 0.12);
+  --hx-mark-c2: #387c7e;
+  --hx-mark-c2-weak: rgba(56, 124, 126, 0.12);
+  --hx-mark-c3: #4d7c58;
+  --hx-mark-c3-weak: rgba(77, 124, 88, 0.12);
+  --hx-mark-c4: #8f7428;
+  --hx-mark-c4-weak: rgba(143, 116, 40, 0.13);
+  --hx-mark-c5: #9c6442;
+  --hx-mark-c5-weak: rgba(156, 100, 66, 0.12);
+  --hx-mark-c6: #75668a;
+  --hx-mark-c6-weak: rgba(117, 102, 138, 0.12);
+
+  --hx-grid-dot: rgba(16, 24, 48, 0.13);
+  --hx-marquee: rgba(16, 24, 48, 0.05);
+  --hx-marquee-line: rgba(16, 24, 48, 0.38);
+  --hx-scrim: rgba(241, 243, 247, 0.7);
+
+  --hx-shadow-node:
+    0 0 0 1px rgba(16, 24, 48, 0.025), 0 1px 2px rgba(16, 24, 48, 0.06), 0 3px 10px rgba(16, 24, 48, 0.05);
+  --hx-shadow-node-drag: 0 2px 4px rgba(16, 24, 48, 0.06), 0 16px 36px rgba(16, 24, 48, 0.15);
+  --hx-shadow-float:
+    0 0 0 1px var(--hx-line-2), 0 2px 4px rgba(16, 24, 48, 0.04), 0 12px 32px rgba(16, 24, 48, 0.09);
+  --hx-shadow-pop:
+    0 0 0 1px var(--hx-line-3), 0 4px 8px rgba(16, 24, 48, 0.06), 0 20px 48px rgba(16, 24, 48, 0.16);
+}
+
+[data-palette='whale'][data-theme='dark'] {
+  color-scheme: dark;
+
+  --hx-bg-0: #0c0d11;
+  --hx-bg-1: #121318;
+  --hx-bg-2: #181a20;
+  --hx-bg-3: #1e2028;
+  --hx-bg-4: #262932;
+  --hx-bg-5: #30343f;
+  --hx-bg-glass: rgba(24, 26, 32, 0.8);
+  --hx-bg-glide: rgba(220, 228, 255, 0.07);
+  --hx-bg-thumb: rgba(236, 238, 244, 0.22);
+  --hx-bg-seg: #30343f;
+
+  --hx-line-1: rgba(220, 228, 255, 0.06);
+  --hx-line-2: rgba(220, 228, 255, 0.095);
+  --hx-line-3: rgba(220, 228, 255, 0.16);
+  --hx-highlight: rgba(220, 228, 255, 0.04);
+
+  --hx-text-1: #eceef4;
+  --hx-text-2: #a3a9ba;
+  --hx-text-3: #888fa3;
+  --hx-text-inv: #0b0d16;
+
+  --hx-accent: #8ea2ff;
+  --hx-accent-strong: #a8b8ff;
+  --hx-accent-weak: rgba(142, 162, 255, 0.16);
+  --hx-accent-line: rgba(142, 162, 255, 0.5);
+  --hx-primary: #93a6ff;
+  --hx-primary-fg: #0b0d16;
+  --hx-ok: #4fc290;
+  --hx-ok-weak: rgba(79, 194, 144, 0.15);
+  --hx-danger: #f26b72;
+  --hx-danger-weak: rgba(242, 107, 114, 0.14);
+  --hx-wait: #e4b64e;
+  --hx-wait-weak: rgba(228, 182, 78, 0.16);
+  --hx-model: #c58cfb;
+  --hx-model-weak: rgba(197, 140, 251, 0.15);
+  --hx-model-line: rgba(197, 140, 251, 0.5);
+  --hx-focus: #eceef4;
+
+  --hx-type-any: #7f8699;
+  --hx-type-ctx: #e4b64e;
+  --hx-type-ref: #9fb0ff;
+  --hx-type-list: #4cc4b3;
+  --hx-type-tool: #ef9068;
+  --hx-type-gen: #c7cbd8;
+  --hx-type-ctrl: #ef80aa;
+  --hx-type-state: #c58cfb;
+
+  --hx-mark-c1: #8ba3bd;
+  --hx-mark-c1-weak: rgba(139, 163, 189, 0.15);
+  --hx-mark-c2: #6cb0b2;
+  --hx-mark-c2-weak: rgba(108, 176, 178, 0.15);
+  --hx-mark-c3: #7eb089;
+  --hx-mark-c3-weak: rgba(126, 176, 137, 0.15);
+  --hx-mark-c4: #c2a75b;
+  --hx-mark-c4-weak: rgba(194, 167, 91, 0.15);
+  --hx-mark-c5: #cc9472;
+  --hx-mark-c5-weak: rgba(204, 148, 114, 0.15);
+  --hx-mark-c6: #a697bd;
+  --hx-mark-c6-weak: rgba(166, 151, 189, 0.15);
+
+  --hx-grid-dot: rgba(220, 228, 255, 0.07);
+  --hx-marquee: rgba(220, 228, 255, 0.06);
+  --hx-marquee-line: rgba(220, 228, 255, 0.38);
+  --hx-scrim: rgba(12, 13, 17, 0.6);
+
+  --hx-shadow-node:
+    inset 0 1px 0 var(--hx-highlight), 0 1px 2px rgba(0, 0, 0, 0.45), 0 4px 14px rgba(0, 0, 0, 0.25);
+  --hx-shadow-node-drag: inset 0 1px 0 var(--hx-highlight), 0 14px 34px rgba(0, 0, 0, 0.55);
+  --hx-shadow-float:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-2), 0 12px 32px rgba(0, 0, 0, 0.45);
+  --hx-shadow-pop:
+    inset 0 1px 0 var(--hx-highlight), 0 0 0 1px var(--hx-line-3), 0 18px 48px rgba(0, 0, 0, 0.6);
+}
