@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T04:58:30Z",
-  "docs_commit": "66818d32cd2dca93fa02ac0583d487a958651fec",
+  "docs_commit": "5bee62a83add2acf64855850fee9301e21db9971",
   "docs": {
     "B_后端服务/B.04_API_资源/B.04_API_资源.md": "sha256:7d95ea062f3c53997c248c75ee6148a6e6425cfacc569fded93b341c47474d28",
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
@@ -31,7 +31,7 @@
     "C_契约层/C.16_连接类型与连接.md": "sha256:53983f472c1f492b7ba04b589b22fa9ad7f9a57491b3d44fda4933627a2286a1",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
     "E_内核_engine/E.03_schema_注册与校验/E.03.03_图校验规则清单.md": "sha256:87d00f9dadf94b2e32c2a783cb15d6c9c0ddada89c19b3a35e269c9ab67f2052",
-    "E_内核_engine/E.08_blob_内容寻址存储.md": "sha256:da8569dcb1ce7a2af3fc046957133f43fd8498656954a658a1726e8d0fa6b96b",
+    "E_内核_engine/E.08_blob_内容寻址存储.md": "sha256:82ddc41626c65d936ad71157a644217fa06fc6e8cddae8e53aa89a229d46c96f",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",

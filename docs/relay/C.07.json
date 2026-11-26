@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T05:13:31Z",
-  "docs_commit": "5f7329c5a424b996a4b00be2a1f8ebd794c14b85",
+  "docs_commit": "5bee62a83add2acf64855850fee9301e21db9971",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.06_事件/C.06.02_运行事件目录.md": "sha256:e886c059fa22c8c0fbaa5a75e33b011238a92ac37ad961f6e2ff9ca4ae615ce1",
@@ -11,7 +11,7 @@
     "C_契约层/C.07_运行状态机.md": "sha256:5b5115763696dacdecd5b6e4d2178920deba357a0ca63d04ce3a132ff3762610",
     "C_契约层/C.14_代码生成映射.md": "sha256:cc6340b20830c512cafdd49e6d34e0101daac1b6bae376220b0278f6c7f79bbe",
     "C_契约层/C_契约层.md": "sha256:a9ff352d8a4eb3ded437b9fe5b69d7e6a0d1fcf13ff3db9756c8999a809849e4",
-    "E_内核_engine/E.09_obs_可观测/E.09.01_事件写入.md": "sha256:3152b76d349d83de36eb63f9da1f69a3e556c5b64dd8124f56a856ff35bbe368",
+    "E_内核_engine/E.09_obs_可观测/E.09.01_事件写入.md": "sha256:0ded14647bb636766c8c39a4aced632fd77dc0532ce55e15203796886de6ba34",
     "E_内核_engine/E.15_sched_调度/E.15_sched_调度.md": "sha256:f7d3fc251e462e8cd8dd4dc637a8b53d25e7d3d2ae6575ed05e2a04b12d2076c",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
