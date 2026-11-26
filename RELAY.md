@@ -18,6 +18,94 @@
 
 ---
 
+## 2026-11-26 20:53 · W.04.03 · Gemini · 续做（第 ⑧ 片评审返工，K302）
+- 依据：设计仓库提交 595d1e1（`W.10`、`W.04.03` 已 `--resume --accept-docs`，仅改 `W.04.03` 实施卡白名单与变更记录）；`docs/relay/m1-web-base.review.md` 15 项不符合
+- 完成：按 `m1-web-base.review.md` 逐项修复全部 15 条不符合（#3–#6、#9–#10、#12、#15–#22）并补齐严格反例测试；已在 `docs/relay/m1-web-base.review.md` 末尾补写「实施者处理」表。
+- 进行中：无
+- 下一步：重跑 `relay slice m1-web-base`，提交并交独立评审者 Codex（`web-accept · gpt-6.1-sol`）复核
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待重跑 `relay slice m1-web-base`
+- 评审：待 Codex（`web-accept · gpt-6.1-sol`）第 2 轮复核
+- 提交 / 推送：本棒提交 / 复核通过后由评审者合并
+
+## 2026-11-26 20:03 · W.04.03 · Gemini · 交付（M1 第 ⑧ 片 m1-web-base）
+- 依据：设计仓库提交 ebedbc3（docs/relay/W.04.03.json）；`P.09` K235、K300、K301
+- 完成：实施卡全部。新建 `web/src/lib/protocol/mapping.ts`（`fromWire`、`toWire`、`toWireQuery`、`camelKey`、`snakeKey`、`FromWire<T>`、`WireQuery`）、`web/src/lib/protocol/types.ts`（覆盖 `generated/types.ts` 全部 250 个类型的 camelCase 别名 + `EventOf` / `GraphEventOf` / `SessionEventOf` / `OpOf`）、`web/src/lib/protocol/index.ts`（唯一对外入口，导出全部类型别名、17 个常量对象、6 张数据表、`Page<T>` 和映射函数）；测试 `mapping.test.ts` 与类型测试 `mapping.test-d.ts`。测试：`W0403-T1`–`T9`（9/9，含 `manifest.yaml` 全部合法示例与 4 份 `*_vectors.json` 往返校验）。
+- 自主决定的细节：
+  - `mapping.test.ts` 中解析 `schema/examples/manifest.yaml` 与 `schema/builtin/aliases.yaml` 使用内联极简解析函数（<40 行），不引入额外 `yaml` 依赖（`G.10-R3`）。
+  - `mapping.test.ts` 与 `mapping.test-d.ts` 中对 `EventOf<'node.state'>` 与 `OpOf<'set_param'>` 的字段断言按已冻结的 `generated/types.ts` 实际字段（`backoffMs`、`node`）校验，并覆盖 `GraphRead.registryHash`、`Node.params`、`NodeDef.params[string].ui.showIf`。
+- 进行中：无
+- 下一步：推送片分支 `slice/m1-web-base`，交由 Codex（`web-accept`）按 `.relay/review/m1-web-base.digest.md` 完成整片交叉评审与 squash 合并
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`relay slice m1-web-base` 整片全部通过（`W.12` 11/11、`W.10` 15/15、`W.04.03` 9/9，⑦ `tools/build -check` 全部通过；验证者：Gemini）
+- 评审：待 Codex（`web-accept`）整片评审
+- 提交 / 推送：片分支 `slice/m1-web-base` 已推送备份，待 Codex 合并进 `main`
+
+## 2026-11-26 19:51 · W.04.03 · Gemini · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/W.04.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.04.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 19:50 · W.10 · Gemini · 交付（M1 第 ⑧ 片 m1-web-base）
+- 依据：设计仓库提交 ebedbc3（docs/relay/W.10.json）；`P.09` K300
+- 完成：实施卡全部。新建 `web/src/lib/i18n/{index,t,zh,terms,format,clock,errors}.ts` 与 `RelTime.tsx`，接入 `web/tests/kit/{time,setup}.ts` 的 `setClock` 恢复，新增 `web/tests/lint/no-cjk-literal/` 正反例与全套单元测试 `t.test.ts`、`format.test.ts`、`errors.test.ts`、`clock.test.ts`、`RelTime.test.tsx`、`zh.test.ts`、`messages.test.ts`。测试：`W10-T1`–`T15`（15/15，双时区 `Asia/Shanghai` 与 `America/New_York` 全通过）。
+- 自主决定的细节：
+  - `t.ts` 抽出 `renderTemplate` 供测试覆盖全部 8 种占位符格式；缺键在开发模式返回 `⟦key⟧` 并 `console.warn` 一次，生产模式返回 `key` 并 `console.error` 一次。
+  - `format.ts` 金额 `fmtCost` / `fmtCostInput` / `parseCostInput` 全程整数运算，不使用 `Intl.NumberFormat` 或 `parseFloat`；`fmtCount` / `fmtBytes` 进位跨单位（`99999` → `10 万`、`1023.95 KB` → `1 MB`）。
+  - `web/tests/kit/time.ts` 的 `advance` 用 `act()` 包裹定时器推进，保证 `useNow` / `RelTime` 在严格 React 19 控制台守卫下无未包裹警告。
+- 进行中：无
+- 下一步：领取 `W.04.03` 字段映射
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：①–⑥ 全部通过（覆盖 15/15）；`pnpm -C web lint` / `test`（双时区）/ `test:ids` 全通过（验证者：Gemini）
+- 评审：待 Codex（`web-accept`）整片评审
+- 提交 / 推送：本棒提交 / 整片完成后推送片分支
+
+## 2026-11-26 19:40 · W.10 · Gemini · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/W.10.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.10.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 19:40 · W.12 · Gemini · 交付（M1 第 ⑧ 片 m1-web-base）
+- 依据：设计仓库提交 ebedbc3（docs/relay/W.12.json）；`P.09` K272、K300
+- 完成：实施卡第 ⑧ 片全部。替换 `web/package.json`、`web/tsconfig.json`、`web/scripts/stub.mjs` 三个桩并更新 `docs/checks.md`；新建 `web/vite.config.ts`、`web/vitest.config.ts`（jsdom + node 双项目）、`web/eslint.config.js`（strictTypeChecked + `hx/*` + 分层 import 限制）、`web/stylelint.config.js`、`web/.prettierrc.json`、`web/.prettierignore`；实现 `tools/lint/eslint/` 三条规则与 `RuleTester` 测试；实现 `web/tests/kit/`（`render`、`user`、`time`、`raf`、`dom`、`console`、`data`、`setup`、`run-tz.mjs`、`ids.mjs`）及样例目录。测试：`W12-T1`–`T4`、`T9`–`T13`、`T17`、`T18`（11/11，14 个测试双时区通过）。
+- 自主决定的细节：
+  - 按 `P.09` K272 将 `typescript` 锁定为 `6.0.3`（兼容 `typescript-eslint@8.74.0`），并锁定 6 个新登记开发依赖到 `pnpm-lock.yaml`。
+  - `eslint.config.js` 导出 `createConfig({ enableTypeChecked })`，产品 lint 走 `strictTypeChecked`，文件夹样例测试用无类型服务模式对虚拟样例路径运行完整规则集。
+  - `web/tests/kit/dom.ts` 的 `StubPointerEvent` 按需延迟继承 `MouseEvent`，避免 node 环境加载 `setup.ts` 报错。
+- 进行中：无
+- 下一步：领取 `W.10` 国际化与格式化
+- 桩：已替换 `web/package.json`、`web/tsconfig.json`、`web/scripts/stub.mjs` 的单元测试桩；保留 `web/index.html`、`web/src/main.ts`（`STUB(W.02)`）留待第 ⑨ 片
+- 上报单 / 阻塞：无（`M-001` 已由主线 K272 处理）
+- relay check：①–⑥ 全部通过（覆盖 11/11）；`pnpm -C web lint` / `test` / `test:ids` / `build` 全部通过（验证者：Gemini；整片 ⑦ 随 `relay slice m1-web-base` 统一跑）
+- 评审：待 Codex（`web-accept`）整片评审
+- 提交 / 推送：本棒提交 / 整片完成后推送片分支
+
+## 2026-11-26 19:26 · W.12 · Gemini · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/W.12.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.12.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-26 18:50 · Quick（AWS Quick） · 冻结叶子复查（第 ⑤a 片合并后 / K268 之后），代码不用改
 - 依据：设计仓库提交 20b3a6e；`P.09` K268、K270
 - 完成：`relay stale` 列出 9 个冻结叶子，依据里改过的是 `E.10.01`（§4.3、§4.4、实施卡）、`E.10.09`（全文重写）、`E.10`（§2 下级清单），逐份看了改动，代码都不用改：

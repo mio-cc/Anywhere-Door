@@ -1,0 +1,9 @@
+dist/
+dist-perf/
+.test/
+.perf/
+node_modules/
+pnpm-lock.yaml
+src/lib/protocol/generated/
+src/lib/i18n/generated/
+tests/lint/

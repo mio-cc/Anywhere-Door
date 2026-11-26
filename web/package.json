@@ -1,5 +1,4 @@
 {
-  "//": "STUB(W.01, W.02, W.12)：只为让 O.01 的 build / lint / test 能跑通的最小前端（不用 React）；W.01、W.02、W.12 实施时整体替换。依赖由验证者用 pnpm add -D --save-exact vite typescript 加入（G.10 §3.4 已登记）。",
   "name": "anywhere-door-web",
   "private": true,
   "version": "0.0.0",
@@ -11,13 +10,35 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
     "build": "tsc --noEmit && vite build",
-    "lint": "tsc --noEmit",
-    "test": "node scripts/stub.mjs test",
+    "lint": "tsc --noEmit && eslint . && stylelint \"src/**/*.css\" --allow-empty-input && prettier --check .",
+    "format": "prettier --write .",
+    "test": "node tests/kit/run-tz.mjs",
+    "test:watch": "vitest",
+    "test:ids": "node tests/kit/ids.mjs",
     "test:e2e": "node scripts/stub.mjs test:e2e",
     "test:visual": "node scripts/stub.mjs test:visual"
   },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
   "devDependencies": {
-    "typescript": "7.0.2",
-    "vite": "8.3.8"
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.11",
+    "@types/react": "19.3.3",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "ajv": "8.20.0",
+    "eslint": "10.15.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.8",
+    "globals": "17.14.0",
+    "jsdom": "31.0.1",
+    "prettier": "3.10.1",
+    "stylelint": "18.1.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.74.0",
+    "vite": "8.3.8",
+    "vitest": "5.1.2"
   }
 }

@@ -1,3 +1,3 @@
-// STUB(W.12)：前端测试还没有实现。W.12 实施时整体替换（G.02.06-R10）。
-const what = process.argv[2] ?? 'test';
-console.log(`web ${what}：还没有前端测试（桩，W.12），什么也没有运行`);
+// 端到端与视觉回归占位脚本（W.12 单元测试基础设施已落地，端到端与视觉陈列页在第 ⑫ 片替换）。
+const what = process.argv[2] ?? 'test:e2e';
+console.log(`web ${what}：端到端 / 视觉回归待第 ⑫ 片落地（W.12），本次未运行`);
