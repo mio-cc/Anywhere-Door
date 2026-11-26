@@ -1,0 +1,24 @@
+{
+  "leaf": "E.15.03",
+  "branch": "slice/m1-base",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-26T06:06:17Z",
+  "docs_commit": "f301da1e041ade40863f5af184e40d671b279f37",
+  "docs": {
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.10_llm_模型适配/E.10.09_重试_超时与限流.md": "sha256:3ba446b6aa71b5836d73657c14e7d523c4daa1e696e2ad0e33e5bb2f1f69e395",
+    "E_内核_engine/E.15_sched_调度/E.15.03_令牌桶限流.md": "sha256:3f857ac56f722e92ceb66a113a3204b243096836dcea817cafca1537e07f18d1",
+    "E_内核_engine/E.15_sched_调度/E.15_sched_调度.md": "sha256:f7d3fc251e462e8cd8dd4dc637a8b53d25e7d3d2ae6575ed05e2a04b12d2076c",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-base",
+  "base": "3c5536ca56b009b8a25829d544815469ecb38c6b",
+  "head": "f3b3e0a8f65ddaf9f00dc0451860b7109e0e2313"
+}

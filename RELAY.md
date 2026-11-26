@@ -18,6 +18,99 @@
 
 ---
 
+## 2026-11-26 13:40 · E.09.01 · Quick（AWS Quick） · 交付（M1 第 ④ 片 m1-base）
+- 依据：设计仓库（见 docs/relay/E.09.01.json）；`P.09` K265
+- 完成：实施卡全部。`engine/obs/writer.go`（`EventStore`、`WriterOpts`、`Writer`，包注释）、`hub.go`（`StreamKey`、`Hub`、`Sub`）、`path.go`（`PathItem`、`PathOf`、`ExecKey`）。测试 `obs_test.go`：`E0901-T1`、`T2`、`T4`、`T5`、`T6`（`T3` 在 `E.16.01`）。
+- 自主决定的细节：
+  - 写入器覆盖 `run_id` / `session_id`、`ts`、`seq`；`seq` 按 `Append*` 返回的最后一个序号倒推（同一事务连续分配，`C.06.01-R1`），不依赖存储改调用方的切片。
+  - S 级事件没有 `loc` 时不节流；节流窗口按秒，表超过 1 万个执行时清空（防止一直变大）。
+  - `actor` 的 `kind` 或 `id` 为空都算没有 actor。
+  - Hub 广播时持锁；缓冲满的订阅者被断开并关闭 channel，缓冲里已有的还能读出来。
+  - 测试用本文件里的假存储，没用 memstore（memstore 要先建运行）。
+  - `E0901-T5` 平时只跑一遍不断言，`ANYDOOR_PERF=1` 时断言 < 1s；另有 `BenchmarkEmit`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 13:40 · E.08 · Quick（AWS Quick） · 交付（M1 第 ④ 片 m1-base）
+- 依据：设计仓库（见 docs/relay/E.08.json）；`P.09` K265
+- 完成：实施卡全部。`engine/blob/blob.go`（`Ref`、`ParseRef`、`RefOf`、`Meta`、`Reader`、`Store`、三个错误）、`engine/blob/fsblob/fsblob.go`。测试 `fsblob_test.go`：`E08-T1`、`T2`、`T4`、`T5`（`T3` 在 `B.09`）。
+- 自主决定的细节：
+  - 多加了 `RefOf(hash)`，给实现用。
+  - 内容已存在时直接返回（去重），不重写 `.meta.json`：同样的内容第二次写入时给的媒体类型被忽略。
+  - 先改名 `.meta.json` 再改名内容文件：内容文件在就说明元信息也在。Windows 上 `os.Rename` 会覆盖已有文件，两个写入者同时写同样内容时结果相同。
+  - `Get` 返回的 reader 在读到结尾时校验；没读完就关闭的不校验。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 13:40 · E.15.01 · Quick（AWS Quick） · 交付（M1 第 ④ 片 m1-base）
+- 依据：设计仓库（见 docs/relay/E.15.01.json）；`P.09` K265
+- 依据更新：设计仓库 24b270e（E.15.01、E.16.01 改动，K266）
+- 完成：实施卡全部。`engine/sched/ready.go`（`Readiness`、`InEdge`、`ReadyInput`、`Judge`）、`prio.go`（`Prio`、泛型 `Queue`）。测试 `ready_test.go`：`E1501-T1`–`T5`。
+- 自主决定的细节：
+  - 上游还没到终态时，`Early` 拿到的 `arrived` 是已激活的入边数；`Early` 为 true 时同样计算 `empty`。
+  - 一个端口有多条线时，有一条激活就算这个端口有值。
+  - `Queue` 不加锁（调度循环单写者，`E.15-R1`）。
+  - golangci QF1001：Judge 的第一个判断抽成小函数 startable（行为不变）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 13:40 · E.15.02 · Quick（AWS Quick） · 交付（M1 第 ④ 片 m1-base）
+- 依据：设计仓库（见 docs/relay/E.15.02.json）；`P.09` K265
+- 依据更新：设计仓库 24b270e（E.16.01 的 Judge 改名，K266；pool.go 不涉及，代码无需跟着改）
+- 完成：实施卡全部。`engine/sched/pool.go`（`Config`、`Pools`、`PoolSet`、`Gate`、`Pool`）。测试 `pool_test.go`：`E1502-T1`–`T4`。
+- 自主决定的细节：
+  - 信号量用有容量的 channel，不加 `golang.org/x/sync`（设计文档已同步改为只用标准库）。
+  - 一份配置叫一"代"：全局信号量和各键的池都属于这一代；`Reconfigure` 换新一代，旧快照继续用旧的。
+  - `Acquire` 先 `TryAcquire`，拿不到才算等待、回调 `onWait`；并发和令牌都要等时只回调一次。
+  - 没单独配的键用 `Default`；`Default` 也没配时不限并发、不限速。
+  - release 用 `sync.Once` 包住，多次调用只释放一次。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 13:40 · E.15.03 · Quick（AWS Quick） · 交付（M1 第 ④ 片 m1-base）
+- 依据：设计仓库（见 docs/relay/E.15.03.json）；`P.09` K265
+- 完成：实施卡全部。`engine/sched/rate.go`（`RateLimiter`：`Wait`、`TryTake`、`Ready`、`Penalize`）。测试 `rate_test.go`：`E1503-T1`、`T2`。
+- 自主决定的细节：
+  - 令牌用浮点数，按经过的时间补充；降速期间和恢复之后分段计算。比较时留 `1e-9` 的余量，避免浮点误差让虚拟时钟下要多推一次。
+  - `Penalize` 的 `factor` 夹在 0.01–1 之间。
+  - 测试的区间（64–65、29–31 等）是令牌桶的精确值加减浮点误差，不是放宽。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 13:40 · E.15.04 · Quick（AWS Quick） · 交付（M1 第 ④ 片 m1-base）
+- 依据：设计仓库（见 docs/relay/E.15.04.json）；`P.09` K265
+- 完成：实施卡全部。`engine/sched/clock.go`（`Clock`、`Timer`、`Ticker`、`RealClock`，包注释）、`vclock.go`（`VirtualClock`）。测试 `vclock_test.go`：`E1504-T1`、`T2`；`clockcheck_test.go`：`E1504-T3`。
+- 自主决定的细节：
+  - 虚拟时钟的 `After(0)` / `NewTimer(0)` 立刻触发，不登记；`NewTicker` 的周期 ≤ 0 时 panic（同 `time.NewTicker`）。
+  - `Ticker` 在一次 `Advance` 里跨过多个周期时每个周期都送一次，channel 容量 1，多的丢掉（同 `time` 包）。
+  - 时钟检查用 `go/parser` 找 `time.<函数>(` 的调用（认别名导入）；`run`、`exec` 目录还不存在时跳过。`time.Duration`、`time.Time` 的方法不算。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
 ## 2026-11-26 01:10 · E.05.04 · Quick（AWS Quick） · 交付（M1 第 ③ 片 m1-op）
 - 依据：设计仓库（见 docs/relay/E.05.04.json）；`P.09` K261
 - 完成：实施卡全部。`engine/op/coalesce.go`（`tryCoalesce` 登记为 `coalescer`、`sameObject`）。测试 `coalesce_test.go`（外部测试包 `op_test`）：`E0504-T1`–`T5`。

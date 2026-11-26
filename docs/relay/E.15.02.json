@@ -1,0 +1,28 @@
+{
+  "leaf": "E.15.02",
+  "branch": "slice/m1-base",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-26T06:10:54Z",
+  "docs_commit": "24b270e11dddd5cd6b66ef0162d00c06425e8467",
+  "docs": {
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.09_obs_可观测/E.09.01_事件写入.md": "sha256:0ded14647bb636766c8c39a4aced632fd77dc0532ce55e15203796886de6ba34",
+    "E_内核_engine/E.14_exec_执行器/E.14_exec_执行器.md": "sha256:2678689dcaf97bb59da2fe1655a3bfc017f284dca4bb8556378f6761a1e5ea02",
+    "E_内核_engine/E.15_sched_调度/E.15.02_并发与资源池.md": "sha256:a474253ff15325870aeb2e70000e527bb0877e143ca18d7667d007e275bac43a",
+    "E_内核_engine/E.15_sched_调度/E.15.03_令牌桶限流.md": "sha256:3f857ac56f722e92ceb66a113a3204b243096836dcea817cafca1537e07f18d1",
+    "E_内核_engine/E.15_sched_调度/E.15_sched_调度.md": "sha256:f7d3fc251e462e8cd8dd4dc637a8b53d25e7d3d2ae6575ed05e2a04b12d2076c",
+    "E_内核_engine/E.16_run_运行/E.16.01_运行生命周期.md": "sha256:9a1a43194ffc649a0b04aba5e52ae6cacea792c7c5d532f1b4d5591a8d56d305",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G.11_配置与环境变量.md": "sha256:9974f1ee64a1bc390e3ecc4cbc3f5029de4a553c296619c6c72428fd4e56dc5c",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-base",
+  "base": "f3b3e0a8f65ddaf9f00dc0451860b7109e0e2313",
+  "head": "771430e51ac24054ed55eab664c8866a985ba353"
+}
