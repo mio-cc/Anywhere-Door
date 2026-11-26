@@ -34,7 +34,7 @@
     "U_UI_UX_规范/U.09_应用布局/U.09.06_底部输入框.md": "sha256:97bdbc338a70b98ef4cc0225279562b7c6cbef438dd592fc08b2065d5fbfc78a"
   },
   "stubs": [],
-  "state": "delivered",
+  "state": "merged",
   "slice": "m1-llm",
   "base": "af27e6456dabe4645cc3fa3b73e7cd4d6b6d15c5",
   "head": "21a654926fa23141c997ca40f3e971af45a73335"
