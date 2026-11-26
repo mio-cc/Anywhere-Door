@@ -1,0 +1,52 @@
+{
+  "dropped": [],
+  "inherit": {
+    "constraints": [
+      "只用公开资料",
+      "不登录任何账号",
+      {
+        "currency": "CNY",
+        "region": "中国大陆"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "content": "查出三家厂商大模型 2026 年公开的 API 报价",
+      "name": "任务",
+      "source": "in.task.instruction",
+      "tokens": 26
+    },
+    {
+      "content": "给方案比较提供成本数据",
+      "name": "目的",
+      "source": "in.task.purpose",
+      "tokens": 11
+    },
+    {
+      "content": "每家一行：模型、输入单价、输出单价、来源链接",
+      "name": "好结果",
+      "source": "in.task.good_result",
+      "tokens": 22
+    },
+    {
+      "content": "- 三家都有\n- 单价统一为每百万 tokens\n- 每个数据附来源链接",
+      "name": "检查项",
+      "source": "in.task.checklist",
+      "tokens": 36
+    },
+    {
+      "content": "constraints:\n  - 只用公开资料\n  - 不登录任何账号\n  - currency: CNY\n    region: 中国大陆",
+      "name": "约束",
+      "source": "inherit",
+      "tokens": 70
+    },
+    {
+      "content": "【必要输入】- items: [原文: ws://sha256:fc4db50a604caf31a38562235d4351bddd727a6464904f66b7798980042d48f7]",
+      "name": "必要输入",
+      "source": "in.task.inputs",
+      "tokens": 97
+    }
+  ],
+  "tokens": 262
+}

@@ -1,0 +1,33 @@
+{
+  "leaf": "E.13.05",
+  "branch": "slice/m1-tools-ctx",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-26T13:23:56Z",
+  "docs_commit": "3d4ce764439ab391b9ae891a31ce9f2883baa79d",
+  "docs": {
+    "C_契约层/C.03_节点定义_NodeDef/C.03.04_声明式节点格式.md": "sha256:1dbbb94ab1327ba48e3a8179cc733a95d0a286d1ba2ca21ca458790acd042cae",
+    "C_契约层/C.13_内置资产格式/C.13.02_角色卡_rolecard.md": "sha256:e97bf21ad945b37600d4aedf751da64c67a0ba856e49486e83ff97e9026434f0",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.11_tools_工具/E.11.01_Tool_接口与注册.md": "sha256:670ce76eafaff25c3e0e0ecc1bec5c6e19bf5b2a140af4a4d453a6d9f17ae727",
+    "E_内核_engine/E.13_ctxasm_上下文装配/E.13.02_装配流程.md": "sha256:93ce2be47036cb73b87d2129be1527ed9400c9456ba55cc21dc7000fb9267d52",
+    "E_内核_engine/E.13_ctxasm_上下文装配/E.13.05_提示词六段拼装.md": "sha256:91c9bb6270c0213e294ec2a24eca9d4e4a1a78b7d2aee49ffbe8a163b88963d3",
+    "E_内核_engine/E.13_ctxasm_上下文装配/E.13_ctxasm_上下文装配.md": "sha256:be2b083453c91cb213e0eea912f83777893949679a70c59f1b808c439178a1da",
+    "E_内核_engine/E.14_exec_执行器/E.14.02_Agent/E.14.02_Agent.md": "sha256:c6a006bf96a66302e4b7cee2dfb2c017c053c3cb6a6dbbfe8f830fb9977ecfd8",
+    "E_内核_engine/E.14_exec_执行器/E.14.12_子图端口.md": "sha256:d0ce4681d0ae22ba616c2e4d2f8650f71637a4182c59f302c538541d590085eb",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G.10_依赖管理.md": "sha256:14ef35558c4865cdf7e65e0946c315d47be66550e0314d27f21f81bb66394915",
+    "G_工程规范/G.14_完成定义_DoD.md": "sha256:4d4316b28bc7d901a8732b7aafc09c5248313952ef53e6617d7dec78833ec1d5",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
+    "S_安全与隐私/S.03_密钥与凭据管理.md": "sha256:68c4bd0634b08eb05c6948b7cc5202e36c96e986c5e0a4f6729e146fbe6804e5",
+    "S_安全与隐私/S.05_提示词注入与污染防护.md": "sha256:b1dfa88e5fe41cd573ceef0efcd3baecbf0aff30dc22971a7b7af60a0332ba44"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-tools-ctx",
+  "base": "a398805b407fd69b59308f5dd2dd2d3c134eca90",
+  "head": "5511cc52c4b2cee41f80ffbd844ed95160c9f36a"
+}

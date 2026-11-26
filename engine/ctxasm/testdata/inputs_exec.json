@@ -1,0 +1,52 @@
+{
+  "task": {
+    "id": "T1",
+    "instruction": "查出三家厂商大模型 2026 年公开的 API 报价",
+    "purpose": "给方案比较提供成本数据",
+    "good_result": "每家一行：模型、输入单价、输出单价、来源链接",
+    "checklist": [
+      "三家都有",
+      "单价统一为每百万 tokens",
+      "每个数据附来源链接"
+    ],
+    "inputs": [
+      {
+        "name": "厂商清单",
+        "items": [
+          "vendor-a",
+          "vendor-b",
+          "vendor-c"
+        ]
+      },
+      {
+        "name": "币种说明",
+        "note": "按发布当天的汇率换算成人民币"
+      }
+    ],
+    "constraints": [
+      "只用公开资料",
+      "不登录任何账号"
+    ],
+    "output_type": "执行结果@1",
+    "reasoning": "决策者的推理过程，不该给执行者看",
+    "history": [
+      "第一版任务卡"
+    ]
+  },
+  "goal": {
+    "id": "G1",
+    "intent": "比较三家大模型的性价比",
+    "constraints": {
+      "currency": "CNY",
+      "region": "中国大陆"
+    },
+    "criteria": [
+      {
+        "id": "C1",
+        "desc": "三家都有报价",
+        "method": "规则",
+        "must": true
+      }
+    ]
+  }
+}

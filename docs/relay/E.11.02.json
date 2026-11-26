@@ -1,0 +1,29 @@
+{
+  "leaf": "E.11.02",
+  "branch": "slice/m1-tools-ctx",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-26T11:51:58Z",
+  "docs_commit": "3d4ce764439ab391b9ae891a31ce9f2883baa79d",
+  "docs": {
+    "C_契约层/C.03_节点定义_NodeDef/C.03.03_锁定字段.md": "sha256:0cfa0e95d44415e9e3bb133c3938a36fa3a87f8fefb5c9cb4968e6185dc8d2f7",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.10_llm_模型适配/E.10.07_Token_计数.md": "sha256:c17254bb642d78aecfa6ddf33cf545c1433b95fb8e252b97b2e840441e763f9c",
+    "E_内核_engine/E.11_tools_工具/E.11.01_Tool_接口与注册.md": "sha256:670ce76eafaff25c3e0e0ecc1bec5c6e19bf5b2a140af4a4d453a6d9f17ae727",
+    "E_内核_engine/E.11_tools_工具/E.11.02_结果裁剪与原文指针.md": "sha256:ce38918ed255d0941fa18b8da488fbafcd06aee79c2109ac1089585f95a8e8d9",
+    "E_内核_engine/E.11_tools_工具/E.11_tools_工具.md": "sha256:c2acbf71f34ac3c21f53f9aaabcbf1da9eda79e40d23d17df4d62aa018b5bab5",
+    "E_内核_engine/E.13_ctxasm_上下文装配/E.13.03_预算计算.md": "sha256:c738c616b1024a29d4671bcc8bfa8fdf9b5e73378ad25c2a40d4afa5cf639460",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G.10_依赖管理.md": "sha256:14ef35558c4865cdf7e65e0946c315d47be66550e0314d27f21f81bb66394915",
+    "G_工程规范/G.14_完成定义_DoD.md": "sha256:4d4316b28bc7d901a8732b7aafc09c5248313952ef53e6617d7dec78833ec1d5",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-tools-ctx",
+  "base": "337a3febe20d58145bfaa8e6b1ed07d62b151ed7",
+  "head": "ca0920136e528bce55b6e910254fce58954b40b6"
+}

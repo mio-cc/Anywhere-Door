@@ -18,6 +18,56 @@
 
 ---
 
+## 2026-11-27 00:17 · E.13.05 · Quick（AWS Quick） · 续做（第 ⑤b 片整片评审第 18 行与 3 条建议，K274）
+- 依据：设计仓库 K274 提交（验证者 `--resume --accept-docs` 后见 docs/relay/E.13.05.json）；`P.09` K274
+- 完成：
+  - 评审第 18 行（成功路径写账本用了调用方的 ctx）。实际比评审说的更重：`Trim` 和 fsblob 的 `Put` 开头都查 `ctx.Err()`，工具成功后一旦取消，`Trim` 就报 `cancelled`、走失败路径，账本记成 `failed`，可工具已经执行过（L1 以上有副作用）；同键再调还会报 `tool_failed_before`。改 `engine/tools/handle.go`：`Invoke` 成功以后的裁剪、结果写工作区、`Ledger.Finish`（成功、失败两条路径）都用 `context.WithoutCancel(ctx)`；`done` 交给 `OnCall` 的 ctx 也不随取消（每次 Call 的记录都要写下）。
+  - 测试 `E1101-T7 调用成功后取消`（`handle_test.go`）：账本用"取消后写不进"的包装（和真的存储一样）、工作区用真的 fsblob，工具成功后立刻取消调用方 ctx → 返回结果；账本 `succeeded` 且有结果引用；`OnCall` 恰好一次、拿到的 ctx 没取消；同键再调 `deduplicated`、不再执行。按旧代码这条会失败（账本记成 `failed`）。
+  - 评审建议 2：`prompt.go` 只读规则行不再把内部写法给模型，`tag:主脑` 写成"带「主脑」标签的节点"（新函数 `editors`）。`testdata/主脑.golden` 第 44、45 行跟着改（手改，没有 `-update`；只有这一份黄金文件有只读字段）。
+  - 评审建议 3：`prompt_test.go`、`engine/ctxasm/assemble_test.go`（归 `E.13.02`）的 `-update` 写文件前先 `os.MkdirAll`。
+  - 评审建议 1（`PointerText` 对结构化内容只取到键名那一行）推到第 ⑥ 片：`E.14.02` 给 Agent 注入 `ws_read`、指针段真正进提示词时一起改（K274）。
+  - `handle.go`、`handle_test.go` 归 `E.11.01`，`assemble_test.go` 归 `E.13.02`，片内已完成的叶子不能重开，照 K238 记进片内最后一个叶子 `E.13.05` 的实施卡；`E.13.05` 的领取记录改回 `claimed`、去掉 `head`。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：第 18 行和本次改动待评审者复核
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 21:42 · E.13.03 / E.13.01 · Codex（验证者） · 依据更新（K273）
+- 依据：设计仓库 `2f5fa8b`（`P.09` K273）；`relay diff` 显示这两个叶子领取后改过的依据是 `E.13.02_装配流程.md`（实施卡加入 inherit.go、inherit_test.go）与 `E.13.06_inherit_透传.md`（§5 同名字段合并规则、变更记录）
+- 处理：两处改动都属于 K273 的 inherit 合并规则，不影响 E.13.03（预算计算）与 E.13.01（配方解析）的代码；分别 `relay start --resume --accept-docs` 把依据更新为 `2f5fa8b`，重生成任务包
+- 提交 / 推送：本提交 / 未推送
+## 2026-11-26 20:10 · E.13.05 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.13.05.json）；`P.09` K271
+- 完成：实施卡全部。`engine/ctxasm/prompt`：`prompt.go`（`Tool`、`Agent`、`Env`、`Section`、`Rendered`、`Render`、`Segments`、`FullText`）、`rolecard.go`（`ResolveRoleCard`）；`schema/builtin/prompts/base.zh.md`（系统底座原文）。测试 `E1305-T1`–`T4`。6 个 `testdata/<角色卡>.golden` 由验证者 `go test ./engine/ctxasm/prompt/ -run E1305 -update` 生成，实施者读过后提交（K271）。
+- 自主决定的细节：
+  - ②–⑤ 段各带一行标题（`## 角色`、`## 输出要求`、`## 工具`、`## 规则`），① 系统底座不带；段之间空一行。
+  - ② 角色卡依次写"你是谁、你要完成什么、方法、好结果、边界、卡住时"，空的字段不写。
+  - ③ 输出类型是列表时先写"输出一个列表，每一项是「X」"，再列 X 的字段；标量类型写"值是一个 integer"；`任意` 写"输出格式不限"。`readonly_except` 的规则行写字段路径（如 `intent`）。
+  - ④ 工具按名字排序；`Tools` 和 ④ 段同序。
+  - 继承"最多 4 层"按 extends 跳数算：4 跳可以，5 跳报 `rolecard_chain`；父卡不存在报 `rolecard_missing`。合并只在副本上做。
+  - 污染段的来源有引号时转成 `&quot;`；没有来源写"未知"。
+  - `FullText()` 每条消息前写 `=== system ===` / `=== user ===`。
+  - 系统底座的文字是我写的（`base.zh.md`，4 条），请评审者看一下措辞。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 21:23 · E.13.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 2f5fa8b（docs/relay/E.13.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.13.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-26 20:53 · W.04.03 · Gemini · 续做（第 ⑧ 片评审返工，K302）
 - 依据：设计仓库提交 595d1e1（`W.10`、`W.04.03` 已 `--resume --accept-docs`，仅改 `W.04.03` 实施卡白名单与变更记录）；`docs/relay/m1-web-base.review.md` 15 项不符合
 - 完成：按 `m1-web-base.review.md` 逐项修复全部 15 条不符合（#3–#6、#9–#10、#12、#15–#22）并补齐严格反例测试；已在 `docs/relay/m1-web-base.review.md` 末尾补写「实施者处理」表。
@@ -54,6 +104,33 @@
 - 评审：未开始
 - 提交 / 推送：领取提交 / 未推送
 
+## 2026-11-26 20:10 · E.13.02 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.13.02.json）；`P.09` K271、K272、K273
+- 完成：实施卡全部。`packet.go`（`PacketSection`、`Packet`、`Value()` 按 上下文包@1、`Event()` 给 ctx.assembled）；`assemble.go`（`Env`、`ErrMissingRequired`、`Assemble`）。测试 `E1302-T1`–`T6`；`testdata/inputs_exec.json`（一张任务卡、一个目标）。`testdata/exec_packet.golden` 由验证者 `go test ./engine/ctxasm/ -run E1302 -update` 生成，实施者读过后提交（K271）。
+- K273：第一次生成的黄金文件里"约束"段只有任务卡的约束、目标的币种和地区没了（`Carry` 同名只取最近的一个）。改 `inherit.go`（归 `E.13.06`，在本叶子里改）：同名的值都保留、合成一个；`inherit_test.go` 的 `E1306-T1` 跟着改，加一条"根目标的约束带到任务卡上、和任务卡自己的约束都在"。黄金文件重新生成。
+- 自主决定的细节：
+  - `path:` 排除在值的副本上删字段，`*` 匹配任意一层，列表不算一层；`in[i]` 指向被 `type:` 排除的值时当作空。
+  - 透传约束用原始输入算（`exclude` 去不掉）；配方里有"约束"段时锁定段替换它，没有时放在第一段之后（段的位置按 `Order*2`，锁定段用奇数位）。透传约束为空时"约束"段照常按 from 取值。
+  - `transform: pointer` 的段先把渲染后的文字写进工作区再换成 `PointerText`，`Pointers` 为真；不算收缩（不进 `Dropped`），它的 `var` 照常放进 `Vars`。
+  - 段的来源写配方段的 `from`（锁定段是 `inherit`）。`Value()` 里 `dropped`、`inherit` 总是有（可以为空）；`vars` 只在有变量时有。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 20:58 · E.13.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.13.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.13.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-26 19:50 · W.10 · Gemini · 交付（M1 第 ⑧ 片 m1-web-base）
 - 依据：设计仓库提交 ebedbc3（docs/relay/W.10.json）；`P.09` K300
 - 完成：实施卡全部。新建 `web/src/lib/i18n/{index,t,zh,terms,format,clock,errors}.ts` 与 `RelTime.tsx`，接入 `web/tests/kit/{time,setup}.ts` 的 `setClock` 恢复，新增 `web/tests/lint/no-cjk-literal/` 正反例与全套单元测试 `t.test.ts`、`format.test.ts`、`errors.test.ts`、`clock.test.ts`、`RelTime.test.tsx`、`zh.test.ts`、`messages.test.ts`。测试：`W10-T1`–`T15`（15/15，双时区 `Asia/Shanghai` 与 `America/New_York` 全通过）。
@@ -74,6 +151,172 @@
 - 完成：无
 - 进行中：刚领取
 - 下一步：读任务包 .relay/tasks/W.10.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 20:10 · E.13.06 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.13.06.json）；`P.09` K271
+- 完成：实施卡全部。`engine/ctxasm/inherit.go`（`InheritSection`、`Carry`、`InheritPart`、`InheritOver`）。测试 `E1306-T1`–`T3`（装配里的 exclude 无效和告警在 `E1302-T6`）。
+- 自主决定的细节：
+  - 同名字段直接带的优先于携带的副本，同样近时取输入顺序在前的。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 20:47 · E.13.06 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.13.06.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.13.06.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 20:10 · E.13.04 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.13.04.json）；`P.09` K271、K272
+- 完成：实施卡全部。`engine/ctxasm/fit.go`（`Part`、`Dropped`、`Summarizer`、`FitEnv`、`Fit`、`PointerText`、`ErrContextOverflow`）。测试 `E1304-T1`–`T5`。领取顺序挪到 `E.13.06` 之前（`Part` 在本叶子，K272）。
+- 自主决定的细节：
+  - 先做 `transform: summary`，再按段的预算上限收缩，总量仍超出时按优先级从低到高（同优先级位置靠后的先）收缩；必需段、锁定段不收缩，放不下就 `context_overflow`。
+  - 指针形式不比原文短时不动；摘要目标小于 50 时退回指针。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 20:42 · E.13.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.13.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.13.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 20:10 · E.13.01 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.13.01.json）；`P.09` K271
+- 完成：实施卡全部。`value.go`（`Value`、`Counter`、`Error`）、`recipe.go`（`Plan`、`SectionPlan`、`Exclusion`、`Compile`、`Cache`、`Bound`、`Bind`、`ExpSource`）、`transform.go`（`Transform`、`ParseTransform`、`Apply`、`RenderText`）。测试 `E1301-T1`–`T4`。
+- 自主决定的细节：
+  - `Compile` 按配方 `inputs` 逐层检查字段路径，不存在给 warn；`exp` 是保留来源名，M1 取值为空。
+  - `Bind` 按类型（含 extends）把输入分给来源；列表来源把多条输入合成一个列表；一条输入同时符合两个来源、单值来源有两条输入都报 error。
+  - 渲染确定：对象的键按字典序；`text` 格式下对象和列表按 yaml 写。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 20:31 · E.13.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.13.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.13.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 20:10 · E.13.03 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.13.03.json）；`P.09` K271
+- 完成：实施卡全部。`engine/ctxasm/budget.go`（`BudgetIn`、`BudgetOut`、`Budget`；`ctxasm` 的包注释）。测试 `E1303-T1`–`T3`，期望值逐个手算过。
+- 自主决定的细节：
+  - 窗口未知按 8000、给 `Warn`；输出预留在 `MaxOutput` 为 0 时取 min(4096, 窗口/4)；①–⑤ 段估算为 0 时按 1500；结果小于 0 时为 0。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 20:25 · E.13.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.13.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.13.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 20:10 · E.11.08 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.11.08.json）；`P.09` K271
+- 完成：实施卡全部。`engine/tools/builtin/wsread`：内置工具 `builtin:ws_read`（`New`、`Def`、`Invoke`、`Seen`），按引用读工作区原文，只能读本运行里出现过的引用。测试 `E1108-T1`–`T4`。
+- 自主决定的细节：
+  - "本运行里出现过"由调用方给的 `Seen` 判断（第 ⑥ 片接运行的引用集合）。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 20:18 · E.11.08 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.11.08.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.11.08.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 20:10 · E.11.01 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.11.01.json）；`P.09` K271
+- 完成：实施卡全部。`engine/tools`：`tool.go`（`Risk`、`ParseRisk`、`Action`、`Def`、`Call`、`Impl`）、`registry.go`（`Registry`、`MinRisk`：内置工具的风险下限，S.04 §3）、`idem.go`（`IdemKey`、`Record`、`Ledger` 接口）、`handle.go`（`Handle`、`Env`、`Hooks`、`Limiter`、`Intent`、`CallRecord`：授权、幂等、资源池、裁剪、污染、事件都在调用包装里）；`fake/fake.go`（脚本化工具、内存调用表、记下请求的授权判定器）。测试 `E1101-T1`–`T3`、`T5`、`T6`（`T4` 回放推到 M2，K271）。
+- 自主决定的细节：
+  - 账本、资源池、token 计数用本包的接口（`Ledger`、`Limiter`、`Counter`），事件交给 `Hooks`，不依赖 `store`、`sched`、`obs`（K271 依赖方向）；第 ⑥ 片的执行器接上实现。
+  - 每次 `Call` 恰好一条 `CallRecord`；重复键三种情况（已成功直接返回、进行中报冲突、失败的重做）按 `E.11.01` §5。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 20:11 · E.11.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.11.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.11.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 20:10 · E.11.02 · Quick（AWS Quick） · 交付（M1 第 ⑤b 片 m1-tools-ctx）
+- 依据：设计仓库（见 docs/relay/E.11.02.json）；`P.09` K271
+- 完成：实施卡全部。`engine/tools` 的结果类型和裁剪：`result.go`（`Raw`、`Snippet`、`Result`、`Error`、`Errorf`；包注释）、`trim.go`（`TrimMode`、`TrimOpts`、`Counter`、`Trim`：原文写进工作区，`Result.Ref` 永远非空，keep_pointer）、`bm25.go`（按问题挑片段，包内用）。测试 `E1102-T1`–`T3`。
+- 自主决定的细节：
+  - 结果类型从 `E.11.01` 挪到本叶子（K271），`E.11.01` 在它之后领取。
+  - `TrimOpts.MaxTokens` 为 0 时按 2000。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 19:51 · E.11.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 ebedbc3（docs/relay/E.11.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.11.02.md，从实施卡第 1 条开始
 - 桩：无
 - 上报单 / 阻塞：无
 - relay check：未运行
