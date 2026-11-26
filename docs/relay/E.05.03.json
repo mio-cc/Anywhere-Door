@@ -1,0 +1,28 @@
+{
+  "leaf": "E.05.03",
+  "branch": "slice/m1-op",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-25T15:18:19Z",
+  "docs_commit": "f301da1e041ade40863f5af184e40d671b279f37",
+  "docs": {
+    "C_契约层/C.02_图文档/C.02.05_视图元数据.md": "sha256:1384f08589798dcd550859b8b68d2ae965055d10c26a02b78566fb82434aeadb",
+    "C_契约层/C.05_Op_操作/C.05.01_Op_信封.md": "sha256:e4cd95b4c9e4b6196fee1623f496dfcd9ecacf3e01f8ef741f2a64b4bb54b71e",
+    "C_契约层/C.05_Op_操作/C.05.04_并发与冲突.md": "sha256:0fccb51ccbaf4f7f0698ec54557a63606293b48a7194f4c0fa8432f3ccfb0968",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.01_应用_Apply.md": "sha256:236a2277bb6d6c4469cd7e22d7b37e53bceea7b508d215dd7b838ff8bd39616a",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.03_可交换判定与_rebase.md": "sha256:e25be64ec7255f451140d6abc0f2e2a948b22e786aa05416101ed33f3d3a0895",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.06_分支_合并与补丁.md": "sha256:eac2124bb341b2161dc7ef7a45009eb85ecf96f53c37345a7c788a3e4760d83a",
+    "E_内核_engine/E.05_op_Op_引擎/E.05_op_Op_引擎.md": "sha256:1fa38d7225bac8d1b04fc139158c65bf2fab2df6ad66ec8a5074bb192a30406e",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-op",
+  "base": "be3ff6acafe409c5adccaa28df28a081fad0a4df",
+  "head": "490e6b08de81ed972a9ec4223811fc06a6c79cd6"
+}

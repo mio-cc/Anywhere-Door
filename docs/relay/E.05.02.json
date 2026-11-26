@@ -1,0 +1,32 @@
+{
+  "leaf": "E.05.02",
+  "branch": "slice/m1-op",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-25T16:33:02Z",
+  "docs_commit": "8feed98a21b739ecb3b4c6805d00ddfdc979b142",
+  "docs": {
+    "C_契约层/C.05_Op_操作/C.05.01_Op_信封.md": "sha256:e4cd95b4c9e4b6196fee1623f496dfcd9ecacf3e01f8ef741f2a64b4bb54b71e",
+    "C_契约层/C.05_Op_操作/C.05.03_逆操作规则.md": "sha256:34f5977bb825c21700172d568a297896266a353307146d4b419f0addef69893e",
+    "C_契约层/C.05_Op_操作/C.05_Op_操作.md": "sha256:bf74e22a2c700e9ed568c591f0b9c5cfd89cf09cd2f7c2e168746454b5426dea",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.01_应用_Apply.md": "sha256:236a2277bb6d6c4469cd7e22d7b37e53bceea7b508d215dd7b838ff8bd39616a",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.02_撤销与重做.md": "sha256:13de43b13642fcb51b9269ee50da0fbabf5aeb7b2ea3b62db7f8ad0f0e147bf0",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.06_分支_合并与补丁.md": "sha256:eac2124bb341b2161dc7ef7a45009eb85ecf96f53c37345a7c788a3e4760d83a",
+    "E_内核_engine/E.05_op_Op_引擎/E.05_op_Op_引擎.md": "sha256:1fa38d7225bac8d1b04fc139158c65bf2fab2df6ad66ec8a5074bb192a30406e",
+    "E_内核_engine/E.07_store_持久化/E.07.01_Store_接口.md": "sha256:f01f1e433160d45ea91dcc386d032cb5264db37e481f43b64dc6cde572ed10f9",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
+    "U_UI_UX_规范/U.13_交互模式/U.13.03_撤销与重做.md": "sha256:a0fe77dc784a7865d2b2eb868ea2237f490fc126389e9ce98e4096a41475021f",
+    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:671652e9b53119d2c9d28a85fdb056944b8d2c9e1da448f7e60821179016766c",
+    "W_前端实现_web/W.07_面板组件/W.07.05_右侧栏_监控.md": "sha256:c406784b600dd7d376543c74d28ecaa41a5a96158b7a351f5e8988f9d5982e0a"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-op",
+  "base": "7a4b72bac59f7e70f522279c7ef62949800c62b5",
+  "head": "a21b69fcba877db8da291315fbb953583a875633"
+}

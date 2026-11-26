@@ -1,0 +1,33 @@
+{
+  "leaf": "E.05.05",
+  "branch": "slice/m1-op",
+  "claimed_by": "Quick（AWS Quick）",
+  "claimed_at": "2026-11-25T15:32:58Z",
+  "docs_commit": "f301da1e041ade40863f5af184e40d671b279f37",
+  "docs": {
+    "C_契约层/C.03_节点定义_NodeDef/C.03.03_锁定字段.md": "sha256:0cfa0e95d44415e9e3bb133c3938a36fa3a87f8fefb5c9cb4968e6185dc8d2f7",
+    "C_契约层/C.08_GraphPatch.md": "sha256:073f8363f84fd2d867380e0915080c01114e10696b0ed1bc514d2869cca11659",
+    "C_契约层/C.09_授权书_Mandate.md": "sha256:3553d700f0b7358c7efe075e40c322a35e0bfe1c0e11d0e177e838bcd600259b",
+    "C_契约层/C.11_错误码表.md": "sha256:bffafd4a1cad6e745dfc19583eb553f81856f12fbe1e56abb3b17694b387cf26",
+    "C_契约层/C.12_版本与迁移.md": "sha256:c5a6935e956f1e95ce6dca3ec915397c9957681f366894a4f0113943637b16bf",
+    "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.01_应用_Apply.md": "sha256:236a2277bb6d6c4469cd7e22d7b37e53bceea7b508d215dd7b838ff8bd39616a",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.03_可交换判定与_rebase.md": "sha256:e25be64ec7255f451140d6abc0f2e2a948b22e786aa05416101ed33f3d3a0895",
+    "E_内核_engine/E.05_op_Op_引擎/E.05.05_授权钩子.md": "sha256:0de792087a682c5e3a89b717c00dee591e86f896d04df5bb82476057d98eea49",
+    "E_内核_engine/E.05_op_Op_引擎/E.05_op_Op_引擎.md": "sha256:1fa38d7225bac8d1b04fc139158c65bf2fab2df6ad66ec8a5074bb192a30406e",
+    "E_内核_engine/E.06_authz_授权/E.06.02_Check_判定流程.md": "sha256:4668daaf2a8cb544823ebde5c482a1f186c848d2badacd8f74134def0bcc46e4",
+    "E_内核_engine/E.06_authz_授权/E.06.04_急停.md": "sha256:18c1670d103a2c527592015242095091f0606c9fb6f65c986cedb0a4fbe1e037",
+    "E_内核_engine/E.17_orch_模型编排/E.17.03_提议与幽灵节点.md": "sha256:5e91abe77a1bc1389f9f6afa57b9e696fd258055267f52af9de02abee8702d44",
+    "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
+    "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
+    "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
+    "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
+    "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20"
+  },
+  "stubs": [],
+  "state": "merged",
+  "slice": "m1-op",
+  "base": "490e6b08de81ed972a9ec4223811fc06a6c79cd6",
+  "head": "36ca1cd3bca270cdad5b51559678eba690a20e06"
+}

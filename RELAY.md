@@ -18,6 +18,147 @@
 
 ---
 
+## 2026-11-26 01:10 · E.05.04 · Quick（AWS Quick） · 交付（M1 第 ③ 片 m1-op）
+- 依据：设计仓库（见 docs/relay/E.05.04.json）；`P.09` K261
+- 完成：实施卡全部。`engine/op/coalesce.go`（`tryCoalesce` 登记为 `coalescer`、`sameObject`）。测试 `coalesce_test.go`（外部测试包 `op_test`）：`E0504-T1`–`T5`。
+- 自主决定的细节：
+  - 先在副本上应用、确认动态端口没消失，再做授权：条件不满足退回普通 Op 时不会判两次。
+  - 授权结果是提议时退回普通 Op（由流水线转提议）。
+  - `set_param` 合并后照常增量校验，新出现阻止提交的诊断时按普通 Op 失败（422）；只有 `move_nodes` 不校验（K263）。`set_param` 合并后另发 `validate` 事件、通知运行管理器；`move_nodes` 只发 `op.coalesced`。
+  - `op.coalesced` 的 `seq` 是版本号（Op 类事件，`C.06.03-R1`）。
+  - 测试用 `undo_test.go`（`E.05.02`）里的 `h.undo`，所以本叶子要在 `E.05.02` 之后。
+  - 已知问题照 §5：那一版在存储里的哈希不更新。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 00:55 · E.05.04 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 8feed98（docs/relay/E.05.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.05.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 01:00 · E.05.02 · Quick（AWS Quick） · 交付（M1 第 ③ 片 m1-op）
+- 依据：设计仓库（见 docs/relay/E.05.02.json）；`P.09` K261、K264
+- 完成：实施卡全部。`engine/op/undo.go`（`Undo`、`Redo`、`ErrNothingToUndo`；`groupRecords`、`findBatch`、`cancelPairs` 登记为 `filterMissed`）、`revert.go`（`RevertOp`、`RevertTo`；`revert_op`、`revert_to` 的展开登记进 `expanders`，`revert_to` 的应用函数登记进 `appliers`）。测试 `undo_test.go`（外部测试包 `op_test`，用 `E.05.01` 的 `helpers_test.go`）：`E0502-T1`–`T6`。
+- 自主决定的细节：
+  - `P.09` K264：互相抵消的记录再加一种——"撤销 <组>"批次和"重做 <组>"批次（只有 §5.6 的一种时，撤销两次再重做两次会误报冲突，`E0502-T6` 第二段）；组、撤销、重做三者都在时只去掉前两个。
+  - `RevertTo` 回到 head：方法直接返回 head；经 `Submit` 提交 `revert_to{version: head}` 时 400"图已经是版本 N"（展开函数拿不到"不提交"的出口）。
+  - 撤回、回到版本的不可逆或已撤销：409，`conflicts` 写目标 Op 的 id、`graph:doc`，`Reason` 写原因。
+  - 重做的 Op 保留原来的 `coalesce_key`（§5.4），`internal` 批次不会被拖动合并。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-26 00:33 · E.05.02 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 9ee5950（docs/relay/E.05.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.05.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-26 01:30 · E.05.01 · Quick（AWS Quick） · 交付（M1 第 ③ 片 m1-op）
+- 依据：设计仓库提交 235ee2f（docs/relay/E.05.01.json）；写代码时补登 `P.09` K262，`E.05.01` §4、§5.1、§5.2 相应修改（领取后改的，验证者 `--resume --accept-docs`）
+- 完成：实施卡全部。
+  - `repo.go`（`Repo`、`Snapshot`、`Commit`、`UndoEntry`、`ErrRepoNotFound`、`ErrRepoConflict`）；`engine/opstore.go`（`package engine`，`NewOpStore`）。
+  - `pipeline.go`（`Options`、`New`、`Batch`、`Result`、`Submit`；注册点 `appliers`、`expanders`、`coalescer`、`filterMissed`，`Batch` 的 `internal`、`mode`、`pre`、`onTx` 给 `E.05.02`、`E.05.04` 用；撤销栈推入与重做栈清空；`op.applied` 和 `validate` 事件）；`cache.go`（head 缓存、`Read`、`Head`、`statsOf`）；`errors.go`；`mutable.go`（可改的文档、索引、规范化）；`migrate.go`；`apply_node`、`apply_edge`、`apply_param`、`apply_attr`、`apply_view`、`apply_graph`（M1 收的 20 种，`revert_to` 的应用在 `E.05.02`）。
+  - 测试：`apply_test.go`、`prop_test.go`（内部测试包：`E0501-T1` 应用函数部分、`T2`、`T8`）；`helpers_test.go`、`pipeline_test.go`（外部测试包 `op_test`：要用 `engine.NewOpStore`，而 `engine` 引用了 `op`，内部测试包会成环；`T1` 流水线部分、`T3`–`T7`、`T9`–`T13`）。
+- 自主决定的细节：
+  - `P.09` K262：第 0 步按 kind 严格解码（`op.schema.json` 没有根结构，`DocSchema` 校验不了 `$defs/Op`）；第 7 步只拒绝新出现的 V01、V03、V05、V06、V07、V09、V12、V14（按码、节点、端口、参数、层比较，不比文案），其余 error 不阻止（否则加一个 Agent 就被 V08 回滚）；规范化删掉等于默认值的参数；`set_param` 的逆操作是整个参数的旧值；提交后发 `validate`；`Read` 用 `Head`（-1）读 head（0 是建图时的版本）。
+  - 规范化在读进缓存时做，所以 `Read` 建图时的版本得到的是规范化后的文档（节点按 ID 排序、默认值参数去掉），和存储里的原文可能不逐字节相同。
+  - `remove_nodes` 里同时写了容器和它的子节点时，按顺序删，已随容器删掉的跳过；`restore_nodes` 按删除的相反顺序插回。
+  - `connect` 的端口不认识时不替换旧线（交给 V05）；`commute.go` 判断冲突时按只能接一条算，宁可多报。
+  - 自动插进去的格式升级不算客户端错过的修改：客户端的 `base_version` 等于升级前的 head 时改成升级后的 head。
+  - 第一轮验证 `T8` 失败（`P.09` K263）：只改视图的批次跳过校验时漏报 V01（便签 `size` 低于下限）；改为只有 `move_nodes` 跳过。`T1` 的效果检查原来经 `apply1` 传值，补全的 payload 丢了，改为直接调用应用函数。
+  - `T2` 跑 10 轮 `rapid.Check`（每轮默认 100 组）凑 1000 组；`promote_param` 内置节点没有可提升的参数，测试里用一个包了内置注册表的视图加一个测试类型。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 23:45 · E.05.01 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 235ee2f（docs/relay/E.05.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.05.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-25 23:50 · E.05.05 · Quick（AWS Quick） · 交付（M1 第 ③ 片 m1-op）
+- 依据：设计仓库提交 235ee2f（docs/relay/E.05.05.json）；`P.09` K255、K261
+- 完成：实施卡全部。`engine/authz/check.go`（桩：`Effect`、`Target`、`Request`、`Result`、`Checker`、`Fixed`）；`engine/op/authz_hook.go`（`Decision`、`authorize`、`ActionOf`、`checkLocks`、`lockOf`）。测试 `authz_hook_test.go`：`E0505-T1`–`T4`。
+- 自主决定的细节：
+  - `Estop` 接口和 `ErrForbidden`、`ErrNodeLocked`、`ErrEstopped`、`DeniedError` 写在 `authz_hook.go`（设计文档写在 `E.05.01` 的 `pipeline.go` / `errors.go`，但本叶子先领取、要用它们）；`E.05.01` 的 `errors.go` 只写其余的错误，不重复定义。
+  - 实例锁的作用对象除了 `target.nodes` 和容器链，还加上 `target.edges` 两端的节点：`disconnect` 的 target 没有节点，不加的话模型能断开 `user` 锁节点的连线（`C.03.03` §2"包括它的连线"）。
+  - 锁住时报的节点是锁所在的那个（容器锁时是容器）；`frozen` 优先于 `user`。
+  - 锁检查用批次的 `Actor`，不用 `Approver`（`Approver` 只用于 `Check`，M4 复查提议时再看）。
+  - `ActionOf` 对 `per_sub_op`（`apply_patch`、`import_apply`）退回 `op.<kind>`（M4 才收）。
+  - deny 的原因合并后去重排序。
+- 进行中：无
+- 桩：`engine/authz/check.go` → `E.06.02`（`STUB(E.06.02)`）
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 23:32 · E.05.05 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 235ee2f（docs/relay/E.05.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.05.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-25 23:40 · E.05.03 · Quick（AWS Quick） · 交付（M1 第 ③ 片 m1-op）
+- 依据：设计仓库提交 235ee2f（docs/relay/E.05.03.json）；`P.09` K261
+- 完成：实施卡全部。`engine/op/payload.go`（包说明；`decode`、`nodeOf`、ID 小工具）、`target.go`（`Target`，§5.1）、`commute.go`（`Key`、`WriteSet`、`RefSet`、`Commutes`、`Conflict`，§5.2、§5.3；`vanishedEdges` 给 `E.05.01` 的 `set_param` 用）、`rebase.go`（`Rebase`，§5.4）。测试 `commute_test.go`：`E0503-T1`、`T3`、`T4`（`T2` 在 `E.05.01` 的 `E0501-T12` 跑）；本包测试共用的辅助函数（`testView`、`fixture`、`mkOp`、`mkRec` 等）也在这个文件里，后面的叶子只调用。
+- 自主决定的细节：
+  - `WriteSet` 的签名不返回错误（§4），payload 解不开时按整份文档（`graph:doc`）算，和谁都冲突（宁可多报）。
+  - 新提交的 Op（没有 `inverse`）一并删除的东西按 `g` 算（子孙、相连的连线、被替换的连线、消失的动态端口上的连线）；已落库的不按 `g`，改为并进 `inverse` 的写集合（被删的都在 `inverse` 里）。`inverse` 只进写集合，不进引用集合。
+  - 端口是不是多连：节点在 `g` 里找不到时只算 `edge` 键（§4）；节点类型或端口不认识时按只能接一条算。
+  - `promote_param`、`demote_param` 两种 payload 字段相同，都按 `PayloadPromoteParam` 解。
+  - 便签所在的层：`graph` 没有按便签查层的索引，逐层找。
+- 进行中：无
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：待验证者
+- 评审：待评审者（整片）
+- 提交 / 推送：验证者提交 / 不推送
+
+## 2026-11-25 23:18 · E.05.03 · Quick（AWS Quick） · 领取
+- 依据：设计仓库提交 235ee2f（docs/relay/E.05.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/E.05.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-25 22:40 · Quick（AWS Quick） · 冻结叶子复查（第 ② 片合并后 / K260 之后），代码不用改
 - 依据：设计仓库提交 66818d3；`P.09` K260
 - 完成：`relay stale` 列出 7 个冻结叶子，依据里改过的是 `B.04`、`W.04.04` 两份，逐份看了改动，代码都不用改：
