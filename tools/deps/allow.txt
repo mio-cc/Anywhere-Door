@@ -51,3 +51,9 @@ vitest
 jsdom
 @playwright/test
 ajv
+@vitejs/plugin-react
+@types/react
+@types/react-dom
+@types/node
+@eslint/js
+globals
