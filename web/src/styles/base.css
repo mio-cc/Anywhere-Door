@@ -1,0 +1,36 @@
+/* 全局基础样式与主题切换去过渡规则（W.01-R4、W.02.03 §6.2、G.06.03） */
+
+html[data-theme-switching] {
+  --hx-t-1: 0s;
+  --hx-t-2: 0s;
+  --hx-t-3: 0s;
+  --hx-t-4: 0s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--hx-bg-0);
+  color: var(--hx-text-1);
+  font-family: var(--hx-font-ui);
+  font-size: var(--hx-fs-13);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}

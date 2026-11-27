@@ -18,6 +18,33 @@
 
 ---
 
+## 2026-11-27 04:53 · W.02.02 · Gemini · 交付（M1 第 ⑨c 片 m1-web-shell：W.03.03 / W.02.03 / W.02.04 / W.02.01 / W.02.02）
+- 依据：设计仓库提交 c72e7a4（`P.09` K305、K307、K308、K309）；分支 `slice/m1-web-shell` 基于 `main`（`bc699f0`）
+- 完成：5 个叶子实施卡全部（38/38 实施卡用例 + 第 1 轮独立评审 D01–D14 全部返工闭环与回归测试），整体替换全部 `STUB(W.02)` 空白页桩：
+  - `W.03.03`（12/12）：安装 `zustand@5.1.0`；新建 `web/src/state/types.ts`（含唯一 `BREAKPOINTS`/`bpOf`）、`web/src/state/uiStore.ts`（含退出专注模式同步写盘）、`uiStore.test.ts`。
+  - `W.02.03`（6/6）：新建 `web/public/boot.js`（≤ 1KB 纯 JS）、`web/src/styles/base.css`、`web/src/shell/theme/{themeController,useTheme,index,themeController.test}`（`useTheme` 快照稳定）；替换 `web/index.html` 桩。
+  - `W.02.04`（8/8）：`web/src/lib/i18n/zh.ts` 补齐 44 条 `shortcut.*` 文案；`web/eslint.config.js` 新增全局 `keydown`/`keyup`（含 `onkeydown`/`onkeyup` 赋值）门禁；新建 `web/src/shell/keys/{normalize,registry,index,normalize.test,registry.test}`（`isBareSingleKey` 覆盖全部无修饰命名键）。
+  - `W.02.01`（6/6）：安装 `react-router@8.5.3`；`web/eslint.config.js` 新增 `useNavigate` 门禁（覆盖 `react-router`/`react-router-dom`/子路径/`.useNavigate`）；新建 `web/src/routes/{nav,SessionRoute,index,nav.test,SessionRoute.test}`（严格 ULID/scope 正则校验、归属校验、拆分激活与标题 effect、离开会话复位标题）。
+  - `W.02.02`（6/6）：`web/src/lib/i18n/zh.ts` 补 `shell.*` 文案；新建 `web/src/shell/{breakpoints,layout,uiEnv,BannerSlot,FloatLayer,CanvasArea,CanvasArea.css,AppShell,AppShell.css,layout.test,AppShell.test}`、`web/src/App.tsx`（固定 `shellUiEnv` 传入 `UiEnvProvider`、透传 `welcomePage`）、`web/src/main.tsx`；删除 `web/src/main.ts`（`STUB(W.02)`）。
+- 进行中：无
+- 下一步：交 Codex 按顺序先后合并 `origin/slice/m1-web-ui-fix`（M-006）→ `origin/slice/m1-web-shell`（M-007）；合并落地后前端线冻结对应叶子并推进第 ⑩a 片 `m1-web-proto`。
+- 桩：无（前端空白页桩 `web/index.html` 与 `web/src/main.ts` 已整体替换）
+- 上报单 / 阻塞：无
+- relay check：`go run ./tools/relay slice m1-web-shell` ①–⑦ 全部通过（Go 全仓 + 前端 `tsc`/`eslint`/`stylelint`/`prettier` + 双时区 Vitest 60 文件 163 + 8 文件 17 全绿；`tools/ci/deps`、`pnpm audit --prod` 0 违规/0 高危；`pnpm -C web build` + `tools/build -preview` + `tools/release -smoke bin/anydoor.exe` 冒烟通过）（验证者：Gemini）
+- 评审：`docs/relay/m1-web-shell.review.md` 第 2 轮独立复核 33/33 全部符合/已处理（D01–D14 全部闭环），结论 **允许合并**（评审者：Codex CLI `web-accept · zai-glm-5-3 · max`）
+- 提交 / 推送：已推送 `origin/slice/m1-web-shell`（`harness-web` 已切回 detached `origin/main` 避免分支占用）
+
+## 2026-11-27 04:11 · W.02.02 · Gemini · 领取
+- 依据：设计仓库提交 22ca5f1（docs/relay/W.02.02.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.02.02.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-27 03:35 · W.08.03 · Gemini · 交付（第 ⑨b 片修复片 m1-web-ui-fix：W.08.05 / W.08.04 / W.08.03）
 - 依据：设计仓库提交 3bae5c9（`P.09` K307）；分支 `slice/m1-web-ui-fix` 基于 `main`（`bc699f0`）
 - 完成：主线评审第 ⑨b 片指出的全部 8 项问题（高 3、中 2、低 3）及独立交叉评审第 1 轮返工 3 项：
@@ -43,11 +70,55 @@
 - 评审：未开始
 - 提交 / 推送：领取提交 / 未推送
 
+## 2026-11-27 04:06 · W.02.01 · Gemini · 领取
+- 依据：设计仓库提交 22ca5f1（docs/relay/W.02.01.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.02.01.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-27 03:10 · W.08.04 · Gemini · 领取
 - 依据：设计仓库提交 3bae5c9（docs/relay/W.08.04.json）
 - 完成：无
 - 进行中：刚领取
 - 下一步：读任务包 .relay/tasks/W.08.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-27 03:54 · W.02.04 · Gemini · 领取
+- 依据：设计仓库提交 22ca5f1（docs/relay/W.02.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.02.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-27 03:46 · W.02.03 · Gemini · 领取
+- 依据：设计仓库提交 22ca5f1（docs/relay/W.02.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.02.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-27 03:41 · W.03.03 · Gemini · 领取
+- 依据：设计仓库提交 22ca5f1（docs/relay/W.03.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.03.03.md，从实施卡第 1 条开始
 - 桩：无
 - 上报单 / 阻塞：无
 - relay check：未运行

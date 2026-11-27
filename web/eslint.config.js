@@ -74,10 +74,54 @@ export function createConfig({ enableTypeChecked = true } = {}) {
         // hx/no-bare-store 由 W.03.05 启用（W.12 §6.4、P.09 K179）
       },
     },
-    // W.12 §4.2 / §6.4、W.04.03 §4、W.04.04-R1、W.08-R2：产品代码导入边界与 camelCase 属性门禁
+    // W.12 §4.2 / §6.4、W.04.03 §4、W.04.04-R1、W.08-R2、W.02.01 §7：产品代码导入边界与 useNavigate 限制
     {
       files: ['src/**/*.ts', 'src/**/*.tsx'],
-      ignores: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'src/**/*.test-d.ts'],
+      ignores: ['src/routes/nav.ts', 'src/**/*.test.ts', 'src/**/*.test.tsx', 'src/**/*.test-d.ts'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            paths: [
+              {
+                name: 'react-router',
+                importNames: ['useNavigate'],
+                message: '应用代码除 routes/nav.ts 外禁止直接导入 useNavigate，请使用 useNav()（W.02.01 §7）',
+              },
+              {
+                name: 'react-router-dom',
+                importNames: ['useNavigate'],
+                message: '应用代码除 routes/nav.ts 外禁止直接导入 useNavigate，请使用 useNav()（W.02.01 §7）',
+              },
+            ],
+            patterns: [
+              {
+                group: ['react-router/*', 'react-router-dom/*'],
+                importNames: ['useNavigate'],
+                message:
+                  '应用代码除 routes/nav.ts 外禁止从子路径导入 useNavigate，请使用 useNav()（W.02.01 §7）',
+              },
+              {
+                group: ['@tests/kit', '@tests/kit/*', '**/tests/kit', '**/tests/kit/**'],
+                message: '产品代码不能导入 web/tests/kit（W.12 §4.2）',
+              },
+              {
+                group: ['@/lib/protocol/*', '!@/lib/protocol', '**/lib/protocol/*', '!**/lib/protocol'],
+                message:
+                  'lib/protocol/ 以外只允许从 @/lib/protocol 导入协议类型和常量（W.04.03 §4、W.04.04-R1）',
+              },
+              {
+                group: ['@/components/ui/*', '!@/components/ui', '**/components/ui/*', '!**/components/ui'],
+                message: 'components/ui 以外只允许从 @/components/ui 导入（W.01-R7、W.08-R2）',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    // W.02.01 §7：routes/nav.ts 允许导入 useNavigate，但仍受其余导入边界约束
+    {
+      files: ['src/routes/nav.ts'],
       rules: {
         'no-restricted-imports': [
           'error',
@@ -101,13 +145,15 @@ export function createConfig({ enableTypeChecked = true } = {}) {
         ],
       },
     },
-    // W.04.03 §10 验收 5、G.04.02 §2–§3：lib/protocol/ 以外禁止 snake_case 属性声明与点访问（开放对象字符串键除外）
+    // W.04.03 §10 验收 5、G.04.02 §2–§3、W.02.04 §7：
+    // lib/protocol/ 以外禁止 snake_case 属性声明与点访问；shell/keys/ 以外禁止 addEventListener('keydown'|'keyup')
     {
       files: ['src/**/*.ts', 'src/**/*.tsx'],
       ignores: [
         'src/lib/protocol/**',
         'src/lib/i18n/zh.ts',
         'src/lib/i18n/terms.ts',
+        'src/shell/keys/**',
         'src/**/*.test.ts',
         'src/**/*.test.tsx',
         'src/**/*.test-d.ts',
@@ -132,10 +178,52 @@ export function createConfig({ enableTypeChecked = true } = {}) {
             message:
               'lib/protocol/ 以外禁止使用 snake_case 属性名；开放对象请使用字符串键访问（W.04.03 §6.4、§10 验收 5）',
           },
+          {
+            selector:
+              "CallExpression[callee.property.name='addEventListener'][arguments.0.value=/^(keydown|keyup)$/]",
+            message:
+              '禁止在 shell/keys/ 以外直接调用 addEventListener 监听 keydown/keyup，控件内请用 React onKeyDown，全局键经快捷键注册中心注册（W.02.04 §7）',
+          },
+          {
+            selector: 'AssignmentExpression[left.property.name=/^onkey(down|up)$/]',
+            message:
+              '禁止在 shell/keys/ 以外直接赋值 onkeydown/onkeyup，全局键请经快捷键注册中心注册（W.02.04 §7）',
+          },
+          {
+            selector: "MemberExpression[property.name='useNavigate']",
+            message: '应用代码除 routes/nav.ts 外禁止访问 useNavigate，请使用 useNav()（W.02.01 §7）',
+          },
         ],
       },
     },
-    // W.04.04 §5：lib/protocol/ 内部允许导入 generated/ 与同目录模块（但仍禁止 tests/kit）
+    // W.02.04 §7：shell/keys/ 内部允许 addEventListener('keydown'|'keyup')，但仍受 snake_case 命名约束
+    {
+      files: ['src/shell/keys/**/*.ts', 'src/shell/keys/**/*.tsx'],
+      ignores: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'src/**/*.test-d.ts'],
+      rules: {
+        '@typescript-eslint/naming-convention': [
+          'error',
+          {
+            selector: 'property',
+            modifiers: ['requiresQuotes'],
+            format: null,
+          },
+          {
+            selector: 'property',
+            format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+          },
+        ],
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector: 'MemberExpression[computed=false][property.name=/^[a-z][a-z0-9]*_[a-z0-9_]+$/]',
+            message:
+              'lib/protocol/ 以外禁止使用 snake_case 属性名；开放对象请使用字符串键访问（W.04.03 §6.4、§10 验收 5）',
+          },
+        ],
+      },
+    },
+    // W.04.04 §5：lib/protocol/ 内部允许导入 generated/ 与同目录模块（但仍禁止 tests/kit 与全局键盘监听）
     {
       files: ['src/lib/protocol/**/*.ts', 'src/lib/protocol/**/*.tsx'],
       ignores: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'src/**/*.test-d.ts'],
@@ -149,6 +237,24 @@ export function createConfig({ enableTypeChecked = true } = {}) {
                 message: '产品代码不能导入 web/tests/kit（W.12 §4.2）',
               },
             ],
+          },
+        ],
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector:
+              "CallExpression[callee.property.name='addEventListener'][arguments.0.value=/^(keydown|keyup)$/]",
+            message:
+              '禁止在 shell/keys/ 以外直接调用 addEventListener 监听 keydown/keyup，控件内请用 React onKeyDown，全局键经快捷键注册中心注册（W.02.04 §7）',
+          },
+          {
+            selector: 'AssignmentExpression[left.property.name=/^onkey(down|up)$/]',
+            message:
+              '禁止在 shell/keys/ 以外直接赋值 onkeydown/onkeyup，全局键请经快捷键注册中心注册（W.02.04 §7）',
+          },
+          {
+            selector: "MemberExpression[property.name='useNavigate']",
+            message: '应用代码除 routes/nav.ts 外禁止访问 useNavigate，请使用 useNav()（W.02.01 §7）',
           },
         ],
       },
