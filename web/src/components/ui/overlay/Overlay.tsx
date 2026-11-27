@@ -92,6 +92,7 @@ export function Overlay(p: OverlayProps): JSX.Element | null {
   const contentElRef = useRef<HTMLDivElement | null>(null);
   const openerRef = useRef<Element | null>(null);
   const wasOpenRef = useRef(false);
+  const focusedForOpenRef = useRef(false);
 
   const [prevOpen, setPrevOpen] = useState(open);
   const [leaving, setLeaving] = useState(false);
@@ -116,6 +117,7 @@ export function Overlay(p: OverlayProps): JSX.Element | null {
   const closeOnOutsideRef = useRef(closeOnOutside);
   const anchorRef = useRef(anchorEl);
   const restoreRef = useRef(restoreFocus);
+  const initialFocusRef = useRef(initialFocus);
 
   useLayoutEffect(() => {
     onCloseRef.current = onClose;
@@ -124,6 +126,7 @@ export function Overlay(p: OverlayProps): JSX.Element | null {
     closeOnOutsideRef.current = closeOnOutside;
     anchorRef.current = anchorEl;
     restoreRef.current = restoreFocus;
+    initialFocusRef.current = initialFocus;
   });
 
   const doRestoreFocus = (): void => {
@@ -144,6 +147,7 @@ export function Overlay(p: OverlayProps): JSX.Element | null {
       }
     } else if (wasOpenRef.current) {
       wasOpenRef.current = false;
+      focusedForOpenRef.current = false;
       doRestoreFocus();
     }
   }, [open]);
@@ -198,16 +202,26 @@ export function Overlay(p: OverlayProps): JSX.Element | null {
 
     document.addEventListener('pointerdown', onPointerDown, true);
 
-    if (contentElRef.current && initialFocus !== 'none') {
-      focusInitial(contentElRef.current, initialFocus);
-    }
-
     return () => {
       document.removeEventListener('pointerdown', onPointerDown, true);
       popOverlay?.();
       popLayer();
     };
-  }, [open, id, layer, parentId, env, initialFocus]);
+  }, [open, id, layer, parentId, env]);
+
+  // K307：初始焦点在 pushLayer 之后执行，仅在 open false→true 时运行一次（只依赖 [open]），不因 env 或 initialFocus 后续变化抢焦点
+  useLayoutEffect(() => {
+    if (!open) {
+      focusedForOpenRef.current = false;
+      return;
+    }
+    if (focusedForOpenRef.current) return;
+    focusedForOpenRef.current = true;
+    const mode = initialFocusRef.current;
+    if (contentElRef.current && mode !== 'none') {
+      focusInitial(contentElRef.current, mode);
+    }
+  }, [open]);
 
   useEffect(() => {
     return () => {

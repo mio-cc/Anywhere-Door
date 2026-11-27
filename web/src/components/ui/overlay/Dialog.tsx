@@ -93,7 +93,7 @@ export function Dialog(p: DialogProps): JSX.Element | null {
       {...(restoreFocus !== undefined ? { restoreFocus } : {})}
       role={hasDanger ? 'alertdialog' : 'dialog'}
       ariaLabelledBy={titleId}
-      ariaDescribedBy={bodyId}
+      ariaDescribedBy={error ? `${bodyId} ${errId}` : bodyId}
       className="hx-dialog__wrap"
       contentRef={contentRef}
     >

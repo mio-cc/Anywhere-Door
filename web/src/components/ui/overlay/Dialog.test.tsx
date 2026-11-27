@@ -34,7 +34,10 @@ describe('W.08.04 Dialog', () => {
       const buttons = Array.from(fe.root.querySelectorAll('button')).map((b) => b.textContent);
       expect(buttons).toEqual(['取消', '删除']);
       expect(document.activeElement?.textContent).toBe('取消');
-      expect(fe.root.querySelector('.hx-ferr')?.textContent).toBe('删除失败');
+      const ferr = fe.root.querySelector('.hx-ferr');
+      const bodyEl = fe.root.querySelector('.hx-dialog__body');
+      expect(ferr?.textContent).toBe('删除失败');
+      expect(dlg?.getAttribute('aria-describedby')).toBe(`${bodyEl?.id ?? ''} ${ferr?.id ?? ''}`);
 
       // busy 时全部按钮 disabled；dismissible=false 时 Esc 被吞掉但不调 onClose
       r.rerender(

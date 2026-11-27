@@ -146,6 +146,7 @@ describe('W.08.04 Menu', () => {
         </UiEnvProvider>,
       );
       const menuRoot = fe.root.querySelector('[role="menu"]') as HTMLElement;
+      expect(menuRoot.getAttribute('aria-label')).toBe('菜单');
       act(() => {
         fe.dispatchKey({ key: 'ArrowDown' });
       });
@@ -166,6 +167,43 @@ describe('W.08.04 Menu', () => {
         await clock.advance(300);
       });
       expect(fe.root.querySelectorAll('[role="menu"]')).toHaveLength(1);
+    } finally {
+      fe.cleanup();
+    }
+  });
+
+  test('Menu 点坐标在方向键与悬停重渲染时不重复触发 place()（K307）', () => {
+    const fe = fakeEnv({ reducedMotion: true });
+    const items: MenuItem[] = [
+      { id: 'a', label: 'A' },
+      { id: 'b', label: 'B' },
+    ];
+    try {
+      render(
+        <UiEnvProvider value={fe.env}>
+          <Menu at={{ x: 100, y: 200 }} items={items} onPick={vi.fn()} onClose={vi.fn()} />
+        </UiEnvProvider>,
+      );
+      expect(mockComputePosition).toHaveBeenCalledTimes(1);
+
+      act(() => {
+        fe.dispatchKey({ key: 'ArrowDown' });
+      });
+      act(() => {
+        fe.dispatchKey({ key: 'ArrowDown' });
+      });
+      const menuItems = fe.root.querySelectorAll('[role="menuitem"]');
+      const firstItem = menuItems[0] as HTMLElement;
+      const secondItem = menuItems[1] as HTMLElement;
+      expect(secondItem.classList.contains('is-active')).toBe(true);
+
+      // 悬停第一项触发 activeIdx 从 1 真实切到 0（非 bailout），验证仍不重复 place()
+      act(() => {
+        firstItem.dispatchEvent(new PointerEvent('pointerover', { bubbles: true }));
+      });
+      expect(firstItem.classList.contains('is-active')).toBe(true);
+      expect(secondItem.classList.contains('is-active')).toBe(false);
+      expect(mockComputePosition).toHaveBeenCalledTimes(1);
     } finally {
       fe.cleanup();
     }

@@ -203,4 +203,65 @@ describe('W.08.03 Select 与 props 对照', () => {
       fe.cleanup();
     }
   });
+
+  test('Select 600 项滚动窗口化与含空格 value 的安全 DOM id（K307）', async () => {
+    const fe = fakeEnv({ reducedMotion: true });
+    const many: SelectOption[] = Array.from({ length: 600 }, (_, i) => ({
+      value: `model ${String(i)}`,
+      label: `Model ${String(i)}`,
+    }));
+
+    try {
+      const r = render(
+        <UiEnvProvider value={fe.env}>
+          <Select value="model 0" options={many} onChange={vi.fn()} ariaLabel="超长下拉" />
+        </UiEnvProvider>,
+      );
+      await user.click(r.getByRole('combobox', { name: '超长下拉' }));
+
+      // 含空格 value 生成无空格 DOM id，并与过滤输入框 aria-activedescendant 匹配
+      const filterInput = fe.root.querySelector('input[aria-label="筛选"]') as HTMLInputElement;
+      const activeDesc = filterInput.getAttribute('aria-activedescendant');
+      expect(activeDesc).toBeTruthy();
+      expect(/\s/.test(activeDesc ?? '')).toBe(false);
+      expect(document.getElementById(activeDesc ?? '')?.textContent).toContain('Model 0');
+
+      // 对滚动容器 ScrollArea 触发 scroll(scrollTop=5000)，渲染行切到对应深位置且不被拉回当前项
+      const scrollEl = fe.root.querySelector('.hx-select__scroll') as HTMLDivElement;
+      act(() => {
+        scrollEl.scrollTop = 5000;
+        scrollEl.dispatchEvent(new Event('scroll'));
+      });
+      expect(scrollEl.scrollTop).toBe(5000);
+      // 行高 28px，5000 / 28 ≈ 178
+      expect(fe.root.textContent).toContain('Model 178');
+      expect(fe.root.textContent).not.toContain('Model 0');
+
+      // 含空格、空串、字面量 %20、未配对代理项均生成唯一且无空格 DOM id，不抛异常
+      r.rerender(
+        <UiEnvProvider value={fe.env}>
+          <Select
+            value="a b"
+            options={[
+              { value: '', label: '空值' },
+              { value: 'a b', label: '含空格' },
+              { value: 'a%20b', label: '字面量编码' },
+              { value: '\uD800', label: '孤立代理项' },
+            ]}
+            onChange={vi.fn()}
+            ariaLabel="边界下拉"
+          />
+        </UiEnvProvider>,
+      );
+      const edgeOpts = Array.from(fe.root.querySelectorAll('[role="option"]'));
+      const edgeDomIds = edgeOpts.map((el) => el.id);
+      expect(new Set(edgeDomIds).size).toBe(4);
+      for (const id of edgeDomIds) {
+        expect(/\s/.test(id)).toBe(false);
+        expect(document.getElementById(id)).not.toBeNull();
+      }
+    } finally {
+      fe.cleanup();
+    }
+  });
 });

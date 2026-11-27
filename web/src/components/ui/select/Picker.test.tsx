@@ -151,7 +151,41 @@ describe('W.08.03 Picker', () => {
       />,
     );
     expect(r600.queryAllByRole('option').length).toBeLessThanOrEqual(30);
+    // K307：对真正滚动容器 ScrollArea 触发 scroll(scrollTop=5000)，渲染窗口切到对应位置且不被拉回当前项 i0
+    const scrollEl = r600.container.querySelector('.hx-picker__scroll') as HTMLDivElement;
+    act(() => {
+      scrollEl.scrollTop = 5000;
+      scrollEl.dispatchEvent(new Event('scroll'));
+    });
+    expect(scrollEl.scrollTop).toBe(5000);
+    // 单行高 32px，5000 / 32 ≈ 156
+    expect(r600.container.textContent).toContain('项 156');
+    expect(r600.container.textContent).not.toContain('项 0');
     r600.unmount();
+
+    // K307：含空格、空串、字面量 %20、未配对代理项与带空格 listId 均生成安全且无碰撞 DOM id
+    const edgeIds = ['', 'node with space', 'node%20with%20space', '\uD800'];
+    const rEdge = render(
+      <Picker
+        listId="pk with space"
+        groups={[{ items: edgeIds.map((id, idx) => ({ id, label: `边界 ${String(idx)}` })) }]}
+        activeId="node with space"
+        onPick={vi.fn()}
+        onActiveChange={vi.fn()}
+        emptyText="空"
+        ariaLabel="边界测试"
+      />,
+    );
+    const domIds = rEdge.queryAllByRole('option').map((el) => el.id);
+    expect(domIds).toEqual(edgeIds.map((id) => pickerOptionId('pk with space', id)));
+    expect(new Set(domIds).size).toBe(edgeIds.length);
+    for (const id of domIds) {
+      expect(/\s/.test(id)).toBe(false);
+      expect(document.getElementById(id)).not.toBeNull();
+    }
+    // 跨实例分隔符边界无碰撞
+    expect(pickerOptionId('a', '-opt-b')).not.toBe(pickerOptionId('a-opt-', 'b'));
+    rEdge.unmount();
 
     const r199 = render(
       <Picker

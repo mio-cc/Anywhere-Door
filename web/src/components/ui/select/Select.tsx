@@ -62,6 +62,25 @@ const TYPEAHEAD_MS = 500;
 
 const selectWarn = { unknown: false };
 
+function encodeDomIdToken(s: string): string {
+  let out = '';
+  for (let i = 0; i < s.length; i += 1) {
+    const code = s.charCodeAt(i);
+    const isAsciiAlphaNum =
+      (code >= 0x30 && code <= 0x39) || (code >= 0x41 && code <= 0x5a) || (code >= 0x61 && code <= 0x7a);
+    if (isAsciiAlphaNum) {
+      out += s[i] ?? '';
+    } else {
+      out += `_${code.toString(16)}_`;
+    }
+  }
+  return out;
+}
+
+function selectOptionId(listId: string, val: string): string {
+  return `hx-sel-${encodeDomIdToken(listId)}-${encodeDomIdToken(val)}`;
+}
+
 function renderBold(text: string, query: string): ReactNode {
   if (!query) return text;
   const span = matchSpan(text, query);
@@ -118,6 +137,7 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
   const [query, setQuery] = useState('');
   const [activeVal, setActiveVal] = useState<V | null>(null);
   const [scrollTop, setScrollTop] = useState(0);
+  const scrollTopRef = useRef(0);
 
   const isLocked = Boolean(lockReason);
   const softDisabled = (disabled && Boolean(disabledReason)) || isLocked;
@@ -196,7 +216,7 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
 
   const windowed = navRows.length > WINDOW_MIN;
 
-  // 确保 activeVal 在窗口化下也能滚入可见区域并驱动 scrollTop 重算窗口（评审 #19）
+  // 确保 activeVal 在窗口化下也能滚入可见区域并驱动 scrollTop 重算窗口（评审 #19、K307）
   const scrollActiveIntoView = (targetVal: V | null): void => {
     if (targetVal === null) return;
     if (windowed) {
@@ -206,7 +226,7 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
       const rowH = flatRows[flatIdx]?.height ?? ROW_H;
       const bottom = top + rowH;
       const sc = scrollRef.current;
-      const curTop = sc ? sc.scrollTop : scrollTop;
+      const curTop = sc ? sc.scrollTop : scrollTopRef.current;
       const viewH = sc && sc.clientHeight > 0 ? sc.clientHeight : VIEWPORT_H;
       let nextTop = curTop;
       if (top < curTop) {
@@ -216,11 +236,12 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
       }
       if (nextTop !== curTop) {
         if (sc) sc.scrollTop = nextTop;
+        scrollTopRef.current = nextTop;
         setScrollTop(nextTop);
       }
       return;
     }
-    const el = document.getElementById(`${listId}-${targetVal}`);
+    const el = document.getElementById(selectOptionId(listId, targetVal));
     if (el && typeof el.scrollIntoView === 'function') {
       el.scrollIntoView({ block: 'nearest' });
     }
@@ -238,8 +259,10 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
     if (initial !== null && options.length > WINDOW_MIN) {
       const idx = options.findIndex((o) => o.value === initial);
       const estTop = Math.max(0, idx * ROW_H - Math.floor(VIEWPORT_H / 2));
+      scrollTopRef.current = estTop;
       setScrollTop(estTop);
     } else {
+      scrollTopRef.current = 0;
       setScrollTop(0);
     }
     setOpen(true);
@@ -390,7 +413,7 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
   const bottomPad = windowed ? Math.max(0, totalHeight - bottomEdge) : 0;
 
   const tip = disabled && disabledReason ? disabledReason : lockReason;
-  const activeOptionDomId = activeVal !== null ? `${listId}-${activeVal}` : undefined;
+  const activeOptionDomId = activeVal !== null ? selectOptionId(listId, activeVal) : undefined;
 
   return (
     <>
@@ -424,6 +447,7 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
                 value={query}
                 onChange={(v) => {
                   setQuery(v);
+                  scrollTopRef.current = 0;
                   setScrollTop(0);
                   const firstValid = options.find(
                     (o) =>
@@ -434,6 +458,7 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
                 }}
                 onClear={() => {
                   setQuery('');
+                  scrollTopRef.current = 0;
                   setScrollTop(0);
                 }}
                 ariaLabel={t('ui.filter')}
@@ -443,16 +468,18 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
               />
             </div>
           ) : null}
-          <ScrollArea ref={scrollRef} className="hx-select__scroll">
-            <div
-              id={listId}
-              role="listbox"
-              aria-label={ariaLabel}
-              className="hx-select__list"
-              onScroll={(e) => {
-                if (windowed) setScrollTop(e.currentTarget.scrollTop);
-              }}
-            >
+          <ScrollArea
+            ref={scrollRef}
+            className="hx-select__scroll"
+            onScroll={(e) => {
+              if (windowed) {
+                const top = e.currentTarget.scrollTop;
+                scrollTopRef.current = top;
+                setScrollTop(top);
+              }
+            }}
+          >
+            <div id={listId} role="listbox" aria-label={ariaLabel} className="hx-select__list">
               {filtered.length === 0 ? (
                 <div className="hx-select__empty">{t('ui.noMatch')}</div>
               ) : (
@@ -476,7 +503,7 @@ export function Select<V extends string = string>(p: SelectProps<V>): JSX.Elemen
                     const optEl = (
                       <div
                         key={o.value}
-                        id={`${listId}-${o.value}`}
+                        id={selectOptionId(listId, o.value)}
                         role="option"
                         aria-selected={isSelected ? 'true' : 'false'}
                         aria-disabled={o.disabled ? 'true' : undefined}

@@ -18,6 +18,53 @@
 
 ---
 
+## 2026-11-27 03:35 · W.08.03 · Gemini · 交付（第 ⑨b 片修复片 m1-web-ui-fix：W.08.05 / W.08.04 / W.08.03）
+- 依据：设计仓库提交 3bae5c9（`P.09` K307）；分支 `slice/m1-web-ui-fix` 基于 `main`（`bc699f0`）
+- 完成：主线评审第 ⑨b 片指出的全部 8 项问题（高 3、中 2、低 3）及独立交叉评审第 1 轮返工 3 项：
+  - `W.08.05`：`ScrollArea` 新增 `onScroll` 透传到滚动根元素；`ErrorBoundary` 改用独立 `hasError: boolean` 标志并补 `throw null` 回归测试。
+  - `W.08.04`：`Overlay` 初始焦点改为独立 layout effect（仅依赖 `[open]`、在 `pushLayer` 之后、首帧锁定 `focusedForOpenRef`），补 `UiEnvProvider` 重渲染与打开期间切换 `initialFocus` 不抢焦点测试；`Menu` 点坐标按 `at.x`/`at.y` 用 `useMemo` 缓存 `DOMRect`（补方向键与悬停真实切项不重复 `place()` 测试）且缺省 `ariaLabel` 改用 `t('ui.menu')`（`zh.ts` 新增 `'ui.menu': '菜单'`）；`Dialog` 有 `error` 时将 `FieldError` 的 `id` 加入 `aria-describedby`。
+  - `W.08.03`：`Select`、`Picker` 窗口化 `onScroll` 移至外层 `ScrollArea`；`Picker`/`Select` 滚到当前项 effect 用 ref 读 `scrollTop`（不放进依赖）；选项 DOM `id` 使用总安全单射 UTF-16 编码 `encodeDomIdToken` 同时编码 `listId` 与选项值（无空白、无 `URIError`、无跨实例分隔符碰撞）；`W0803-T12` 与 `Select.test.tsx` 补 600 项 `scrollTop=5000` 滚动更新窗口且不回拉测试及空串/空格/`%20`/孤立代理项/带空格 `listId` 边界测试。
+- 进行中：无
+- 下一步：交 Codex 将 `origin/slice/m1-web-ui-fix` squash 合并进 `main`，合并后前端线冻结 `W.08`、`W.08.03`、`W.08.04`、`W.08.05` 并开工第 ⑨c 片 `m1-web-shell`。
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：`go run ./tools/relay slice m1-web-ui-fix` ①–⑦ 全部通过（Go 全仓 + 前端 `tsc`/`eslint`/`stylelint`/`prettier` + 双时区 Vitest 52 文件 125 + 8 文件 17 全绿；`tools/ci/deps` 与 `pnpm audit --prod` 0 违规/0 高危）（验证者：Gemini）
+- 评审：`docs/relay/m1-web-ui-fix.review.md` 第 2 轮复核 8/8 全部符合/已处理，结论 **允许合并**（评审者：Codex CLI `web-accept · zai-glm-5-3 · max`）
+- 提交 / 推送：已推送 `origin/slice/m1-web-ui-fix`（`harness-web` 已切回 detached `origin/main` 避免分支占用）
+
+## 2026-11-27 03:13 · W.08.03 · Gemini · 领取
+- 依据：设计仓库提交 3bae5c9（docs/relay/W.08.03.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.03.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-27 03:10 · W.08.04 · Gemini · 领取
+- 依据：设计仓库提交 3bae5c9（docs/relay/W.08.04.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.04.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
+## 2026-11-27 03:07 · W.08.05 · Gemini · 领取
+- 依据：设计仓库提交 3bae5c9（docs/relay/W.08.05.json）
+- 完成：无
+- 进行中：刚领取
+- 下一步：读任务包 .relay/tasks/W.08.05.md，从实施卡第 1 条开始
+- 桩：无
+- 上报单 / 阻塞：无
+- relay check：未运行
+- 评审：未开始
+- 提交 / 推送：领取提交 / 未推送
+
 ## 2026-11-27 00:00 · W.08.03 · Gemini · 交付（M1 第 ⑨b 片 m1-web-ui：W.08.04 / W.08.05 / W.08.01 / W.08.02 / W.08.03）
 - 依据：设计仓库提交（`W.08.04` / `.05` / `.01` / `.02` / `.03`，`P.09` K304）；分支基于 `slice/m1-web-assets`（`debd189`）
 - 完成：实施卡全部（5 个叶子共 67/67 实施卡测试用例全覆盖）。

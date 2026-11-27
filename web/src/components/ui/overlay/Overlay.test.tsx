@@ -147,6 +147,14 @@ describe('W.08.04 Overlay', () => {
         </UiEnvProvider>,
       );
       expect(document.activeElement).toBe(opener);
+      // 关闭后再以 initialFocus='first' 打开，验证显式 restoreFocus 元素
+      r.rerender(
+        <UiEnvProvider value={fe.env}>
+          <Overlay layer="popover" open={false} initialFocus="none" restoreFocus={customTarget}>
+            <button type="button">inside-none</button>
+          </Overlay>
+        </UiEnvProvider>,
+      );
 
       // 显式 restoreFocus 元素
       r.rerender(
@@ -406,6 +414,71 @@ describe('W.08.04 Overlay', () => {
         await clock.advance(200);
       });
       expect(fe.root.querySelector('.hx-ov')).toBeNull();
+    } finally {
+      fe.cleanup();
+    }
+  });
+
+  test('Overlay 打开且焦点在输入框里时，UiEnvProvider 重渲染不抢焦点（K307）', () => {
+    const fe = fakeEnv({ reducedMotion: true });
+    try {
+      const r = render(
+        <UiEnvProvider value={{ ...fe.env }}>
+          <Overlay layer="modal" open initialFocus="first">
+            <button type="button">first-btn</button>
+            <input aria-label="备注" />
+          </Overlay>
+        </UiEnvProvider>,
+      );
+
+      const firstBtn = fe.root.querySelector('button') as HTMLButtonElement;
+      const input = fe.root.querySelector('input') as HTMLInputElement;
+      expect(document.activeElement).toBe(firstBtn);
+
+      // 用户将焦点移到输入框
+      input.focus();
+      expect(document.activeElement).toBe(input);
+
+      // Provider 传入新对象引用触发重渲染：焦点必须停留在输入框，不被抢回 first-btn
+      r.rerender(
+        <UiEnvProvider value={{ ...fe.env }}>
+          <Overlay layer="modal" open initialFocus="first">
+            <button type="button">first-btn</button>
+            <input aria-label="备注" />
+          </Overlay>
+        </UiEnvProvider>,
+      );
+      expect(document.activeElement).toBe(input);
+
+      // 打开期间 initialFocus 从 none 改为 first 也不得抢走输入框焦点（评审 #5）
+      r.rerender(
+        <UiEnvProvider value={fe.env}>
+          <Overlay layer="modal" open={false} initialFocus="none">
+            <button type="button">first-btn</button>
+            <input aria-label="备注" />
+          </Overlay>
+        </UiEnvProvider>,
+      );
+      r.rerender(
+        <UiEnvProvider value={fe.env}>
+          <Overlay layer="modal" open initialFocus="none">
+            <button type="button">first-btn</button>
+            <input aria-label="备注" />
+          </Overlay>
+        </UiEnvProvider>,
+      );
+      const input2 = fe.root.querySelector('input') as HTMLInputElement;
+      input2.focus();
+      expect(document.activeElement).toBe(input2);
+      r.rerender(
+        <UiEnvProvider value={fe.env}>
+          <Overlay layer="modal" open initialFocus="first">
+            <button type="button">first-btn</button>
+            <input aria-label="备注" />
+          </Overlay>
+        </UiEnvProvider>,
+      );
+      expect(document.activeElement).toBe(input2);
     } finally {
       fe.cleanup();
     }

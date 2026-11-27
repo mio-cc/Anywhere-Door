@@ -1,9 +1,9 @@
 {
   "leaf": "W.08.03",
-  "branch": "slice/m1-web-ui",
+  "branch": "slice/m1-web-ui-fix",
   "claimed_by": "Gemini",
-  "claimed_at": "2026-11-26T15:36:07Z",
-  "docs_commit": "9244a6fa6af2d9b43240290e2b1392845fae2ad6",
+  "claimed_at": "2026-11-26T19:13:27Z",
+  "docs_commit": "3bae5c96988b32a56e7781ad5c0834c5db86c9dc",
   "docs": {
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
@@ -32,16 +32,16 @@
     "W_前端实现_web/W.07_面板组件/W.07_面板组件.md": "sha256:7915bfe245c5d75b383cf25541dc60469da71ca0deaf4496ac876063cc0d3651",
     "W_前端实现_web/W.08_基础组件库/W.08.01_按钮类.md": "sha256:afe369c3040aa79799de6c2f7f87a807b4ac91b52ffe73f7bc33ec592d26be2f",
     "W_前端实现_web/W.08_基础组件库/W.08.02_输入类.md": "sha256:9e1ab0f36e1f2807751729dabb523f6c9e0f69dbed016f113eb3c2a4dd860b55",
-    "W_前端实现_web/W.08_基础组件库/W.08.03_选择类.md": "sha256:1a95df793e849cbf1542ebce02ccaac8be50758985a31a1e67ce0d29c81b921f",
-    "W_前端实现_web/W.08_基础组件库/W.08.04_浮层类.md": "sha256:7e9e9399436be0b9fae2eff8f3a566374824c71e7e4fc4b20c03ad5715ff0ea3",
-    "W_前端实现_web/W.08_基础组件库/W.08.05_反馈类.md": "sha256:32bbc5f9d012f02fbfd8255be698399b308e95f5d544be4a44024a66a0a94be7",
-    "W_前端实现_web/W.08_基础组件库/W.08_基础组件库.md": "sha256:e08bea0e465dd93a8a90504a0ab8e830f31248a6cb343942f04af0747d1aa449",
+    "W_前端实现_web/W.08_基础组件库/W.08.03_选择类.md": "sha256:a24af9a33380f32529eb95f8278a15fb87a31b29fc2f03247bfd26fe59f82aea",
+    "W_前端实现_web/W.08_基础组件库/W.08.04_浮层类.md": "sha256:76d6d749598f3d8530609d9fcfc1da899e6f39714a53ac667ad339ed3f99509f",
+    "W_前端实现_web/W.08_基础组件库/W.08.05_反馈类.md": "sha256:7c13468a91f48606b86b0c6cd5f1037c0b0bdea7da053f00f3b2bb43c30c82ca",
+    "W_前端实现_web/W.08_基础组件库/W.08_基础组件库.md": "sha256:02e15141c2b5d1fab16a77afade1732f496cf694f353edde4ce09e78e12d79cc",
     "W_前端实现_web/W.10_国际化与格式化.md": "sha256:5da74cdb140fed6ba812ad26306dddfc8dd1e428d878e373621bc3056b8c668c",
     "W_前端实现_web/W_前端实现_web.md": "sha256:e9b65d2d0101b8727e1aa0adf07d8749c80e17d017f5d3d7e23a3fb133713d48"
   },
   "stubs": [],
   "state": "merged",
-  "slice": "m1-web-ui",
-  "base": "036dde1d2745b2a42f5af611d3a4d30119cd94ea",
-  "head": "8686c5513280f6c5e985f322d6d5ab7e62f9ada6"
+  "slice": "m1-web-ui-fix",
+  "base": "ba1f5b29e09e6f8c07043f5bb5758bf917df01a7",
+  "head": "1b43ea7665900538aa6dc84db903818d5c4278bc"
 }

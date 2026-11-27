@@ -62,4 +62,40 @@ describe('W.08.05 ErrorBoundary', () => {
     );
     expect(r.getByText('正常内容')).toBeTruthy();
   });
+
+  test('ErrorBoundary 捕获 throw null（独立 hasError 标志，K307）', async () => {
+    const state = { fail: true };
+    function ThrowNull() {
+      if (state.fail) {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error -- K307 验证 throw null 场景
+        throw null;
+      }
+      return <div>恢复成功</div>;
+    }
+
+    expectConsole('error', /ErrorBoundary.*空异常测试/, 1);
+    expectConsole('error', /The above error occurred/, 1);
+    const r = render(
+      <ErrorBoundary
+        name="空异常测试"
+        fallback={(retry) => (
+          <button
+            type="button"
+            onClick={() => {
+              state.fail = false;
+              retry();
+            }}
+          >
+            点击重试
+          </button>
+        )}
+      >
+        <ThrowNull />
+      </ErrorBoundary>,
+    );
+
+    const btn = r.getByRole('button', { name: '点击重试' });
+    await user.click(btn);
+    expect(r.getByText('恢复成功')).toBeTruthy();
+  });
 });

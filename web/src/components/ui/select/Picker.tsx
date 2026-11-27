@@ -64,8 +64,25 @@ function logDupPickerIdOnce(id: string): void {
   }
 }
 
+// K307：总安全且单射的 UTF-16 编码（输出仅含 [A-Za-z0-9_]，绝不含 '-' 或空白，永不因未配对代理项抛 URIError）
+function encodeDomIdToken(s: string): string {
+  let out = '';
+  for (let i = 0; i < s.length; i += 1) {
+    const code = s.charCodeAt(i);
+    const isAsciiAlphaNum =
+      (code >= 0x30 && code <= 0x39) || (code >= 0x41 && code <= 0x5a) || (code >= 0x61 && code <= 0x7a);
+    if (isAsciiAlphaNum) {
+      out += s[i] ?? '';
+    } else {
+      out += `_${code.toString(16)}_`;
+    }
+  }
+  return out;
+}
+
+// K307：同时编码 listId 与 itemId 并以 '-' 分隔，保证任意 JS string 无空白、无异常、无跨实例碰撞
 export function pickerOptionId(listId: string, itemId: string): string {
-  return `${listId}-opt-${itemId}`;
+  return `hx-opt-${encodeDomIdToken(listId)}-${encodeDomIdToken(itemId)}`;
 }
 
 function renderMatchedLabel(label: string, query: string | undefined): ReactNode {
@@ -113,6 +130,7 @@ export function Picker(p: PickerProps): JSX.Element {
   const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
   const fromKeyboardRef = useRef(false);
   const [scrollTop, setScrollTop] = useState(0);
+  const scrollTopRef = useRef(0);
 
   const { navRows, displayRows, normalizedGroups, offsets, totalHeight, itemById, displayIndexById } =
     useMemo(() => {
@@ -214,7 +232,7 @@ export function Picker(p: PickerProps): JSX.Element {
     [navRows, effectiveActiveId, itemById, onActiveChange, onPick],
   );
 
-  // 窗口化下通过偏移数组直接调整 scrollTop，确保 active 行不在当前 DOM 窗口时也能滚入并渲染（评审 #20）
+  // 窗口化下通过偏移数组直接调整 scrollTop，确保 active 行不在当前 DOM 窗口时也能滚入并渲染（评审 #20、K307：用 ref 读 scrollTop，避免用户滚动后被拉回当前项）
   useEffect(() => {
     if (effectiveActiveId === null) return;
     if (windowed) {
@@ -224,7 +242,7 @@ export function Picker(p: PickerProps): JSX.Element {
       const rowH = displayRows[idx]?.height ?? ROW_H_SINGLE;
       const bottom = top + rowH;
       const sc = scrollRef.current;
-      const curTop = sc ? sc.scrollTop : scrollTop;
+      const curTop = sc ? sc.scrollTop : scrollTopRef.current;
       const viewH = sc && sc.clientHeight > 0 ? sc.clientHeight : viewportH;
       let nextTop = curTop;
       if (top < curTop) {
@@ -234,6 +252,7 @@ export function Picker(p: PickerProps): JSX.Element {
       }
       if (nextTop !== curTop) {
         if (sc) sc.scrollTop = nextTop;
+        scrollTopRef.current = nextTop;
         setScrollTop(nextTop);
       }
       fromKeyboardRef.current = false;
@@ -245,7 +264,7 @@ export function Picker(p: PickerProps): JSX.Element {
     if (el && typeof el.scrollIntoView === 'function') {
       el.scrollIntoView({ block: 'nearest' });
     }
-  }, [effectiveActiveId, listId, windowed, displayIndexById, offsets, displayRows, viewportH, scrollTop]);
+  }, [effectiveActiveId, listId, windowed, displayIndexById, offsets, displayRows, viewportH]);
 
   const { start, end } = windowed
     ? windowOf(offsets, scrollTop, viewportH, WINDOW_BUFFER)
@@ -308,16 +327,18 @@ export function Picker(p: PickerProps): JSX.Element {
 
   return (
     <div className="hx-picker">
-      <ScrollArea ref={scrollRef} className={`hx-picker__scroll hx-picker__scroll--${maxHeight}`}>
-        <div
-          id={listId}
-          role="listbox"
-          aria-label={ariaLabel}
-          className="hx-picker__list"
-          onScroll={(e) => {
-            if (windowed) setScrollTop(e.currentTarget.scrollTop);
-          }}
-        >
+      <ScrollArea
+        ref={scrollRef}
+        className={`hx-picker__scroll hx-picker__scroll--${maxHeight}`}
+        onScroll={(e) => {
+          if (windowed) {
+            const top = e.currentTarget.scrollTop;
+            scrollTopRef.current = top;
+            setScrollTop(top);
+          }
+        }}
+      >
+        <div id={listId} role="listbox" aria-label={ariaLabel} className="hx-picker__list">
           {navRows.length === 0 ? (
             <div className="hx-picker__empty">{emptyText}</div>
           ) : windowed ? (

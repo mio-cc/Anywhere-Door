@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type JSX } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type JSX } from 'react';
 import { useT } from '@/lib/i18n';
 import { Kbd } from '../button/Kbd';
 import { Icon } from '../icon/Icon';
@@ -85,7 +85,7 @@ function MenuInner(p: InternalMenuProps): JSX.Element | null {
     onClose,
     open = true,
     restoreFocus,
-    ariaLabel = 'Menu',
+    ariaLabel,
     isSubmenu = false,
     autoHighlightFirst = false,
     onPickRoot,
@@ -95,7 +95,13 @@ function MenuInner(p: InternalMenuProps): JSX.Element | null {
   } = p;
 
   const t = useT();
+  const resolvedAriaLabel = ariaLabel ?? t('ui.menu');
   const menuId = useId();
+  const isElementAnchor = at instanceof HTMLElement;
+  const ptX = isElementAnchor ? 0 : at.x;
+  const ptY = isElementAnchor ? 0 : at.y;
+  // K307：按点坐标缓存 DOMRect，避免悬停/方向键重渲染触发 Popover 反复 place()
+  const pointAnchor = useMemo(() => pointToRect({ x: ptX, y: ptY }), [ptX, ptY]);
   const [activeIdx, setActiveIdx] = useState<number>(autoHighlightFirst ? 0 : -1);
   const [subState, setSubState] = useState<{
     readonly id: string;
@@ -271,9 +277,9 @@ function MenuInner(p: InternalMenuProps): JSX.Element | null {
     return false;
   };
 
-  const anchor = at instanceof HTMLElement ? at : pointToRect(at);
-  const placement = isSubmenu ? 'right-start' : at instanceof HTMLElement ? 'bottom-start' : 'right-start';
-  const offset = isSubmenu ? -4 : at instanceof HTMLElement ? 4 : 0;
+  const anchor = isElementAnchor ? at : pointAnchor;
+  const placement = isSubmenu ? 'right-start' : isElementAnchor ? 'bottom-start' : 'right-start';
+  const offset = isSubmenu ? -4 : isElementAnchor ? 4 : 0;
 
   const activeAction = activeIdx >= 0 ? actions[activeIdx] : undefined;
   const activeOptionId = activeAction ? `${menuId}-${activeAction.id}` : undefined;
@@ -294,7 +300,7 @@ function MenuInner(p: InternalMenuProps): JSX.Element | null {
       {...(restoreFocus !== undefined ? { restoreFocus } : {})}
       {...(activeOptionId !== undefined ? { ariaActiveDescendant: activeOptionId } : {})}
       onKey={handleKey}
-      ariaLabel={ariaLabel}
+      ariaLabel={resolvedAriaLabel}
       className="hx-menu"
     >
       <div

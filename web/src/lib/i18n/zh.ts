@@ -87,6 +87,7 @@ export const zh = {
   'ui.noMatch': '没有匹配的选项',
   'ui.filter': '筛选',
   'ui.submenu': '展开子菜单',
+  'ui.menu': '菜单',
   'ui.ai': 'AI',
 
   // ── home. 会话首页与空状态（W.09.01）──
