@@ -3,7 +3,7 @@
   "branch": "slice/m1-web-ui",
   "claimed_by": "Gemini",
   "claimed_at": "2026-11-26T15:27:55Z",
-  "docs_commit": "9244a6fa6af2d9b43240290e2b1392845fae2ad6",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "C_契约层/C.03_节点定义_NodeDef/C.03.01_NodeDef_结构.md": "sha256:c5032b2c62026b675c667da77a37211cbfa400a642a9f3c5b98482f47b05f21c",
     "C_契约层/C.14_代码生成映射.md": "sha256:32fcf248df3bb92b3ecdf74da3a31a79dec5df76532a6a063423d1e93229d6b4",
@@ -36,9 +36,9 @@
     "W_前端实现_web/W.07_面板组件/W.07.07_底部对话框.md": "sha256:327d9e443011db3bbfa775d886453334cf38249b9a5ad9125e4b3ea18bc5e3e8",
     "W_前端实现_web/W.07_面板组件/W.07_面板组件.md": "sha256:7915bfe245c5d75b383cf25541dc60469da71ca0deaf4496ac876063cc0d3651",
     "W_前端实现_web/W.08_基础组件库/W.08.01_按钮类.md": "sha256:afe369c3040aa79799de6c2f7f87a807b4ac91b52ffe73f7bc33ec592d26be2f",
-    "W_前端实现_web/W.08_基础组件库/W.08.04_浮层类.md": "sha256:7e9e9399436be0b9fae2eff8f3a566374824c71e7e4fc4b20c03ad5715ff0ea3",
-    "W_前端实现_web/W.08_基础组件库/W.08.05_反馈类.md": "sha256:32bbc5f9d012f02fbfd8255be698399b308e95f5d544be4a44024a66a0a94be7",
-    "W_前端实现_web/W.08_基础组件库/W.08_基础组件库.md": "sha256:e08bea0e465dd93a8a90504a0ab8e830f31248a6cb343942f04af0747d1aa449",
+    "W_前端实现_web/W.08_基础组件库/W.08.04_浮层类.md": "sha256:76d6d749598f3d8530609d9fcfc1da899e6f39714a53ac667ad339ed3f99509f",
+    "W_前端实现_web/W.08_基础组件库/W.08.05_反馈类.md": "sha256:7c13468a91f48606b86b0c6cd5f1037c0b0bdea7da053f00f3b2bb43c30c82ca",
+    "W_前端实现_web/W.08_基础组件库/W.08_基础组件库.md": "sha256:02e15141c2b5d1fab16a77afade1732f496cf694f353edde4ce09e78e12d79cc",
     "W_前端实现_web/W.12_前端测试.md": "sha256:95053997d87c9f731e04dfbe2003996bb9b17f14f081171c8595bf7c3144d0d0",
     "W_前端实现_web/W_前端实现_web.md": "sha256:e9b65d2d0101b8727e1aa0adf07d8749c80e17d017f5d3d7e23a3fb133713d48"
   },

@@ -3,7 +3,7 @@
   "branch": "slice/m1-op",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-25T16:33:02Z",
-  "docs_commit": "8feed98a21b739ecb3b4c6805d00ddfdc979b142",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "C_契约层/C.05_Op_操作/C.05.01_Op_信封.md": "sha256:e4cd95b4c9e4b6196fee1623f496dfcd9ecacf3e01f8ef741f2a64b4bb54b71e",
     "C_契约层/C.05_Op_操作/C.05.03_逆操作规则.md": "sha256:34f5977bb825c21700172d568a297896266a353307146d4b419f0addef69893e",
@@ -19,9 +19,10 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
     "G_工程规范/G.05_Go_编码规范/G.05_Go_编码规范.md": "sha256:a116ce940a1380032606b3492b9197ad2a9f7543b18e5897bbe90573225139dc",
+    "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
     "U_UI_UX_规范/U.13_交互模式/U.13.03_撤销与重做.md": "sha256:a0fe77dc784a7865d2b2eb868ea2237f490fc126389e9ce98e4096a41475021f",
-    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:671652e9b53119d2c9d28a85fdb056944b8d2c9e1da448f7e60821179016766c",
+    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:46aec490d56bae0b86171214b6d6d56fecdda14d09878de642fc08cb912de5f1",
     "W_前端实现_web/W.07_面板组件/W.07.05_右侧栏_监控.md": "sha256:c406784b600dd7d376543c74d28ecaa41a5a96158b7a351f5e8988f9d5982e0a"
   },
   "stubs": [],

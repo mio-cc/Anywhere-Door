@@ -3,7 +3,7 @@
   "branch": "slice/m0-llm",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T14:43:25Z",
-  "docs_commit": "c9019a43fb5a11efceeac8896964a864265977d0",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "E_内核_engine/E.01_内核总则.md": "sha256:33991c9dcec3b1dc71eb722ccc643831d35572e5495eb10847ae9b4e7015bbee",
     "E_内核_engine/E.10_llm_模型适配/E.10.01_统一接口与提供方配置.md": "sha256:e0c46ba384e8544e8da092b6292610367a2d37c16ac4e42838c769edf34402be",
@@ -11,7 +11,7 @@
     "E_内核_engine/E.10_llm_模型适配/E.10.04_Responses_协议.md": "sha256:321a4f7d0dee6e2047e837f475c26408241a1f3567f12710a96a838394023c3b",
     "E_内核_engine/E.10_llm_模型适配/E.10.09_重试_超时与限流.md": "sha256:d04fb0300d421de5f5e24c54ddfc1706eecf7f4f8ca9dcf4e4a85a0568cf571e",
     "E_内核_engine/E.10_llm_模型适配/E.10_llm_模型适配.md": "sha256:f97f6376bd1cf524fdb673965be6f4caceff3edc2e00fccd02b544285fcfb362",
-    "E_内核_engine/E.11_tools_工具/E.11_tools_工具.md": "sha256:501eeb91d60c2ad5309448fcd9cffa5ff27d310eab75f9944b90040c55a8b3db",
+    "E_内核_engine/E.11_tools_工具/E.11_tools_工具.md": "sha256:c2acbf71f34ac3c21f53f9aaabcbf1da9eda79e40d23d17df4d62aa018b5bab5",
     "E_内核_engine/E_内核_engine.md": "sha256:c3274d4356e442de66173f3af36dd1a1c8e73fab35eac50c1e094fe5aaf3689a",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",

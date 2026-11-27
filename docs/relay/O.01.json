@@ -3,11 +3,11 @@
   "branch": "feat/O.01-build",
   "claimed_by": "Quick（AWS Quick，按 G.02.06 §5 例外人工领取）",
   "claimed_at": "2026-11-23T03:20:00Z",
-  "docs_commit": "288a544f7f0aab45a11916124394b8ff313387b8",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "B_后端服务/B.02_anydoor_启动与组装.md": "sha256:45048bf6ea456c7935b0db781895410f86e57e58e07f827cb68f99ab1024de54",
     "B_后端服务/B.08_anydoorctl_命令行.md": "sha256:c27f6d4cf6eb1b2acd3522c65f18b7a3c4b1c59c9031cbc3467665b4f1809556",
-    "C_契约层/C.14_代码生成映射.md": "sha256:cc6340b20830c512cafdd49e6d34e0101daac1b6bae376220b0278f6c7f79bbe",
+    "C_契约层/C.14_代码生成映射.md": "sha256:32fcf248df3bb92b3ecdf74da3a31a79dec5df76532a6a063423d1e93229d6b4",
     "G_工程规范/G.02_AI_实施者守则/G.02.01_实施任务包格式.md": "sha256:0c703857f67d97d9a3710822a858942a20b63dd69baa9b2a6498617d198a0164",
     "G_工程规范/G.02_AI_实施者守则/G.02.02_上下文最小集规则.md": "sha256:59795219122a3e0752b9a43abfd493b5ce71f24555878baf84b3d225fd3f9ff4",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
@@ -18,7 +18,7 @@
     "G_工程规范/G.07_Git_工作流.md": "sha256:4165763a8bbe246d18c0d9dd66604f14290612bd8d4f3c572a85c6053fdd7e78",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
     "G_工程规范/G.09_版本与变更日志.md": "sha256:fbddef7e39cba06baa35a9de281e7d837539b7671580da7fab13b530a96e3aad",
-    "G_工程规范/G.10_依赖管理.md": "sha256:c25b789af7c25976d356aa11d920d165d42af1918daf65b0826c2792a2f15f6c",
+    "G_工程规范/G.10_依赖管理.md": "sha256:14ef35558c4865cdf7e65e0946c315d47be66550e0314d27f21f81bb66394915",
     "G_工程规范/G.11_配置与环境变量.md": "sha256:9974f1ee64a1bc390e3ecc4cbc3f5029de4a553c296619c6c72428fd4e56dc5c",
     "G_工程规范/G.14_完成定义_DoD.md": "sha256:4d4316b28bc7d901a8732b7aafc09c5248313952ef53e6617d7dec78833ec1d5",
     "G_工程规范/G.15_开发环境搭建.md": "sha256:a1dd9b53044b11f95860d2ea9ed96ffd759ceeb793713cc842ca3bdb39158efd",
@@ -33,7 +33,7 @@
     "W_前端实现_web/W.01_前端总则.md": "sha256:f88936181531e191dfeef4e0e016fc5357a95616abd80c50df11eaf650379725",
     "W_前端实现_web/W.02_应用外壳与路由/W.02_应用外壳与路由.md": "sha256:e467b1e3d7c93b0dfccdc63cf285bcfd42a493b7319569ab10885c8a053449c0",
     "W_前端实现_web/W.11_前端性能实现.md": "sha256:843890626e95c4d1545e121e495e15f3e13081bb9fd89960b218cdc8120ac171",
-    "W_前端实现_web/W.12_前端测试.md": "sha256:1a3c351d7d9dc60dc9c172c94f5826bb52df5f0f564e84257b4f158e3095f7aa"
+    "W_前端实现_web/W.12_前端测试.md": "sha256:95053997d87c9f731e04dfbe2003996bb9b17f14f081171c8595bf7c3144d0d0"
   },
   "stubs": [
     "cmd/anydoor/main.go",

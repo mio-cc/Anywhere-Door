@@ -3,7 +3,7 @@
   "branch": "slice/m0-ci-fix",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-24T12:13:18Z",
-  "docs_commit": "64ed846fddf8b1e040a0833b454ceae7abe0975f",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "E_内核_engine/E.14_exec_执行器/E.14.07_聚合.md": "sha256:a77efda951cbb862b7ce967765daf2c72b4dd4a41b8cdbd5a9a8853ae94b61e3",
     "G_工程规范/G.02_AI_实施者守则/G.02.01_实施任务包格式.md": "sha256:0c703857f67d97d9a3710822a858942a20b63dd69baa9b2a6498617d198a0164",
@@ -16,7 +16,7 @@
     "G_工程规范/G.07_Git_工作流.md": "sha256:4165763a8bbe246d18c0d9dd66604f14290612bd8d4f3c572a85c6053fdd7e78",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
     "G_工程规范/G.09_版本与变更日志.md": "sha256:fbddef7e39cba06baa35a9de281e7d837539b7671580da7fab13b530a96e3aad",
-    "G_工程规范/G.10_依赖管理.md": "sha256:c25b789af7c25976d356aa11d920d165d42af1918daf65b0826c2792a2f15f6c",
+    "G_工程规范/G.10_依赖管理.md": "sha256:14ef35558c4865cdf7e65e0946c315d47be66550e0314d27f21f81bb66394915",
     "G_工程规范/G.11_配置与环境变量.md": "sha256:9974f1ee64a1bc390e3ecc4cbc3f5029de4a553c296619c6c72428fd4e56dc5c",
     "O_构建_发布与运维/O.01_构建流水线.md": "sha256:d9f5072cacc592f624fd835d6a88ace02d12f6149f1a12a28d9f12f74a1f155f",
     "O_构建_发布与运维/O.02_CI_门禁.md": "sha256:96b2c5172c50bc964c43aee90552db0c519a4e4cd3e0481156193bbb141d938a",
@@ -28,7 +28,7 @@
     "S_安全与隐私/S.12_供应链安全.md": "sha256:5e268c2ea392119aee74ee32669513e48e01043720d435a2629ee014a0d88b45",
     "W_前端实现_web/W.06_画布引擎/W.06.13_嵌套子图.md": "sha256:3a012a6e28da11e6cdfe6797acb294b0767cb8dd92a57e63813aa8cea08f864e",
     "W_前端实现_web/W.11_前端性能实现.md": "sha256:843890626e95c4d1545e121e495e15f3e13081bb9fd89960b218cdc8120ac171",
-    "W_前端实现_web/W.12_前端测试.md": "sha256:1a3c351d7d9dc60dc9c172c94f5826bb52df5f0f564e84257b4f158e3095f7aa"
+    "W_前端实现_web/W.12_前端测试.md": "sha256:95053997d87c9f731e04dfbe2003996bb9b17f14f081171c8595bf7c3144d0d0"
   },
   "stubs": [],
   "state": "merged",

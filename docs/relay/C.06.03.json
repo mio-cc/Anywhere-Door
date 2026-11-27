@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract-3",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T13:32:04Z",
-  "docs_commit": "5f7329c5a424b996a4b00be2a1f8ebd794c14b85",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "B_后端服务/B.05_SSE_事件流/B.05.02_断线续传.md": "sha256:874aabad6f113fd9e8b8b06e5beea20c969aba131dd8c32f1b17570249aaf3d9",
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
@@ -16,10 +16,10 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
-    "G_工程规范/G.10_依赖管理.md": "sha256:c25b789af7c25976d356aa11d920d165d42af1918daf65b0826c2792a2f15f6c",
+    "G_工程规范/G.10_依赖管理.md": "sha256:14ef35558c4865cdf7e65e0946c315d47be66550e0314d27f21f81bb66394915",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
-    "W_前端实现_web/W.04_协议层/W.04.05_离线与重连.md": "sha256:652323a3574374a3785f4544005be691f48968a86f1b2d6cdf8bafb780ccc0c8",
-    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:671652e9b53119d2c9d28a85fdb056944b8d2c9e1da448f7e60821179016766c"
+    "W_前端实现_web/W.04_协议层/W.04.05_离线与重连.md": "sha256:80d374e319c961caacf8c2c0dc448a144fc0ce8164a989716f1d5c700b0b4b74",
+    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:46aec490d56bae0b86171214b6d6d56fecdda14d09878de642fc08cb912de5f1"
   },
   "stubs": [],
   "state": "merged",

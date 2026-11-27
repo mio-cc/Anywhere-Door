@@ -3,7 +3,7 @@
   "branch": "slice/m0-contract-2",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-23T07:35:13Z",
-  "docs_commit": "49f654e3c890bc36ab5395389fc716bb7891a2a9",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "B_后端服务/B.04_API_资源/B.04.08_tools_与_MCP.md": "sha256:5d78b88b914f6717d150da076e4a83c01e2e5b7e98758fdb1b4b03e524a6a1c7",
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
@@ -25,7 +25,7 @@
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
-    "G_工程规范/G.10_依赖管理.md": "sha256:c25b789af7c25976d356aa11d920d165d42af1918daf65b0826c2792a2f15f6c",
+    "G_工程规范/G.10_依赖管理.md": "sha256:14ef35558c4865cdf7e65e0946c315d47be66550e0314d27f21f81bb66394915",
     "P_产品总纲/P.06_术语表.md": "sha256:4c39192775dbaf4320ff7b457f7de686800cd6101eb4e9bcca1a315037c39209",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
     "S_安全与隐私/S.03_密钥与凭据管理.md": "sha256:68c4bd0634b08eb05c6948b7cc5202e36c96e986c5e0a4f6729e146fbe6804e5",
@@ -34,7 +34,7 @@
     "W_前端实现_web/W.06_画布引擎/W.06.03_节点渲染.md": "sha256:082531fbd92541a4a6345d8bf3ea8411d556539c6a1480225a409dba85e286d4",
     "W_前端实现_web/W.06_画布引擎/W.06.10_几何计算.md": "sha256:0d56e15fcae7eb053be600c77227c5b28a5398c55e76841ad3faa74586a31581",
     "W_前端实现_web/W.07_面板组件/W.07.03_右侧栏_属性.md": "sha256:705c0d75fbe018fe8f9f4063e5f36896a159f4d43ce713bd071687de34139aa5",
-    "W_前端实现_web/W.08_基础组件库/W.08_基础组件库.md": "sha256:e08bea0e465dd93a8a90504a0ab8e830f31248a6cb343942f04af0747d1aa449"
+    "W_前端实现_web/W.08_基础组件库/W.08_基础组件库.md": "sha256:02e15141c2b5d1fab16a77afade1732f496cf694f353edde4ce09e78e12d79cc"
   },
   "stubs": [],
   "state": "merged",

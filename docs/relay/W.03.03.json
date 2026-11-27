@@ -3,7 +3,7 @@
   "branch": "slice/m1-web-shell",
   "claimed_by": "Gemini",
   "claimed_at": "2026-11-26T19:41:23Z",
-  "docs_commit": "c72e7a4bf385fe5eaff682a0835e37f21c15cc55",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "C_契约层/C.10_会话与消息.md": "sha256:a93da1a74ebf39f951a6817d4f6e88685d8d49c257a142e56d5c9d6057784ae4",
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
@@ -26,7 +26,7 @@
     "U_UI_UX_规范/U.21_中心窗口.md": "sha256:8dddc8f018a69c23c4bb8bbe5e29f30ca346d5cdda71fcb8d359b3968434378e",
     "W_前端实现_web/W.01_前端总则.md": "sha256:f88936181531e191dfeef4e0e016fc5357a95616abd80c50df11eaf650379725",
     "W_前端实现_web/W.02_应用外壳与路由/W.02.02_外壳布局.md": "sha256:9564a16c0bfbcc799e05ac3f84e3cbb1251b9b93fa92e568cdbb397d452692cd",
-    "W_前端实现_web/W.02_应用外壳与路由/W.02.03_主题切换.md": "sha256:37046559a9b61df352895d0914b78b4b21657f1ca8dfc634423360f478d40ccd",
+    "W_前端实现_web/W.02_应用外壳与路由/W.02.03_主题切换.md": "sha256:41ec3e0f85e531b3d9fb2c5a8ad57dbb21c9819c656529946824439886fa5625",
     "W_前端实现_web/W.02_应用外壳与路由/W.02.04_快捷键注册中心.md": "sha256:904708bf8bd9a27fdbc167ced3ceaceee9ca331003e137a7c0af68399eb63163",
     "W_前端实现_web/W.03_状态层/W.03.03_ui_store.md": "sha256:f447f1baaf1eab4703650c01310ef886ef3cabcdaca480ecfc5f733ff66838dd",
     "W_前端实现_web/W.03_状态层/W.03.05_session_store.md": "sha256:9749fdc25608f2fa70bc72bf528e0ecf03257c6cc8098f5c6dcfd372ad1bca75",

@@ -3,7 +3,7 @@
   "branch": "slice/m1-validate",
   "claimed_by": "Quick（AWS Quick）",
   "claimed_at": "2026-11-25T08:47:18Z",
-  "docs_commit": "c9019a43fb5a11efceeac8896964a864265977d0",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "C_契约层/C.01_契约总则.md": "sha256:1d8f4f46b2df2f20f4aa83523a0ef2713062cf90b57ad8e65864d260c502a970",
     "C_契约层/C.02_图文档/C.02.01_Graph_顶层结构.md": "sha256:67d0e745abe466110063e6886d45ea9fa3d95255dac0cdb0d7e0eba3bc8d247c",
@@ -28,12 +28,12 @@
     "G_工程规范/G.02_AI_实施者守则/G.02_AI_实施者守则.md": "sha256:11729c2775474c6e9e11ab7e788688d6a3a377dae165b3c9b7570ff6a2e90eec",
     "G_工程规范/G.05_Go_编码规范/G.05.05_Go_lint_配置/G.05.05.01_typenamecheck_节点类型名比较检查.md": "sha256:00bf17d727992917ee96f04294d76144cdd5b59e57c19982ed8a0d5144cb8a77",
     "G_工程规范/G.08_代码评审与合并门禁.md": "sha256:2af71f132b37c35180d8600ecbcd85bc59670b954328b69cb992bf33719d6ca4",
-    "G_工程规范/G.10_依赖管理.md": "sha256:c25b789af7c25976d356aa11d920d165d42af1918daf65b0826c2792a2f15f6c",
+    "G_工程规范/G.10_依赖管理.md": "sha256:14ef35558c4865cdf7e65e0946c315d47be66550e0314d27f21f81bb66394915",
     "Q_质量与测试/Q.01_测试策略总则.md": "sha256:1c754a23cacff7a2f56d2886f8e551541471b8af61ea61f0a942f02902622c20",
-    "W_前端实现_web/W.03_状态层/W.03.01_graph_store.md": "sha256:825800da467a89325b82efa39444217e13e9f4ba0908794b0a750d779ccc7fc4",
-    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:671652e9b53119d2c9d28a85fdb056944b8d2c9e1da448f7e60821179016766c",
+    "W_前端实现_web/W.03_状态层/W.03.01_graph_store.md": "sha256:12fc58d3c578a49463a30b903b0f07b7d28156d9aedf01fac10e6c7da58385cd",
+    "W_前端实现_web/W.05_前端_Op_层.md": "sha256:46aec490d56bae0b86171214b6d6d56fecdda14d09878de642fc08cb912de5f1",
     "W_前端实现_web/W.06_画布引擎/W.06.01_引擎生命周期.md": "sha256:c91c4c35163561d24028231b18f3a64819224a4edfa78c3726cb6841cf6b542f",
-    "W_前端实现_web/W.12_前端测试.md": "sha256:1a3c351d7d9dc60dc9c172c94f5826bb52df5f0f564e84257b4f158e3095f7aa"
+    "W_前端实现_web/W.12_前端测试.md": "sha256:95053997d87c9f731e04dfbe2003996bb9b17f14f081171c8595bf7c3144d0d0"
   },
   "stubs": [],
   "state": "merged",

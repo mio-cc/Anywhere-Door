@@ -3,7 +3,7 @@
   "branch": "slice/m1-web-ui-fix",
   "claimed_by": "Gemini",
   "claimed_at": "2026-11-26T19:10:10Z",
-  "docs_commit": "3bae5c96988b32a56e7781ad5c0834c5db86c9dc",
+  "docs_commit": "5d4b4f15258dbc69f85292cda182a52adf12f602",
   "docs": {
     "G_工程规范/G.02_AI_实施者守则/G.02.05_禁止事项总表.md": "sha256:be352f667febb09fd8c491b4a5e73fda35f5abbba1aa7f3657d19014fd23dc76",
     "G_工程规范/G.02_AI_实施者守则/G.02.06_代码接力.md": "sha256:918e92a39d5700f7c2c8dcd56f616acd999d89500241a68286474820b9062bde",
@@ -23,7 +23,7 @@
     "U_UI_UX_规范/U.16_可访问性.md": "sha256:1d394c7062d18dfe60c78635b7e0bc8e4a7a5ad984fba668d2f06386f4f16770",
     "U_UI_UX_规范/U.23_视觉精修规则.md": "sha256:4e9bddd02b6067f27fdae7f531926d5432421baf2ee3fca2f9917fc4c439f17d",
     "W_前端实现_web/W.01_前端总则.md": "sha256:f88936181531e191dfeef4e0e016fc5357a95616abd80c50df11eaf650379725",
-    "W_前端实现_web/W.02_应用外壳与路由/W.02.02_外壳布局.md": "sha256:f755804d08e7f88e1882b83e67fdbe93beebacf8a5657445f6540d4000afb8aa",
+    "W_前端实现_web/W.02_应用外壳与路由/W.02.02_外壳布局.md": "sha256:9564a16c0bfbcc799e05ac3f84e3cbb1251b9b93fa92e568cdbb397d452692cd",
     "W_前端实现_web/W.02_应用外壳与路由/W.02.04_快捷键注册中心.md": "sha256:904708bf8bd9a27fdbc167ced3ceaceee9ca331003e137a7c0af68399eb63163",
     "W_前端实现_web/W.06_画布引擎/W.06.01_引擎生命周期.md": "sha256:c91c4c35163561d24028231b18f3a64819224a4edfa78c3726cb6841cf6b542f",
     "W_前端实现_web/W.06_画布引擎/W.06.13_嵌套子图.md": "sha256:3a012a6e28da11e6cdfe6797acb294b0767cb8dd92a57e63813aa8cea08f864e",
